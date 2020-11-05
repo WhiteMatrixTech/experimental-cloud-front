@@ -10,14 +10,11 @@ import styles from './Layout.less';
 class BaaSLayout extends PureComponent {
 	constructor(props) {
 		super(props)
-		this.state = {
-
-		}
-		this.onClickBreadcrumb = this.onClickBreadcrumb.bind(this)
+		this.state = {}
 	}
 
 	// 面包屑点击事件
-	onClickBreadcrumb(breadCrumbInfo) {
+	onClickBreadcrumb = breadCrumbInfo => {
 		if (!breadCrumbInfo.menuVos || isEmpty(breadCrumbInfo.menuVos)) {
 			history.push(breadCrumbInfo.menuHref);
 		}

@@ -9,6 +9,12 @@ import baseConfig from 'utils/config';
 import styles from './index.less';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block')
+breadCrumbItem.push({
+  menuName: "区块详情",
+  menuHref: `/`,
+})
+
 function BlockDetail({
   match: {
     params: { blockHash },
@@ -22,12 +28,6 @@ function BlockDetail({
   const [pageSize] = useState(baseConfig.pageSize);
   const [detailList, setDetailList] = useState([]);
   const dispatch = useDispatch();
-
-  const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block')
-  breadCrumbItem.push({
-    menuName: "区块详情",
-    menuHref: `/`,
-  })
 
   const columns = [
     {

@@ -8,6 +8,8 @@ import { Breadcrumb, SearchBar } from 'components';
 import baseConfig from 'utils/config';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block')
+
 function Block(props) {
   const { Block, Layout, qryLoading } = props;
   const { blockList, blockTotal } = Block;
@@ -16,8 +18,6 @@ function Block(props) {
   const [blockHash, setBlockHash] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
   const dispatch = useDispatch();
-
-  const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block')
 
   // 查询列表
   const getBlockList = () => {

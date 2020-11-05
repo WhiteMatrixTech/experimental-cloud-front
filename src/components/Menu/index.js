@@ -11,7 +11,6 @@ class LeftMenu extends Component {
   constructor(props) {
     super(props)
     this.state = {}
-    this.hashChange = this.hashChange.bind(this);
   }
 
   componentDidMount() {
@@ -34,7 +33,7 @@ class LeftMenu extends Component {
     return resultList;
   }
 
-  hashChange(menu) {
+  hashChange = menu => {
     // 切换菜单时，将面包屑同时更新
     let breadCrumbItem = [menu].concat(this.getParentMenu(menu.menuPid));
     breadCrumbItem = breadCrumbItem.reverse();
@@ -42,8 +41,6 @@ class LeftMenu extends Component {
       type: 'Layout/common',
       payload: { selectedMenu: menu.menuHref, breadCrumbItem }
     });
-    // localStorage.setItem('selectedMenu', menu.menuHref);
-    // localStorage.setItem('breadCrumbItem', JSON.stringify(breadCrumbItem));
     if (this.props.pathname !== menu.menuHref) {
       history.push(menu.menuHref);
     }

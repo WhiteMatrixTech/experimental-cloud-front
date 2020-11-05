@@ -1,29 +1,29 @@
 @import '~themes/variable.less';
 
 .leftMenu{
-    height:100%;
-    overflow: auto;
-    :global{
-        .ant-menu{
-            height:100%;
-            background: #262626;
-        }
-        .ant-menu-item{
-            height:50px !important;
-            line-height:50px !important;
-        }
-        .ant-menu-submenu-title{
-            height:50px;
-            line-height:50px;
-        }
-        .ant-menu-dark.ant-menu-inline .ant-menu-item {
-            display: flex;
-        }
-        .ant-menu-dark.ant-menu-inline .ant-menu-item:first-child {
-            margin-top: 0;
-        }
+  height:100%;
+  overflow: auto;
+  background: #262626;
+  :global{
+    .ant-menu{
+      background: #262626;
     }
-    .menuTtile{
-       display: flex;
+    .ant-menu-item{
+      height: 40px;
+      line-height: 40px;
     }
+    .ant-menu-submenu-title{
+      height: 40px;
+      line-height: 40px;
+    }
+    .ant-menu-dark.ant-menu-inline .ant-menu-item {
+      display: flex;
+    }
+    .ant-menu-dark.ant-menu-inline .ant-menu-item:first-child {
+      margin-top: 0;
+    }
+  }
+  .menuTtile{
+    display: flex;
+  }
 }
