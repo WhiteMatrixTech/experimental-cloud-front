@@ -1,0 +1,37 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 35px 0 14px;
+  background: #262626;
+  .logo-sub {
+    height: 28px;
+    font-size: 16px;
+    color: #999;
+  }
+  .header-right-info {
+    display: flex;
+    align-items: center;
+  }
+  .header-menu-item {
+    font-size: 16px;
+    color: #999;
+    cursor: pointer;
+    padding-left: 12px;
+    &.active {
+      color: #fff;
+    }
+  }
+  .header-menu-item:hover {
+    color: #fff;
+  }
+  :global {
+    .ant-dropdown-link {
+      color: #999;
+      margin-left: 28px;
+      line-height: 54px;
+    }
+    .ant-dropdown-link:hover {
+      color: #fff;
+    }
+  }
+}

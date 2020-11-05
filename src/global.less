@@ -1,0 +1,107 @@
+@import '~themes/variable.less';
+@import '~assets/iconfont/iconfont.css';
+html,
+body,
+:global(#root) {
+  min-height: 100%;
+}
+
+:global(.ant-layout) {
+  min-height: 100%;
+  background-color: @white;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-menu-width {
+  width: 20px;
+  height: 20px;
+  margin-left: -3px;
+  margin-right: 15px;
+  vertical-align: middle;
+  /*transform: translate(50%,50%);*/
+}
+.layout-style {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-content {
+  margin-top: 20px;
+}
+
+.table-column-overflow {
+  width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ant-table-wrapper {
+  background-color: #fff;
+}
+
+:global {
+  .ant-spin-container {
+    overflow: visible !important;
+  }
+  .ant-select-selection--single {
+    min-width: 100px;
+  }
+  // 抽屉自定义底部
+  .ucc-draw-footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid @default-border-color;
+    padding: 10px 16px;
+    text-align: right;
+    left: 0;
+    background: #fff;
+    border-radius: 0 0 4px 4px;
+  }
+  .ant-drawer-close{
+    z-index: 1001 !important;
+  }
+  .ant-drawer-header{
+    position: absolute !important;
+    width: 100%;
+    z-index: 1000;
+    height: 55px;
+  }
+  .ant-drawer-body{
+    margin-top: 55px;
+    padding: 0 16px;
+  }
+}
+
+::-webkit-scrollbar
+{
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track
+{
+   display: none;
+}
+::-webkit-scrollbar-thumb
+{
+    border-radius: 3px;
+    background-color: @default-border-color;
+}
+//IE
+html{
+    scrollbar-face-color: @default-border-color; /**//*立体滚动条的颜色*/
+    scrollbar-highlight-color: @white; /**//*滚动条空白部分的颜色*/
+}
+
+
+
