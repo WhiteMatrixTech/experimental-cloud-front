@@ -8,6 +8,8 @@ import { Breadcrumb, SearchBar } from 'components';
 import baseConfig from 'utils/config';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channel')
+
 function Channel(props) {
   const { Channel, qryLoading } = props;
   const { transactionList, transactionTotal } = Channel;
@@ -16,7 +18,6 @@ function Channel(props) {
   const [pageSize] = useState(baseConfig.pageSize);
   const dispatch = useDispatch();
 
-  const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channel')
   const columns = [
     {
       title: '交易ID',
@@ -105,7 +106,7 @@ function Channel(props) {
       <div className='page-content'>
         <SearchBar placeholder='交易ID' onSearch={onSearch} />
         <Table
-          rowKey='txId'
+          rowKey='_id'
           columns={columns}
           loading={qryLoading}
           dataSource={transactionList}

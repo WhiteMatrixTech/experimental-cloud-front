@@ -7,6 +7,12 @@ import { Breadcrumb } from 'components';
 import styles from './index.less';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channel')
+breadCrumbItem.push({
+  menuName: "交易详情",
+  menuHref: `/`,
+})
+
 function TransactionDetail({
   match: {
     params: { transactionHash },
@@ -15,14 +21,7 @@ function TransactionDetail({
   Channel
 }) {
   const { transactionDetail } = Channel;
-  // const [detailList, setDetailList] = useState([]);
   const dispatch = useDispatch();
-
-  const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channel')
-  breadCrumbItem.push({
-    menuName: "交易详情",
-    menuHref: `/`,
-  })
 
   const detailList = [
     {
