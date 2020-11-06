@@ -26,5 +26,5 @@ export async function setCompanyApprove(params) {
  * 停用 & 启用 成员企业
  */
 export async function setStatusOfLeagueConpany(params) {
-  return request(`/enterprises/valid`, { method: 'POST', body: params });
+  return request(`/enterprises/validate`, { method: 'POST', body: params });
 };

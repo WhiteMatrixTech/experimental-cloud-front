@@ -176,11 +176,11 @@ const MenuList = [
   }
 ];
 
-const getCurBreadcrumb = (menuList, keyword = '') => {
+const getCurBreadcrumb = (menuList, keyword = '', isLeftMenu = true) => {
   const breadCrumb = [];
   const findMenu = tree2Arr(menuList).find(item => item.menuHref === keyword);
   if (findMenu) {
-    findMenu.isLeftMenu = true;
+    findMenu.isLeftMenu = isLeftMenu;
     breadCrumb.push(findMenu);
   }
   return breadCrumb;

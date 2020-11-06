@@ -250,7 +250,7 @@ function EnterpriseMember(props) {
   return (
     <div className='page-wrapper'>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content'>
+      <div className='page-content page-content-shadow'>
         <div className={styles['search-wrapper']}>
           <Form {...formItemLayout} colon={false} form={form}>
             <Row gutter={24}>

@@ -112,7 +112,7 @@ function Block(props) {
   return (
     <div className='page-wrapper'>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content'>
+      <div className='page-content page-content-shadow'>
         <SearchBar placeholder='区块HASH' onSearch={onSearch} />
         <Table
           rowKey='blockHash'

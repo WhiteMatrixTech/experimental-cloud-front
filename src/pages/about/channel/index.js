@@ -103,7 +103,7 @@ function Channel(props) {
   return (
     <div className='page-wrapper'>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content'>
+      <div className='page-content page-content-shadow'>
         <SearchBar placeholder='交易ID' onSearch={onSearch} />
         <Table
           rowKey='_id'

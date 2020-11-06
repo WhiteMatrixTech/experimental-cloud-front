@@ -146,7 +146,7 @@ function BlockDetail({
     <div className='page-wrapper'>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <Spin spinning={qryLoading}>
-        <div className='page-content'>
+        <div className='page-content page-content-shadow'>
           <div className={styles['block-detail-wrapper']}>
             <div className={styles['block-detail-title']}>
               <div className={styles['title-dot']}></div>
