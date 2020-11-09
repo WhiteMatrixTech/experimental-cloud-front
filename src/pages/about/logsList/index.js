@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { connect } from "dva";
 import { Table, Row, Col, Form, DatePicker, Input, Button } from 'antd';
 import moment from 'moment';
@@ -26,11 +25,10 @@ const initSearchObj = {
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/logsList')
 
 function LogsList(props) {
-  const { Logs, qryLoading } = props;
+  const { Logs, qryLoading, dispatch } = props;
   const { logsList, logsTotal } = Logs;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
-  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [queryParams, setQueryParams] = useState(initSearchObj);
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { connect } from "dva";
 import { Table } from 'antd';
 import moment from 'moment';
@@ -10,11 +9,10 @@ import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/orgList')
 
 function OrganizationManagement(props) {
-  const { Organization, qryLoading } = props;
+  const { Organization, qryLoading, dispatch } = props;
   const { orgList, orgTotal } = Organization;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
-  const dispatch = useDispatch();
 
   const columns = [
     {

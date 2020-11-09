@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { connect } from "dva";
 import { Spin } from 'antd';
 import { Breadcrumb, DetailCard } from 'components';
@@ -17,9 +16,9 @@ function MemberDetail({
     params: { memberDetail: companyId },
   },
   Member: { memberDetail },
-  qryLoading = false
+  qryLoading = false,
+  dispatch
 }) {
-  const dispatch = useDispatch();
 
   const basicInfo = [
     {

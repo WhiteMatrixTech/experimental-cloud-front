@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { history } from 'umi';
-import isEmpty from 'lodash/isEmpty';
 import { Breadcrumb as AntBreadcrumb } from "antd";
 
 import styles from "./index.less";
@@ -25,12 +24,15 @@ class Breadcrumb extends Component {
 
   // 面包屑点击事件
   onClickBreadcrumb = breadCrumbInfo => {
-    // if (!breadCrumbInfo.menuVos || isEmpty(breadCrumbInfo.menuVos)) {
-    //   history.push(breadCrumbInfo.menuHref);
-    // }
 
     if (breadCrumbInfo.isLeftMenu) {
       history.push(breadCrumbInfo.menuHref);
+    }
+    if (breadCrumbInfo.withQueryParams) {
+      history.push({
+        pathname: breadCrumbInfo.menuHref,
+        query: breadCrumbInfo.query,
+      })
     }
   }
 
@@ -49,7 +51,7 @@ class Breadcrumb extends Component {
             return (key !== breadCrumbItem.length - 1) ? (
               <AntBreadcrumb.Item key={key} onClick={() => this.onClickBreadcrumb(item)}>
                 {/* <Link to={item.menuHref}>{item.menuName}</Link> */}
-                {(!item.menuVos || isEmpty(item.menuVos)) ?
+                {(item.isLeftMenu || item.withQueryParams) ?
                   <a href="" onClick={e => e.preventDefault()}>{item.menuName}</a>
                   : item.menuName
                 }

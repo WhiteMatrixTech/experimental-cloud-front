@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { connect } from "dva";
 import { history } from 'umi';
-import { Popconfirm, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button } from 'antd';
+import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
 import { Breadcrumb } from 'components';
@@ -29,11 +29,10 @@ const initSearchObj = {
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember')
 
 function EnterpriseMember(props) {
-  const { Member, qryLoading } = props;
+  const { Member, qryLoading, dispatch } = props;
   const { memberList, memberTotal } = Member;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
-  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [queryParams, setQueryParams] = useState(initSearchObj);
 
@@ -116,42 +115,18 @@ function EnterpriseMember(props) {
       title: '操作',
       key: 'action',
       render: (text, record) => (
-        <Space size="middle">
+        <Space size="small">
           {record.approvalStatus === 0 &&
             <>
-              <Popconfirm
-                title={`确认要通过 【${record.companyName}】 吗?`}
-                onConfirm={() => approvalMember(record, 1)}
-                okText="确认"
-                cancelText="取消"
-              ><a >通过</a>
-              </Popconfirm>
-              <Popconfirm
-                title={`确认要驳回 【${record.companyName}】 吗?`}
-                onConfirm={() => approvalMember(record, 2)}
-                okText="确认"
-                cancelText="取消"
-              ><a >驳回</a>
-              </Popconfirm>
+              <a onClick={() => onClickToConfirm(record, 'agree')}>通过</a>
+              <a onClick={() => onClickToConfirm(record, 'reject')}>驳回</a>
             </>
           }
           {(record.isValid === 1 && record.approvalStatus === 1) &&
-            <Popconfirm
-              title={`确认要停用 【${record.companyName}】 吗?`}
-              onConfirm={() => invalidateMember(record, 0)}
-              okText="确认"
-              cancelText="取消"
-            ><a >停用</a>
-            </Popconfirm>
+            <a onClick={() => onClickToConfirm(record, 'invalidate')}>停用</a>
           }
           {(record.isValid === 0 && record.approvalStatus === 1) &&
-            <Popconfirm
-              title={`确认要启用 【${record.companyName}】 吗?`}
-              onConfirm={() => invalidateMember(record, 1)}
-              okText="确认"
-              cancelText="取消"
-            ><a>启用</a>
-            </Popconfirm>
+            <a onClick={() => onClickToConfirm(record, 'validate')}>启用</a>
           }
           <a onClick={() => onClickDetail(record)}>详情</a>
         </Space>
@@ -200,6 +175,40 @@ function EnterpriseMember(props) {
   // 翻页
   const onPageChange = pageInfo => {
     setPageNum(pageInfo.current)
+  }
+
+  // 点击操作按钮, 进行二次确认
+  const onClickToConfirm = (record, type) => {
+    let tipTitle = '';
+    let callback = null;
+    switch (type) {
+      case 'validate':
+        tipTitle = '启用'
+        callback = () => invalidateMember(record, 1)
+        break
+      case 'invalidate':
+        tipTitle = '停用'
+        callback = () => invalidateMember(record, 0)
+        break
+      case 'agree':
+        tipTitle = '通过'
+        callback = () => approvalMember(record, 1)
+        break
+      case 'reject':
+        tipTitle = '驳回'
+        callback = () => approvalMember(record, 2)
+        break
+      default:
+        break
+    }
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: `确认要${tipTitle}成员 【${record.companyName}】 吗?`,
+      okText: '确认',
+      cancelText: '取消',
+      onOk: callback
+    });
   }
 
   // 停用 & 启用 企业成员

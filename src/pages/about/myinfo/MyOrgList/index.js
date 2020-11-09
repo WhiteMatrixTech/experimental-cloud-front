@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { connect } from "dva";
 import { Spin } from 'antd';
 import moment from 'moment';
@@ -17,9 +16,9 @@ function MyOrgInfo({
     params: { memberDetail: companyId },
   },
   MyInfo: { myOrgInfo },
-  qryLoading = false
+  qryLoading = false,
+  dispatch
 }) {
-  const dispatch = useDispatch();
 
   const myOrgInfoList = [
     {
