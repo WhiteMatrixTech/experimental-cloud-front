@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { connect } from "dva";
 import { history } from 'umi';
 import { Table, Space } from 'antd';
@@ -11,12 +10,11 @@ import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channel')
 
 function Channel(props) {
-  const { Channel, qryLoading } = props;
+  const { Channel, qryLoading, dispatch } = props;
   const { transactionList, transactionTotal } = Channel;
   const [pageNum, setPageNum] = useState(1);
   const [txId, setTxId] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
-  const dispatch = useDispatch();
 
   const columns = [
     {
@@ -51,7 +49,7 @@ function Channel(props) {
       title: '操作',
       key: 'action',
       render: (text, record) => (
-        <Space size="middle">
+        <Space size="small">
           <a onClick={() => onClickDetail(record)}>详情</a>
         </Space>
       ),
@@ -103,7 +101,7 @@ function Channel(props) {
   return (
     <div className='page-wrapper'>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content'>
+      <div className='page-content page-content-shadow'>
         <SearchBar placeholder='交易ID' onSearch={onSearch} />
         <Table
           rowKey='_id'

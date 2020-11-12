@@ -27,7 +27,6 @@ body {
   margin-left: -3px;
   margin-right: 15px;
   vertical-align: middle;
-  /*transform: translate(50%,50%);*/
 }
 .layout-style {
   height: 100vh;
@@ -36,6 +35,12 @@ body {
 
 .page-content {
   margin-top: 20px;
+}
+
+.page-content-shadow {
+  border-radius: 4px;
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
+  -webkit-box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
 }
 
 .table-column-overflow {
@@ -63,38 +68,40 @@ body {
   color: #4c4c4c;
 }
 
-:global {
-  .ant-spin-container {
-    overflow: visible !important;
-  }
-  .ant-select-selection--single {
-    min-width: 100px;
-  }
-  // 抽屉自定义底部
-  .ucc-draw-footer{
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    border-top: 1px solid @default-border-color;
-    padding: 10px 16px;
-    text-align: right;
-    left: 0;
-    background: #fff;
-    border-radius: 0 0 4px 4px;
-  }
-  .ant-drawer-close{
-    z-index: 1001 !important;
-  }
-  .ant-drawer-header{
-    position: absolute !important;
-    width: 100%;
-    z-index: 1000;
-    height: 55px;
-  }
-  .ant-drawer-body{
-    margin-top: 55px;
-    padding: 0 16px;
-  }
+#app-layout {
+  line-height: 1.5;
+}
+
+#app-layout .ant-tabs-tab {
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 1px solid #ccc;
+  margin-right: 0;
+}
+
+#app-layout .ant-tabs-tab-active {
+  border-top: 2px solid #1890ff;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom-color: #fff;
+}
+
+.ant-tabs > .ant-tabs-nav {
+  margin: 0;
+}
+
+.ant-tabs-top > .ant-tabs-nav::before {
+  border-bottom: 1px solid #ccc;
+}
+
+span > .ant-btn-primary {
+  margin-right: 20px;
+}
+
+.default-blue-btn {
+  color: #40a9ff;
+  border-color: #40a9ff;
 }
 
 ::-webkit-scrollbar

@@ -1,5 +1,4 @@
 import React, { useEffect, Fragment } from 'react';
-import { useDispatch } from 'react-redux';
 import { connect } from "dva";
 import moment from 'moment';
 import { Row, Col, Spin } from 'antd';
@@ -17,11 +16,11 @@ function TransactionDetail({
   match: {
     params: { transactionHash },
   },
+  dispatch,
   qryLoading = false,
   Channel
 }) {
   const { transactionDetail } = Channel;
-  const dispatch = useDispatch();
 
   const detailList = [
     {
@@ -73,7 +72,7 @@ function TransactionDetail({
   return (
     <div className='page-wrapper'>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content'>
+      <div className='page-content page-content-shadow'>
         <Spin spinning={qryLoading}>
           <div className={styles['transaction-detail-wrapper']}>
             <div className={styles['transaction-detail-title']}>

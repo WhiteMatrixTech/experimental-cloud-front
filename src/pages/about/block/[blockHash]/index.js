@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { useDispatch } from 'react-redux';
 import { connect } from "dva";
 import moment from 'moment';
 import { history } from 'umi';
@@ -22,12 +21,12 @@ function BlockDetail({
   Block,
   Layout,
   qryLoading = false,
+  dispatch,
 }) {
   const { blockDetail, transactionList, transactionTotal } = Block;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
   const [detailList, setDetailList] = useState([]);
-  const dispatch = useDispatch();
 
   const columns = [
     {
@@ -146,7 +145,7 @@ function BlockDetail({
     <div className='page-wrapper'>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <Spin spinning={qryLoading}>
-        <div className='page-content'>
+        <div className='page-content page-content-shadow'>
           <div className={styles['block-detail-wrapper']}>
             <div className={styles['block-detail-title']}>
               <div className={styles['title-dot']}></div>

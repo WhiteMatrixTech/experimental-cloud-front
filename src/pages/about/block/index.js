@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { connect } from "dva";
 import { history } from 'umi';
 import { Table, Space } from 'antd';
@@ -11,13 +10,12 @@ import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block')
 
 function Block(props) {
-  const { Block, Layout, qryLoading } = props;
+  const { Block, Layout, qryLoading, dispatch } = props;
   const { blockList, blockTotal } = Block;
   const [columns, setColumns] = useState([]);
   const [pageNum, setPageNum] = useState(1);
   const [blockHash, setBlockHash] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
-  const dispatch = useDispatch();
 
   // 查询列表
   const getBlockList = () => {
@@ -87,7 +85,7 @@ function Block(props) {
         title: '操作',
         key: 'action',
         render: (text, record) => (
-          <Space size="middle">
+          <Space size="small">
             <a onClick={() => onClickDetail(record)}>详情</a>
           </Space>
         ),
@@ -112,7 +110,7 @@ function Block(props) {
   return (
     <div className='page-wrapper'>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content'>
+      <div className='page-content page-content-shadow'>
         <SearchBar placeholder='区块HASH' onSearch={onSearch} />
         <Table
           rowKey='blockHash'
