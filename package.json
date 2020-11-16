@@ -33,6 +33,7 @@
     "@mdi/js": "^4.8.95",
     "@mdi/react": "^1.2.1",
     "antd": "^4.6.6",
+    "echarts": "^4.9.0",
     "less": "^3.9.0",
     "lodash": "^4.17.15",
     "portal-plugin-locale": "^0.0.5",

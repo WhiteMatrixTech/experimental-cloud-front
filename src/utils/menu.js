@@ -93,7 +93,7 @@ const MenuList = [
       {
         id: 448,
         menuPid: 43,
-        menuHref: "/about/contract/ContractStore",
+        menuHref: "/about/contract/contractStore",
         menuIcon: null,
         menuName: "合约仓库",
         isFeature: 0,

@@ -55,4 +55,68 @@ export async function getChainCodeApprovalHistory(params) {
   return request(`/chainCodes/listHistory`, { method: 'POST', body: params });
 };
 
+/**
+ * 隐私保护策略列表
+ */
+export async function getPageListOfRoleData(params) {
+  return request(`/strategies/list`, { method: 'POST', body: params });
+};
+
+/**
+ * 新增 修改 隐私保护策略
+ */
+export async function createAndUpdateStrategy(params) {
+  return request(`/strategies/createAndUpdateStrategy`, { method: 'POST', body: params });
+};
+
+/**
+ * 启用 停用 隐私保护策略
+ */
+export async function updateStrategyStatus(params) {
+  return request(`/strategies/updateStrategyStatus`, { method: 'POST', body: params });
+};
+
+/**
+ * 获取策略 关联成员列表
+ */
+export async function getPageListOfRoleMember(params) {
+  return request(`/strategies/listStrategyMember`, { method: 'POST', body: params });
+};
+
+/**
+ * 隐私保护策略成员列表关联
+ */
+export async function updateStrategyMember(params) {
+  return request(`/strategies/updateStrategyMember`, { method: 'POST', body: params });
+};
+
+/**
+ * 隐私保护记录 列表
+ */
+export async function getPageListOfRecord(params) {
+  return request(`/api/kbaas-general/data/role/invoke/record`, { method: 'POST', body: params });
+};
+
+/**
+ * 合约仓库 - 合约列表
+ */
+export async function getRepositoryListOfChainCode(params) {
+  return request(`/chainCodeRepository/list`, { method: 'POST', body: params });
+};
+
+/**
+ * 合约仓库 - 合约详情 - 列表
+ */
+export async function getStoreSupplyListOfChainCode(params) {
+  return request(`/chainCodeRepository/listDetails`, { method: 'POST', body: params });
+};
+
+/**
+ * 合约仓库 - 合约详情 - 方法参数说明列表
+ */
+export async function getStoreSupplyExplainListOfChainCode(params) {
+  return request(`/api/kbaas-general/chain/code/repository/fields/list`, { method: 'POST', body: params });
+};
+
+
 

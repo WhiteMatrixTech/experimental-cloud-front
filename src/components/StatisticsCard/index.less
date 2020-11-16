@@ -1,0 +1,33 @@
+.statistics-area {
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: row;
+  margin-bottom: 20px;
+  .card-wrap {
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
+    height: 100px;
+    align-items: center;
+    justify-content: space-around;
+    display: flex;
+    border-radius: 4px;
+    .card-icon {
+      img {
+        width: 48px;
+        height: 100%;
+        border-style: none;
+      }
+    }
+    .card-info {
+      font-size: 16px;
+      color: #fff;
+      line-height: 1;
+      .statistics-count {
+        font-size: 32px;
+        margin-top: 12px;
+        text-shadow: 0 3px 8px rgba(0,0,0,.1);
+      }
+    }
+  }
+}
