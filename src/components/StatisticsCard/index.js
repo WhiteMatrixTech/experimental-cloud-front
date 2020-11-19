@@ -14,13 +14,11 @@ const cardStyle = [
   { backgroundColor: '#ffaf0f', backgroundImage: 'linear-gradient(135deg,#ffd00f,#ffaf0f 20%)', boxShadow: '0 6px 10px 0 rgba(255,175,15,.4)', marginRight: 0 }
 ]
 
-const imgList = [peer, msp, chaincode, block, transcation]
-
 /**
  * @详细信息卡片
  * @param {Array} statisticsList 统计信息列表 长度为5
  */
-export default function StatisticsCard({ statisticsList = [{}, {}, {}, {}, {}] }) {
+export default function StatisticsCard({ statisticsList = [{}, {}, {}, {}, {}], imgList = [peer, msp, chaincode, block, transcation] }) {
 
   return (
     <div className={styles['statistics-area']}>

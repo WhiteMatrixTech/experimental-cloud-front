@@ -7,6 +7,7 @@
     "lint": "eslint --ext .js src mock tests"
   },
   "devDependencies": {
+    "@umijs/preset-react": "^1",
     "babel-eslint": "^9.0.0",
     "eslint": "^5.4.0",
     "eslint-config-umi": "^0.1.5",
@@ -15,8 +16,7 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.11.1",
     "lint-staged": "^7.2.2",
-    "umi": "^3",
-    "@umijs/preset-react": "^1"
+    "umi": "^3"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -34,6 +34,7 @@
     "@mdi/react": "^1.2.1",
     "antd": "^4.6.6",
     "echarts": "^4.9.0",
+    "konva": "^7.1.7",
     "less": "^3.9.0",
     "lodash": "^4.17.15",
     "portal-plugin-locale": "^0.0.5",

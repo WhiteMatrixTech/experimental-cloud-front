@@ -90,6 +90,16 @@ function UnionList(props) {
     })
   }
 
+  // 点击 查看详情
+  const onViewDetail = record => {
+    history.push({
+      pathname: `/about/unionList/UnionDetail`,
+      query: {
+        cId: record._id,
+      },
+    })
+  }
+
   // 点击操作按钮, 进行二次确认
   const onClickToConfirm = (record, type) => {
     let tipTitle = '';
@@ -163,7 +173,7 @@ function UnionList(props) {
             <a onClick={() => onViewContract(record)}>查看合约</a>
             {(record.channelStatus === 1 && userType === 2) && <a onClick={() => onClickToConfirm(record, 'stop')}>停用通道</a>}
             {(record.channelStatus === 7 && userType === 2) && <a onClick={() => onClickToConfirm(record, 'enable')}>启用通道</a>}
-            <a>详情</a>
+            <a onClick={() => onViewDetail(record)}>详情</a>
           </Space>
         ),
       },

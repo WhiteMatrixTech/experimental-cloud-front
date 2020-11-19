@@ -7,6 +7,7 @@ import DetailCard from './DetailCard';
 import LeagueScatter from './LeagueScatter';
 import LeagueBar from './LeagueBar/';
 import StatisticsCard from './StatisticsCard';
+import NetworkTopo from './NetworkTopo';
 export {
   BaaSLayout,
   TopHeader,
@@ -16,5 +17,6 @@ export {
   DetailCard,
   LeagueBar,
   LeagueScatter,
-  StatisticsCard
+  StatisticsCard,
+  NetworkTopo,
 }
