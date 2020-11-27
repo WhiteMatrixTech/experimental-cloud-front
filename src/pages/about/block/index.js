@@ -39,6 +39,7 @@ function Block(props) {
     }
   }
 
+
   // 翻页
   const onPageChange = pageInfo => {
     setPageNum(pageInfo.current)
@@ -53,6 +54,7 @@ function Block(props) {
       },
     })
   }
+  
 
   // 用户身份改变时，表格展示改变
   useEffect(() => {

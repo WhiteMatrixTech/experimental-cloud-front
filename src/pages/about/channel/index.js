@@ -10,56 +10,19 @@ import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channel')
 
 function Channel(props) {
-  const { Channel, qryLoading, dispatch } = props;
+  const { Channel,Layout, qryLoading, dispatch } = props;
   const { transactionList, transactionTotal } = Channel;
+  const [columns, setColumns] = useState([]);
   const [pageNum, setPageNum] = useState(1);
   const [txId, setTxId] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
 
-  const columns = [
-    {
-      title: '交易ID',
-      dataIndex: 'txId',
-      key: 'txId',
-      ellipsis: true,
-      width: '17%'
-    },
-    {
-      title: '所属通道',
-      dataIndex: 'channelName',
-      key: 'channelName',
-    },
-    {
-      title: '交易组织',
-      dataIndex: 'txEndorseMsp',
-      key: 'txEndorseMsp',
-    },
-    {
-      title: '合约名称',
-      dataIndex: 'chainCodeName',
-      key: 'chainCodeName',
-    },
-    {
-      title: '生成时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
-    },
-    {
-      title: '操作',
-      key: 'action',
-      render: (text, record) => (
-        <Space size="small">
-          <a onClick={() => onClickDetail(record)}>详情</a>
-        </Space>
-      ),
-    },
-  ]
 
   // 查询列表
-  const getBlockList = () => {
+  const getTransactionList = () => {
     const paginator = (pageNum - 1) * pageSize;
     const params = {
+      transactionId: txId,
       companyId: 1,
       limit: pageSize,
       paginator: paginator
@@ -93,9 +56,62 @@ function Channel(props) {
     })
   }
 
+  //用户身份改变时，表格展示改变
+  useEffect(() => {
+    const { userType } = Layout;
+    const data = [
+      {
+        title: '交易ID',
+        dataIndex: 'txId',
+        key: 'txId',
+        ellipsis: true,
+        width: (userType === 2) ? '20%' : '17%'
+      },
+      {
+        title: '所属通道',
+        dataIndex: 'channelName',
+        key: 'channelName',
+      },
+      {
+        title: '交易组织',
+        dataIndex: 'txEndorseMsp',
+        key: 'txEndorseMsp',
+      },
+      {
+        title: '合约名称',
+        dataIndex: 'chainCodeName',
+        key: 'chainCodeName',
+      },
+      {
+        title: '生成时间',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      },
+      {
+        title: '操作',
+        key: 'action',
+        render: (text, record) => (
+          <Space size="small">
+            <a onClick={() => onClickDetail(record)}>详情</a>
+          </Space>
+        ),
+      },
+    ]
+    if (userType === 3){
+      const insertColumn = {
+        title: '所属联盟',
+        dataIndex: 'leagueName',
+        key: 'leagueName',
+      }
+      data.splice(1, 0, insertColumn)
+    }
+    setColumns(data)
+  }, [Layout.userType]);
+
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
-    getBlockList();
+    getTransactionList();
   }, [pageNum, txId]);
 
   return (

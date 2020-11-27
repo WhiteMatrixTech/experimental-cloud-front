@@ -34,8 +34,8 @@ export default class LeagueScatter extends Component {
 
   // 初始化Konva画布
   initKonva = () => {
-    const height = document.getElementById('league-scatter').clientHeight
-    const width = document.getElementById('league-scatter').clientWidth
+    const height =document.getElementById('league-scatter') && document.getElementById('league-scatter').clientHeight
+    const width = document.getElementById('league-scatter') && document.getElementById('league-scatter').clientWidth
     const stage = new Konva.Stage({
       container: 'league-scatter',
       width: width,

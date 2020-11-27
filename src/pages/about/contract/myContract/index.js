@@ -245,3 +245,4 @@ export default connect(({ Contract, loading }) => ({
   Contract,
   qryLoading: loading.effects['Contract/getPageListOfChainCode']
 }))(MyContract);
+

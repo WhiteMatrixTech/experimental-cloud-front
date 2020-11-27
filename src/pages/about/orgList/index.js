@@ -51,8 +51,10 @@ function OrganizationManagement(props) {
   const getOrgList = () => {
     const paginator = (pageNum - 1) * pageSize;
     const params = {
+      from: Number(moment(new Date()).format('x')),
       limit: pageSize,
-      paginator: paginator
+      offset: paginator,
+      networkVersion:"1.0.0"
     }
     dispatch({
       type: 'Organization/getOrgList',

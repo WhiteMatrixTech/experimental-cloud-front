@@ -21,7 +21,7 @@ class ContractRepository extends Component {
     super(props)
     this.state = {
       pageNum: 1,
-      pageSize: baseConfig.pageSize,
+      pageSize: 6,
 
       curRepository: null, // 当前仓库
       deployModalVisible: false, // 部署合约是否可见
