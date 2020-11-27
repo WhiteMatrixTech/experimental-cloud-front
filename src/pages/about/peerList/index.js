@@ -13,7 +13,7 @@ const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/peerList')
 function PeerList(props) {
   const { dispatch, qryLoading = false } = props
   const { userType } = props.Layout
-  const { repositoryDetailList, repositoryDetailTotal } = props.Contract
+  const { peerList, peerTotal } = props.Peer
   const [columns, setColumns] = useState([])
   const [pageNum, setPageNum] = useState(1)
   const [pageSize] = useState(baseConfig.pageSize)
@@ -23,12 +23,13 @@ function PeerList(props) {
   const getPeerList = current => {
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
+      networkVersion:'1.0.0',
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
     }
     dispatch({
-      type: 'Contract/getPeerList',
+      type: 'Peer/getPeerList',
       payload: params
     })
   }
@@ -55,18 +56,18 @@ function PeerList(props) {
     const data = [
       {
         title: '节点名称',
-        dataIndex: 'peerName',
-        key: 'peerName',
+        dataIndex: 'nodeName',
+        key: 'nodeName',
       },
       {
         title: '节点别名',
-        dataIndex: 'peerAliasName',
-        key: 'peerAliasName',
+        dataIndex: 'nodeAliasName',
+        key: 'nodeAliasName',
       },
       {
         title: '状态',
-        dataIndex: 'status',
-        key: 'status',
+        dataIndex: 'nodeStatus',
+        key: 'nodeStatus',
         render: text => text ? <Badge color={peerStatus[text].color} text={peerStatus[text].text} style={{ color: peerStatus[text].color }} /> : ''
       },
       {
@@ -94,6 +95,20 @@ function PeerList(props) {
     getPeerList();
   }, [pageNum]);
 
+  useEffect(() => {
+    const interval = setInterval(getPeerList, 30000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, []);
+
+  useEffect(() => {
+    dispatch({
+      type: 'Peer/getOrgList',
+      payload: {}
+    })
+  }, [])
+
 
   return (
     <div className='page-wrapper'>
@@ -107,18 +122,19 @@ function PeerList(props) {
           loading={qryLoading}
           columns={columns}
           className='page-content-shadow'
-          dataSource={repositoryDetailList}
+          dataSource={peerList}
           onChange={onPageChange}
-          pagination={{ pageSize, total: repositoryDetailTotal, current: pageNum, position: ['bottomCenter'] }}
+          pagination={{ pageSize, total: peerTotal, current: pageNum, position: ['bottomCenter'] }}
         />
       </div>
-      {createPeerVisible && <CreatePeer visible={createPeerVisible} onCancel={onCloseCreatePeerModal} />}
+      {createPeerVisible && <CreatePeer repositoryDetailList={peerList} getPeerList={getPeerList} visible={createPeerVisible} onCancel={onCloseCreatePeerModal} />}
     </div >
   )
 }
 
-export default connect(({ Layout, Contract, loading }) => ({
+export default connect(({ Layout, Peer, loading }) => ({
   Layout,
-  Contract,
-  qryLoading: loading.effects['Contract/getPeerList']
+  Peer,
+  qryLoading: loading.effects['Peer/getPeerList']
 }))(PeerList);
+

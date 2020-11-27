@@ -35,6 +35,7 @@ export default {
       const res = yield call(API.getBlockList, payload)
       const { status, result } = res;
       if (status === 'ok') {
+
         yield put({
           type: 'common',
           payload: {

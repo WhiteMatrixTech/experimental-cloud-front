@@ -30,7 +30,7 @@ export default {
   proxy: {
     '/api': {
  //     target: 'http://54.223.114.95:3000',
-      target: 'http://localhost:3000',
+      target: 'http://192.168.126.134:3000',
       changeOrigin: false,
       'pathRewrite': { '^/api': '' },
     },
