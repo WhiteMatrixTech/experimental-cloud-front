@@ -14,7 +14,6 @@ const StepOne = (props) => {
       console.log('Success:', values);
       afterValidate(values, operType.next)
     } catch (errorInfo) {
-      console.log('Failed:', errorInfo);
       failedToValidate(operType.default)
     }
   }

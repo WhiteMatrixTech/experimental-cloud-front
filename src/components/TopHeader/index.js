@@ -32,9 +32,12 @@ class TopHeader extends PureComponent {
       this.props.dispatch({
         type: 'User/loginout',
         payload: []
+      }).then(res => {
+        if (res) {
+          window.localStorage.clear();
+          history.replace('/user/login');
+        }
       })
-      window.localStorage.clear();
-      history.replace('/user/login');
     } else if (key === 'changeLeague') {
       history.replace('/selectLeague');
     }

@@ -7,10 +7,13 @@ export default {
 
   state: {
     userInfo: {},
+    accessToken: '',
     loginInfo: '',
     loginStatus: '',
     cacheAccount: {}, // 当前注册的账户
     userAndregister: false, // 控制注册成功后的自动跳转
+
+    networkName: 'DFI'
   },
 
   subscriptions: {
@@ -33,16 +36,24 @@ export default {
           }
         });
       } else {
-        notification.error({ message: result.error || res.message || '用户注册失败', top: 64, duration: 1 })
+        notification.error({ message: result.message || '用户注册失败', top: 64, duration: 1 })
         return false
       }
     },
     *login({ payload }, { call, put }) {
       const res = yield call(API.login, payload)
       const { statusCode, result } = res;
-      if (statusCode === 'ok') {
+      if (statusCode === 'ok' && result.access_token) {
         //TODO 登录成功后在此处设置cookie和localstorage, 然后return ture,页面会自动跳转至选择联盟界面
-
+        yield put({
+          type: 'common',
+          payload: {
+            userInfo: payload,
+            accessToken: result.access_token
+          }
+        });
+        localStorage.setItem('accessToken', result.access_token);
+        return true
       } else {
         yield put({
           type: 'common',

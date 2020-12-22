@@ -45,7 +45,7 @@ function Login(props) {
       )}
       <LoginFrom form={form} onSubmit={handleSubmit}>
         <UserName
-          name="contactEmail"
+          name="email"
           placeholder="邮箱"
           rules={[
             {
@@ -55,7 +55,7 @@ function Login(props) {
           ]}
         />
         <Password
-          name="pass"
+          name="password"
           placeholder="密码"
           rules={[
             {

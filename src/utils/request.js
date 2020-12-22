@@ -22,8 +22,8 @@ const checkStatus = (response, check_500) => {
   if ((response.status >= 200 && response.status < 300) || (response.status === 500 && check_500)) {
     return response;
   }
- // const errortext = codeMessage[response.status] || response.statusText;
- const errortext = codeMessage[response.status] || response.message;
+  // const errortext = codeMessage[response.status] || response.statusText;
+  const errortext = codeMessage[response.status] || response.message;
   const error = new Error(errortext);
   error.name = response.status;
   error.response = response;
@@ -65,9 +65,10 @@ export const request = (url, options) => {
   }
   const requestUrl = config.baseUrl + url;
   return fetch(requestUrl, newOptions)
-    .then(checkStatus)
+    .then((res) => checkStatus(res, true))
     .then((response) => {
-      if (newOptions.method === 'DELETE' || response.status === 204) {
+      // 登出时会重定向
+      if (response.redirected) {
         return response.text();
       }
       return response.json();
@@ -75,7 +76,7 @@ export const request = (url, options) => {
     .then((data) => {
       data = {
         result: data,
-        statusCode: 'ok',
+        statusCode: data.statusCode || 'ok',
       };
       return data;
     })

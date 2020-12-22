@@ -55,16 +55,14 @@ const Register = (props) => {
         contactEmail: value.contactEmail,
         loginName: value.loginName,
         pass: value.password,
-        re_pass: value.confirm
+        re_pass: value.confirm,
+        roles: ['member'],
       };
       dispatch({
         type: 'User/register',
         payload: params,
-      }).then(res => {
-        if (!res) {
-          setCurOper(operType.default);
-        }
       });
+      setCurOper(operType.default);
     }
   }
 

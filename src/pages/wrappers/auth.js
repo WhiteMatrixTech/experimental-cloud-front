@@ -1,7 +1,7 @@
 import { Redirect } from 'umi';
 export default (props) => {
-  const isLogin = localStorage.getItem('isLogin');
-  if (isLogin) {
+  const accessToken = localStorage.getItem('accessToken');
+  if (accessToken) {
     return <>{props.children}</>;
   } else {
     return <Redirect to="/user/login" />;

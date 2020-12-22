@@ -40,7 +40,6 @@ const StepTwo = (props) => {
       const stepValue = { ...values };
       afterValidate(stepValue, operType.submit)
     } catch (errorInfo) {
-      console.log('Failed:', errorInfo);
       failedToValidate(operType.default);
     }
   }
@@ -245,7 +244,7 @@ const StepTwo = (props) => {
           placeholder='确认密码'
         />
       </FormItem>
-    </Form>
+    </Form >
   );
 };
 
