@@ -105,7 +105,7 @@ function LeagueDashboard(props) {
         key: 'action',
         render: (text, record) => (
           <Space size="small">
-            <a onClick={() => onClickDetail(record)}>详情</a>
+            <a onClick={() => onClickBlockDetail(record)}>详情</a>
           </Space>
         ),
       },

@@ -85,7 +85,8 @@ class MyContract extends Component {
   }
 
   componentDidMount() {
-    this.getPageListOfChainCode()
+    this.getPageListOfChainCode();
+    this.getPageTotalDocsOfChainCode();
   }
 
   // 获取合约列表
@@ -95,7 +96,8 @@ class MyContract extends Component {
     const params = {
       offset,
       limit: pageSize,
-      from: Number(moment(new Date()).format('x'))
+      from: Number(moment(new Date()).format('x')),
+      ascend: false,
     }
     // 判断输入搜索合约名称
     if (seachChainCodeName || chainCodeName) {
@@ -112,6 +114,13 @@ class MyContract extends Component {
     this.props.dispatch({
       type: 'Contract/getPageListOfChainCode',
       payload: params
+    })
+  }
+  //获取合约列表的totalDocs
+  getPageTotalDocsOfChainCode = () => {
+    this.props.dispatch({
+      type: 'Contract/getPageTotalDocsOfChainCode',
+      payload: '',
     })
   }
 

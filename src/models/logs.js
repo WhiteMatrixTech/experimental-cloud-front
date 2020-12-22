@@ -18,8 +18,8 @@ export default {
   effects: {
     *getLogsList({ payload }, { call, put }) {
       const res = yield call(API.getLogsList, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {

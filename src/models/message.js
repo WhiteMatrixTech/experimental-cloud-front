@@ -22,8 +22,8 @@ export default {
   effects: {
     *getMessageList({ payload }, { call, put }) {
       const res = yield call(API.getMessageList, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
@@ -35,8 +35,8 @@ export default {
     },
     *getMesDetail({ payload }, { call, put }) {
       const res = yield call(API.getMesDetail, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
@@ -47,8 +47,8 @@ export default {
     },
     *getAllUnreadMessage({ payload }, { call, put }) {
       const res = yield call(API.getAllUnreadMessage, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
@@ -59,8 +59,8 @@ export default {
     },
     *getUnreadMesGroup({ payload }, { call, put }) {
       const res = yield call(API.getUnreadMesGroup, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
@@ -71,8 +71,8 @@ export default {
     },
     *bacthReadMes({ payload }, { call, put }) {
       const res = yield call(API.bacthReadMes, payload)
-      const { status, result } = res;
-      if (status === 'ok' && result === 1) {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok' && result === 1) {
         notification.success({ message: '消息标记已读成功', top: 64, duration: 1 })
         return true
       } else {
@@ -81,8 +81,8 @@ export default {
     },
     *batchDeleteMes({ payload }, { call, put }) {
       const res = yield call(API.batchDeleteMes, payload)
-      const { status, result } = res;
-      if (status === 'ok' && result === 1) {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok' && result === 1) {
         notification.success({ message: '批量删除消息成功', top: 64, duration: 1 })
         return true
       } else {
@@ -91,8 +91,8 @@ export default {
     },
     *deleteMes({ payload }, { call, put }) {
       const res = yield call(API.deleteMes, payload)
-      const { status, result } = res;
-      if (status === 'ok' && result === 1) {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok' && result === 1) {
         notification.success({ message: '删除消息成功', top: 64, duration: 1 })
         return true
       } else {

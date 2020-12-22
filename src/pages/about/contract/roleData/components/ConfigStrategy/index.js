@@ -1,43 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { Checkbox, Form, Button, Modal, Row } from 'antd';
 import style from './index.less';
 
-const { Item } = Form;
-
-const formItemLayout = {
-  labelCol: {
-    sm: { span: 6 },
-  },
-  wrapperCol: {
-    sm: { span: 18 },
-  },
-};
-
 function ConfigStrategy(props) {
-  const { visible, editParams = {}, onCancel, getPageListOfRoleData, dispatch, configLoading = false } = props
-  const { strategyMemberList, curStrategyMember } = props.Contract
-
-  const [form] = Form.useForm()
+  const {
+    visible,
+    editParams = {},
+    onCancel,
+    getPageListOfRoleData,
+    dispatch,
+    configLoading = false,
+  } = props;
+  const [initValue, setInitValue] = useState([]);
+  const [memberList, setMemberList] = useState([]);
+  const { strategyMemberList, leagueName } = props.Contract;
 
   const handleSubmit = () => {
-    form.validateFields().then(values => {
-      form.resetFields()
-      form.setFieldsValue(values)
-
-      const params = values
-      params.id = editParams._id
-      dispatch({
-        type: 'Contract/updateStrategyMember',
-        payload: params
-      }).then(res => {
-        if (res) {
-          onCancel()
-          getPageListOfRoleData()
-        }
-      })
-    }).catch(info => {
-      console.log('校验失败:', info);
+    const params = {
+      strategyName: editParams.strategyName,
+      strategyMember: initValue,
+    };
+    dispatch({
+      type: 'Contract/updateStrategyMember',
+      payload: params,
+    }).then((res) => {
+      if (res) {
+        onCancel();
+        getPageListOfRoleData();
+      }
     });
   };
 
@@ -48,48 +39,63 @@ function ConfigStrategy(props) {
     title: '配置策略',
     onCancel: () => onCancel(),
     footer: [
-      <Button key='cancel' onClick={onCancel}>
+      <Button key="cancel" onClick={onCancel}>
         取消
       </Button>,
-      <Button key='submit' onClick={handleSubmit} type="primary" loading={configLoading}>
+      <Button key="submit" onClick={handleSubmit} type="primary" loading={configLoading}>
         提交
-      </Button>
-    ]
+      </Button>,
+    ],
+  };
+
+  const onChange = (checkedValues) => {
+    setInitValue(checkedValues);
+  };
+
+  const getValue = () => {
+    const value = [];
+    strategyMemberList.map((item) => {
+      value.push(item.memberName);
+    });
+    setMemberList(value);
+  };
+
+  const getInitValue = () => {
+    const value = [];
+    strategyMemberList.map((item) => {
+      if (item.checked) {
+        value.push(item.memberName);
+      }
+    });
+    setInitValue(value);
   };
 
   useEffect(() => {
     dispatch({
       type: 'Contract/getPageListOfRoleMember',
-      payload: { id: editParams._id }
-    })
+      payload: { strategyName: editParams.strategyName },
+    });
   }, []);
+  useEffect(() => {
+    getValue();
+    getInitValue();
+  }, [strategyMemberList]);
+
+  
 
   return (
     <Modal {...drawerProps}>
       <div className={style.configWrapper}>
-        <div className={style.leagueName}>
-          数研院
-      </div>
+        <div className={style.leagueName}>数研院</div>
         <div className={style.compannyList}>
-          <Form {...formItemLayout} form={form}>
-            <Item name='strategyMember' initialValue={curStrategyMember}>
-              <Checkbox.Group>
-                {strategyMemberList.map(item =>
-                  <Row key={item._id}>
-                    <Checkbox value={item.companyName}>
-                      {item.companyName}
-                    </Checkbox>
-                  </Row>)}
-              </Checkbox.Group>
-            </Item>
-          </Form>
+          <Checkbox.Group options={memberList} value={initValue} onChange={onChange} />
         </div>
       </div>
     </Modal>
   );
-};
+}
 
 export default connect(({ Contract, loading }) => ({
   Contract,
-  configLoading: loading.effects['Contract/updateStrategyMember']
+  configLoading: loading.effects['Contract/updateStrategyMember'],
 }))(ConfigStrategy);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { history } from 'umi';
 import { Table, Space } from 'antd';
 import moment from 'moment';
@@ -7,54 +7,75 @@ import { Breadcrumb, SearchBar } from 'components';
 import baseConfig from 'utils/config';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block')
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 
 function Block(props) {
-  const { Block, Layout, qryLoading, dispatch } = props;
+  const { Block, Layout, qryLoading, dispatch, User } = props;
+  const { networkName } = User;
   const { blockList, blockTotal } = Block;
   const [columns, setColumns] = useState([]);
   const [pageNum, setPageNum] = useState(1);
   const [blockHash, setBlockHash] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
 
-  // 查询列表
-  const getBlockList = () => {
-    const paginator = (pageNum - 1) * pageSize;
+  const getBlockTotalDocs = () => {
     const params = {
-      blockHash,
+      networkName: networkName ,
+    };
+    dispatch({
+      type: 'Block/getBlockTotalDocs',
+      payload: params,
+    });
+  };
+  //查询列表current
+  const getBlockList = () => {
+    const offset = (pageNum - 1) * pageSize;
+    const params = {
+      networkName: networkName ,
       limit: pageSize,
-      paginator: paginator
-    }
+      offset: offset,
+      ascend: false,
+    };
     dispatch({
       type: 'Block/getBlockList',
-      payload: params
-    })
-  }
+      payload: params,
+    });
+  };
 
   // 搜索
   const onSearch = (value, event) => {
     if (event.type && (event.type === 'click' || event.type === 'keydown')) {
       setPageNum(1);
-      setBlockHash(value || '')
+      setBlockHash(value || '');
     }
-  }
+  };
 
+  //搜索列表
+  const onSearchList = () => {
+    const params = {
+      networkName: networkName ,
+      blockHash,
+    };
+    dispatch({
+      type: 'Block/onSearch',
+      payload: params,
+    });
+  };
 
   // 翻页
-  const onPageChange = pageInfo => {
-    setPageNum(pageInfo.current)
-  }
+  const onPageChange = (pageInfo) => {
+    setPageNum(pageInfo.current);
+  };
 
   // 点击查看详情
-  const onClickDetail = record => {
+  const onClickDetail = (record) => {
     history.push({
       pathname: `/about/block/${record.blockHash}`,
       query: {
         blockHash: record.blockHash,
       },
-    })
-  }
-  
+    });
+  };
 
   // 用户身份改变时，表格展示改变
   useEffect(() => {
@@ -65,7 +86,7 @@ function Block(props) {
         dataIndex: 'blockHash',
         key: 'blockHash',
         ellipsis: true,
-        width: (userType === 2) ? '20%' : '17%'
+        width: userType === 2 ? '20%' : '17%',
       },
       {
         title: '所属通道',
@@ -81,7 +102,7 @@ function Block(props) {
         title: '生成时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
       },
       {
         title: '操作',
@@ -98,24 +119,30 @@ function Block(props) {
         title: '所属联盟',
         dataIndex: 'leagueName',
         key: 'leagueName',
-      }
-      data.splice(1, 0, insertColumn)
+      };
+      data.splice(1, 0, insertColumn);
     }
-    setColumns(data)
+    setColumns(data);
   }, [Layout.userType]);
 
-  // 页码改变、搜索值改变时，重新查询列表
+  // 页码改变时,或blockHash=''时重新查询列表
+  // 搜索值改变时
   useEffect(() => {
-    getBlockList();
-  }, [pageNum, blockHash]);
+    if (blockHash) {
+      onSearchList();
+    } else {
+      getBlockList();
+      getBlockTotalDocs();
+    }
+  }, [blockHash, pageNum]);
 
   return (
-    <div className='page-wrapper'>
+    <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content page-content-shadow'>
-        <SearchBar placeholder='区块HASH' onSearch={onSearch} />
+      <div className="page-content page-content-shadow">
+        <SearchBar placeholder="区块HASH" onSearch={onSearch} />
         <Table
-          rowKey='blockHash'
+          rowKey="blockHash"
           columns={columns}
           loading={qryLoading}
           dataSource={blockList}
@@ -124,10 +151,11 @@ function Block(props) {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default connect(({ Layout, Block, loading }) => ({
+export default connect(({ User, Layout, Block, loading }) => ({
+  User,
   Layout,
   Block,
   qryLoading: loading.effects['Block/getBlockList'],

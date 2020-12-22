@@ -24,7 +24,6 @@ function CreateUnion({ visible, editParams, onCancel, dispatch }) {
     form.validateFields().then(values => {
       form.resetFields();
       form.setFieldsValue(values)
-      console.log('values', values)
     }).catch(info => {
       console.log('校验失败:', info);
     });

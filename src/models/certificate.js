@@ -18,8 +18,8 @@ export default {
   effects: {
     *getCertificateList({ payload }, { call, put }) {
       const res = yield call(API.getCertificateList, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {

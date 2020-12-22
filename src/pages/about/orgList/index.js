@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { Table } from 'antd';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/orgList')
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/orgList');
 
 function OrganizationManagement(props) {
   const { Organization, qryLoading, dispatch } = props;
@@ -44,9 +44,16 @@ function OrganizationManagement(props) {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
-      render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
     },
   ];
+
+  const getOrgTotalDocs = () => {
+    dispatch({
+      type: 'Organization/getOrgTotalDocs',
+      payload: '',
+    });
+  };
   // 查询列表
   const getOrgList = () => {
     const paginator = (pageNum - 1) * pageSize;
@@ -54,30 +61,30 @@ function OrganizationManagement(props) {
       from: Number(moment(new Date()).format('x')),
       limit: pageSize,
       offset: paginator,
-      networkVersion:"1.0.0"
-    }
+      networkVersion: '1.0.0',
+    };
     dispatch({
       type: 'Organization/getOrgList',
-      payload: params
-    })
-  }
-
+      payload: params,
+    });
+  };
   // 翻页
-  const onPageChange = pageInfo => {
-    setPageNum(pageInfo.current)
-  }
+  const onPageChange = (pageInfo) => {
+    setPageNum(pageInfo.current);
+  };
 
   // 页码改变改变时，重新查询列表
   useEffect(() => {
     getOrgList();
+    getOrgTotalDocs();
   }, [pageNum]);
 
   return (
-    <div className='page-wrapper'>
+    <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content page-content-shadow'>
+      <div className="page-content page-content-shadow">
         <Table
-          rowKey='peerOrgId'
+          rowKey="peerOrgId"
           columns={columns}
           loading={qryLoading}
           dataSource={orgList}
@@ -86,7 +93,7 @@ function OrganizationManagement(props) {
         />
       </div>
     </div>
-  )
+  );
 }
 
 export default connect(({ Layout, Organization, loading }) => ({

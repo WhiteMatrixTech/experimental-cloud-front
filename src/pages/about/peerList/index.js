@@ -19,6 +19,16 @@ function PeerList(props) {
   const [pageSize] = useState(baseConfig.pageSize)
   const [createPeerVisible, setCreatePeerVisible] = useState(false)
 
+  //获取组织列表
+  const getOrgList = () => {
+    const params = {
+      networkVersion:'1.0.0'
+    }
+    dispatch({
+      type: 'Peer/getOrgList',
+      payload: params
+    })
+  }
   // 获取节点列表
   const getPeerList = current => {
     const offset = ((current || pageNum) - 1) * pageSize;
@@ -33,6 +43,13 @@ function PeerList(props) {
       payload: params
     })
   }
+
+  const getPeerTotalDocs = () => {
+    dispatch({
+      type: 'Peer/getPeerTotalDocs',
+      payload: '',
+    });
+  };
 
   // 翻页
   const onPageChange = pageInfo => {
@@ -93,6 +110,7 @@ function PeerList(props) {
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getPeerList();
+    getPeerTotalDocs();
   }, [pageNum]);
 
   useEffect(() => {
@@ -103,10 +121,7 @@ function PeerList(props) {
   }, []);
 
   useEffect(() => {
-    dispatch({
-      type: 'Peer/getOrgList',
-      payload: {}
-    })
+    getOrgList
   }, [])
 
 
@@ -127,7 +142,7 @@ function PeerList(props) {
           pagination={{ pageSize, total: peerTotal, current: pageNum, position: ['bottomCenter'] }}
         />
       </div>
-      {createPeerVisible && <CreatePeer repositoryDetailList={peerList} getPeerList={getPeerList} visible={createPeerVisible} onCancel={onCloseCreatePeerModal} />}
+      {createPeerVisible && <CreatePeer  getPeerList={getPeerList} visible={createPeerVisible} onCancel={onCloseCreatePeerModal} />}
     </div >
   )
 }

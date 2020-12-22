@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { history } from 'umi';
 import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -16,20 +16,21 @@ const Option = Select.Option;
 const { RangePicker } = DatePicker;
 
 const formItemLayout = {
-  labelCol: { span: 8, },
-  wrapperCol: { span: 16 }
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
 };
 const initSearchObj = {
   companyName: '',
   createTimeStart: 0,
   createTimeEnd: 0,
-  approvalStatus: -1
-}
+  approvalStatus: -1,
+};
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember')
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember');
 
 function EnterpriseMember(props) {
-  const { Member, qryLoading, dispatch } = props;
+  const { Member, qryLoading, dispatch, User } = props;
+  const { networkName } = User;
   const { memberList, memberTotal } = Member;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
@@ -42,140 +43,158 @@ function EnterpriseMember(props) {
       dataIndex: 'companyName',
       key: 'companyName',
       ellipsis: true,
-      width: '11%'
+      width: '11%',
     },
     {
       title: '统一社会信用代码',
       dataIndex: 'companyCertBusinessNumber',
       key: 'companyCertBusinessNumber',
       ellipsis: true,
-      width: '11%'
+      width: '11%',
     },
     {
       title: '法人代表姓名',
       dataIndex: 'legalPersonName',
       key: 'legalPersonName',
       ellipsis: true,
-      width: '8%'
+      width: '8%',
     },
     {
       title: '联系人姓名',
       dataIndex: 'contactName',
       key: 'contactName',
       ellipsis: true,
-      width: '8%'
+      width: '8%',
     },
     {
       title: '联系人手机号',
       dataIndex: 'contactCell',
       key: 'contactCell',
       ellipsis: true,
-      width: '8%'
+      width: '8%',
     },
     {
       title: '联系人邮箱',
       dataIndex: 'contactEmail',
       key: 'contactEmail',
       ellipsis: true,
-      width: '8%'
+      width: '8%',
     },
     {
       title: '申请时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: text => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '',
+      render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
       ellipsis: true,
-      width: '8%'
+      width: '8%',
     },
     {
       title: '审批时间',
       dataIndex: 'approveTime',
       key: 'approveTime',
-      render: text => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '',
+      render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
       ellipsis: true,
-      width: '8%'
+      width: '8%',
     },
     {
       title: '审批状态',
       dataIndex: 'approvalStatus',
       key: 'approvalStatus',
-      render: text => statusList[text],
+      render: (text) => statusList[text],
       ellipsis: true,
-      width: '8%'
+      width: '8%',
     },
     {
       title: '可用状态',
       dataIndex: 'isValid',
       key: 'isValid',
-      render: text => validStatus[text],
+      render: (text) => validStatus[text],
       ellipsis: true,
-      width: '8%'
+      width: '8%',
     },
     {
       title: '操作',
       key: 'action',
       render: (text, record) => (
         <Space size="small">
-          {record.approvalStatus === 0 &&
+          {record.approvalStatus === 0 && (
             <>
               <a onClick={() => onClickToConfirm(record, 'agree')}>通过</a>
               <a onClick={() => onClickToConfirm(record, 'reject')}>驳回</a>
             </>
-          }
-          {(record.isValid === 1 && record.approvalStatus === 1) &&
+          )}
+          {record.isValid === 1 && record.approvalStatus === 1 && (
             <a onClick={() => onClickToConfirm(record, 'invalidate')}>停用</a>
-          }
-          {(record.isValid === 0 && record.approvalStatus === 1) &&
+          )}
+          {record.isValid === 0 && record.approvalStatus === 1 && (
             <a onClick={() => onClickToConfirm(record, 'validate')}>启用</a>
-          }
+          )}
           <a onClick={() => onClickDetail(record)}>详情</a>
         </Space>
       ),
     },
-  ]
+  ];
+
+  const getMemberTotalDocs = () => {
+    const params = {
+      ...queryParams,
+      networkName,
+      from: Number(moment(new Date()).format('x')),
+    };
+    dispatch({
+      type: 'Member/getMemberTotalDocs',
+      payload: params,
+    });
+  };
 
   // 查询列表
   const getMemberList = () => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
       ...queryParams,
+      networkName,
       offset,
-      isLeague: -1,
+      //isLeague: -1,
       limit: pageSize,
-      from: Number(moment(new Date()).format('x'))
-    }
+      from: Number(moment(new Date()).format('x')),
+    };
     dispatch({
       type: 'Member/getPageListOfCompanyMember',
-      payload: params
-    })
-  }
+      payload: params,
+    });
+  };
 
   // 搜索
   const onSearch = useCallback(() => {
-    form.validateFields().then(values => {
-      const params = {
-        companyName: values.companyName,
-        createTimeStart: isEmpty(values.createTime) ? 0 : Number(values.createTime[0].format('x')),
-        createTimeEnd: isEmpty(values.createTime) ? 0 : Number(values.createTime[1].format('x')),
-        approvalStatus: values.approvalStatus === null ? -1 : values.approvalStatus
-      }
-      setQueryParams(params)
-    }).catch(info => {
-      console.log('校验失败:', info);
-    })
-  }, [])
+    form
+      .validateFields()
+      .then((values) => {
+        const params = {
+          companyName: values.companyName,
+          createTimeStart: isEmpty(values.createTime)
+            ? 0
+            : Number(values.createTime[0].format('x')),
+          createTimeEnd: isEmpty(values.createTime) ? 0 : Number(values.createTime[1].format('x')),
+          approvalStatus: values.approvalStatus === null ? -1 : values.approvalStatus,
+        };
+        setQueryParams(params);
+      })
+      .catch((info) => {
+        console.log('校验失败:', info);
+      });
+  }, []);
 
   // 重置
   const resetForm = () => {
-    form.resetFields()
-    setPageNum(1)
-    setQueryParams(initSearchObj)
-  }
+    form.resetFields();
+    setPageNum(1);
+    setQueryParams(initSearchObj);
+  };
 
   // 翻页
-  const onPageChange = pageInfo => {
-    setPageNum(pageInfo.current)
-  }
+  const onPageChange = (pageInfo) => {
+    setPageNum(pageInfo.current);
+  };
 
   // 点击操作按钮, 进行二次确认
   const onClickToConfirm = (record, type) => {
@@ -183,23 +202,23 @@ function EnterpriseMember(props) {
     let callback = null;
     switch (type) {
       case 'validate':
-        tipTitle = '启用'
-        callback = () => invalidateMember(record, 1)
-        break
+        tipTitle = '启用';
+        callback = () => invalidateMember(record, 1);
+        break;
       case 'invalidate':
-        tipTitle = '停用'
-        callback = () => invalidateMember(record, 0)
-        break
+        tipTitle = '停用';
+        callback = () => invalidateMember(record, 0);
+        break;
       case 'agree':
-        tipTitle = '通过'
-        callback = () => approvalMember(record, 1)
-        break
+        tipTitle = '通过';
+        callback = () => approvalMember(record, 1);
+        break;
       case 'reject':
-        tipTitle = '驳回'
-        callback = () => approvalMember(record, 2)
-        break
+        tipTitle = '驳回';
+        callback = () => approvalMember(record, 2);
+        break;
       default:
-        break
+        break;
     }
     Modal.confirm({
       title: 'Confirm',
@@ -207,111 +226,129 @@ function EnterpriseMember(props) {
       content: `确认要${tipTitle}成员 【${record.companyName}】 吗?`,
       okText: '确认',
       cancelText: '取消',
-      onOk: callback
+      onOk: callback,
     });
-  }
+  };
 
   // 停用 & 启用 企业成员
   const invalidateMember = (record, isValid) => {
+    const params ={
+      networkName,
+      isValid,
+      did: record.did,
+    }
     dispatch({
       type: 'Member/setStatusOfLeagueConpany',
-      payload: {
-        isValid,
-        id: record._id
-      }
-    }).then(res => {
+      payload: params,
+    }).then((res) => {
       if (res) {
-        getMemberList()
+        getMemberList();
       }
-    })
-  }
+    });
+  };
 
   // 通过 & 驳回 企业成员
   const approvalMember = (record, approvalStatus) => {
+    const params ={
+      networkName,
+      approvalStatus,
+      did: record.did,
+    }
     dispatch({
       type: 'Member/setCompanyApprove',
-      payload: {
-        approvalStatus,
-        id: record._id
-      }
-    }).then(res => {
+      payload: params,
+    }).then((res) => {
       if (res) {
-        getMemberList()
+        getMemberList();
       }
-    })
-  }
+    });
+  };
 
   // 点击查看详情
-  const onClickDetail = record => {
+  const onClickDetail = (record) => {
     history.push({
-      pathname: `/about/enterpriseMember/${record._id}`,
+      pathname: `/about/enterpriseMember/${record.did}`,
       query: {
-        id: record._id,
+        did: record.did,
       },
-    })
-  }
-
-  // 页码改变、搜索值改变时，重新查询列表
+    });
+  };
   useEffect(() => {
     getMemberList();
-  }, [pageNum, queryParams]);
+    getMemberTotalDocs();
+  }, [queryParams, pageNum]);
+  // 页码改变、搜索值改变时，重新查询列表
+  useEffect(() => {
+    console.log(memberTotal);
+  }, []);
 
   return (
-    <div className='page-wrapper'>
+    <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content page-content-shadow'>
+      <div className="page-content page-content-shadow">
         <div className={styles['search-wrapper']}>
           <Form {...formItemLayout} colon={false} form={form}>
             <Row gutter={24}>
               <Col span={8}>
-                <Item label='企业名称' name='companyName' initialValue=''>
-
-                  <Input placeholder='请输入企业名称' />
+                <Item label="企业名称" name="companyName" initialValue="">
+                  <Input placeholder="请输入企业名称" />
                 </Item>
               </Col>
               <Col span={8}>
-                <Item label='申请时间' name='createTime' initialValue={[]}>
+                <Item label="申请时间" name="createTime" initialValue={[]}>
                   <RangePicker
-                    getCalendarContainer={triggerNode => triggerNode.parentNode}
+                    getCalendarContainer={(triggerNode) => triggerNode.parentNode}
                     style={{ width: '100%' }}
                     // format="YYYY-MM-DD HH:mm:ss"
                     showTime
                   />
                 </Item>
               </Col>
-              <Col span={8} >
-                <Item label='审批状态' name='approvalStatus' initialValue={null}>
+              <Col span={8}>
+                <Item label="审批状态" name="approvalStatus" initialValue={null}>
                   <Select
-                    getPopupContainer={triggerNode => triggerNode.parentNode}
-                    placeholder='请选择审批状态'
+                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                    placeholder="请选择审批状态"
                   >
-                    {Object.keys(statusList).map(item =>
-                      <Option key={item} value={item}>{statusList[item]}</Option>
-                    )}
+                    {Object.keys(statusList).map((item) => (
+                      <Option key={item} value={item}>
+                        {statusList[item]}
+                      </Option>
+                    ))}
                   </Select>
                 </Item>
               </Col>
               <Col span={8} offset={16} style={{ textAlign: 'right' }}>
-                <Button type="primary" onClick={onSearch} >查询</Button>
-                <Button style={{ marginLeft: '10px' }} onClick={resetForm}>重置</Button>
+                <Button type="primary" onClick={onSearch}>
+                  查询
+                </Button>
+                <Button style={{ marginLeft: '10px' }} onClick={resetForm}>
+                  重置
+                </Button>
               </Col>
             </Row>
           </Form>
         </div>
         <Table
-          rowKey='_id'
+          rowKey="_id"
           columns={columns}
           loading={qryLoading}
           dataSource={memberList}
           onChange={onPageChange}
-          pagination={{ pageSize, total: memberTotal, current: pageNum, position: ['bottomCenter'] }}
+          pagination={{
+            pageSize,
+            total: memberTotal,
+            current: pageNum,
+            position: ['bottomCenter'],
+          }}
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default connect(({ Layout, Member, loading }) => ({
+export default connect(({ User, Layout, Member, loading }) => ({
+  User,
   Layout,
   Member,
   qryLoading: loading.effects['Member/getPageListOfCompanyMember'],

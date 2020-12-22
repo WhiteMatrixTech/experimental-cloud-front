@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import moment from 'moment';
 import { history } from 'umi';
 import { Table, Space, Row, Col, Spin } from 'antd';
@@ -8,21 +8,23 @@ import baseConfig from 'utils/config';
 import styles from './index.less';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block')
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 breadCrumbItem.push({
-  menuName: "区块详情",
+  menuName: '区块详情',
   menuHref: `/`,
-})
+});
 
 function BlockDetail({
   match: {
     params: { blockHash },
   },
+  User,
   Block,
   Layout,
   qryLoading = false,
   dispatch,
 }) {
+  const { networkName } = User;
   const { blockDetail, transactionList, transactionTotal } = Block;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
@@ -34,7 +36,7 @@ function BlockDetail({
       dataIndex: 'txId',
       key: 'txId',
       ellipsis: true,
-      width: '20%'
+      width: '20%',
     },
     {
       title: '交易组织',
@@ -50,7 +52,7 @@ function BlockDetail({
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: '操作',
@@ -67,43 +69,52 @@ function BlockDetail({
   const getTransactionList = () => {
     const params = {
       blockHash,
-      pageNum,
-      pageSize
-    }
+      networkName,
+      from: Number(moment(new Date()).format('x')),
+      offset: (pageNum - 1) * pageSize,
+      limit: pageSize,
+    };
     dispatch({
       type: 'Block/getTransactionList',
-      payload: params
-    })
-  }
+      payload: params,
+    });
+  };
 
   // 翻页
-  const onPageChange = pageInfo => {
-    setPageNum(pageInfo.current)
-  }
+  const onPageChange = (pageInfo) => {
+    setPageNum(pageInfo.current);
+  };
 
   // 点击查看交易详情
-  const onClickDetail = record => {
+  const onClickDetail = (record) => {
     dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/channel' }
-    })
+      payload: { selectedMenu: '/about/channel' },
+    });
     history.push({
       pathname: `/about/channel/${record.txId}`,
       query: {
         channelId: record.txId,
       },
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     dispatch({
       type: 'Block/getBlockDetail',
-      payload: { blockHash }
-    })
+      payload: { blockHash, networkName },
+    });
   }, []);
 
   useEffect(() => {
-    getTransactionList()
+    dispatch({
+      type: 'Block/getTxCountByBlockHash',
+      payload: { blockHash, networkName },
+    });
+  }, []);
+
+  useEffect(() => {
+    getTransactionList();
   }, [pageNum]);
 
   // 用户身份改变时，展示内容改变
@@ -112,40 +123,40 @@ function BlockDetail({
     const data = [
       {
         label: '当前哈希值',
-        value: blockDetail.blockHash
+        value: blockDetail.blockHash,
       },
       {
         label: '前序哈希值',
-        value: blockDetail.previousHash
+        value: blockDetail.previousHash,
       },
       {
         label: '交易笔数',
-        value: blockDetail.txCount
+        value: blockDetail.txCount,
       },
       {
         label: '生成时间',
-        value: moment(blockDetail.createdAt).format('YYYY-MM-DD HH:mm:ss')
+        value: moment(blockDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
       },
       {
         label: '所属通道',
-        value: blockDetail.channelName
+        value: blockDetail.channelName,
       },
-    ]
+    ];
     if (userType === 3) {
       const insertItem = {
         label: '所属联盟',
-        value: blockDetail.leagueName
-      }
-      data.splice(4, 0, insertItem)
+        value: blockDetail.leagueName,
+      };
+      data.splice(4, 0, insertItem);
     }
-    setDetailList(data)
+    setDetailList(data);
   }, [blockDetail, Layout.userType]);
 
   return (
-    <div className='page-wrapper'>
+    <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <Spin spinning={qryLoading}>
-        <div className='page-content page-content-shadow'>
+        <div className="page-content page-content-shadow">
           <div className={styles['block-detail-wrapper']}>
             <div className={styles['block-detail-title']}>
               <div className={styles['title-dot']}></div>
@@ -153,8 +164,13 @@ function BlockDetail({
             </div>
             <div className={styles['block-detail-content']}>
               <div className={styles.blockInfoWrap}>
-                <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
-                  {detailList.map(item =>
+                <Row
+                  gutter={[
+                    { xs: 8, sm: 16, md: 24, lg: 32 },
+                    { xs: 8, sm: 16, md: 24, lg: 32 },
+                  ]}
+                >
+                  {detailList.map((item) => (
                     <Fragment key={item.label}>
                       <Col className={styles['gutter-row-label']} span={3}>
                         {item.label}
@@ -163,27 +179,34 @@ function BlockDetail({
                         {item.value}
                       </Col>
                     </Fragment>
-                  )}
+                  ))}
                 </Row>
               </div>
             </div>
           </div>
           <Table
-            rowKey='txId'
+            rowKey="txId"
             columns={columns}
             dataSource={transactionList}
             onChange={onPageChange}
-            pagination={{ pageSize, total: transactionTotal, current: pageNum, position: ['bottomCenter'] }}
+            pagination={{
+              pageSize,
+              total: transactionTotal,
+              current: pageNum,
+              position: ['bottomCenter'],
+            }}
           />
         </div>
       </Spin>
-    </div >
-  )
+    </div>
+  );
 }
 
-export default connect(({ Layout, Block, loading }) => ({
+export default connect(({ User, Layout, Block, loading }) => ({
+  User,
   Layout,
   Block,
-  qryLoading: loading.effects['Block/getBlockDetail'] || loading.effects['Block/getTransactionList'],
+  qryLoading:
+    loading.effects['Block/getBlockDetail'] || loading.effects['Block/getTransactionList'],
   qryListLoading: loading.effects['Block/getTransactionList'],
 }))(BlockDetail);

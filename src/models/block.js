@@ -1,4 +1,6 @@
 import * as API from 'services/block.js';
+import { notification } from 'antd';
+
 // import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
 export default {
@@ -9,11 +11,10 @@ export default {
 
     blockList: [], // 区块链列表
     blockTotal: 0,
-
     blockDetail: {}, // 当前区块详情
 
     transactionList: [], // 当前区块下的交易列表
-    transactionTotal: 0
+    transactionTotal: 0,
   },
 
   subscriptions: {
@@ -31,42 +32,89 @@ export default {
   },
 
   effects: {
-    *getBlockList({ payload }, { call, put }) {
-      const res = yield call(API.getBlockList, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
-
+    *getBlockTotalDocs({ payload }, { call, put }) {
+      const res = yield call(API.getBlockTotalDocs, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            blockList: result.list,
-            blockTotal: result.totalDocs
-          }
+            blockTotal: result,
+          },
         });
       }
     },
-    *getBlockDetail({ payload }, { call, put }) {
-      const res = yield call(API.getBlockDetail, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+    *getBlockList({ payload }, { call, put }) {
+      const res = yield call(API.getBlockList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            blockDetail: result
-          }
+            blockList: result.items,
+          },
+        });
+      }
+    },
+    *onSearch({ payload }, { call, put }) {
+      const res = yield call(API.getBlockDetail, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            blockTotal: 1,
+            blockList: [result],
+            blockDetail: result,
+          },
+        });
+      } else if (statusCode === 404) {
+        yield put({
+          type: 'common',
+          payload: {
+            blockTotal: 0,
+            blockList: [],
+            blockDetail: '',
+          },
+        });
+        notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
+      }
+    },
+    *getBlockDetail({ payload }, { call, put }) {
+      const res = yield call(API.getBlockDetail, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            blockTotal: 1,
+            blockList: [result],
+            blockDetail: result,
+          },
+        });
+      }
+    },
+    *getTxCountByBlockHash({ payload }, { call, put }) {
+      const res = yield call(API.getTxCountByBlockHash, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            transactionTotal: result,
+          },
         });
       }
     },
     *getTransactionList({ payload }, { call, put }) {
-      const res = yield call(API.getTransactionList, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const res = yield call(API.getTransactionList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            transactionList: result.list,
-            transactionTotal: result.totalDocs
-          }
+            transactionList: result.items,
+          },
         });
       }
     },

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { history } from 'umi';
 import { Table, Space, Modal, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -11,15 +11,15 @@ import ConfigStrategy from './components/ConfigStrategy';
 import baseConfig from 'utils/config';
 import style from './index.less';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false)
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 breadCrumbItem.push({
-  menuName: "隐私保护策略",
+  menuName: '隐私保护策略',
   menuHref: `/`,
-})
+});
 
 class PrivacyStrategy extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       pageNum: 1,
       pageSize: baseConfig.pageSize,
@@ -27,7 +27,7 @@ class PrivacyStrategy extends Component {
       editModalVisible: false, // 新增、修改策略是否可见
       strategyObj: {}, // 当前操作的策略
       operateType: 'new', // 打开弹窗类型--新增、修改
-    }
+    };
     this.columns = [
       {
         title: '隐私保护策略名称',
@@ -46,7 +46,7 @@ class PrivacyStrategy extends Component {
         dataIndex: 'strategyStatus',
         key: 'strategyStatus',
         width: '26%',
-        render: text => (text === 0 ? '停用' : '启用')
+        render: (text) => (text === 0 ? '停用' : '启用'),
       },
       {
         title: '操作',
@@ -55,60 +55,73 @@ class PrivacyStrategy extends Component {
         render: (text, record) => (
           <Space size="small">
             <a onClick={() => this.onClickModify(record)}>修改</a>
-            {(record.strategyStatus === 1) ? <a onClick={() => this.onClickToConfirm(record, 'stop')}>停用</a> : <a onClick={() => this.onClickToConfirm(record, 'enable')}>启用</a>}
+            {record.strategyStatus === 1 ? (
+              <a onClick={() => this.onClickToConfirm(record, 'stop')}>停用</a>
+            ) : (
+              <a onClick={() => this.onClickToConfirm(record, 'enable')}>启用</a>
+            )}
             <a onClick={() => this.onClickConfig(record)}>配置策略</a>
             <a onClick={() => this.onClickDetail(record)}>隐私保护记录</a>
           </Space>
         ),
       },
-    ]
+    ];
   }
 
   componentDidMount() {
-    this.getPageListOfRoleData()
+    this.getPageListOfRoleData();
+    this.getRoleDateTotalDocs();
   }
 
   // 获取策略列表
-  getPageListOfRoleData = current => {
+  getPageListOfRoleData = (current) => {
     const { pageNum, pageSize } = this.state;
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       offset,
       limit: pageSize,
-      from: Number(moment(new Date()).format('x'))
-    }
+      from: Number(moment(new Date()).format('x')),
+      ascend: false,
+    };
     this.props.dispatch({
       type: 'Contract/getPageListOfRoleData',
-      payload: params
+      payload: params,
+    });
+  };
+
+  //获取策略列表的totalDocs
+  getRoleDateTotalDocs = () => {
+    this.props.dispatch({
+      type: 'Contract/getRoleDateTotalDocs',
+      payload: '',
     })
   }
 
   // 翻页
-  onPageChange = pageInfo => {
-    this.setState({ pageNum: pageInfo.current })
-    this.getPageListOfRoleData(pageInfo.current)
-  }
-
+  onPageChange = (pageInfo) => {
+    this.setState({ pageNum: pageInfo.current });
+    this.getPageListOfRoleData(pageInfo.current);
+  };
 
   // 关闭 新增&修改 策略 弹窗
   onCloseModal = () => {
-    this.setState({ editModalVisible: false, configModalVisible: false })
-  }
+    this.setState({ editModalVisible: false, configModalVisible: false });
+  };
 
   // 点击新增策略
   onClickAdd = () => {
-    this.setState({ operateType: 'new', editModalVisible: true, strategyObj: {} })
-  }
+    this.setState({ operateType: 'new', editModalVisible: true, strategyObj: {} });
+  };
 
   // 点击修改策略
-  onClickModify = record => {
-    this.setState({ operateType: 'modify', editModalVisible: true, strategyObj: record })
-  }
+  onClickModify = (record) => {
+    this.setState({ operateType: 'modify', editModalVisible: true, strategyObj: record });
+  };
 
   // 点击配置策略
-  onClickConfig = record => {
-    this.setState({ configModalVisible: true, strategyObj: record })
-  }
+  onClickConfig = (record) => {
+    this.setState({ configModalVisible: true, strategyObj: record });
+  };
 
   // 点击操作按钮, 进行二次确认
   onClickToConfirm = (record, type) => {
@@ -116,15 +129,15 @@ class PrivacyStrategy extends Component {
     let callback = null;
     switch (type) {
       case 'stop':
-        tipTitle = '停用'
-        callback = () => this.changeStrategyStatus(record, 0)
-        break
+        tipTitle = '停用';
+        callback = () => this.changeStrategyStatus(record, 0);
+        break;
       case 'enable':
-        tipTitle = '启用'
-        callback = () => this.changeStrategyStatus(record, 1)
-        break
+        tipTitle = '启用';
+        callback = () => this.changeStrategyStatus(record, 1);
+        break;
       default:
-        break
+        break;
     }
     Modal.confirm({
       title: 'Confirm',
@@ -132,77 +145,99 @@ class PrivacyStrategy extends Component {
       content: `确认要${tipTitle}隐私保护策略 【${record.strategyName}】 吗?`,
       okText: '确认',
       cancelText: '取消',
-      onOk: callback
+      onOk: callback,
     });
-  }
+  };
 
   // 停用 & 启用 策略
   changeStrategyStatus = (record, strategyStatus) => {
-    this.props.dispatch({
-      type: 'Contract/updateStrategyStatus',
-      payload: {
-        strategyStatus,
-        id: record._id
-      }
-    }).then(res => {
-      if (res) {
-        this.getPageListOfRoleData()
-      }
-    })
-  }
+    this.props
+      .dispatch({
+        type: 'Contract/updateStrategyStatus',
+        payload: {
+          strategyStatus,
+          strategyName: record.strategyName,
+        },
+      })
+      .then((res) => {
+        if (res) {
+          this.getPageListOfRoleData();
+        }
+      });
+  };
 
   // 查看策略详情
-  onClickDetail = record => {
+  onClickDetail = (record) => {
     history.push({
       pathname: `/about/contract/roleData/roleDataList`,
       query: {
-        id: record._id,
+        id: record.strategyName,
         strategyName: record.strategyName,
         strategyStatus: record.strategyStatus,
-        strategyDesc: record.strategyDesc
+        strategyDesc: record.strategyDesc,
       },
-    })
-  }
+    });
+  };
 
   render() {
     const { qryLoading = false } = this.props;
-    const { pageSize, pageNum, editModalVisible, configModalVisible, operateType, strategyObj } = this.state;
-    const { strategyList, strategyTotal } = this.props.Contract
+    const {
+      pageSize,
+      pageNum,
+      editModalVisible,
+      configModalVisible,
+      operateType,
+      strategyObj,
+    } = this.state;
+    const { strategyList, strategyTotal } = this.props.Contract;
     return (
-      <div className='page-wrapper'>
+      <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
-        <div className='page-content page-content-shadow'>
+        <div className="page-content page-content-shadow">
           <div className={style['table-header-btn-wrapper']}>
-            <Button type='primary' onClick={this.onClickAdd}>新建策略</Button>
+            <Button type="primary" onClick={this.onClickAdd}>
+              新建策略
+            </Button>
           </div>
           <Table
-            rowKey='_id'
+            rowKey="_id"
             columns={this.columns}
             loading={qryLoading}
             dataSource={strategyList}
             onChange={this.onPageChange}
-            pagination={{ pageSize, total: strategyTotal, current: pageNum, position: ['bottomCenter'] }}
+            pagination={{
+              pageSize,
+              total: strategyTotal,
+              current: pageNum,
+              position: ['bottomCenter'],
+            }}
           />
         </div>
-        {editModalVisible && <EditStrategy
-          visible={editModalVisible}
-          operateType={operateType}
-          editParams={strategyObj}
-          onCancel={this.onCloseModal}
-          getPageListOfRoleData={this.getPageListOfRoleData}
-        />}
-        {configModalVisible && <ConfigStrategy
-          visible={configModalVisible}
-          editParams={strategyObj}
-          onCancel={this.onCloseModal}
-          getPageListOfRoleData={this.getPageListOfRoleData}
-        />}
-      </div >
-    )
+        {editModalVisible && (
+          <EditStrategy
+            visible={editModalVisible}
+            operateType={operateType}
+            editParams={strategyObj}
+            onCancel={this.onCloseModal}
+            getPageListOfRoleData={this.getPageListOfRoleData}
+          />
+        )}
+        {configModalVisible && (
+          <ConfigStrategy
+            visible={configModalVisible}
+            editParams={strategyObj}
+            onCancel={this.onCloseModal}
+            getPageListOfRoleData={this.getPageListOfRoleData}
+          />
+        )}
+      </div>
+    );
   }
 }
 
 export default connect(({ Contract, loading }) => ({
   Contract,
-  qryLoading: loading.effects['Contract/getPageListOfRoleData']
+  qryLoading: loading.effects['Contract/getPageListOfRoleData'],
 }))(PrivacyStrategy);
+
+

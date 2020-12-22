@@ -1,5 +1,5 @@
 import { fetch } from 'dva';
-import config from './config'
+import config from './config';
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -18,12 +18,12 @@ const codeMessage = {
   504: '网关超时。',
 };
 
-
 const checkStatus = (response, check_500) => {
-  if (response.status >= 200 && response.status < 300 || (response.status === 500 && check_500)) {
+  if ((response.status >= 200 && response.status < 300) || (response.status === 500 && check_500)) {
     return response;
   }
-  const errortext = codeMessage[response.status] || response.statusText;
+ // const errortext = codeMessage[response.status] || response.statusText;
+ const errortext = codeMessage[response.status] || response.message;
   const error = new Error(errortext);
   error.name = response.status;
   error.response = response;
@@ -41,10 +41,13 @@ export const request = (url, options) => {
     credentials: 'include',
   };
   const newOptions = { ...defaultOptions, ...options };
-  if (newOptions.method === 'POST' ||
+  if (
+    newOptions.method === 'POST' ||
     newOptions.method === 'PUT' ||
+    newOptions.method === 'GET' ||
     newOptions.method === 'DELETE' ||
-    newOptions.method === 'PATCH') {
+    newOptions.method === 'PATCH'
+  ) {
     if (!(newOptions.body instanceof FormData)) {
       newOptions.headers = {
         Accept: 'application/json',
@@ -63,37 +66,42 @@ export const request = (url, options) => {
   const requestUrl = config.baseUrl + url;
   return fetch(requestUrl, newOptions)
     .then(checkStatus)
-    .then(response => {
+    .then((response) => {
       if (newOptions.method === 'DELETE' || response.status === 204) {
         return response.text();
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       data = {
         result: data,
-        status: 'ok'
-      }
-      return data
+        statusCode: 'ok',
+      };
+      return data;
     })
     .catch((e) => {
       const response = e.response;
       if (response) {
         return response.json();
       } else {
-        const error = new Error(response.statusText);
+        const error = new Error(response.message);
         error.response = response;
         return error;
       }
     });
-}
+};
 
 export const outRequest = (url, options) => {
   const defaultOptions = {
-    mode: 'cors'
+    mode: 'cors',
   };
   const newOptions = { ...defaultOptions, ...options };
-  if (newOptions.method === 'POST' || newOptions.method === 'PUT' || newOptions.method === 'DELETE') {
+  if (
+    newOptions.method === 'POST' ||
+    newOptions.method === 'GET' ||
+    newOptions.method === 'PUT' ||
+    newOptions.method === 'DELETE'
+  ) {
     newOptions.headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json; charset=utf-8',
@@ -102,11 +110,11 @@ export const outRequest = (url, options) => {
     newOptions.body = JSON.stringify(newOptions.body);
   }
   return fetch(url, newOptions)
-    .then(res => checkStatus(res, true))
-    .then(response => {
+    .then((res) => checkStatus(res, true))
+    .then((response) => {
       if (newOptions.method === 'DELETE' || response.status === 204) {
         return response.text();
       }
       return response.json();
-    })
-}
+    });
+};

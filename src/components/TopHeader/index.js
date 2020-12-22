@@ -17,6 +17,9 @@ class TopHeader extends PureComponent {
 
   getUserMenu = () => {
     return (<Menu theme="dark" onClick={this.handleUserMenuClick}>
+      <Menu.Item key='changeLeague'>
+        切换联盟
+      </Menu.Item>
       <Menu.Item key='loginOut'>
         退出账号
       </Menu.Item>
@@ -26,8 +29,14 @@ class TopHeader extends PureComponent {
   handleUserMenuClick = ({ key }) => {
     // 登出
     if (key === 'loginOut') {
+      this.props.dispatch({
+        type: 'User/loginout',
+        payload: []
+      })
       window.localStorage.clear();
-      history.replace('/login');
+      history.replace('/user/login');
+    } else if (key === 'changeLeague') {
+      history.replace('/selectLeague');
     }
   }
 
@@ -78,4 +87,4 @@ class TopHeader extends PureComponent {
   }
 }
 
-export default connect(({ Layout }) => ({ Layout }))(TopHeader);
+export default connect(({ Layout, User }) => ({ Layout, User }))(TopHeader);

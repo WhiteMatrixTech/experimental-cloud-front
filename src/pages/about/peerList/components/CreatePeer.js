@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Modal } from 'antd';
 
@@ -15,9 +15,8 @@ const formItemLayout = {
 };
 
 function CreatePeer(props) {
-  const {Peer} = props;
+  const {Peer, visible, onCancel, addLoading = false } = props;
   const {orgList} = Peer;
-  const {repositoryDetailList, visible, onCancel, addLoading = false } = props;
 
   const [form] = Form.useForm();
 
@@ -64,6 +63,10 @@ function CreatePeer(props) {
     ],
   };
 
+  useEffect(() => {
+    handleSubmit
+  }, [])
+
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
@@ -83,7 +86,7 @@ function CreatePeer(props) {
             placeholder="请选择所属组织"
           >
             {orgList.map((item) => (
-              <Option value={item.name}>{item.name}</Option>
+              <Option value={item}>{item}</Option>
             ))}
           </Select>
         </Item>

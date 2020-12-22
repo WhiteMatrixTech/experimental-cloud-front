@@ -15,11 +15,12 @@ function MemberDetail({
   match: {
     params: { memberDetail: companyId },
   },
+  User,
   Member: { memberDetail },
   qryLoading = false,
   dispatch
 }) {
-
+  const { networkName } = User;
   const basicInfo = [
     {
       label: '企业名称',
@@ -66,7 +67,7 @@ function MemberDetail({
   useEffect(() => {
     dispatch({
       type: 'Member/getMemberDetail',
-      payload: { companyId }
+      payload: { companyId,networkName }
     })
   }, []);
 
@@ -84,7 +85,8 @@ function MemberDetail({
   )
 }
 
-export default connect(({ Member, loading }) => ({
+export default connect(({User, Member, loading }) => ({
+  User,
   Member,
   qryLoading: loading.effects['Member/getMemberDetail']
 }))(MemberDetail);

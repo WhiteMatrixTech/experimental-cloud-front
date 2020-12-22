@@ -16,7 +16,6 @@ export const trim = (str) => {
 
 export const getCookie = () => {
   let cookieStr = document.cookie;
-  console.log('cookieStr', cookieStr);
   if (cookieStr) {
     let cookieArr = cookieStr.replace(/\s/g, '').split(";");
     if (cookieArr && cookieArr.length > 0) {

@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty';
 import { LeftMenu, TopHeader, Breadcrumb } from 'components';
 import styles from './Layout.less';
 
-@connect(({ Layout }) => ({ Layout }))
 class BaaSLayout extends PureComponent {
 	constructor(props) {
 		super(props)
@@ -42,4 +41,6 @@ class BaaSLayout extends PureComponent {
 	}
 }
 
-export default BaaSLayout
+export default connect(({ Layout }) => ({
+	Layout,
+}))(BaaSLayout);

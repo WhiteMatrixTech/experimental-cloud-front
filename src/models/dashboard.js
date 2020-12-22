@@ -12,24 +12,24 @@ export default {
   effects: {
     *getBlockList({ payload }, { call, put }) {
       const res = yield call(getBlockList, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            blockList: result.list,
+            blockList: result.items,
           }
         });
       }
     },
     *getTransactionList({ payload }, { call, put }) {
       const res = yield call(getTransactionList, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            transactionList: result.list,
+            transactionList: result.items,
           }
         });
       }

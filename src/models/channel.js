@@ -1,4 +1,5 @@
 import * as API from 'services/channel.js';
+import { notification } from 'antd';
 
 export default {
   namespace: 'Channel',
@@ -11,34 +12,70 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {
-
-    },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
-    *getTransactionList({ payload }, { call, put }) {
-      const res = yield call(API.getTransactionList, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+    *getTransactionTotalDocs({ payload }, { call, put }) {
+      const res = yield call(API.getTransactionTotalDocs, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            transactionList: result.list,
-            transactionTotal: result.totalDocs
-          }
+            transactionTotal: result,
+          },
         });
       }
     },
-    *getTransactionDetail({ payload }, { call, put }) {
-      const res = yield call(API.getTransactionDetail, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+    *getTransactionList({ payload }, { call, put }) {
+      const res = yield call(API.getTransactionList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            transactionDetail: result
-          }
+            transactionList: result.items,
+          },
+        });
+      }
+    },
+    *onSearch({ payload }, { call, put }) {
+      const res = yield call(API.getTransactionDetail, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            transactionTotal: 1,
+            transactionList: [result],
+            transactionDetail: result,
+          },
+        });
+      } else if (statusCode === 404) {
+        yield put({
+          type: 'common',
+          payload: {
+            transactionTotal: 0,
+            transactionList: [],
+            transactionDetail: '',
+          },
+        });
+        notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
+      }
+    },
+
+    *getTransactionDetail({ payload }, { call, put }) {
+      const res = yield call(API.getTransactionDetail, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            transactionTotal: 1,
+            transactionList: [result],
+            transactionDetail: result,
+          },
         });
       }
     },

@@ -1,0 +1,101 @@
+@import '~themes/variable.less';
+@import '~antd/es/style/themes/default.less';
+.main {
+  min-height: 100vh;
+  padding: 50px 80px;
+  background-color: #f0f2f5;
+  overflow-y: auto;
+  h3 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .league-wrapper {
+    .newButton {
+      width: 100%;
+      height: 186px;
+      font-size: 20px;
+      color: @text-color-secondary;
+      background-color: @component-background;
+      border-color: @border-color-base;
+    }
+    .newButton:hover {
+      color: #40a9ff;
+      background: #fff;
+      border-color: #40a9ff;
+    }
+    .league-card {
+      background: #fff;
+      border: 1px solid #f0f0f0;
+      transition: box-shadow .3s,border-color .3s;
+      border-radius: 2px;
+      height: 186px;
+      color: #abacb2;
+      cursor: pointer;
+      transition: all .3s;
+    }
+    .league-card:hover {
+      border-color: transparent;
+      box-shadow: 0 1px 2px -2px rgba(0,0,0,.16), 0 3px 6px 0 rgba(0,0,0,.12), 0 5px 12px 4px rgba(0,0,0,.09);
+    }
+    .league-card {
+      margin-bottom: 20px;
+      .card-header {
+        padding: 12px 16px;
+        display: flex;
+        flex-direction: row;
+        .icon {
+          height: 22px;
+          -ms-flex-pack: center;
+          justify-content: center;
+          -ms-flex-align: center;
+          align-items: center;
+          color: #fff;
+          margin-right: 8px;
+          display: -ms-flexbox;
+          display: flex;
+          -ms-flex-preferred-size: 22px;
+          flex-basis: 22px;
+          font-size: 24px;
+        }
+        .league-name {
+          flex-basis: 60%;
+          font-weight: 500;
+          color: rgba(0,0,0,.85);
+          font-size: 16px;
+          line-height: 22px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          display: inline-block;
+        }
+      }
+      .card-content {
+        padding: 3px 16px;
+        height: 104px;
+        color: #5f616d;
+        overflow: hidden;
+      }
+      .card-footer {
+        height: 34px;
+        border-top: 1px solid #f0f0f0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        .allies {
+          color: #5f616d;
+          width: 50%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          padding: 0 12px;
+        }
+        .createTime {
+          padding-right: 12px;
+          color: #abacb2;
+        }
+      }
+    }
+  }
+}

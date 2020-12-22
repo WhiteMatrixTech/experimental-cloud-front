@@ -27,8 +27,8 @@ export default {
   effects: {
     *getUnionList({ payload }, { call, put }) {
       const res = yield call(API.getUnionList, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
@@ -40,8 +40,8 @@ export default {
     },
     *getOrgListOfUnion({ payload }, { call, put }) {
       const res = yield call(API.getOrgListOfUnion, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
@@ -53,8 +53,8 @@ export default {
     },
     *getPeerListOfUnion({ payload }, { call, put }) {
       const res = yield call(API.getPeerListOfUnion, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
@@ -66,8 +66,8 @@ export default {
     },
     *getContractListOfUnion({ payload }, { call, put }) {
       const res = yield call(API.getContractListOfUnion, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
@@ -79,8 +79,8 @@ export default {
     },
     *getContractSummaryOfUnion({ payload }, { call, put }) {
       const res = yield call(API.getContractSummaryOfUnion, payload)
-      const { status, result } = res;
-      if (status === 'ok') {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
