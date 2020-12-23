@@ -21,7 +21,7 @@ function Channel(props) {
 
   const getTransactionTotalDocs = () => {
     const params = {
-      networkName
+      networkName,
     }
     dispatch({
       type: 'Channel/getTransactionTotalDocs',

@@ -39,8 +39,10 @@ class ContractRepository extends Component {
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       offset,
+      ascend: false,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
+      networkName:this.props.User.networkName,
     }
     this.props.dispatch({
       type: 'Contract/getRepositoryListOfChainCode',
@@ -113,7 +115,8 @@ class ContractRepository extends Component {
   }
 }
 
-export default connect(({ Contract, loading }) => ({
+export default connect(({User, Contract, loading }) => ({
+  User,
   Contract,
   qryLoading: loading.effects['Contract/getRepositoryListOfChainCode']
 }))(ContractRepository);

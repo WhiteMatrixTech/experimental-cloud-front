@@ -66,6 +66,7 @@ class ContractDetail extends Component {
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
+      networkName:this.props.User.networkName,
     }
     if (methodName) {
       params.methodName = methodName
@@ -159,7 +160,8 @@ class ContractDetail extends Component {
   }
 }
 
-export default connect(({ Contract, loading }) => ({
+export default connect(({User, Contract, loading }) => ({
+  User,
   Contract,
   qryLoading: loading.effects['Contract/getPageListOfRecord']
 }))(ContractDetail);

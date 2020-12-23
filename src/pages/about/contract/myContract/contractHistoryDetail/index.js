@@ -53,13 +53,25 @@ class ContractDetail extends Component {
   }
 
   // 获取合约列表
+  getChainCodeApprovalHistoryTotalDocs = ()=>{
+    const params = {
+      networkName:this.props.User.networkName,
+    };
+    this.props.dispatch({
+      type: 'Contract/getChainCodeApprovalHistoryTotalDocs',
+      payload: params
+    })
+  }
+  // 获取合约列表
   getChainCodeApprovalHistory = current => {
     const { pageNum, pageSize } = this.state;
     const { location: { query: { chainCodeName = '', channelName = '', version = '' } } } = this.props;
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       offset,
+      networkName:this.props.User.networkName,
       limit: pageSize,
+      ascend: false,
       from: Number(moment(new Date()).format('x')),
       chainCodeName,
       channelName,
@@ -156,7 +168,8 @@ class ContractDetail extends Component {
   }
 }
 
-export default connect(({ Contract, loading }) => ({
+export default connect(({User, Contract, loading }) => ({
+  User,
   Contract,
   qryLoading: loading.effects['Contract/getDetailOfChainCode'] || loading.effects['Contract/getChainCodeApprovalHistory']
 }))(ContractDetail);

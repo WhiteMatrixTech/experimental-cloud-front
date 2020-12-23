@@ -11,7 +11,8 @@ import { peerStatus } from './_config';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/peerList')
 
 function PeerList(props) {
-  const { dispatch, qryLoading = false } = props
+  const { dispatch, qryLoading = false ,User} = props
+  const { networkName } = User;
   const { userType } = props.Layout
   const { peerList, peerTotal } = props.Peer
   const [columns, setColumns] = useState([])
@@ -22,6 +23,7 @@ function PeerList(props) {
   //获取组织列表
   const getOrgList = () => {
     const params = {
+      networkName,
       networkVersion:'1.0.0'
     }
     dispatch({
@@ -33,6 +35,7 @@ function PeerList(props) {
   const getPeerList = current => {
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
+      networkName,
       networkVersion:'1.0.0',
       offset,
       limit: pageSize,
@@ -47,7 +50,7 @@ function PeerList(props) {
   const getPeerTotalDocs = () => {
     dispatch({
       type: 'Peer/getPeerTotalDocs',
-      payload: '',
+      payload: { networkName },
     });
   };
 
@@ -121,7 +124,7 @@ function PeerList(props) {
   }, []);
 
   useEffect(() => {
-    getOrgList
+    getOrgList()
   }, [])
 
 
@@ -147,7 +150,8 @@ function PeerList(props) {
   )
 }
 
-export default connect(({ Layout, Peer, loading }) => ({
+export default connect(({User, Layout, Peer, loading }) => ({
+  User,
   Layout,
   Peer,
   qryLoading: loading.effects['Peer/getPeerList']

@@ -92,8 +92,10 @@ class MyContract extends Component {
   // 获取合约列表
   getPageListOfChainCode = (current, seachChainCodeName) => {
     const { pageNum, pageSize, chainCodeName } = this.state;
+    const {networkName} = this.props.User
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
+      networkName,
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
@@ -120,7 +122,7 @@ class MyContract extends Component {
   getPageTotalDocsOfChainCode = () => {
     this.props.dispatch({
       type: 'Contract/getPageTotalDocsOfChainCode',
-      payload: '',
+      payload: {networkName:this.props.User.networkName},
     })
   }
 
@@ -204,6 +206,7 @@ class MyContract extends Component {
     this.props.dispatch({
       type: 'Contract/setChainCodeApproveReject',
       payload: {
+        networkName:this.props.User.networkName,
         chainCodeStatus,
         chainCodeId: record._id
       }
@@ -250,7 +253,8 @@ class MyContract extends Component {
   }
 }
 
-export default connect(({ Contract, loading }) => ({
+export default connect(({User, Contract, loading }) => ({
+  User,
   Contract,
   qryLoading: loading.effects['Contract/getPageListOfChainCode']
 }))(MyContract);

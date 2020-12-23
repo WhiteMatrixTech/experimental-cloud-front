@@ -9,7 +9,8 @@ import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/orgList');
 
 function OrganizationManagement(props) {
-  const { Organization, qryLoading, dispatch } = props;
+  const { Organization, qryLoading, dispatch ,User} = props;
+  const { networkName } = User;
   const { orgList, orgTotal } = Organization;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
@@ -51,7 +52,7 @@ function OrganizationManagement(props) {
   const getOrgTotalDocs = () => {
     dispatch({
       type: 'Organization/getOrgTotalDocs',
-      payload: '',
+      payload: {networkName},
     });
   };
   // 查询列表
@@ -59,6 +60,7 @@ function OrganizationManagement(props) {
     const paginator = (pageNum - 1) * pageSize;
     const params = {
       from: Number(moment(new Date()).format('x')),
+      networkName,
       limit: pageSize,
       offset: paginator,
       networkVersion: '1.0.0',
@@ -96,7 +98,8 @@ function OrganizationManagement(props) {
   );
 }
 
-export default connect(({ Layout, Organization, loading }) => ({
+export default connect(({User, Layout, Organization, loading }) => ({
+  User,
   Layout,
   Organization,
   qryLoading: loading.effects['Organization/getOrgList'],

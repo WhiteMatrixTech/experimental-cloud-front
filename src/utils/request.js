@@ -22,8 +22,8 @@ const checkStatus = (response, check_500) => {
   if ((response.status >= 200 && response.status < 300) || (response.status === 500 && check_500)) {
     return response;
   }
-  // const errortext = codeMessage[response.status] || response.statusText;
-  const errortext = codeMessage[response.status] || response.message;
+ // const errortext = codeMessage[response.status] || response.statusText;
+ const errortext = codeMessage[response.status] || response.message;
   const error = new Error(errortext);
   error.name = response.status;
   error.response = response;

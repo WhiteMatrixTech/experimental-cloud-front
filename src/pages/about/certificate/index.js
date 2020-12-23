@@ -24,7 +24,8 @@ const initSearchObj = {
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/certificate')
 
 function Certificate(props) {
-  const { Certificate, qryLoading, dispatch } = props;
+  const { Certificate, qryLoading, dispatch,User } = props;
+  const {networkName} = User;
   const { certificateList = [], certificateTotal = 0 } = Certificate;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
@@ -65,8 +66,10 @@ function Certificate(props) {
   const getCertificateList = () => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
+      networkName,
       ...queryParams,
       offset,
+      ascend: false,
       limit: pageSize,
       from: Number(moment(new Date()).format('x'))
     }
@@ -80,6 +83,7 @@ function Certificate(props) {
   const onSearch = useCallback(() => {
     form.validateFields().then(values => {
       const params = {
+        networkName,
         certificateName: values.certificateName,
         certificateSecretType: values.certificateSecretType
       }
@@ -163,7 +167,8 @@ function Certificate(props) {
   )
 }
 
-export default connect(({ Certificate, loading }) => ({
+export default connect(({User, Certificate, loading }) => ({
+  User,
   Certificate,
   qryLoading: loading.effects['Certificate/getCertificateList'],
 }))(Certificate);

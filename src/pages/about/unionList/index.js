@@ -13,7 +13,8 @@ import { unionStatus } from './_config';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/unionList')
 
 function UnionList(props) {
-  const { dispatch, qryLoading = false } = props
+  const { dispatch, qryLoading = false ,User} = props
+  const { networkName } = User;
   const { userType } = props.Layout
   const { unionList, unionTotal } = props.Union
   const [columns, setColumns] = useState([])
@@ -26,12 +27,22 @@ function UnionList(props) {
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       offset,
+      networkName,
+      ascend: false,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
     }
     dispatch({
       type: 'Union/getUnionList',
       payload: params
+    })
+  }
+
+  // 获取通道列表
+  const getUNionListTotalDocs = () =>{
+    dispatch({
+      type: 'Union/getUNionListTotalDocs',
+      payload: { networkName },
     })
   }
 
@@ -202,6 +213,7 @@ function UnionList(props) {
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getUnionList();
+    getUNionListTotalDocs();
   }, [pageNum]);
 
 
@@ -229,7 +241,8 @@ function UnionList(props) {
   )
 }
 
-export default connect(({ Layout, Union, loading }) => ({
+export default connect(({User, Layout, Union, loading }) => ({
+  User,
   Layout,
   Union,
   qryLoading: loading.effects['Union/getUnionList']

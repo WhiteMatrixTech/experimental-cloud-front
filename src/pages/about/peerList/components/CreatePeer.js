@@ -15,7 +15,8 @@ const formItemLayout = {
 };
 
 function CreatePeer(props) {
-  const {Peer, visible, onCancel, addLoading = false } = props;
+  const {Peer, visible, onCancel, addLoading = false ,User} = props;
+  const { networkName } = User;
   const {orgList} = Peer;
 
   const [form] = Form.useForm();
@@ -26,6 +27,7 @@ function CreatePeer(props) {
       .then((values) => {
         form.resetFields();
         let params = {
+          networkName,
           networkVersion:'1.0.0',
           orgName: values.orgName,
           nodeName: values.peerName,
@@ -64,7 +66,7 @@ function CreatePeer(props) {
   };
 
   useEffect(() => {
-    handleSubmit
+    handleSubmit()
   }, [])
 
   return (
@@ -135,7 +137,8 @@ function CreatePeer(props) {
   );
 }
 
-export default connect(({ Peer, loading }) => ({
+export default connect(({User, Peer, loading }) => ({
+  User,
   Peer,
   addLoading: loading.effects['Peer/createPeer'],
 }))(CreatePeer);

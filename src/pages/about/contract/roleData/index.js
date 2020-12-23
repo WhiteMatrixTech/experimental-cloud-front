@@ -79,6 +79,7 @@ class PrivacyStrategy extends Component {
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       offset,
+      networkName:this.props.User.networkName,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
       ascend: false,
@@ -91,9 +92,10 @@ class PrivacyStrategy extends Component {
 
   //获取策略列表的totalDocs
   getRoleDateTotalDocs = () => {
+    const {networkName} = this.props.User;
     this.props.dispatch({
       type: 'Contract/getRoleDateTotalDocs',
-      payload: '',
+      payload:{networkName} ,
     })
   }
 
@@ -155,6 +157,7 @@ class PrivacyStrategy extends Component {
       .dispatch({
         type: 'Contract/updateStrategyStatus',
         payload: {
+          networkName:this.props.User.networkName,
           strategyStatus,
           strategyName: record.strategyName,
         },
@@ -175,6 +178,7 @@ class PrivacyStrategy extends Component {
         strategyName: record.strategyName,
         strategyStatus: record.strategyStatus,
         strategyDesc: record.strategyDesc,
+        networkName:this.props.User.networkName,
       },
     });
   };
@@ -235,7 +239,8 @@ class PrivacyStrategy extends Component {
   }
 }
 
-export default connect(({ Contract, loading }) => ({
+export default connect(({User, Contract, loading }) => ({
+  User,
   Contract,
   qryLoading: loading.effects['Contract/getPageListOfRoleData'],
 }))(PrivacyStrategy);

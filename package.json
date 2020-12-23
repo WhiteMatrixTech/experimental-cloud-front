@@ -5,6 +5,7 @@
     "build": "umi build",
     "test": "umi test",
     "lint": "eslint --ext .js src mock tests"
+    
   },
   "devDependencies": {
     "@umijs/preset-react": "^1",
@@ -15,6 +16,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.11.1",
+    "jest": "^26.6.3",
     "lint-staged": "^7.2.2",
     "umi": "^3"
   },

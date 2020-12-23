@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
-import { Checkbox, Form, Button, Modal, Row } from 'antd';
+import { Checkbox, Button, Modal } from 'antd';
 import style from './index.less';
 
 function ConfigStrategy(props) {
   const {
+    User,
     visible,
     editParams = {},
     onCancel,
@@ -12,12 +13,14 @@ function ConfigStrategy(props) {
     dispatch,
     configLoading = false,
   } = props;
+  const {networkName} = User;
   const [initValue, setInitValue] = useState([]);
   const [memberList, setMemberList] = useState([]);
   const { strategyMemberList, leagueName } = props.Contract;
 
   const handleSubmit = () => {
     const params = {
+      networkName,
       strategyName: editParams.strategyName,
       strategyMember: initValue,
     };
@@ -73,7 +76,7 @@ function ConfigStrategy(props) {
   useEffect(() => {
     dispatch({
       type: 'Contract/getPageListOfRoleMember',
-      payload: { strategyName: editParams.strategyName },
+      payload: {networkName, strategyName: editParams.strategyName },
     });
   }, []);
   useEffect(() => {
@@ -86,7 +89,7 @@ function ConfigStrategy(props) {
   return (
     <Modal {...drawerProps}>
       <div className={style.configWrapper}>
-        <div className={style.leagueName}>数研院</div>
+        <div className={style.leagueName}>{leagueName}</div>
         <div className={style.compannyList}>
           <Checkbox.Group options={memberList} value={initValue} onChange={onChange} />
         </div>
@@ -95,7 +98,8 @@ function ConfigStrategy(props) {
   );
 }
 
-export default connect(({ Contract, loading }) => ({
+export default connect(({User, Contract, loading }) => ({
+  User,
   Contract,
   configLoading: loading.effects['Contract/updateStrategyMember'],
 }))(ConfigStrategy);

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React  from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Modal } from 'antd';
 
@@ -17,6 +17,7 @@ const formItemLayout = {
 
 function EditStrategy(props) {
   const {
+    User,
     visible,
     editParams = {},
     onCancel,
@@ -26,6 +27,7 @@ function EditStrategy(props) {
     addLoading = false,
   } = props;
 
+  const {networkName} = User
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
@@ -34,6 +36,7 @@ function EditStrategy(props) {
       .then((values) => {
         form.resetFields();
         let params = values;
+         params.networkName = networkName;
         form.setFieldsValue(values);
         if (operateType === 'new') {
           dispatch({
@@ -47,10 +50,11 @@ function EditStrategy(props) {
           });
           dispatch({
             type: 'Contract/getRoleDateTotalDocs',
-            payload: '',
+            payload: networkName,
           });
         } else {
           params = {
+            networkName,
             strategyName: editParams.strategyName,
             ...editParams,
             ...params,
@@ -66,7 +70,7 @@ function EditStrategy(props) {
           });
           dispatch({
             type: 'Contract/getRoleDateTotalDocs',
-            payload: '',
+            payload: networkName,
           });
         }
       })
@@ -143,7 +147,6 @@ function EditStrategy(props) {
           initialValue={editParams.strategyDesc || ''}
           rules={[
             {
-              required: true,
               message: '请填写策略描述',
             },
             {
@@ -161,7 +164,8 @@ function EditStrategy(props) {
   );
 }
 
-export default connect(({ Contract, loading }) => ({
+export default connect(({User, Contract, loading }) => ({
+  User,
   Contract,
   addLoading: loading.effects['Contract/createAndUpdateStrategy'],
 }))(EditStrategy);

@@ -18,9 +18,10 @@ function Block(props) {
   const [blockHash, setBlockHash] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
 
+  //查询列表的totalDocs
   const getBlockTotalDocs = () => {
     const params = {
-      networkName: networkName ,
+      networkName,
     };
     dispatch({
       type: 'Block/getBlockTotalDocs',
@@ -31,7 +32,7 @@ function Block(props) {
   const getBlockList = () => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
-      networkName: networkName ,
+      networkName ,
       limit: pageSize,
       offset: offset,
       ascend: false,
@@ -53,7 +54,7 @@ function Block(props) {
   //搜索列表
   const onSearchList = () => {
     const params = {
-      networkName: networkName ,
+      networkName ,
       blockHash,
     };
     dispatch({

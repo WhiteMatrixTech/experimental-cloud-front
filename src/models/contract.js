@@ -81,8 +81,19 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            curContractVersionList: result.list,
-            curContractVersionTotal: result.totalDocs,
+            curContractVersionList: result.items,
+          },
+        });
+      }
+    },
+    *getChainCodeHistoryTotalDocs({ payload }, { call, put }) {
+      const res = yield call(API.getChainCodeHistoryTotalDocs, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            curContractVersionTotal: result,
           },
         });
       }
@@ -94,8 +105,19 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            curVersionApprovalList: result.list,
-            curVersionApprovalTotal: result.totalDocs,
+            curVersionApprovalList: result.items,
+          },
+        });
+      }
+    },
+    *getChainCodeApprovalHistoryTotalDocs({ payload }, { call, put }) {
+      const res = yield call(API.getChainCodeApprovalHistoryTotalDocs, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            curVersionApprovalTotal: result,
           },
         });
       }
@@ -197,7 +219,6 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            // strategyMemberList: result.validMembers,
             strategyMemberList: result.strategyConfig,
             leagueName: result.leagueName,
           },

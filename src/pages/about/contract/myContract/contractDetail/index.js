@@ -62,11 +62,21 @@ class ContractDetail extends Component {
     const { location: { query: { chainCodeId } } } = this.props;
     this.props.dispatch({
       type: 'Contract/getDetailOfChainCode',
-      payload: { chainCodeId }
+      payload: { chainCodeId, networkName:this.props.User.networkName }
     })
     this.getChainCodeHistory()
+    this.getChainCodeHistoryTotalDocs()
   }
-
+  // 获取合约列表的totalCount
+  getChainCodeHistoryTotalDocs = () => {
+    const params = {
+     networkName:this.props.User.networkName,
+    };
+    this.props.dispatch({
+      type: 'Contract/getChainCodeHistoryTotalDocs',
+      payload: params,
+    });
+  }
   // 获取合约列表
   getChainCodeHistory = current => {
     const { pageNum, pageSize } = this.state;
@@ -75,8 +85,10 @@ class ContractDetail extends Component {
     const params = {
       offset,
       limit: pageSize,
+      ascend: false,
       from: Number(moment(new Date()).format('x')),
       chainCodeName,
+      networkName: this.props.User.networkName,
       channelName
     }
     this.props.dispatch({
@@ -166,7 +178,8 @@ class ContractDetail extends Component {
   }
 }
 
-export default connect(({ Contract, loading }) => ({
+export default connect(({User, Contract, loading }) => ({
+  User,
   Contract,
   qryLoading: loading.effects['Contract/getDetailOfChainCode'] || loading.effects['Contract/getChainCodeHistory']
 }))(ContractDetail);

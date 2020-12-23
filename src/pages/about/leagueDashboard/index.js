@@ -18,7 +18,8 @@ const statisticsList = [
 ];
 
 function LeagueDashboard(props) {
-  const { Layout, Dashboard, dispatch, qryBlockLoading, qryTransactionLoading } = props;
+  const { Layout, Dashboard, dispatch, qryBlockLoading, qryTransactionLoading ,User} = props;
+  const {networkName} = User;
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
   const { transactionList, blockList } = Dashboard;
@@ -31,6 +32,7 @@ function LeagueDashboard(props) {
   // 获取区块列表
   const getBlockList = () => {
     const params = {
+      networkName,
       blockHash: '',
       limit: 6,
       paginator: 0,
@@ -54,6 +56,7 @@ function LeagueDashboard(props) {
   // 获取交易列表
   const getTransactionList = () => {
     const params = {
+      networkName,
       companyId: 1,
       limit: 6,
       paginator: 0,
@@ -221,7 +224,8 @@ function LeagueDashboard(props) {
   );
 }
 
-export default connect(({ Layout, Dashboard, loading }) => ({
+export default connect(({User, Layout, Dashboard, loading }) => ({
+  User,
   Layout,
   Dashboard,
   qryBlockLoading: loading.effects['Dashboard/getBlockList'],
