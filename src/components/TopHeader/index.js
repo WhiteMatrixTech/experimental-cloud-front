@@ -34,8 +34,12 @@ class TopHeader extends PureComponent {
         payload: []
       }).then(res => {
         if (res) {
+          // 清空缓存
           window.localStorage.clear();
-          history.replace('/user/login');
+          // 强制刷新页面
+          window.location.reload();
+          // 跳转至登录界面
+          // history.replace('/user/login');
         }
       })
     } else if (key === 'changeLeague') {

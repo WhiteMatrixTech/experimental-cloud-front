@@ -33,7 +33,7 @@ function Login(props) {
   useEffect(() => {
     dispatch({
       type: 'User/common',
-      payload: { userAndregister: false }
+      payload: { loginStatus: '', userAndregister: false }
     })
   }, [])
 

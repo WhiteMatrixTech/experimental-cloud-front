@@ -1,3 +1,4 @@
+import { notification } from 'antd';
 import { fetch } from 'dva';
 import config from './config';
 const codeMessage = {
@@ -22,13 +23,40 @@ const checkStatus = (response, check_500) => {
   if ((response.status >= 200 && response.status < 300) || (response.status === 500 && check_500)) {
     return response;
   }
- // const errortext = codeMessage[response.status] || response.statusText;
- const errortext = codeMessage[response.status] || response.message;
+  // const errortext = codeMessage[response.status] || response.statusText;
+  const errortext = codeMessage[response.status] || response.message;
   const error = new Error(errortext);
-  error.name = response.status;
   error.response = response;
   throw error;
 };
+
+const authorization = response => {
+  if (response.statusCode === 500 && response.message === 'jwt expired') {
+    // 登录已过期
+    notification.error({ message: '登录已过期', top: 64, duration: 1 });
+    // 清空缓存
+    window.localStorage.clear();
+    // 强制刷新页面
+    window.location.reload();
+    // 抛出错误信息
+    const error = new Error(response.message);
+    error.response = response;
+    throw error;
+  }
+  const data = {
+    result: response,
+    statusCode: response.statusCode || 'ok',
+  };
+  return data
+}
+
+const getResponseData = response => {
+  // 登出时会重定向
+  if (response.redirected) {
+    return response.text();
+  }
+  return response.json();
+}
 /**
  * Requests a URL, returning a promise.
  *
@@ -39,15 +67,15 @@ const checkStatus = (response, check_500) => {
 export const request = (url, options) => {
   const defaultOptions = {
     credentials: 'include',
+    headers: {}
   };
+  // token校验
+  const accessToken = localStorage.getItem('accessToken');
+  if (accessToken) {
+    defaultOptions.headers.Authorization = accessToken;
+  }
   const newOptions = { ...defaultOptions, ...options };
-  if (
-    newOptions.method === 'POST' ||
-    newOptions.method === 'PUT' ||
-    newOptions.method === 'GET' ||
-    newOptions.method === 'DELETE' ||
-    newOptions.method === 'PATCH'
-  ) {
+  if (newOptions.method) {
     if (!(newOptions.body instanceof FormData)) {
       newOptions.headers = {
         Accept: 'application/json',
@@ -66,20 +94,8 @@ export const request = (url, options) => {
   const requestUrl = config.baseUrl + url;
   return fetch(requestUrl, newOptions)
     .then((res) => checkStatus(res, true))
-    .then((response) => {
-      // 登出时会重定向
-      if (response.redirected) {
-        return response.text();
-      }
-      return response.json();
-    })
-    .then((data) => {
-      data = {
-        result: data,
-        statusCode: data.statusCode || 'ok',
-      };
-      return data;
-    })
+    .then(getResponseData)
+    .then((data) => authorization(data))
     .catch((e) => {
       const response = e.response;
       if (response) {
@@ -89,33 +105,5 @@ export const request = (url, options) => {
         error.response = response;
         return error;
       }
-    });
-};
-
-export const outRequest = (url, options) => {
-  const defaultOptions = {
-    mode: 'cors',
-  };
-  const newOptions = { ...defaultOptions, ...options };
-  if (
-    newOptions.method === 'POST' ||
-    newOptions.method === 'GET' ||
-    newOptions.method === 'PUT' ||
-    newOptions.method === 'DELETE'
-  ) {
-    newOptions.headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json; charset=utf-8',
-      ...newOptions.headers,
-    };
-    newOptions.body = JSON.stringify(newOptions.body);
-  }
-  return fetch(url, newOptions)
-    .then((res) => checkStatus(res, true))
-    .then((response) => {
-      if (newOptions.method === 'DELETE' || response.status === 204) {
-        return response.text();
-      }
-      return response.json();
     });
 };

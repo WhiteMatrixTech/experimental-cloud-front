@@ -111,7 +111,7 @@ function CallTransfer(props) {
               ]}>
                 <Input placeholder='请输入参数列表' />
               </Item>
-              <Item label='调用类型' name='invokeType' initialValue='' rules={[
+              <Item label='调用类型' name='invokeType' initialValue={null} rules={[
                 {
                   required: true,
                   message: '请选择调用类型',

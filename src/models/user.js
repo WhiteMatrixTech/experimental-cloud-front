@@ -13,7 +13,7 @@ export default {
     cacheAccount: {}, // 当前注册的账户
     userAndregister: false, // 控制注册成功后的自动跳转
 
-    networkName: 'DFI'
+    networkName: 'network1'
   },
 
   subscriptions: {
@@ -27,7 +27,6 @@ export default {
       const res = yield call(API.register, payload)
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result.success) {
-        notification.success({ message: '注册成功!', top: 64, duration: 1 })
         yield put({
           type: 'common',
           payload: {
@@ -58,7 +57,7 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            loginInfo: res.message || '',
+            loginInfo: result.message || '',
             loginStatus: LoginStatus.loginError
           }
         });
