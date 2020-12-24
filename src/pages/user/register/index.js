@@ -57,6 +57,7 @@ const Register = (props) => {
         pass: value.password,
         re_pass: value.confirm,
         roles: ['member'],
+        networkName: 'network1'
       };
       dispatch({
         type: 'User/register',
