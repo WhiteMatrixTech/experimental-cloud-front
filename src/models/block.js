@@ -1,7 +1,6 @@
-import * as API from 'services/block.js';
+import * as API from '../services/block';
 import { notification } from 'antd';
 
-// import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
 export default {
   namespace: 'Block',

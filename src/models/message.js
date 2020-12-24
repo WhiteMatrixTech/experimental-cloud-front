@@ -1,4 +1,4 @@
-import * as API from 'services/message.js';
+import * as API from '../services/message.js';
 import { notification } from 'antd';
 
 export default {

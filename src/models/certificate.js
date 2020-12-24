@@ -1,4 +1,4 @@
-import * as API from 'services/certificate.js';
+import * as API from '../services/certificate.js';
 
 export default {
   namespace: 'Certificate',

@@ -1,4 +1,4 @@
-import * as API from 'services/contract.js';
+import * as API from '../services/contract.js';
 import { notification } from 'antd';
 
 export default {
@@ -17,8 +17,8 @@ export default {
     strategyList: [], // 隐私保护策略列表
     strategyTotal: 0,
 
-    strategyMemberList: [], // 关联成员列表
-    leagueName: '', //联盟名称
+    strategyMemberList: [],// 关联成员列表
+    leagueName: '',        //联盟名称
     curStrategyMember: [], // 当前策略已关联成员
 
     protectRecordList: [], // 隐私保护记录列表

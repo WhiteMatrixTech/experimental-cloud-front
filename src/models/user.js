@@ -1,6 +1,6 @@
-import * as API from 'services/user.js';
+import * as API from '../services/user.js';
 import { notification } from 'antd';
-import LoginStatus from 'utils/loginStatus';
+import LoginStatus from '../utils/loginStatus';
 
 export default {
   namespace: 'User',

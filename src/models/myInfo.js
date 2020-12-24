@@ -1,4 +1,4 @@
-import * as API from 'services/myInfo.js';
+import * as API from '../services/myInfo.js';
 
 export default {
   namespace: 'MyInfo',

@@ -1,4 +1,4 @@
-import * as API from 'services/organization.js';
+import * as API from '../services/organization.js';
 
 export default {
   namespace: 'Organization',

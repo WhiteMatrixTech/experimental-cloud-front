@@ -16,6 +16,7 @@ export default {
   //     /Components\//,
   //   ],
   // },
+  
 
   alias: {
     components: resolve(__dirname, './src/components'),
@@ -35,4 +36,4 @@ export default {
       pathRewrite: { '^/api': '' },
     },
   },
-};
+} 

@@ -1,4 +1,4 @@
-import * as API from 'services/peer.js';
+import * as API from '../services/peer.js';
 import { notification } from 'antd';
 
 export default {

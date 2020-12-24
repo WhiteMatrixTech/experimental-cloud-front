@@ -1,4 +1,4 @@
-import * as API from 'services/union.js';
+import * as API from '../services/union.js';
 
 export default {
   namespace: 'Union',

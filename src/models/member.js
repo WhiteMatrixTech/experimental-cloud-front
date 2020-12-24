@@ -1,4 +1,4 @@
-import * as API from 'services/member.js';
+import * as API from '../services/member.js';
 import { notification } from 'antd';
 
 export default {

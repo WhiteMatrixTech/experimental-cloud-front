@@ -1,4 +1,4 @@
-import * as API from 'services/channel.js';
+import * as API from '../services/channel';
 import { notification } from 'antd';
 
 export default {

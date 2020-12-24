@@ -1,4 +1,3 @@
-import * as API from 'services/layout.js';
 import { MenuList } from 'utils/menu.js';
 import { tree2Arr } from 'utils';
 const initBreadCrumb = MenuList.length > 0 ? MenuList[0] : {};

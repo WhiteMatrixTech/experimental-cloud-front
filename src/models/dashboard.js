@@ -1,5 +1,5 @@
-import { getBlockList } from 'services/block.js';
-import { getTransactionList } from 'services/channel.js';
+import { getBlockList } from '../services/block.js';
+import { getTransactionList } from '../services/channel.js';
 
 export default {
   namespace: 'Dashboard',
