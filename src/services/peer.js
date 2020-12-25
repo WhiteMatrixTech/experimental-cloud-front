@@ -1,4 +1,4 @@
-import { request } from 'utils/request';
+import { request } from '../utils/request';
 
 export async function getOrgList(params) {
   return request(`/network/${params.networkName}/organizations/${params.networkVersion}`);

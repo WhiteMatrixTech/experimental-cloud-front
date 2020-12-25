@@ -8,8 +8,6 @@ export async function getBlockTotalDocs(params) {
   return request(`/network/${params.networkName}/blocks/totalCount`);
 }
 
-
-
 /**
  * 获取transadction的totalDocs
  */

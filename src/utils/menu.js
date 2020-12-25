@@ -1,4 +1,4 @@
-import { tree2Arr } from 'utils';
+import { tree2Arr } from '../utils';
 
 const MenuList = [
   {
