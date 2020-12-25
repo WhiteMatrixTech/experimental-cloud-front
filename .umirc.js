@@ -1,22 +1,20 @@
 import { resolve } from 'path';
+import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
+
+const chainWebpack = (config, { webpack }) => {
+  config.plugin('monaco-editor').use(MonacoWebpackPlugin, [
+    {
+      languages: ['json']
+    }
+  ])
+};
 export default {
   history: { type: 'hash' },
   hash: true,
   ignoreMomentLocale: true,
   publicPath: './',
-
+  chainWebpack,
   title: 'BaaS',
-  // routes: {
-  //   exclude: [
-  //     /models\//,
-  //     /services\//,
-  //     /model\.(t|j)sx?$/,
-  //     /service\.(t|j)sx?$/,
-  //     /components\//,
-  //     /Components\//,
-  //   ],
-  // },
-  
 
   alias: {
     components: resolve(__dirname, './src/components'),

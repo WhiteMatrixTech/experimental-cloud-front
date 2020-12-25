@@ -46,6 +46,35 @@ class LeftMenu extends Component {
     }
   }
 
+  getMenuItem = item => {
+    const { userType } = this.props.Layout;
+    if (item.isFeature && userType === 3) {
+      return ''
+    }
+    if (isEmpty(item.menuVos)) {
+      return (
+        <Menu.Item key={item.menuHref} onClick={() => this.hashChange(item)}>
+          <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
+          <span>{item.menuName}</span>
+        </Menu.Item>
+      )
+    } else {
+      return (
+        <SubMenu key={item.menuHref} title={<div className={styles.menuTtile}>
+          <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
+          <span>{item.menuName}</span>
+        </div>}
+        >
+          {item.menuVos.map(subItem => (
+            <Menu.Item key={subItem.menuHref} onClick={() => this.hashChange(subItem)}>
+              <span style={{ paddingLeft: '8px' }}>{subItem.menuName}</span>
+            </Menu.Item>
+          ))}
+        </SubMenu>
+      )
+    }
+  }
+
   render() {
     const { selectedMenu } = this.props.Layout;
     return <div className={styles.leftMenu} >
@@ -56,30 +85,7 @@ class LeftMenu extends Component {
         theme="dark"
         defaultOpenKeys={[]}
       >
-        {MenuList.map(item => {
-          if (isEmpty(item.menuVos)) {
-            return (
-              <Menu.Item key={item.menuHref} onClick={() => this.hashChange(item)}>
-                <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
-                <span>{item.menuName}</span>
-              </Menu.Item>
-            )
-          } else {
-            return (
-              <SubMenu key={item.menuHref} title={<div className={styles.menuTtile}>
-                <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
-                <span>{item.menuName}</span>
-              </div>}
-              >
-                {item.menuVos.map(subItem => (
-                  <Menu.Item key={subItem.menuHref} onClick={() => this.hashChange(subItem)}>
-                    <span style={{ paddingLeft: '8px' }}>{subItem.menuName}</span>
-                  </Menu.Item>
-                ))}
-              </SubMenu>
-            )
-          }
-        })}
+        {MenuList.map(item => this.getMenuItem(item))}
       </Menu>
     </div>
   }

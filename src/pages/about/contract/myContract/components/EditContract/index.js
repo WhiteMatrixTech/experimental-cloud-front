@@ -4,6 +4,7 @@ import { Input, Select, Form, Button, Upload, Modal, notification } from 'antd';
 
 const { Item } = Form;
 const { Option } = Select;
+const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: {
@@ -45,7 +46,7 @@ function EditContract({ visible, editParams, onCancel, operateType, dispatch }) 
     closable: true,
     destroyOnClose: true,
     title: modalTitle[operateType],
-    onCancel: () => onCancel(),
+    onCancel: onCancel,
     footer: [
       <Button key='cancel' onClick={onCancel}>
         取消
@@ -94,6 +95,16 @@ function EditContract({ visible, editParams, onCancel, operateType, dispatch }) 
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
+        <Item label='上传方式'>本地上传</Item>
+        <Item
+          label='本地合约'
+          valuePropName='fileList'
+          getValueFromEvent={normFile}
+        >
+          <Upload {...uploadProps}>
+            <Button type="primary">上传合约</Button>
+          </Upload>
+        </Item>
         <Item label='所属通道' name='channelId' initialValue={null} rules={[
           {
             required: true,
@@ -166,16 +177,6 @@ function EditContract({ visible, editParams, onCancel, operateType, dispatch }) 
         ]}>
           <Input placeholder='请输入参数列表' />
         </Item>
-        <Item label='上传方式'>本地上传</Item>
-        <Item
-          label='本地合约'
-          valuePropName='fileList'
-          getValueFromEvent={normFile}
-        >
-          <Upload {...uploadProps}>
-            <Button>上传合约</Button>
-          </Upload>
-        </Item>
         <Item label='选择组织' name='policies' initialValue={null} rules={[
           {
             required: true,
@@ -196,7 +197,7 @@ function EditContract({ visible, editParams, onCancel, operateType, dispatch }) 
             message: '合约描述由0~100个字符组成'
           }
         ]}>
-          <Input placeholder='请输入合约描述' />
+          <TextArea placeholder='请输入合约描述' />
         </Item>
       </Form>
     </Modal>

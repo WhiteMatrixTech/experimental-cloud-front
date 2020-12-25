@@ -12,7 +12,7 @@ const { UserName, Password, Submit } = LoginFrom;
 function Login(props) {
 
   const [form] = Form.useForm();
-  const { logining, dispatch, User } = props;
+  const { logining, dispatch, location, User } = props;
   const { loginInfo, loginStatus } = User;
 
   const handleSubmit = () => {
@@ -47,6 +47,7 @@ function Login(props) {
         <UserName
           name="email"
           placeholder="邮箱"
+          defaultValue={location?.state?.account}
           rules={[
             {
               required: true,

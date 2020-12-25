@@ -39,12 +39,14 @@
     "konva": "^7.1.7",
     "less": "^3.9.0",
     "lodash": "^4.17.15",
+    "monaco-editor-webpack-plugin": "^2.0.0",
     "portal-plugin-locale": "^0.0.5",
     "portal-plugin-monorepo-compile": "^0.0.8",
     "react-copy-to-clipboard": "^5.0.2",
     "react-html-table-to-excel": "^2.0.0",
     "react-images": "^0.5.19",
     "react-media-player": "^0.7.6",
+    "react-monaco-editor": "^0.41.2",
     "webpack": "^4.29.0"
   }
 }

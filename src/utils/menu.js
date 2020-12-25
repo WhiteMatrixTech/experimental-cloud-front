@@ -1,5 +1,14 @@
 import { tree2Arr } from '../utils';
 
+/**
+ * id: 菜单id
+ * menuPid: 父菜单id
+ * menuHref: 菜单路由
+ * menuIcon: 菜单图标
+ * menuName： 菜单名称
+ * isFeature： 是否只有盟主才显示
+ * menuVos： 子菜单
+ */
 const MenuList = [
   {
     id: 36,
@@ -43,7 +52,7 @@ const MenuList = [
     menuHref: "/about/orgList",
     menuIcon: "KBasszuzhiguanli",
     menuName: "组织管理",
-    isFeature: 0,
+    isFeature: 1, // 是否只有盟主才显示
     menuVos: []
   },
   {
@@ -104,6 +113,15 @@ const MenuList = [
   {
     id: 46,
     menuPid: 2,
+    menuHref: "/about/certificateChain",
+    menuIcon: "KBassqiyeguanli",
+    menuName: "存证上链",
+    isFeature: 0,
+    menuVos: []
+  },
+  {
+    id: 47,
+    menuPid: 2,
     menuHref: "/about/certificate",
     menuIcon: "KBasszhengshuguanli",
     menuName: "证书管理",
@@ -111,7 +129,7 @@ const MenuList = [
     menuVos: []
   },
   {
-    id: 47,
+    id: 48,
     menuPid: 2,
     menuHref: "/about/logsList",
     menuIcon: "KBassdakaixinfeng",
@@ -120,16 +138,16 @@ const MenuList = [
     menuVos: []
   },
   {
-    id: 48,
+    id: 49,
     menuPid: 2,
     menuHref: "/about/enterpriseMember",
     menuIcon: "KBassqiyeguanli",
     menuName: "成员管理",
-    isFeature: 0,
+    isFeature: 1, // 是否只有盟主才显示
     menuVos: []
   },
   {
-    id: 51,
+    id: 50,
     menuPid: 2,
     menuHref: "/about/message",
     menuIcon: "KBassxiaoxiguanli",
