@@ -86,6 +86,15 @@ const StepOne = (props) => {
           placeholder='联系人姓名'
         />
       </FormItem>
+      <FormItem
+        initialValue={basicInfo.invitationCode ? basicInfo.invitationCode : ''}
+        name="invitationCode"
+      >
+        <Input
+          size="large"
+          placeholder='邀请码'
+        />
+      </FormItem>
     </Form>
   );
 };

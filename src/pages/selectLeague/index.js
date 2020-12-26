@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { history, connect } from 'umi';
 import { PlusOutlined, RocketTwoTone } from '@ant-design/icons';
 import { Row, Col, Button } from 'antd';
 import CreateLeague from './components/CreateLeague';
+import { Roles } from 'utils/roles.js';
 import styles from './index.less';
 
 const leagueList = [
@@ -45,7 +46,7 @@ const leagueList = [
 ]
 
 function SelectLeague(props) {
-
+  const { dispatch } = props;
   const [visible, setVisible] = useState(false);
 
   const onCancel = () => {
@@ -61,31 +62,61 @@ function SelectLeague(props) {
     history.replace('/about/leagueDashboard')
   }
 
+  useEffect(() => {
+    dispatch({
+      type: 'User/getUserInfo',
+      payload: {}
+    })
+  }, [])
+
   return (
     <div className={styles.main}>
       <h3>点击选择联盟进入平台</h3>
-      <Row gutter={16} className={styles['league-wrapper']}>
-        <Col span={6}>
-          <Button type="dashed" className={styles.newButton} onClick={onClickNew}>
-            <PlusOutlined /> 新增联盟
+      <div>
+        <h3>加入联盟</h3>
+        <Row gutter={16} className={styles['league-wrapper']}>
+          {leagueList.map((league, i) => (
+            <Col span={6} key={`${league.leagueName}_${i}`}>
+              <div className={styles['league-card']} onClick={() => onClickLeague(league)}>
+                <div className={styles['card-header']}>
+                  <span className={styles.icon}><RocketTwoTone /></span>
+                  <span className={styles['league-name']}>{league.leagueName}</span>
+                </div>
+                <div className={styles['card-content']}>{league.desc}</div>
+                <div className={styles['card-footer']}>
+                  <div className={styles.allies}>{league.allies}</div>
+                  <div className={styles.createTime}>{league.createTime}</div>
+                </div>
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </div>
+      <div>
+        <h3>我的联盟</h3>
+        <Row gutter={16} className={styles['league-wrapper']}>
+          <Col span={6}>
+            <Button type="dashed" className={styles.newButton} onClick={onClickNew}>
+              <PlusOutlined /> 新增联盟
           </Button>
-        </Col>
-        {leagueList.map((league, i) => (
-          <Col span={6} key={`${league.leagueName}_${i}`}>
-            <div className={styles['league-card']} onClick={() => onClickLeague(league)}>
-              <div className={styles['card-header']}>
-                <span className={styles.icon}><RocketTwoTone /></span>
-                <span className={styles['league-name']}>{league.leagueName}</span>
-              </div>
-              <div className={styles['card-content']}>{league.desc}</div>
-              <div className={styles['card-footer']}>
-                <div className={styles.allies}>{league.allies}</div>
-                <div className={styles.createTime}>{league.createTime}</div>
-              </div>
-            </div>
           </Col>
-        ))}
-      </Row>
+          {leagueList.map((league, i) => (
+            <Col span={6} key={`${league.leagueName}_${i}`}>
+              <div className={styles['league-card']} onClick={() => onClickLeague(league)}>
+                <div className={styles['card-header']}>
+                  <span className={styles.icon}><RocketTwoTone /></span>
+                  <span className={styles['league-name']}>{league.leagueName}</span>
+                </div>
+                <div className={styles['card-content']}>{league.desc}</div>
+                <div className={styles['card-footer']}>
+                  <div className={styles.allies}>{league.allies}</div>
+                  <div className={styles.createTime}>{league.createTime}</div>
+                </div>
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </div>
       {visible && <CreateLeague visible={visible} onCancel={onCancel} />}
     </div>
   );

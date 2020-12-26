@@ -20,26 +20,10 @@ class LeftMenu extends Component {
     }
   }
 
-  getParentMenu = menuPid => {
-    const resultList = [];
-    const { menuArr } = this.props.Layout;
-    const targetMenu = menuArr.find(item => item.id === menuPid);
-    if (targetMenu) {
-      resultList.push(targetMenu);
-      if (targetMenu.menuPid) {
-        this.getParentMenu(targetMenu.menuPid);
-      }
-    }
-    return resultList;
-  }
-
   hashChange = menu => {
-    // 切换菜单时，将面包屑同时更新
-    let breadCrumbItem = [menu].concat(this.getParentMenu(menu.menuPid));
-    breadCrumbItem = breadCrumbItem.reverse();
     this.props.dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: menu.menuHref, breadCrumbItem }
+      payload: { selectedMenu: menu.menuHref }
     });
     if (this.props.pathname !== menu.menuHref) {
       history.push(menu.menuHref);

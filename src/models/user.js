@@ -13,7 +13,7 @@ export default {
     cacheAccount: {}, // 当前注册的账户
     userAndregister: false, // 控制注册成功后的自动跳转
 
-    networkName: 'network1'
+    networkName: 'network1' // 进入系统时的网络
   },
 
   subscriptions: {
@@ -43,7 +43,6 @@ export default {
       const res = yield call(API.login, payload)
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result.access_token) {
-        //TODO 登录成功后在此处设置cookie和localstorage, 然后return ture,页面会自动跳转至选择联盟界面
         yield put({
           type: 'common',
           payload: {
@@ -63,11 +62,22 @@ export default {
         });
       }
     },
+    *getUserInfo({ payload }, { call, put }) {
+      const res = yield call(API.getUserInfo, payload)
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            userInfo: result,
+          }
+        });
+      }
+    },
     *loginout({ payload }, { call, put }) {
       const res = yield call(API.loginout, payload)
       const { statusCode } = res;
       if (statusCode === 'ok') {
-        //TODO 登出成功后在此处清除cookie和localstorage, 然后return ture,页面会自动跳转至选择联盟界面
         return true
       }
     },
