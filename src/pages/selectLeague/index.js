@@ -26,18 +26,24 @@ function SelectLeague(props) {
   }
 
   // 点击加入网络
-  const onJoinLeague = league => {
-    dispatch({
+  const onJoinLeague = async (league) => {
+    await dispatch({
       type: 'User/joinNetwork',
       payload: {
         networkName: league.networkName,
         role: 'networkMember'
       }
-    }).then(res => {
-      if (res) {
-        history.replace('/about/leagueDashboard');
+    })
+    const res = await dispatch({
+      type: 'User/enterNetwork',
+      payload: {
+        contactEmail: userInfo.contactEmail,
+        networkName: league.networkName,
       }
     })
+    if (res) {
+      history.replace('/about/leagueDashboard');
+    }
   }
 
   // 点击网络进入系统
