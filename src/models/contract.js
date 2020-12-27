@@ -5,6 +5,8 @@ export default {
   namespace: 'Contract',
 
   state: {
+    channelList: [], // 创建合约通道下拉框列表
+    orgListWithChannel: [], // 创建合约组织下拉框列表
     myContractList: [], // 我的合约列表
     myContractTotal: 0,
 
@@ -34,7 +36,7 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {},
+    setup({ dispatch, history }) { },
   },
 
   effects: {
@@ -135,6 +137,30 @@ export default {
         notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
       }
     },
+    *getChannelList({ payload }, { call, put }) {
+      const res = yield call(API.getChannelList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            channelList: result.items,
+          },
+        });
+      }
+    },
+    *getOrgListWithChannel({ payload }, { call, put }) {
+      const res = yield call(API.getOrgListWithChannel, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            orgListWithChannel: result.items,
+          },
+        });
+      }
+    },
     *addContract({ payload }, { call, put }) {
       const res = yield call(API.addContract, payload);
       const { statusCode, result } = res;
@@ -180,9 +206,9 @@ export default {
       if (statusCode === 'ok' && result) {
         notification.success({ message: succMessage, top: 64, duration: 1 });
         return true;
-      } else if(res.statusCode === 400 && res.message.indexOf('E11000') != -1 ){
+      } else if (res.statusCode === 400 && res.message.indexOf('E11000') != -1) {
         notification.error({ message: 'Duplicate Key Error' || failMessage, top: 64, duration: 1 });
-      }else{
+      } else {
         notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
       }
     },

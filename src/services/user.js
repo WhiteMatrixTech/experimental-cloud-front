@@ -43,6 +43,13 @@ export async function joinNetwork(params) {
 };
 
 /**
+ * 进入网络
+ */
+export async function enterNetwork(params) {
+  return request(`/enterLeague`, { method: 'POST', body: params });
+};
+
+/**
  * 获取网络列表
  */
 export async function getNetworkList(params) {

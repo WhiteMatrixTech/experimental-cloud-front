@@ -9,13 +9,17 @@ export async function addContract(params) {
 }
 
 /**
+ * 创建合约通道下拉框列表
+ */
+export async function getChannelList(params) {
+  return request(`/api/kbaas-business/org/peer/chain/code/org/select`, { method: 'POST', body: params });
+}
+
+/**
  * 创建合约组织下拉框列表
  */
-export async function getSelectListOfOrgPeerChainCode(params) {
-  return request(`/api/kbaas-business/org/peer/chain/code/org/select`, {
-    method: 'POST',
-    body: params,
-  });
+export async function getOrgListWithChannel(params) {
+  return request(`/api/kbaas-business/org/peer/chain/code/org/select`, { method: 'POST', body: params });
 }
 
 /**

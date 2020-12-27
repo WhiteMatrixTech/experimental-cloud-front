@@ -10,9 +10,9 @@ import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channel');
 
-function Channel(props) {
-  const { Channel, qryLoading, dispatch, User } = props;
-  const { transactionList, transactionTotal } = Channel;
+function Transactions(props) {
+  const { Transactions, qryLoading, dispatch, User } = props;
+  const { transactionList, transactionTotal } = Transactions;
   const { networkName, userRole } = User;
   const [columns, setColumns] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -25,7 +25,7 @@ function Channel(props) {
       networkName,
     }
     dispatch({
-      type: 'Channel/getTransactionTotalDocs',
+      type: 'Transactions/getTransactionTotalDocs',
       payload: params,
     });
   };
@@ -39,7 +39,7 @@ function Channel(props) {
       ascend: false,
     };
     dispatch({
-      type: 'Channel/getTransactionList',
+      type: 'Transactions/getTransactionList',
       payload: params,
     });
   };
@@ -57,7 +57,7 @@ function Channel(props) {
       Id: txId,
     };
     dispatch({
-      type: 'Channel/onSearch',
+      type: 'Transactions/onSearch',
       payload: params,
     });
   };
@@ -162,9 +162,9 @@ function Channel(props) {
   );
 }
 
-export default connect(({ User, Layout, Channel, loading }) => ({
+export default connect(({ User, Layout, Transactions, loading }) => ({
   User,
   Layout,
-  Channel,
-  qryLoading: loading.effects['Channel/getTransactionList'],
-}))(Channel);
+  Transactions,
+  qryLoading: loading.effects['Transactions/getTransactionList'],
+}))(Transactions);

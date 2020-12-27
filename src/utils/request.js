@@ -71,8 +71,12 @@ export const request = (url, options) => {
   };
   // token校验
   const accessToken = localStorage.getItem('accessToken');
+  const roleToken = localStorage.getItem('roleToken');
   if (accessToken) {
     defaultOptions.headers.Authorization = accessToken;
+  }
+  if (roleToken) {
+    defaultOptions.headers.RoleAuth = roleToken;
   }
   const newOptions = { ...defaultOptions, ...options };
   if (newOptions.method) {

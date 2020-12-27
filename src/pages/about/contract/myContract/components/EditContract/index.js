@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Input, Select, Form, Button, Upload, Modal, notification } from 'antd';
+import { Input, Select, Form, Switch, Button, Upload, Modal, notification } from 'antd';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -38,17 +38,29 @@ const handleBeforeUpload = (file, beforeUploadList) => {
   return true;
 };
 
-function EditContract({ visible, editParams, onCancel, operateType, dispatch }) {
+function EditContract(props) {
 
   const [form] = Form.useForm();
   const [fileLabel, setFileLabel] = useState('');
+  const [initRequired, setInitRequired] = useState(false);
+  const { visible, editParams, onCancel, operateType, dispatch, Contract } = props;
+  const { channelList, orgListWithChannel } = Contract
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
       console.log('values', values)
       if (operateType === 'new') {
-
-        onCancel();
+        if (!initRequired) {
+          values.initArgs = ''
+        }
+        dispatch({
+          type: 'Contract/addContract',
+          payload: values
+        }).then(res => {
+          if (res) {
+            onCancel();
+          }
+        })
       } else {
 
         onCancel();
@@ -57,6 +69,25 @@ function EditContract({ visible, editParams, onCancel, operateType, dispatch }) 
       console.log('校验失败:', info);
     });
   };
+
+  const onChangeInit = checked => {
+    setInitRequired(checked);
+  }
+
+  const onChangeChannel = value => {
+    dispatch({
+      type: 'Contract/getOrgListWithChannel',
+      payload: { channelId: value },
+    });
+    form.setFieldsValue({ 'endorsementOrgName': null })
+  }
+
+  useEffect(() => {
+    dispatch({
+      type: 'Contract/getChannelList',
+      payload: {},
+    });
+  }, [])
 
   const uploadProps = {
     name: 'file',
@@ -113,11 +144,21 @@ function EditContract({ visible, editParams, onCancel, operateType, dispatch }) 
         ]}>
           <Select
             getPopupContainer={triggerNode => triggerNode.parentNode}
-            placeholder='请选择通道'
             disabled={operateType !== 'new'}
+            onChange={onChangeChannel}
+            placeholder='请选择通道'
           >
-
-            <Option value='aaa'>aaa</Option>
+            {channelList.map(item => <Option key={item.channelId} value={item.channelId}>{item.channelName}</Option>)}
+          </Select>
+        </Item>
+        <Item label='选择组织' name='endorsementOrgName' initialValue={null} rules={[
+          {
+            required: true,
+            message: '请选择组织',
+          },
+        ]}>
+          <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择组织' notFoundContent='请先选择通道'>
+            {orgListWithChannel.map(item => <Option key={item.orgId} value={item.orgId}>{item.orgName}</Option>)}
           </Select>
         </Item>
         <Item label='合约名称' name='chainCodeName' initialValue='' rules={[
@@ -135,7 +176,7 @@ function EditContract({ visible, editParams, onCancel, operateType, dispatch }) 
         ]}>
           <Input placeholder='请输入合约名称' disabled={operateType !== 'new'} />
         </Item>
-        {(operateType !== 'new') && <Item label='当前版本'>1.2</Item>}
+        {(operateType !== 'new') && <Item label='当前版本'>{editParams.chainCodeVersion}</Item>}
         <Item label='合约版本' name='chainCodeVersion' initialValue='' rules={[
           {
             required: true,
@@ -149,47 +190,33 @@ function EditContract({ visible, editParams, onCancel, operateType, dispatch }) 
         ]}>
           <Input placeholder='请输入合约版本' />
         </Item>
-        <Item label='方法名' name='initMethod' initialValue='' rules={[
-          {
-            required: true,
-            message: '请输入方法名',
-          },
-          {
-            min: 1,
-            max: 100,
-            type: 'string',
-            message: '方法名由1~100位组成'
-          }
-        ]}>
-          <Input placeholder='请输入方法名' />
-        </Item>
-        <Item label='参数列表' name='initArgs' initialValue='' rules={[
-          {
-            required: true,
-            message: '请输入参数列表',
-          },
-          {
-            min: 1,
-            max: 1000,
-            type: 'string',
-            message: '参数由1~1000位组成'
-          }
-        ]}>
-          <Input placeholder='请输入参数列表' />
-        </Item>
-        <Item label='选择组织' name='policies' initialValue={null} rules={[
-          {
-            required: true,
-            message: '请选择组织',
-          },
-        ]}>
-          <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择组织' >
-
-            <Option value='aaa'>aaa</Option>
-          </Select>
-        </Item>
-        <Item label='背书关系'>1</Item>
-        <Item label='合约描述' name='chainCodeDesc' initialValue='' rules={[
+        {operateType === 'new' && (
+          <Item label='是否初始化' name='initRequired' initialValue={false} rules={[
+            {
+              required: true,
+              message: '请选择是否需要初始化',
+            }
+          ]}>
+            <Switch onChange={onChangeInit} />
+          </Item>
+        )}
+        {initRequired &&
+          <Item label='参数列表' name='initArgs' initialValue='' rules={[
+            {
+              required: true,
+              message: '请输入参数列表',
+            },
+            {
+              min: 1,
+              max: 1000,
+              type: 'string',
+              message: '参数由1~1000位组成'
+            }
+          ]}>
+            <TextArea placeholder='请输入参数列表' />
+          </Item>
+        }
+        <Item label='合约描述' name='description' initialValue='' rules={[
           {
             min: 1,
             max: 100,
