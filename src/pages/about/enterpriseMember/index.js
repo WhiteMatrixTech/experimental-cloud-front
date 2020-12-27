@@ -232,11 +232,11 @@ function EnterpriseMember(props) {
 
   // 停用 & 启用 企业成员
   const invalidateMember = (record, isValid) => {
-    const params ={
+    const params = {
       networkName,
       isValid,
-      did: record.did,
-    }
+      companyName: record.companyName,
+    };
     dispatch({
       type: 'Member/setStatusOfLeagueConpany',
       payload: params,
@@ -249,11 +249,11 @@ function EnterpriseMember(props) {
 
   // 通过 & 驳回 企业成员
   const approvalMember = (record, approvalStatus) => {
-    const params ={
+    const params = {
       networkName,
       approvalStatus,
-      did: record.did,
-    }
+      companyName: record.companyName,
+    };
     dispatch({
       type: 'Member/setCompanyApprove',
       payload: params,
@@ -267,9 +267,14 @@ function EnterpriseMember(props) {
   // 点击查看详情
   const onClickDetail = (record) => {
     history.push({
-      pathname: `/about/enterpriseMember/${record.did}`,
-      query: {
-        did: record.did,
+      pathname: `/about/enterpriseMember/${record.companyCertBusinessNumber}`,
+      state: {
+        companyCertBusinessNumber: record.companyCertBusinessNumber,
+        approvalStatus: record.approvalStatus,
+        companyName: record.companyName,
+        contactName: record.contactName,
+        contactCell: record.contactCell,
+        contactEmail: record.contactEmail,
       },
     });
   };

@@ -21,6 +21,8 @@ const statisticsList = [
 function LeagueDashboard(props) {
   const { Dashboard, dispatch, qryBlockLoading, qryTransactionLoading, User } = props;
   const { networkName, userRole } = User;
+  // eslint-disable-next-line no-unused-vars
+  const [pageNum, setPageNum] = useState(1);
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
   const { networkStatusInfo, transactionList, blockList } = Dashboard;
@@ -53,11 +55,12 @@ function LeagueDashboard(props) {
   }
   // 获取区块列表
   const getBlockList = () => {
+    const offset = (pageNum - 1) * 6;
     const params = {
       networkName,
-      blockHash: '',
+      offset: offset,
       limit: 6,
-      paginator: 0,
+      ascend: false,
     };
     dispatch({
       type: 'Dashboard/getBlockList',
@@ -77,11 +80,12 @@ function LeagueDashboard(props) {
 
   // 获取交易列表
   const getTransactionList = () => {
+    const offset = (pageNum - 1) * 6;
     const params = {
       networkName,
-      companyId: 1,
+      offset: offset,
       limit: 6,
-      paginator: 0,
+      ascend: false,
     };
     dispatch({
       type: 'Dashboard/getTransactionList',

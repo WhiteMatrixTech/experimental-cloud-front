@@ -74,6 +74,7 @@ function BlockDetail({
       from: Number(moment(new Date()).format('x')),
       offset: (pageNum - 1) * pageSize,
       limit: pageSize,
+      ascend: false,
     };
     dispatch({
       type: 'Block/getTransactionList',
