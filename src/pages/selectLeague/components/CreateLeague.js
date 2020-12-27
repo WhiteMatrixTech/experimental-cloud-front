@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Input, Select, Form, Button, Modal } from 'antd';
+import { Input, Form, Button, Modal } from 'antd';
 
 const { Item } = Form;
-const { Option } = Select;
+const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: {
@@ -62,7 +62,7 @@ function CreateLeague(props) {
       <Form {...formItemLayout} form={form}>
         <Item
           label="联盟名称"
-          name="leagueName"
+          name="networkName"
           rules={[
             {
               required: true,
@@ -72,18 +72,15 @@ function CreateLeague(props) {
         >
           <Input placeholder="请输入联盟名称" />
         </Item>
-        <Item
-          label="添加成员"
-          name="orgName"
-        >
-          <Select
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-            placeholder="请选择添加成员"
-            mode="multiple"
-          >
-            <Option value='aaaa'>测试企业</Option>
-            <Option value='bbbb'>国家企业</Option>
-          </Select>
+        <Item label='联盟描述' name='networkDesc' initialValue='' rules={[
+          {
+            min: 1,
+            max: 100,
+            type: 'string',
+            message: '联盟描述由0~100个字符组成'
+          }
+        ]}>
+          <TextArea placeholder='请输入联盟描述' />
         </Item>
       </Form>
     </Modal>

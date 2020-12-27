@@ -19,10 +19,10 @@ function TransactionDetail({
   User,
   dispatch,
   qryLoading = false,
-  Channel
+  Transactions
 }) {
   const { networkName } = User;
-  const { transactionDetail } = Channel;
+  const { transactionDetail } = Transactions;
 
   const detailList = [
     {
@@ -65,8 +65,8 @@ function TransactionDetail({
 
   useEffect(() => {
     dispatch({
-      type: 'Channel/getTransactionDetail',
-      payload: { Id: transactionHash ,networkName}
+      type: 'Transactions/getTransactionDetail',
+      payload: { Id: transactionHash, networkName }
     })
   }, []);
 
@@ -103,8 +103,8 @@ function TransactionDetail({
   )
 }
 
-export default connect(({User, Channel, loading }) => ({
+export default connect(({ User, Transactions, loading }) => ({
   User,
-  Channel,
-  qryLoading: loading.effects['Channel/getTransactionDetail']
+  Transactions,
+  qryLoading: loading.effects['Transactions/getTransactionDetail']
 }))(TransactionDetail);

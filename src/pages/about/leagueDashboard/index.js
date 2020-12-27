@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Radio, Table, Space, Col, Row } from 'antd';
+import { Radio, Table, Space, Col, Row, Button } from 'antd';
 import { connect } from 'dva';
 import { history } from 'umi';
 import moment from 'moment';
-import { Roles } from 'utils/roles.js';
+import { Roles } from 'utils/roles';
 import { StatisticsCard, LeagueBar, LeagueScatter, Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { NetworkStatus, NetworkInfo } from 'utils/NetworkStatus';
 import style from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/leagueDashboard');
@@ -22,12 +23,34 @@ function LeagueDashboard(props) {
   const { networkName, userRole } = User;
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
-  const { transactionList, blockList } = Dashboard;
+  const { networkStatusInfo, transactionList, blockList } = Dashboard;
   const [barType, setBarType] = useState('seven');
 
   const onChangeBarType = (e) => {
     setBarType({ barType: e.target.value });
   };
+
+  // 获取网络信息
+  const getNetworkInfo = () => {
+    dispatch({
+      type: 'Dashboard/getNetworkInfo',
+      payload: {},
+    });
+  }
+  // 创建网络
+  const onCreateNetwork = () => {
+    dispatch({
+      type: 'Dashboard/createNetwork',
+      payload: {},
+    });
+  }
+  // 删除网络
+  const onDeleteNetwork = () => {
+    dispatch({
+      type: 'Dashboard/deleteNetwork',
+      payload: {},
+    });
+  }
   // 获取区块列表
   const getBlockList = () => {
     const params = {
@@ -168,6 +191,12 @@ function LeagueDashboard(props) {
     getTransactionList();
   }, []);
 
+  // 轮询网络状态
+  useEffect(() => {
+    const interval = setInterval(() => getNetworkInfo, 2000);
+    return clearInterval(interval);
+  }, [])
+
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -176,16 +205,33 @@ function LeagueDashboard(props) {
           <Row>
             <Col span={8}>
               <label>联盟名称：</label>
-              <span>{'数研院'}</span>
+              <span>{networkName}</span>
             </Col>
             <Col span={8}>
               <label>创建时间：</label>
-              <span>{'2020-07-03 17:56:23'}</span>
+              <span>{networkStatusInfo.createdAt}</span>
             </Col>
+            <Col span={8}>
+              <label>网络状态: </label>
+              <span>{NetworkInfo[networkStatusInfo.networkStatus]}</span>
+              {(userRole === Roles.NetworkMember) && (networkStatusInfo.networkStatus === NetworkStatus.Errored) && (
+                <span>,请联系技术人员排查</span>
+              )}
+            </Col>
+            {(userRole === Roles.NetworkAdmin) && (networkStatusInfo.networkStatus === NetworkStatus.Archived) && (
+              <Col span={8}>
+                <Button type="primary" onClick={onCreateNetwork} loading={props.createLoading}>立即创建</Button>
+              </Col>
+            )}
+            {(userRole === Roles.NetworkAdmin) && (networkStatusInfo.networkStatus === NetworkStatus.Errored) && (
+              <Col span={8}>
+                <Button type="primary" onClick={onDeleteNetwork} loading={props.deleteLoading}>删除网络</Button>
+              </Col>
+            )}
           </Row>
         </div>
         <StatisticsCard statisticsList={statisticsList} />
-        {userRole === Roles.NetworkAdmin && (
+        {/* {userRole === Roles.NetworkAdmin && (
           <div id="leagua-scatter" className={style['leagua-scatter-wrapper']}>
             <div className={style['league-scatter-title']}>联盟图</div>
             <LeagueScatter />
@@ -200,7 +246,7 @@ function LeagueDashboard(props) {
             </Radio.Group>
           </div>
           <LeagueBar type={barType} />
-        </div>
+        </div> */}
         <Table
           rowKey="_id"
           columns={blockColumns}
@@ -226,6 +272,8 @@ export default connect(({ User, Layout, Dashboard, loading }) => ({
   User,
   Layout,
   Dashboard,
+  createLoading: loading.effects['Dashboard/createNetwork'],
+  deleteLoading: loading.effects['Dashboard/deleteNetwork'],
   qryBlockLoading: loading.effects['Dashboard/getBlockList'],
   qryTransactionLoading: loading.effects['Dashboard/getTransactionList'],
 }))(LeagueDashboard);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { history, connect } from 'umi';
 import { PlusOutlined, RocketTwoTone } from '@ant-design/icons';
-import { Row, Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Spin, Empty, Divider } from 'antd';
 import CreateLeague from './components/CreateLeague';
 import { Roles } from 'utils/roles.js';
 import { getDifferenceSet } from 'utils';
@@ -43,17 +43,31 @@ function SelectLeague(props) {
   // 点击网络进入系统
   const onClickLeague = league => {
     dispatch({
-      type: 'User/common',
+      type: 'User/enterNetwork',
       payload: {
-        userRole: league.role,
+        contactEmail: userInfo.contactEmail,
         networkName: league.networkName,
       }
-    });
-    localStorage.setItem('userRole', league.role);
-    localStorage.setItem('networkName', league.networkName);
-    history.replace('/about/leagueDashboard');
+    }).then(res => {
+      if (res) {
+        dispatch({
+          type: 'User/common',
+          payload: {
+            userRole: league.role,
+            networkName: league.networkName,
+          }
+        });
+        localStorage.setItem('userRole', league.role);
+        localStorage.setItem('networkName', league.networkName);
+        history.replace('/about/leagueDashboard');
+      }
+    })
   }
 
+  // 不同状态展示不同的内容
+  const isAdminWithEmpty = userInfo.role && (userInfo.role === Roles.Admin) && (myNetworkList.length === 0);
+  const isAdminNotEmpty = userInfo.role && (userInfo.role === Roles.Admin) && (myNetworkList.length > 0);
+  const notAdminWithEmpty = (!userInfo.role || userInfo.role !== Roles.Admin) && (myNetworkList.length === 0);
   return (
     <div className={styles.main}>
       <Spin spinning={joinLoading}>
@@ -76,11 +90,18 @@ function SelectLeague(props) {
               </Col>
             ))}
           </Row>
+          {networkList.length === 0 && <Empty description='暂无联盟可加入' />}
         </div>
+        <Divider />
         <div>
           <h3>我的联盟</h3>
+          {isAdminWithEmpty && <Empty description='暂无联盟' >
+            <Button type="primary" onClick={onClickNew}>立即创建</Button>
+          </Empty>
+          }
+          {notAdminWithEmpty && <Empty description='暂无联盟' />}
           <Row gutter={16} className={styles['league-wrapper']}>
-            {(userInfo.role && userInfo.role === Roles.Admin) && <Col span={6}>
+            {isAdminNotEmpty && <Col span={6}>
               <Button type="dashed" className={styles.newButton} onClick={onClickNew}>
                 <PlusOutlined /> 新增联盟
             </Button>

@@ -10,7 +10,8 @@ export default {
 
   state: {
     userInfo: userInfo,
-    accessToken: '',
+    accessToken: '', // 登录token
+    roleToken: '', // 角色token 
     loginInfo: '',
     loginStatus: '',
     cacheAccount: {}, // 当前注册的账户
@@ -19,8 +20,8 @@ export default {
     networkList: [], // 网络列表
     myNetworkList: [], // 我的网络列表
 
-    userRole: localStorage.getItem('userRole') || '', // 进入系统的身份
-    networkName: localStorage.getItem('networkName') || '' // 进入系统时的网络
+    userRole: localStorage.getItem('userRole') || Roles.NetworkMember, // 进入系统的身份
+    networkName: localStorage.getItem('networkName') || 'network1' // 进入系统时的网络
   },
 
   subscriptions: {
@@ -119,6 +120,20 @@ export default {
             myNetworkList: result,
           }
         });
+      }
+    },
+    *enterNetwork({ payload }, { call, put }) {
+      const res = yield call(API.enterNetwork, payload)
+      const { statusCode, result } = res;
+      if (statusCode === 'ok' && result.role_token) {
+        yield put({
+          type: 'common',
+          payload: {
+            roleToken: result.role_token
+          }
+        });
+        localStorage.setItem('roleToken', result.role_token);
+        return true
       }
     },
     *joinNetwork({ payload }, { call, put }) {

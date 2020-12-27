@@ -31,7 +31,7 @@ const MenuList = [
   {
     id: 38,
     menuPid: 2,
-    menuHref: "/about/channel",
+    menuHref: "/about/transactions",
     menuIcon: "KBassjiaoyi",
     menuName: "交易",
     isFeature: 0,

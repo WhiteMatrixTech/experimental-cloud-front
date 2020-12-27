@@ -1,8 +1,8 @@
-import * as API from '../services/channel';
+import * as API from '../services/transactions';
 import { notification } from 'antd';
 
 export default {
-  namespace: 'Channel',
+  namespace: 'Transactions',
 
   state: {
     transactionList: [], // 交易列表
@@ -12,7 +12,7 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {},
+    setup({ dispatch, history }) { },
   },
 
   effects: {
@@ -61,7 +61,7 @@ export default {
             transactionDetail: '',
           },
         });
-        notification.error({ message: res.message , top: 64, duration: 1 });
+        notification.error({ message: res.message, top: 64, duration: 1 });
       }
     },
 
