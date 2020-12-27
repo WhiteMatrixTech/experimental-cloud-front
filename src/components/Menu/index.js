@@ -5,6 +5,7 @@ import { history } from 'umi';
 import styles from './index.less';
 import isEmpty from 'lodash/isEmpty';
 import { MenuList } from 'utils/menu.js';
+import { Roles } from 'utils/roles.js';
 const { SubMenu } = Menu;
 
 class LeftMenu extends Component {
@@ -31,8 +32,8 @@ class LeftMenu extends Component {
   }
 
   getMenuItem = item => {
-    const { userType } = this.props.Layout;
-    if (item.isFeature && userType === 3) {
+    const { userRole } = this.props.User;
+    if (item.isFeature && userRole === Roles.NetworkMember) {
       return ''
     }
     if (isEmpty(item.menuVos)) {
@@ -75,4 +76,4 @@ class LeftMenu extends Component {
   }
 }
 
-export default connect(({ Layout }) => ({ Layout }))(LeftMenu);
+export default connect(({ Layout, User }) => ({ Layout, User }))(LeftMenu);

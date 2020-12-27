@@ -1,24 +1,37 @@
 import * as API from '../services/user.js';
 import { notification } from 'antd';
+import { Roles } from 'utils/roles.js';
 import LoginStatus from '../utils/loginStatus';
+
+const userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {};
 
 export default {
   namespace: 'User',
 
   state: {
-    userInfo: {},
+    userInfo: userInfo,
     accessToken: '',
     loginInfo: '',
     loginStatus: '',
     cacheAccount: {}, // 当前注册的账户
     userAndregister: false, // 控制注册成功后的自动跳转
 
-    networkName: 'network1' // 进入系统时的网络
+    networkList: [], // 网络列表
+    myNetworkList: [], // 我的网络列表
+
+    userRole: localStorage.getItem('userRole') || '', // 进入系统的身份
+    networkName: localStorage.getItem('networkName') || '' // 进入系统时的网络
   },
 
   subscriptions: {
     setup({ dispatch, history }) {
-
+      return history.listen(({ pathname }) => {
+        if (pathname.indexOf('/selectLeague') > -1) {
+          dispatch({ type: 'getUserInfo' }); // 优先级
+          dispatch({ type: 'getNetworkList' });
+          dispatch({ type: 'getMyNetworkList' });
+        }
+      });
     },
   },
 
@@ -66,6 +79,7 @@ export default {
       const res = yield call(API.getUserInfo, payload)
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
+        localStorage.setItem('userInfo', JSON.stringify(result))
         yield put({
           type: 'common',
           payload: {
@@ -79,6 +93,61 @@ export default {
       const { statusCode } = res;
       if (statusCode === 'ok') {
         return true
+      }
+    },
+    *getNetworkList({ payload }, { call, put }) {
+      const res = yield call(API.getNetworkList, payload)
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        const networkList = result.map(item => {
+          item.networkName = item._id;
+          return item
+        })
+        yield put({
+          type: 'common',
+          payload: { networkList }
+        });
+      }
+    },
+    *getMyNetworkList({ payload }, { call, put }) {
+      const res = yield call(API.getMyNetworkList, payload)
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            myNetworkList: result,
+          }
+        });
+      }
+    },
+    *joinNetwork({ payload }, { call, put }) {
+      const res = yield call(API.joinNetwork, payload)
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: '加入联盟成功', top: 64, duration: 1 });
+        localStorage.setItem('userRole', result.role);
+        localStorage.setItem('networkName', result.networkName);
+        yield put({
+          type: 'common',
+          payload: {
+            userRole: result.role,
+            networkName: result.networkName,
+          }
+        });
+        return true;
+      } else {
+        notification.error({ message: result.message || '加入联盟失败', top: 64, duration: 1 })
+      }
+    },
+    *createNetwork({ payload }, { call, put }) {
+      const res = yield call(API.createNetwork, payload)
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+
+      } else {
+        notification.error({ message: result.message || '网络创建失败', top: 64, duration: 1 })
+        return false
       }
     },
   },

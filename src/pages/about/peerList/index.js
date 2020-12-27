@@ -6,14 +6,14 @@ import { Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import CreatePeer from './components/CreatePeer';
 import baseConfig from 'utils/config';
+import { Roles } from 'utils/roles.js';
 import { peerStatus } from './_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/peerList')
 
 function PeerList(props) {
-  const { dispatch, qryLoading = false ,User} = props
-  const { networkName } = User;
-  const { userType } = props.Layout
+  const { dispatch, qryLoading = false, User } = props
+  const { networkName, userRole } = User;
   const { peerList, peerTotal } = props.Peer
   const [columns, setColumns] = useState([])
   const [pageNum, setPageNum] = useState(1)
@@ -24,7 +24,7 @@ function PeerList(props) {
   const getOrgList = () => {
     const params = {
       networkName,
-      networkVersion:'1.0.0'
+      networkVersion: '1.0.0'
     }
     dispatch({
       type: 'Peer/getOrgList',
@@ -36,7 +36,7 @@ function PeerList(props) {
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       networkName,
-      networkVersion:'1.0.0',
+      networkVersion: '1.0.0',
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
@@ -97,7 +97,7 @@ function PeerList(props) {
         render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
       },
     ]
-    if (userType === 2) {
+    if (userRole === Roles.NetworkAdmin) {
       data.push(
         {
           title: '所属组织',
@@ -108,7 +108,7 @@ function PeerList(props) {
       )
     }
     setColumns(data)
-  }, [userType]);
+  }, [userRole]);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
@@ -145,12 +145,12 @@ function PeerList(props) {
           pagination={{ pageSize, total: peerTotal, current: pageNum, position: ['bottomCenter'] }}
         />
       </div>
-      {createPeerVisible && <CreatePeer  getPeerList={getPeerList} visible={createPeerVisible} onCancel={onCloseCreatePeerModal} />}
+      {createPeerVisible && <CreatePeer getPeerList={getPeerList} visible={createPeerVisible} onCancel={onCloseCreatePeerModal} />}
     </div >
   )
 }
 
-export default connect(({User, Layout, Peer, loading }) => ({
+export default connect(({ User, Layout, Peer, loading }) => ({
   User,
   Layout,
   Peer,

@@ -3,10 +3,10 @@ import { Radio, Table, Space, Col, Row } from 'antd';
 import { connect } from 'dva';
 import { history } from 'umi';
 import moment from 'moment';
+import { Roles } from 'utils/roles.js';
 import { StatisticsCard, LeagueBar, LeagueScatter, Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import style from './index.less';
-import Layout from 'antd/lib/layout/layout';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/leagueDashboard');
 const statisticsList = [
@@ -18,13 +18,12 @@ const statisticsList = [
 ];
 
 function LeagueDashboard(props) {
-  const { Layout, Dashboard, dispatch, qryBlockLoading, qryTransactionLoading ,User} = props;
-  const {networkName} = User;
+  const { Dashboard, dispatch, qryBlockLoading, qryTransactionLoading, User } = props;
+  const { networkName, userRole } = User;
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
   const { transactionList, blockList } = Dashboard;
   const [barType, setBarType] = useState('seven');
-  const { userType } = Layout;
 
   const onChangeBarType = (e) => {
     setBarType({ barType: e.target.value });
@@ -78,14 +77,13 @@ function LeagueDashboard(props) {
   };
   //用户身份改变时，表格展示改变
   useEffect(() => {
-    const { userType } = Layout;
     const block = [
       {
         title: '区块HASH',
         dataIndex: 'blockHash',
         key: 'blockHash',
         ellipsis: true,
-        width: userType === 2 ? '20%' : '17%',
+        width: userRole === Roles.NetworkMember ? '17%' : '20%',
       },
       {
         title: '所属通道',
@@ -152,7 +150,7 @@ function LeagueDashboard(props) {
         ),
       },
     ];
-    if (userType === 3) {
+    if (userRole === Roles.NetworkMember) {
       const insertColumn = {
         title: '所属联盟',
         dataIndex: 'leagueName',
@@ -163,7 +161,7 @@ function LeagueDashboard(props) {
     }
     setBlockColumns(block);
     setTransactionColumns(transaction);
-  }, [Layout.userType]);
+  }, [userRole]);
 
   useEffect(() => {
     getBlockList();
@@ -187,7 +185,7 @@ function LeagueDashboard(props) {
           </Row>
         </div>
         <StatisticsCard statisticsList={statisticsList} />
-        {userType === 2 && (
+        {userRole === Roles.NetworkAdmin && (
           <div id="leagua-scatter" className={style['leagua-scatter-wrapper']}>
             <div className={style['league-scatter-title']}>联盟图</div>
             <LeagueScatter />
@@ -224,7 +222,7 @@ function LeagueDashboard(props) {
   );
 }
 
-export default connect(({User, Layout, Dashboard, loading }) => ({
+export default connect(({ User, Layout, Dashboard, loading }) => ({
   User,
   Layout,
   Dashboard,

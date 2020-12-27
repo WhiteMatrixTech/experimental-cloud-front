@@ -6,6 +6,7 @@ import { Breadcrumb, DetailCard, SearchBar } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import { chainCodeStatus } from '../../contract/myContract/_config';
 import baseConfig from 'utils/config';
+import { Roles } from 'utils/roles.js';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/unionList')
 breadCrumbItem.push({
@@ -104,7 +105,7 @@ class UnionChain extends Component {
   render() {
     const { qryLoading = false } = this.props;
     const { pageSize, pageNum } = this.state;
-    const { userType } = this.props.Layout
+    const { userRole } = this.props.User
     const { contractListOfUnion, contractTotalOfUnion, contractInfoOfUnion } = this.props.Contract;
     const unionInfoList = [
       {
@@ -124,7 +125,7 @@ class UnionChain extends Component {
         value: contractInfoOfUnion.myCreateCount
       }
     ]
-    if (userType === 2) {
+    if (userRole === Roles.NetworkAdmin) {
       unionInfoList.slice(1, 0, {
         label: '所属联盟',
         value: contractInfoOfUnion.leagueName
@@ -151,8 +152,9 @@ class UnionChain extends Component {
   }
 }
 
-export default connect(({ Union, Layout, loading }) => ({
+export default connect(({ Union, Layout, User, loading }) => ({
   Union,
   Layout,
+  User,
   qryLoading: loading.effects['Union/getContractListOfUnion']
 }))(UnionChain);

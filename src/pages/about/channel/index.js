@@ -5,14 +5,15 @@ import { Table, Space } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, SearchBar } from 'components';
 import baseConfig from 'utils/config';
+import { Roles } from 'utils/roles.js';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channel');
 
 function Channel(props) {
-  const { Channel, Layout, qryLoading, dispatch, User } = props;
+  const { Channel, qryLoading, dispatch, User } = props;
   const { transactionList, transactionTotal } = Channel;
-  const { networkName } = User;
+  const { networkName, userRole } = User;
   const [columns, setColumns] = useState([]);
   const [current, setCurrent] = useState(1);
   const [pageNum, setPageNum] = useState(1);
@@ -78,14 +79,13 @@ function Channel(props) {
 
   //用户身份改变时，表格展示改变
   useEffect(() => {
-    const { userType } = Layout;
     const data = [
       {
         title: '交易ID',
         dataIndex: 'txId',
         key: 'txId',
         ellipsis: true,
-        width: userType === 2 ? '20%' : '17%',
+        width: userRole === Roles.NetworkMember ? '17%' : '20%',
       },
       {
         title: '所属通道',
@@ -118,7 +118,7 @@ function Channel(props) {
         ),
       },
     ];
-    if (userType === 3) {
+    if (userRole === Roles.NetworkMember) {
       const insertColumn = {
         title: '所属联盟',
         dataIndex: 'leagueName',
@@ -127,7 +127,7 @@ function Channel(props) {
       data.splice(1, 0, insertColumn);
     }
     setColumns(data);
-  }, [Layout.userType]);
+  }, [userRole]);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
@@ -162,7 +162,7 @@ function Channel(props) {
   );
 }
 
-export default connect(({User, Layout, Channel, loading }) => ({
+export default connect(({ User, Layout, Channel, loading }) => ({
   User,
   Layout,
   Channel,

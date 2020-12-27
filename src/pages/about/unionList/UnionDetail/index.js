@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Radio, Table, Space, Col, Row} from 'antd';
+import { Radio, Table, Space, Col, Row } from 'antd';
 import { connect } from "dva";
 import { history } from 'umi';
 import moment from 'moment';
@@ -39,7 +39,6 @@ class UnionDetail extends Component {
         dataIndex: 'blockHash',
         key: 'blockHash',
         ellipsis: true,
-        // width: (userType === 2) ? '20%' : '17%'
       },
       {
         title: '所属通道',
@@ -170,29 +169,29 @@ class UnionDetail extends Component {
       <div className='page-wrapper'>
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className='page-content'>
-        <div className={style['league-basic-info']}>
-          <Row  >
-           <Col span ={8}>
-             <label >通道ID：</label>
-             <span>{'1'}</span>
-           </Col> 
-           <Col span ={8} >
-             <label >通道名称：</label>
-             <span>{'syychannel'}</span>
-           </Col>
-           <Col span ={8} >
-             <label >通道别名：</label>
-             <span>{'数研院'}</span>
-           </Col>
-           <Col span ={8} >
-             <label >状态：</label>
-             <span>{'运行中'}</span>
-           </Col>
-           <Col span ={8} >
-             <label >创建时间：</label>
-             <span>{'2020-11-24 17:54:11'}</span>
-           </Col>
-           </Row>
+          <div className={style['league-basic-info']}>
+            <Row  >
+              <Col span={8}>
+                <label >通道ID：</label>
+                <span>{'1'}</span>
+              </Col>
+              <Col span={8} >
+                <label >通道名称：</label>
+                <span>{'syychannel'}</span>
+              </Col>
+              <Col span={8} >
+                <label >通道别名：</label>
+                <span>{'数研院'}</span>
+              </Col>
+              <Col span={8} >
+                <label >状态：</label>
+                <span>{'运行中'}</span>
+              </Col>
+              <Col span={8} >
+                <label >创建时间：</label>
+                <span>{'2020-11-24 17:54:11'}</span>
+              </Col>
+            </Row>
           </div>
           <StatisticsCard statisticsList={statisticsList} imgList={imgList} />
           <div className={style['network-topo-wrapper']}>

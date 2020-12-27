@@ -8,14 +8,14 @@ import { Breadcrumb } from 'components';
 import CreateUnion from './components/CreateUnion';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import baseConfig from 'utils/config';
+import { Roles } from 'utils/roles.js';
 import { unionStatus } from './_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/unionList')
 
 function UnionList(props) {
-  const { dispatch, qryLoading = false ,User} = props
-  const { networkName } = User;
-  const { userType } = props.Layout
+  const { dispatch, qryLoading = false, User } = props
+  const { networkName, userRole } = User;
   const { unionList, unionTotal } = props.Union
   const [columns, setColumns] = useState([])
   const [pageNum, setPageNum] = useState(1)
@@ -39,7 +39,7 @@ function UnionList(props) {
   }
 
   // 获取通道列表
-  const getUNionListTotalDocs = () =>{
+  const getUNionListTotalDocs = () => {
     dispatch({
       type: 'Union/getUNionListTotalDocs',
       payload: { networkName },
@@ -178,18 +178,18 @@ function UnionList(props) {
         width: '18%',
         render: (text, record) => (
           <Space size='small'>
-            {((record.channelStatus === 4 || record.channelStatus === 12) && userType === 2) && <a>开启通道</a>}
+            {((record.channelStatus === 4 || record.channelStatus === 12) && userRole === Roles.NetworkAdmin) && <a>开启通道</a>}
             <a onClick={() => onViewOrg(record)}>查看组织</a>
             <a onClick={() => onViewPeer(record)}>查看节点</a>
             <a onClick={() => onViewContract(record)}>查看合约</a>
-            {(record.channelStatus === 1 && userType === 2) && <a onClick={() => onClickToConfirm(record, 'stop')}>停用通道</a>}
-            {(record.channelStatus === 7 && userType === 2) && <a onClick={() => onClickToConfirm(record, 'enable')}>启用通道</a>}
+            {(record.channelStatus === 1 && userRole === Roles.NetworkAdmin) && <a onClick={() => onClickToConfirm(record, 'stop')}>停用通道</a>}
+            {(record.channelStatus === 7 && userRole === Roles.NetworkAdmin) && <a onClick={() => onClickToConfirm(record, 'enable')}>启用通道</a>}
             <a onClick={() => onViewDetail(record)}>详情</a>
           </Space>
         ),
       },
     ]
-    if (userType === 3) {
+    if (userRole === Roles.NetworkMember) {
       const rest = [{
         title: '所属联盟',
         dataIndex: 'leagueName',
@@ -208,7 +208,7 @@ function UnionList(props) {
       data.splice(6, 0, rest[2])
     }
     setColumns(data)
-  }, [userType]);
+  }, [userRole]);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
@@ -221,7 +221,7 @@ function UnionList(props) {
     <div className='page-wrapper'>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className='page-content'>
-        {userType === 2 &&
+        {userRole === Roles.NetworkAdmin &&
           <div className='table-header-btn-wrapper'>
             <Button type='primary' onClick={onClickCreateUnion}>创建通道</Button>
           </div>
@@ -241,7 +241,7 @@ function UnionList(props) {
   )
 }
 
-export default connect(({User, Layout, Union, loading }) => ({
+export default connect(({ User, Layout, Union, loading }) => ({
   User,
   Layout,
   Union,

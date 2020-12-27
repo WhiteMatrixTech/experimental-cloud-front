@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Upload, Modal, notification } from 'antd';
 
@@ -21,14 +21,31 @@ const modalTitle = {
   'upgrate': '升级合约'
 }
 
+const normFile = e => {
+  // console.log('Upload event:', e);
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e && e.fileList;
+};
+// 上传前校验文件大小
+const handleBeforeUpload = (file, beforeUploadList) => {
+  const biggerThanMaxSize = beforeUploadList.some(innerItem => innerItem.size > (1024 * 1024 * 1024 * 5));
+  if (biggerThanMaxSize) {
+    notification.error({ message: '合约文件大小不能超过5M', top: 64, duration: 1 });
+    return false;
+  }
+  return true;
+};
+
 function EditContract({ visible, editParams, onCancel, operateType, dispatch }) {
 
   const [form] = Form.useForm();
+  const [fileLabel, setFileLabel] = useState('');
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
-      form.resetFields();
-      form.setFieldsValue(values)
+      console.log('values', values)
       if (operateType === 'new') {
 
         onCancel();
@@ -39,6 +56,23 @@ function EditContract({ visible, editParams, onCancel, operateType, dispatch }) 
     }).catch(info => {
       console.log('校验失败:', info);
     });
+  };
+
+  const uploadProps = {
+    name: 'file',
+    listType: 'text',
+    action: `http://52.81.104.180:3000/chaincodes/uploadpackagearchive`,
+    accept: '.zip, .jar, .rar, .gz',
+    multiple: false,
+    beforeUpload: handleBeforeUpload,
+    onChange(info) {
+      if (info.file.status === 'done') {
+        notification.success({ message: `Succeed in uploading contract ${info.file.name}`, top: 64, duration: 1 })
+        setFileLabel(info.file.response.label)
+      } else if (info.file.status === 'error') {
+        notification.error({ message: info.file.response.message, top: 64, duration: 1 })
+      }
+    },
   };
 
   const drawerProps = {
@@ -57,46 +91,12 @@ function EditContract({ visible, editParams, onCancel, operateType, dispatch }) 
     ]
   };
 
-  const normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
-  // 上传前校验文件大小
-  const handleBeforeUpload = (file, beforeUploadList) => {
-    // let fileName = file.name;
-    const biggerThanMaxSize = beforeUploadList.some(innerItem => innerItem.size > (1024 * 1024 * 1024 * 5));
-    if (biggerThanMaxSize) {
-      notification.error({ message: '合约文件大小不能超过5M', top: 64, duration: 1 });
-      return false;
-    }
-    return true;
-  };
-
-  const uploadProps = {
-    name: 'file',
-    listType: 'text',
-    action: `/upload.do`,
-    accept: '.zip, .jar',
-    multiple: false,
-    beforeUpload: handleBeforeUpload,
-    onChange(info) {
-      if (info.file.status === 'done') {
-        notification.success({ message: `Succeed in uploading contract ${info.file.name}`, top: 64, duration: 1 });
-      } else if (info.file.status === 'error') {
-        notification.error({ message: info.file.response.message, top: 64, duration: 1 });
-      }
-    },
-  };
-
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
         <Item label='上传方式'>本地上传</Item>
         <Item
+          name='upload'
           label='本地合约'
           valuePropName='fileList'
           getValueFromEvent={normFile}

@@ -15,7 +15,7 @@ const formItemLayout = {
 };
 
 function CreateLeague(props) {
-  const { League } = props;
+  const { dispatch } = props;
 
   const { visible, onCancel, addLoading = false } = props;
 
@@ -25,23 +25,16 @@ function CreateLeague(props) {
     form
       .validateFields()
       .then((values) => {
-        form.resetFields();
         let params = {
           networkVersion: '1.0.0',
           orgName: values.orgName,
           nodeName: values.peerName,
           nodeAliasName: values.peerAliasName
         };
-        props.dispatch({
-          type: 'League/createLeague',
+        dispatch({
+          type: 'User/createNetwork',
           payload: params
-        }).then(res => {
-          if (res) {
-            onCancel()
-            props.getPeerList()
-          }
         })
-        form.setFieldsValue(values);
       })
       .catch((info) => {
         console.log('校验失败:', info);
@@ -97,7 +90,7 @@ function CreateLeague(props) {
   );
 }
 
-export default connect(({ League, loading }) => ({
-  League,
-  addLoading: loading.effects['League/createLeague'],
+export default connect(({ User, loading }) => ({
+  User,
+  addLoading: loading.effects['User/createNetwork'],
 }))(CreateLeague);

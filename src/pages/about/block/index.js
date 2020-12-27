@@ -5,13 +5,14 @@ import { Table, Space } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, SearchBar } from 'components';
 import baseConfig from 'utils/config';
+import { Roles } from 'utils/roles.js';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 
 function Block(props) {
-  const { Block, Layout, qryLoading, dispatch, User } = props;
-  const { networkName } = User;
+  const { Block, qryLoading, dispatch, User } = props;
+  const { networkName, userRole } = User;
   const { blockList, blockTotal } = Block;
   const [columns, setColumns] = useState([]);
   const [pageNum, setPageNum] = useState(1);
@@ -32,7 +33,7 @@ function Block(props) {
   const getBlockList = () => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
-      networkName ,
+      networkName,
       limit: pageSize,
       offset: offset,
       ascend: false,
@@ -54,7 +55,7 @@ function Block(props) {
   //搜索列表
   const onSearchList = () => {
     const params = {
-      networkName ,
+      networkName,
       blockHash,
     };
     dispatch({
@@ -80,14 +81,13 @@ function Block(props) {
 
   // 用户身份改变时，表格展示改变
   useEffect(() => {
-    const { userType } = Layout;
     const data = [
       {
         title: '区块HASH',
         dataIndex: 'blockHash',
         key: 'blockHash',
         ellipsis: true,
-        width: userType === 2 ? '20%' : '17%',
+        width: userRole === Roles.NetworkMember ? '17%' : '20%',
       },
       {
         title: '所属通道',
@@ -115,7 +115,7 @@ function Block(props) {
         ),
       },
     ];
-    if (userType === 3) {
+    if (userRole === Roles.NetworkMember) {
       const insertColumn = {
         title: '所属联盟',
         dataIndex: 'leagueName',
@@ -124,7 +124,7 @@ function Block(props) {
       data.splice(1, 0, insertColumn);
     }
     setColumns(data);
-  }, [Layout.userType]);
+  }, [User.userRole]);
 
   // 页码改变时,或blockHash=''时重新查询列表
   // 搜索值改变时
@@ -155,9 +155,8 @@ function Block(props) {
   );
 }
 
-export default connect(({ User, Layout, Block, loading }) => ({
+export default connect(({ User, Block, loading }) => ({
   User,
-  Layout,
   Block,
   qryLoading: loading.effects['Block/getBlockList'],
 }))(Block);

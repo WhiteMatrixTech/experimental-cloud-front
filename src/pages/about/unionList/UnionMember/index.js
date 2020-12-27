@@ -6,7 +6,7 @@ import { Breadcrumb, DetailCard, SearchBar } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import AddOrg from '../components/AddOrg';
 import baseConfig from 'utils/config';
-
+import { Roles } from 'utils/roles.js';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/unionList')
 breadCrumbItem.push({
@@ -107,7 +107,7 @@ class UnionMember extends Component {
   render() {
     const { qryLoading = false, location: { query: { channelName = '', orgCount = '', peerCount = '', leagueName = '' } } } = this.props;
     const { pageSize, pageNum, addOrgVisible } = this.state;
-    const { userType } = this.props.Layout
+    const { userRole } = this.props.User
     const { orgListOfUnion, orgTotalOfUnion } = this.props.Contract;
     const unionInfoList = [
       {
@@ -123,7 +123,7 @@ class UnionMember extends Component {
         value: peerCount
       },
     ]
-    if (userType === 2) {
+    if (userRole === Roles.NetworkAdmin) {
       unionInfoList.slice(1, 0, {
         label: '所属联盟',
         value: leagueName
@@ -134,7 +134,7 @@ class UnionMember extends Component {
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className='page-content'>
           <DetailCard cardTitle='基本信息' detailList={unionInfoList} boxShadow='0 4px 12px 0 rgba(0,0,0,.05)' />
-          <SearchBar placeholder='输入组织名' onSearch={this.onSearch} btnName={userType === 2 ? '添加组织' : null} onClickBtn={this.onClickAddOrg} />
+          <SearchBar placeholder='输入组织名' onSearch={this.onSearch} btnName={userRole === Roles.NetworkAdmin ? '添加组织' : null} onClickBtn={this.onClickAddOrg} />
           <Table
             rowKey='_id'
             loading={qryLoading}
@@ -151,8 +151,9 @@ class UnionMember extends Component {
   }
 }
 
-export default connect(({ Union, Layout, loading }) => ({
+export default connect(({ Union, Layout, User, loading }) => ({
   Union,
   Layout,
+  User,
   qryLoading: loading.effects['Union/getOrgListOfUnion']
 }))(UnionMember);

@@ -48,3 +48,14 @@ export const tree2Arr = (data, childrenName = 'children') => {
   spread(tempData);
   return arr;
 }
+
+// 求取A-B
+export const getDifferenceSet = (arrA, arrB, key) => {
+  let result = arrA.reduce(function (pre, cur) {
+    if (arrB.every(item => item[key] !== cur[key])) {
+      pre.push(cur)
+    }
+    return pre;
+  }, []);
+  return result;
+}

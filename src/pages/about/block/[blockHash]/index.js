@@ -6,6 +6,7 @@ import { Table, Space, Row, Col, Spin } from 'antd';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
 import styles from './index.less';
+import { Roles } from 'utils/roles.js';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
@@ -24,7 +25,7 @@ function BlockDetail({
   qryLoading = false,
   dispatch,
 }) {
-  const { networkName } = User;
+  const { networkName, userRole } = User;
   const { blockDetail, transactionList, transactionTotal } = Block;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
@@ -119,7 +120,6 @@ function BlockDetail({
 
   // 用户身份改变时，展示内容改变
   useEffect(() => {
-    const { userType } = Layout;
     const data = [
       {
         label: '当前哈希值',
@@ -142,7 +142,7 @@ function BlockDetail({
         value: blockDetail.channelName,
       },
     ];
-    if (userType === 3) {
+    if (userRole === Roles.NetworkMember) {
       const insertItem = {
         label: '所属联盟',
         value: blockDetail.leagueName,
@@ -150,7 +150,7 @@ function BlockDetail({
       data.splice(4, 0, insertItem);
     }
     setDetailList(data);
-  }, [blockDetail, Layout.userType]);
+  }, [blockDetail, userRole]);
 
   return (
     <div className="page-wrapper">
@@ -206,7 +206,6 @@ export default connect(({ User, Layout, Block, loading }) => ({
   User,
   Layout,
   Block,
-  qryLoading:
-    loading.effects['Block/getBlockDetail'] || loading.effects['Block/getTransactionList'],
+  qryLoading: loading.effects['Block/getBlockDetail'] || loading.effects['Block/getTransactionList'],
   qryListLoading: loading.effects['Block/getTransactionList'],
 }))(BlockDetail);
