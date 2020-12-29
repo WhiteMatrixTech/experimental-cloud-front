@@ -1,7 +1,21 @@
 import { request } from '../utils/request';
 
 /**
- * 获取 组织列表
+ * 创建通道
+ */
+export async function createChannel(params) {
+  return request(`/network/${params.networkName}/channel/create`, { method: 'POST', body: params });
+};
+
+/**
+ * 组织下的节点列表
+ */
+export async function getNodeListWithOrg(params) {
+  return request(`/network/${params.networkName}/org/node/list`, { method: 'POST', body: params });
+};
+
+/**
+ * 获取 通道列表
  */
 export async function getUnionList(params) {
   return request(`/network/${params.networkName}/enterprises/query`, { method: 'POST', body: params });

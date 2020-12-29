@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Input, Select, Form, Button, Modal, Space } from 'antd';
+import { Input, Select, Form, Button, Modal } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 const { Item } = Form;
@@ -16,18 +16,34 @@ const formItemLayout = {
   },
 };
 
-function CreateUnion({ visible, editParams, onCancel, dispatch }) {
+function CreateUnion({ visible, editParams, onCancel, dispatch, Organization }) {
 
+  const { orgList } = Organization;
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
-    form.validateFields().then(values => {
-      form.resetFields();
-      form.setFieldsValue(values)
+    form.validateFields().then(async (values) => {
+      let params = {
+        ...values,
+      };
+      const res = await dispatch({
+        type: 'Union/createChannel',
+        payload: params
+      });
+      if (res) {
+        onCancel(true);
+      }
     }).catch(info => {
       console.log('校验失败:', info);
     });
   };
+
+  useEffect(() => {
+    dispatch({
+      type: 'Organization/getOrgList',
+      payload: {}
+    });
+  }, [])
 
   const drawerProps = {
     visible: visible,
@@ -105,7 +121,7 @@ function CreateUnion({ visible, editParams, onCancel, dispatch }) {
           },
         ]}>
           <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择组织' >
-            <Option value='第一组织'>第一组织</Option>
+            {orgList.map(item => <Option key={item.orgName} value={item.orgName}>{item.orgName}</Option>)}
           </Select>
         </Item>
         <Item label='节点' name='firstNode' initialValue={null} rules={[
@@ -171,7 +187,8 @@ function CreateUnion({ visible, editParams, onCancel, dispatch }) {
   );
 };
 
-export default connect(({ Union, loading }) => ({
+export default connect(({ Union, Organization, loading }) => ({
   Union,
+  Organization,
   qryLoading: loading.effects['Union/addUnion']
 }))(CreateUnion);

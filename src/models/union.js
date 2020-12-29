@@ -1,4 +1,5 @@
 import * as API from '../services/union.js';
+import { notification } from 'antd';
 
 export default {
   namespace: 'Union',
@@ -6,6 +7,8 @@ export default {
   state: {
     unionList: [], // 通道列表
     unionTotal: 0,
+
+    nodeListWithOrg: [], // 组织下的节点列表
 
     orgListOfUnion: [], // 当前通道下的组织列表
     orgTotalOfUnion: 0,
@@ -25,6 +28,28 @@ export default {
   },
 
   effects: {
+    *createChannel({ payload }, { call, put }) {
+      const res = yield call(API.createChannel, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: '通道创建成功', top: 64, duration: 1 });
+        return true
+      } else {
+        notification.error({ message: result.message || '通道创建失败', top: 64, duration: 1 })
+      }
+    },
+    *getNodeListWithOrg({ payload }, { call, put }) {
+      const res = yield call(API.getNodeListWithOrg, payload)
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            nodeListWithOrg: result.list,
+          }
+        });
+      }
+    },
     *getUnionList({ payload }, { call, put }) {
       const res = yield call(API.getUnionList, payload)
       const { statusCode, result } = res;

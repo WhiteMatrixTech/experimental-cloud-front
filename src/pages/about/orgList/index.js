@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
+import { Roles } from 'utils/roles.js';
+import CreatePeerOrg from './components/CreatePeerOrg';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/orgList');
 
 function OrganizationManagement(props) {
-  const { Organization, qryLoading, dispatch ,User} = props;
-  const { networkName } = User;
+  const { Organization, qryLoading, dispatch, User } = props;
+  const { networkName, userRole } = User;
   const { orgList, orgTotal } = Organization;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
+  const [createOrgVisible, setCreateOrgVisible] = useState(false)
 
   const columns = [
     {
@@ -49,10 +52,20 @@ function OrganizationManagement(props) {
     },
   ];
 
+  // 点击 创建通道
+  const onClickCreateOrg = () => {
+    setCreateOrgVisible(true)
+  }
+
+  // 关闭 创建通道弹窗
+  const onCloseCreateOrg = () => {
+    setCreateOrgVisible(false)
+  }
+
   const getOrgTotalDocs = () => {
     dispatch({
       type: 'Organization/getOrgTotalDocs',
-      payload: {networkName},
+      payload: { networkName },
     });
   };
   // 查询列表
@@ -85,6 +98,11 @@ function OrganizationManagement(props) {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow">
+        {userRole === Roles.NetworkAdmin &&
+          <div className='table-header-btn-wrapper'>
+            <Button type='primary' onClick={onClickCreateOrg}>创建组织</Button>
+          </div>
+        }
         <Table
           rowKey="peerOrgId"
           columns={columns}
@@ -94,11 +112,12 @@ function OrganizationManagement(props) {
           pagination={{ pageSize, total: orgTotal, current: pageNum, position: ['bottomCenter'] }}
         />
       </div>
+      {createOrgVisible && <CreatePeerOrg visible={createOrgVisible} onCancel={onCloseCreateOrg} />}
     </div>
   );
 }
 
-export default connect(({User, Layout, Organization, loading }) => ({
+export default connect(({ User, Layout, Organization, loading }) => ({
   User,
   Layout,
   Organization,
