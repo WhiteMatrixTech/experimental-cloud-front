@@ -50,11 +50,17 @@ class LeftMenu extends Component {
           <span>{item.menuName}</span>
         </div>}
         >
-          {item.menuVos.map(subItem => (
-            <Menu.Item key={subItem.menuHref} onClick={() => this.hashChange(subItem)}>
-              <span style={{ paddingLeft: '8px' }}>{subItem.menuName}</span>
-            </Menu.Item>
-          ))}
+          {item.menuVos.map(subItem => {
+            if (subItem.isFeature && userRole === Roles.NetworkMember) {
+              return ''
+            };
+            return (
+              <Menu.Item key={subItem.menuHref} onClick={() => this.hashChange(subItem)}>
+                <span style={{ paddingLeft: '8px' }}>{subItem.menuName}</span>
+              </Menu.Item>
+            )
+
+          })}
         </SubMenu>
       )
     }

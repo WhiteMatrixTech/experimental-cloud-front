@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Switch, Button, Upload, Modal, notification } from 'antd';
+import { normFile, handleBeforeUpload } from './_func';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -21,38 +22,21 @@ const modalTitle = {
   'upgrate': '升级合约'
 }
 
-const normFile = e => {
-  // console.log('Upload event:', e);
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e && e.fileList;
-};
-// 上传前校验文件大小
-const handleBeforeUpload = (file, beforeUploadList) => {
-  const biggerThanMaxSize = beforeUploadList.some(innerItem => innerItem.size > (1024 * 1024 * 1024 * 5));
-  if (biggerThanMaxSize) {
-    notification.error({ message: '合约文件大小不能超过5M', top: 64, duration: 1 });
-    return false;
-  }
-  return true;
-};
-
 function EditContract(props) {
 
   const [form] = Form.useForm();
-  const [fileLabel, setFileLabel] = useState('');
+  const [fileJson, setFileJson] = useState(null);
   const [initRequired, setInitRequired] = useState(false);
   const { visible, editParams, onCancel, operateType, dispatch, Contract } = props;
   const { channelList, orgListWithChannel } = Contract
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
-      console.log('values', values)
+      values.chainCodePackageMetadata = fileJson;
+      if (!initRequired) {
+        values.initArgs = ''
+      }
       if (operateType === 'new') {
-        if (!initRequired) {
-          values.initArgs = ''
-        }
         dispatch({
           type: 'Contract/addContract',
           payload: values
@@ -62,8 +46,14 @@ function EditContract(props) {
           }
         })
       } else {
-
-        onCancel();
+        dispatch({
+          type: 'Contract/upgrateContract',
+          payload: values
+        }).then(res => {
+          if (res) {
+            onCancel();
+          }
+        })
       }
     }).catch(info => {
       console.log('校验失败:', info);
@@ -99,9 +89,10 @@ function EditContract(props) {
     onChange(info) {
       if (info.file.status === 'done') {
         notification.success({ message: `Succeed in uploading contract ${info.file.name}`, top: 64, duration: 1 })
-        setFileLabel(info.file.response.label)
+        setFileJson(info.file.response)
       } else if (info.file.status === 'error') {
         notification.error({ message: info.file.response.message, top: 64, duration: 1 })
+        setFileJson(null)
       }
     },
   };
@@ -157,7 +148,12 @@ function EditContract(props) {
             message: '请选择组织',
           },
         ]}>
-          <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择组织' notFoundContent='请先选择通道'>
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentNode}
+            disabled={operateType !== 'new'}
+            notFoundContent='请先选择通道'
+            placeholder='请选择组织'
+          >
             {orgListWithChannel.map(item => <Option key={item.orgId} value={item.orgId}>{item.orgName}</Option>)}
           </Select>
         </Item>

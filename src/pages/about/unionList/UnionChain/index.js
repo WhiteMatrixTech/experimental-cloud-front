@@ -4,7 +4,7 @@ import { Table, Badge } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard, SearchBar } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
-import { chainCodeStatus } from '../../contract/myContract/_config';
+import { chainCodeStatusInfo } from '../../contract/myContract/_config';
 import baseConfig from 'utils/config';
 import { Roles } from 'utils/roles.js';
 
@@ -48,7 +48,7 @@ class UnionChain extends Component {
         title: '状态',
         dataIndex: 'chainCodeStatus',
         key: 'chainCodeStatus',
-        render: text => text ? <Badge color={chainCodeStatus[text].color} text={chainCodeStatus[text].text} style={{ color: chainCodeStatus[text].color }} /> : ''
+        render: text => text ? <Badge color={chainCodeStatusInfo[text].color} text={chainCodeStatusInfo[text].text} style={{ color: chainCodeStatusInfo[text].color }} /> : ''
       },
       {
         title: '创建时间',

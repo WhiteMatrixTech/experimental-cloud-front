@@ -98,6 +98,7 @@ function LeagueDashboard(props) {
       },
     });
   };
+
   //用户身份改变时，表格展示改变
   useEffect(() => {
     const block = [

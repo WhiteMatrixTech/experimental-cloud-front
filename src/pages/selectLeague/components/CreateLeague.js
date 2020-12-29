@@ -15,26 +15,25 @@ const formItemLayout = {
 };
 
 function CreateLeague(props) {
-  const { dispatch } = props;
 
-  const { visible, onCancel, addLoading = false } = props;
-
+  const { dispatch, visible, onCancel, addLoading = false } = props;
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
     form
       .validateFields()
-      .then((values) => {
+      .then(async (values) => {
         let params = {
-          networkVersion: '1.0.0',
-          orgName: values.orgName,
-          nodeName: values.peerName,
-          nodeAliasName: values.peerAliasName
+          ...values,
+          role: 'networkAdmin'
         };
-        dispatch({
-          type: 'User/createNetwork',
+        const res = await dispatch({
+          type: 'User/createLeague',
           payload: params
-        })
+        });
+        if (res) {
+          onCancel(true);
+        }
       })
       .catch((info) => {
         console.log('校验失败:', info);
@@ -62,7 +61,7 @@ function CreateLeague(props) {
       <Form {...formItemLayout} form={form}>
         <Item
           label="联盟名称"
-          name="networkName"
+          name="leagueName"
           rules={[
             {
               required: true,
@@ -72,12 +71,35 @@ function CreateLeague(props) {
         >
           <Input placeholder="请输入联盟名称" />
         </Item>
-        <Item label='联盟描述' name='networkDesc' initialValue='' rules={[
+        <Item
+          label="网络名称"
+          name="networkName"
+          rules={[
+            {
+              required: true,
+              message: '请输入网络名称',
+            },
+            {
+              min: 6,
+              max: 15,
+              type: 'string',
+              pattern: /^[a-zA-Z]+$/,
+              message: '网络名称由6~15位英文字母组成'
+            }
+          ]}
+        >
+          <Input placeholder="请输入网络名称" />
+        </Item>
+        <Item label='联盟描述' name='description' initialValue='' rules={[
+          {
+            required: true,
+            message: '请输入联盟描述',
+          },
           {
             min: 1,
             max: 100,
             type: 'string',
-            message: '联盟描述由0~100个字符组成'
+            message: '联盟描述由1~100个字符组成'
           }
         ]}>
           <TextArea placeholder='请输入联盟描述' />
@@ -89,5 +111,5 @@ function CreateLeague(props) {
 
 export default connect(({ User, loading }) => ({
   User,
-  addLoading: loading.effects['User/createNetwork'],
+  addLoading: loading.effects['User/createLeague'],
 }))(CreateLeague);

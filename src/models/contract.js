@@ -40,26 +40,15 @@ export default {
   },
 
   effects: {
-    *getPageListOfChainCode({ payload }, { call, put }) {
-      const res = yield call(API.getPageListOfChainCode, payload);
+    *getChainCodeList({ payload }, { call, put }) {
+      const res = yield call(API.getChainCodeList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
             myContractList: result.items,
-          },
-        });
-      }
-    },
-    *getPageTotalDocsOfChainCode({ payload }, { call, put }) {
-      const res = yield call(API.getPageTotalDocsOfChainCode, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            myContractTotal: result,
+            myContractTotal: result.length
           },
         });
       }
@@ -164,14 +153,31 @@ export default {
     *addContract({ payload }, { call, put }) {
       const res = yield call(API.addContract, payload);
       const { statusCode, result } = res;
-      const { type } = payload;
-      const succMessage = `${type === 1 ? '新增' : '修改'}合约成功`;
-      const failMessage = `${type === 2 ? '新增' : '修改'}合约失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: succMessage, top: 64, duration: 1 });
+        notification.success({ message: '新增合约成功', top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: res.message || '新增合约失败', top: 64, duration: 1 });
+      }
+    },
+    *upgrateContract({ payload }, { call, put }) {
+      const res = yield call(API.upgrateContract, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok' && result) {
+        notification.success({ message: '合约升级成功', top: 64, duration: 1 });
+        return true;
+      } else {
+        notification.error({ message: res.message || '合约升级失败', top: 64, duration: 1 });
+      }
+    },
+    *releaseContract({ payload }, { call, put }) {
+      const res = yield call(API.releaseContract, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok' && result) {
+        notification.success({ message: '发布合约成功', top: 64, duration: 1 });
+        return true;
+      } else {
+        notification.error({ message: res.message || '发布合约失败', top: 64, duration: 1 });
       }
     },
     *getPageListOfRoleData({ payload }, { call, put }) {

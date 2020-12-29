@@ -3,5 +3,6 @@ export const Roles = {
   Admin: 'admin',
   Member: 'member',
   NetworkAdmin: 'networkAdmin',
-  NetworkMember: 'networkMember'
+  NetworkMember: 'networkMember',
+  NetworkAssociateMember: 'networkAssociateMember',
 }
