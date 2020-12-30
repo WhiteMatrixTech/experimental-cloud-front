@@ -11,7 +11,7 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {},
+    setup({ dispatch, history }) { },
   },
 
   effects: {
@@ -27,7 +27,7 @@ export default {
         });
       }
     },
-    
+
     *getPeerList({ payload }, { call, put }) {
       const res = yield call(API.getPeerList, payload);
       const { statusCode, result } = res;
@@ -36,19 +36,6 @@ export default {
           type: 'common',
           payload: {
             peerList: result.items,
-          },
-        });
-      }
-    },
-
-    *getPeerTotalDocs({ payload }, { call, put }) {
-      const res = yield call(API.getPeerTotalDocs, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            peerTotal: result,
           },
         });
       }

@@ -4,14 +4,14 @@ import { request } from '../utils/request';
  * 获取网络信息
  */
 export async function getNetworkInfo(params) {
-  return request(`/network/info`);
+  return request(`/network/${params.networkName}/status`);
 };
 
 /**
  * 创建网络
  */
 export async function createNetwork(params) {
-  return request(`/createNetwork`);
+  return request(`/network/${params.networkName}/createNetwork`);
 };
 
 /**

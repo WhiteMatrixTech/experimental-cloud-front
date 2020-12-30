@@ -149,7 +149,7 @@ export default {
     *createLeague({ payload }, { call, put }) {
       const res = yield call(API.createLeague, payload)
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result.role_token) {
+      if (statusCode === 'ok') {
         notification.success({ message: '联盟创建成功', top: 64, duration: 1 });
         return true;
       } else {

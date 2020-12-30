@@ -58,6 +58,7 @@ function SelectLeague(props) {
       type: 'User/enterLeague',
       payload: {
         role: league.role,
+        email: userInfo.contactEmail,
         networkName: league.networkName,
       }
     }).then(res => {
@@ -87,16 +88,16 @@ function SelectLeague(props) {
         <Spin spinning={joinLoading}>
           <Row gutter={16} className={styles['league-wrapper']}>
             {getOptionalNetwork().map((league, i) => (
-              <Col span={6} key={`${league.networkName}_${i}`}>
+              <Col span={6} key={`${league.leagueName}_${i}`}>
                 <div className={styles['league-card']} onClick={() => onJoinLeague(league)}>
                   <div className={styles['card-header']}>
                     <span className={styles.icon}><RocketTwoTone /></span>
-                    <span className={styles['league-name']}>{league.networkName}</span>
+                    <span className={styles['league-name']}>{league.leagueName}</span>
                   </div>
-                  <div className={styles['card-content']}>{league.desc}</div>
+                  <div className={styles['card-content']}>{league.description}</div>
                   <div className={styles['card-footer']}>
                     <div className={styles.allies}>Create Time</div>
-                    <div className={styles.createTime}>{league.createAt ? moment(league.createAt).format('YYYY-MM-DD HH:mm:ss') : ''}</div>
+                    <div className={styles.createTime}>{league.createdTime ? moment(league.createdTime).format('YYYY-MM-DD HH:mm:ss') : ''}</div>
                   </div>
                 </div>
               </Col>
@@ -120,13 +121,13 @@ function SelectLeague(props) {
             </Button>
           </Col>}
           {myNetworkList.map((league, i) => (
-            <Col span={6} key={`${league.networkName}_${i}`}>
+            <Col span={6} key={`${league.leagueName}_${i}`}>
               <div className={styles['league-card']} onClick={() => onClickLeague(league)}>
                 <div className={styles['card-header']}>
                   <span className={styles.icon}><RocketTwoTone /></span>
-                  <span className={styles['league-name']}>{league.networkName}</span>
+                  <span className={styles['league-name']}>{league.leagueName}</span>
                 </div>
-                <div className={styles['card-content']}>{league.desc}</div>
+                <div className={styles['card-content']}>{league.description}</div>
                 <div className={styles['card-footer']}>
                   <div className={styles.allies}>Join Time</div>
                   <div className={styles.createTime}>{league.timeAdded ? moment(league.timeAdded).format('YYYY-MM-DD HH:mm:ss') : ''}</div>
