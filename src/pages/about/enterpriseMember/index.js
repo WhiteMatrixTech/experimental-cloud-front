@@ -23,7 +23,7 @@ const initSearchObj = {
   companyName: '',
   createTimeStart: 0,
   createTimeEnd: 0,
-  approvalStatus: -1,
+  approvalStatus: 'any',
 };
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember');
@@ -117,16 +117,16 @@ function EnterpriseMember(props) {
       key: 'action',
       render: (text, record) => (
         <Space size="small">
-          {record.approvalStatus === 0 && (
+          {record.approvalStatus === 'pending' && (
             <>
               <a onClick={() => onClickToConfirm(record, 'agree')}>通过</a>
               <a onClick={() => onClickToConfirm(record, 'reject')}>驳回</a>
             </>
           )}
-          {record.isValid === 1 && record.approvalStatus === 1 && (
+          {record.isValid === 'valid' && record.approvalStatus === 'approved' && (
             <a onClick={() => onClickToConfirm(record, 'invalidate')}>停用</a>
           )}
-          {record.isValid === 0 && record.approvalStatus === 1 && (
+          {record.isValid === 'invalid' && record.approvalStatus === 'approved' && (
             <a onClick={() => onClickToConfirm(record, 'validate')}>启用</a>
           )}
           <a onClick={() => onClickDetail(record)}>详情</a>
@@ -175,7 +175,7 @@ function EnterpriseMember(props) {
             ? 0
             : Number(values.createTime[0].format('x')),
           createTimeEnd: isEmpty(values.createTime) ? 0 : Number(values.createTime[1].format('x')),
-          approvalStatus: values.approvalStatus === null ? -1 : values.approvalStatus,
+          approvalStatus: values.approvalStatus === null ? 'any' : values.approvalStatus,
         };
         setQueryParams(params);
       })
@@ -203,19 +203,19 @@ function EnterpriseMember(props) {
     switch (type) {
       case 'validate':
         tipTitle = '启用';
-        callback = () => invalidateMember(record, 1);
+        callback = () => invalidateMember(record, 'valid');
         break;
       case 'invalidate':
         tipTitle = '停用';
-        callback = () => invalidateMember(record, 0);
+        callback = () => invalidateMember(record, 'invalid');
         break;
       case 'agree':
         tipTitle = '通过';
-        callback = () => approvalMember(record, 1);
+        callback = () => approvalMember(record, 'approved');
         break;
       case 'reject':
         tipTitle = '驳回';
-        callback = () => approvalMember(record, 2);
+        callback = () => approvalMember(record, 'rejected');
         break;
       default:
         break;
@@ -232,11 +232,11 @@ function EnterpriseMember(props) {
 
   // 停用 & 启用 企业成员
   const invalidateMember = (record, isValid) => {
-    const params ={
+    const params = {
       networkName,
       isValid,
-      did: record.did,
-    }
+      companyName: record.companyName,
+    };
     dispatch({
       type: 'Member/setStatusOfLeagueConpany',
       payload: params,
@@ -249,11 +249,11 @@ function EnterpriseMember(props) {
 
   // 通过 & 驳回 企业成员
   const approvalMember = (record, approvalStatus) => {
-    const params ={
+    const params = {
       networkName,
       approvalStatus,
-      did: record.did,
-    }
+      companyName: record.companyName,
+    };
     dispatch({
       type: 'Member/setCompanyApprove',
       payload: params,
@@ -267,9 +267,14 @@ function EnterpriseMember(props) {
   // 点击查看详情
   const onClickDetail = (record) => {
     history.push({
-      pathname: `/about/enterpriseMember/${record.did}`,
-      query: {
-        did: record.did,
+      pathname: `/about/enterpriseMember/${record.companyCertBusinessNumber}`,
+      state: {
+        companyCertBusinessNumber: record.companyCertBusinessNumber,
+        approvalStatus: record.approvalStatus,
+        companyName: record.companyName,
+        contactName: record.contactName,
+        contactCell: record.contactCell,
+        contactEmail: record.contactEmail,
       },
     });
   };
