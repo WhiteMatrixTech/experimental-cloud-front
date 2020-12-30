@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Roles } from 'utils/roles';
 import { StatisticsCard, Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu';
-import { NetworkStatus, NetworkInfo } from 'utils/NetworkStatus';
+import { NetworkStatus, NetworkInfo } from 'utils/networkStatus';
 import CreateNetwork from './components/CreateNetwork';
 import style from './index.less';
 
@@ -21,7 +21,7 @@ const statisticsList = [
 
 function LeagueDashboard(props) {
   const { Dashboard, dispatch, qryBlockLoading, qryNetworkLoading = false, qryTransactionLoading, User } = props;
-  const { networkName, userRole } = User;
+  const { leagueName, networkName, userRole } = User;
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
   const { networkStatusInfo, transactionList, blockList } = Dashboard;
@@ -36,7 +36,9 @@ function LeagueDashboard(props) {
   const getNetworkInfo = () => {
     dispatch({
       type: 'Dashboard/getNetworkInfo',
-      payload: {},
+      payload: {
+        networkName: networkName
+      },
     });
   }
 
@@ -51,14 +53,6 @@ function LeagueDashboard(props) {
   // 点击创建网络
   const onCreateNetwork = () => {
     setCreateVisible(true)
-  }
-
-  // 删除网络
-  const onDeleteNetwork = () => {
-    dispatch({
-      type: 'Dashboard/deleteNetwork',
-      payload: {},
-    });
   }
 
   // 获取区块列表
@@ -200,9 +194,10 @@ function LeagueDashboard(props) {
   useEffect(() => {
     getBlockList();
     getTransactionList();
+    getNetworkInfo();
     // 轮询网络状态
-    // const interval = setInterval(() => getNetworkInfo(), 5000);
-    // return () => clearInterval(interval);
+    const interval = setInterval(() => getNetworkInfo(), 5000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -214,7 +209,7 @@ function LeagueDashboard(props) {
             <Row>
               <Col span={8}>
                 <label>联盟名称：</label>
-                <span>{networkName}</span>
+                <span>{leagueName}</span>
               </Col>
               <Col span={8}>
                 <label>创建时间：</label>
@@ -223,18 +218,13 @@ function LeagueDashboard(props) {
               <Col span={8}>
                 <label>网络状态: </label>
                 <span>{NetworkInfo[networkStatusInfo.networkStatus]}</span>
-                {(userRole === Roles.NetworkMember) && (networkStatusInfo.networkStatus === NetworkStatus.Errored) && (
+                {(networkStatusInfo.networkStatus === NetworkStatus.Errored) && (
                   <span>,请联系技术人员排查</span>
                 )}
               </Col>
-              {(userRole === Roles.NetworkAdmin) && (networkStatusInfo.networkStatus === NetworkStatus.Archived) && (
+              {(userRole === Roles.NetworkAdmin) && (networkStatusInfo.networkStatus === NetworkStatus.NotExist) && (
                 <Col span={8}>
                   <Button type="primary" onClick={onCreateNetwork}>立即创建</Button>
-                </Col>
-              )}
-              {(userRole === Roles.NetworkAdmin) && (networkStatusInfo.networkStatus === NetworkStatus.Errored) && (
-                <Col span={8}>
-                  <Button type="primary" onClick={onDeleteNetwork} loading={props.deleteLoading}>删除网络</Button>
                 </Col>
               )}
             </Row>

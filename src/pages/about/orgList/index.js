@@ -26,8 +26,8 @@ function OrganizationManagement(props) {
     },
     {
       title: '组织别名',
-      dataIndex: 'orgAliasName',
-      key: 'orgAliasName',
+      dataIndex: 'orgNameAlias',
+      key: 'orgNameAlias',
     },
     {
       title: '组织MSPID',

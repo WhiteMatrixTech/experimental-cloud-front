@@ -94,7 +94,17 @@ function CreateUnion({ visible, editParams, onCancel, dispatch, Organization }) 
         ]}>
           <Input placeholder='请输入通道别名' />
         </Item>
-        <Item label='通道描述' name='channelDesc' initialValue='' rules={[
+        <Item label='组织' name='peerOrgNames' initialValue={null} rules={[
+          {
+            required: true,
+            message: '请选择组织',
+          },
+        ]}>
+          <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择组织' mode='multiple'>
+            {orgList.map(item => <Option key={item.orgName} value={item.orgName}>{item.orgName}</Option>)}
+          </Select>
+        </Item>
+        <Item label='通道描述' name='description' initialValue='' rules={[
           {
             min: 0,
             max: 300,
@@ -104,84 +114,6 @@ function CreateUnion({ visible, editParams, onCancel, dispatch, Organization }) 
         ]}>
           <TextArea rows={3} placeholder='请输入通道描述' />
         </Item>
-        <Item label='集群' name='clusterName' initialValue={null} rules={[
-          {
-            required: true,
-            message: '请选择集群',
-          },
-        ]}>
-          <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择集群' >
-            <Option value='aaa'>aaa</Option>
-          </Select>
-        </Item>
-        <Item label='组织' name='firstOrg' initialValue={null} rules={[
-          {
-            required: true,
-            message: '请选择组织',
-          },
-        ]}>
-          <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择组织' >
-            {orgList.map(item => <Option key={item.orgName} value={item.orgName}>{item.orgName}</Option>)}
-          </Select>
-        </Item>
-        <Item label='节点' name='firstNode' initialValue={null} rules={[
-          {
-            required: true,
-            message: '请选择节点',
-          },
-        ]}>
-          <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择节点' >
-            <Option value='第一节点'>第一节点</Option>
-          </Select>
-        </Item>
-
-        <Form.List name='orgAndPeer'>
-          {(fields, { add, remove }) => (
-            <>
-              <Item label='动态添加'>
-                <PlusOutlined onClick={() => add()} />
-              </Item>
-              {fields.map((field, index) => (
-                <>
-                  <div style={{ width: '100%', textAlign: 'right', marginBottom: '5px' }}>
-                    <MinusCircleOutlined onClick={() => remove(field.name)} />
-                  </div>
-                  <Item
-                    noStyle
-                    shouldUpdate={(prevValues, curValues) =>
-                      prevValues.area !== curValues.area || prevValues.sights !== curValues.sights
-                    }
-                  >
-                    {() => (
-                      <Item
-                        {...field}
-                        label='组织'
-                        name={[field.name, `org_${index}`]}
-                        fieldKey={[field.fieldKey, `org_${index}`]}
-                        rules={[{ required: true, message: '请选择组织' }]}
-                      >
-                        <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择组织'>
-                          <Option value='组织aaa'>aaa</Option>
-                        </Select>
-                      </Item>
-                    )}
-                  </Item>
-                  <Item
-                    {...field}
-                    label='节点'
-                    name={[field.name, `peer_${index}`]}
-                    fieldKey={[field.fieldKey, `peer_${index}`]}
-                    rules={[{ required: true, message: '请选择节点' }]}
-                  >
-                    <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择节点'>
-                      <Option value='节点aaa'>aaa</Option>
-                    </Select>
-                  </Item>
-                </>
-              ))}
-            </>
-          )}
-        </Form.List>
       </Form>
     </Modal>
   );

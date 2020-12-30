@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import { Input, Form, Button, Modal } from 'antd';
 
 const { Item } = Form;
-const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: {
@@ -80,7 +79,7 @@ function CreateNetwork(props) {
         </Item>
         <Item
           label="组织名称"
-          name="orgName"
+          name="initOrgName"
           initialValue=''
           rules={[
             {
@@ -96,11 +95,11 @@ function CreateNetwork(props) {
             }
           ]}
         >
-          <Input disabled placeholder="请输入组织名称" />
+          <Input placeholder="请输入组织名称" />
         </Item>
         <Item
           label="组织别名"
-          name="orgNameAlias"
+          name="initOrgAliasName"
           initialValue=''
           rules={[
             {
@@ -109,11 +108,11 @@ function CreateNetwork(props) {
             },
           ]}
         >
-          <Input disabled placeholder="请输入组织别名" />
+          <Input placeholder="请输入组织别名" />
         </Item>
         <Item
           label="节点名称"
-          name="peerName"
+          name="initPeerName"
           initialValue=''
           rules={[
             {
@@ -129,12 +128,12 @@ function CreateNetwork(props) {
             }
           ]}
         >
-          <Input disabled placeholder="请输入节点名称" />
+          <Input placeholder="请输入节点名称" />
         </Item>
         <Item
           label="节点别名"
-          name="peerNameAlias"
-          initialValue={User.networkName}
+          name="initPeerAliasName"
+          initialValue=''
           rules={[
             {
               required: true,
@@ -142,7 +141,7 @@ function CreateNetwork(props) {
             },
           ]}
         >
-          <Input disabled placeholder="请输入节点别名" />
+          <Input placeholder="请输入节点别名" />
         </Item>
       </Form>
     </Modal>

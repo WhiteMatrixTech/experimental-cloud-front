@@ -1,13 +1,15 @@
 export const NetworkStatus = {
-  Active: 'Active',
-  Deploying: 'Deploying',
+  Running: 'Running',
+  Creating: 'Creating',
+  Updating: 'Updating',
   Errored: 'Errored',
-  Archived: 'Archived',
+  NotExist: 'NotExist'
 }
 
 export const NetworkInfo = {
-  Active: '运行中',
-  Deploying: '创建中',
-  Errored: '创建失败',
-  Archived: '暂无网络',
+  Running: '运行中',
+  Creating: '创建中',
+  Updating: '升级中',
+  Errored: '发生错误',
+  NotExist: '网络不存在'
 }

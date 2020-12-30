@@ -29,12 +29,9 @@ export default {
     *createNetwork({ payload }, { call, put }) {
       const res = yield call(API.createNetwork, payload)
       const { statusCode, result } = res;
-      if (statusCode === 'ok') {
+      if (statusCode === 'ok' || result.status === 'Starting') {
         notification.success({ message: '创建网络请求发起成功', top: 64, duration: 1 });
-        yield put({
-          type: 'getNetworkInfo',
-          payload: {}
-        });
+        return true;
       } else {
         notification.error({ message: result.message || '创建网络请求发起成功', top: 64, duration: 1 });
       }

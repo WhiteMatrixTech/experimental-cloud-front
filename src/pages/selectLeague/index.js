@@ -68,9 +68,11 @@ function SelectLeague(props) {
           payload: {
             userRole: league.role,
             networkName: league.networkName,
+            leagueName: league.leagueName,
           }
         });
         localStorage.setItem('userRole', league.role);
+        localStorage.setItem('leagueName', league.leagueName);
         localStorage.setItem('networkName', league.networkName);
         history.replace('/about/leagueDashboard');
       }

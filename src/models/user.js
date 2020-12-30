@@ -21,7 +21,8 @@ export default {
     myNetworkList: [], // 我的网络列表
 
     userRole: localStorage.getItem('userRole') || Roles.NetworkMember, // 进入系统的身份
-    networkName: localStorage.getItem('networkName') || 'network1' // 进入系统时的网络
+    networkName: localStorage.getItem('networkName') || 'network1', // 进入系统时的网络
+    leagueName: localStorage.getItem('leagueName') || '' // 进入系统时的联盟
   },
 
   subscriptions: {
@@ -100,13 +101,9 @@ export default {
       const res = yield call(API.getNetworkList, payload)
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        const networkList = result.map(item => {
-          item.networkName = item._id;
-          return item
-        })
         yield put({
           type: 'common',
-          payload: { networkList }
+          payload: { networkList: result }
         });
       }
     },

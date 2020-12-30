@@ -11,7 +11,7 @@ export async function getNetworkInfo(params) {
  * 创建网络
  */
 export async function createNetwork(params) {
-  return request(`/network/${params.networkName}/createNetwork`);
+  return request(`/network/${params.networkName}/createNetwork`, { method: 'POST', body: params });
 };
 
 /**
