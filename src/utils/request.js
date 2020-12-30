@@ -73,7 +73,7 @@ export const request = (url, options) => {
   const accessToken = localStorage.getItem('accessToken');
   const roleToken = localStorage.getItem('roleToken');
   if (accessToken) {
-    defaultOptions.headers.Authorization = accessToken;
+    defaultOptions.headers.Authorization = `Bearer ${accessToken}`;
   }
   if (roleToken) {
     defaultOptions.headers.RoleAuth = roleToken;

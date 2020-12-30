@@ -18,7 +18,7 @@ export async function login(params) {
  * 用户信息
  */
 export async function getUserInfo(params) {
-  return request(`/login/info`);
+  return request(`/userInfo`);
 };
 
 /**
@@ -29,35 +29,35 @@ export async function loginout(params) {
 };
 
 /**
- * 创建网络
+ * 创建联盟
  */
-export async function createNetwork(params) {
-  return request(`/createNetwork`, { method: 'POST', body: params });
+export async function createLeague(params) {
+  return request(`/createLeague`, { method: 'POST', body: params });
 };
 
 /**
- * 加入网络
+ * 加入联盟
  */
-export async function joinNetwork(params) {
-  return request(`/addToNetwork`, { method: 'POST', body: params });
+export async function enrollInLeague(params) {
+  return request(`/enrollInLeague`, { method: 'POST', body: params });
 };
 
 /**
- * 进入网络
+ * 进入联盟
  */
-export async function enterNetwork(params) {
+export async function enterLeague(params) {
   return request(`/enterLeague`, { method: 'POST', body: params });
 };
 
 /**
- * 获取网络列表
+ * 获取联盟列表
  */
 export async function getNetworkList(params) {
   return request(`/networkList`);
 };
 
 /**
- * 获取我加入的网络列表
+ * 获取我加入的联盟列表
  */
 export async function getMyNetworkList(params) {
   return request(`/userNetworkList`);

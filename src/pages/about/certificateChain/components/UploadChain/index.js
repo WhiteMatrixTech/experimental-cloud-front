@@ -72,7 +72,7 @@ function UploadChain({ visible, onCancel, dispatch }) {
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
-        <Form.Item name='certificateJson' initialValue='' rules={[
+        <Form.Item name='evidenceData' initialValue='' rules={[
           {
             validateTrigger: 'submit',
             validator: checkJSON,

@@ -42,6 +42,7 @@ class TopHeader extends PureComponent {
         }
       })
     } else if (key === 'changeLeague') {
+      window.localStorage.setItem('roleToken', '');
       history.replace('/selectLeague');
     }
   }

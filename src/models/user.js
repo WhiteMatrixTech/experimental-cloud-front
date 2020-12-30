@@ -21,14 +21,15 @@ export default {
     myNetworkList: [], // 我的网络列表
 
     userRole: localStorage.getItem('userRole') || Roles.NetworkMember, // 进入系统的身份
-    networkName: localStorage.getItem('networkName') || 'network1' // 进入系统时的网络
+    networkName: localStorage.getItem('networkName') || 'network1', // 进入系统时的网络
+    leagueName: localStorage.getItem('leagueName') || '' // 进入系统时的联盟
   },
 
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname.indexOf('/selectLeague') > -1) {
-          dispatch({ type: 'getUserInfo' }); // 优先级
+          dispatch({ type: 'getUserInfo' });
           dispatch({ type: 'getNetworkList' });
           dispatch({ type: 'getMyNetworkList' });
         }
@@ -100,13 +101,9 @@ export default {
       const res = yield call(API.getNetworkList, payload)
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        const networkList = result.map(item => {
-          item.networkName = item._id;
-          return item
-        })
         yield put({
           type: 'common',
-          payload: { networkList }
+          payload: { networkList: result }
         });
       }
     },
@@ -122,8 +119,8 @@ export default {
         });
       }
     },
-    *enterNetwork({ payload }, { call, put }) {
-      const res = yield call(API.enterNetwork, payload)
+    *enterLeague({ payload }, { call, put }) {
+      const res = yield call(API.enterLeague, payload)
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result.role_token) {
         yield put({
@@ -136,32 +133,24 @@ export default {
         return true
       }
     },
-    *joinNetwork({ payload }, { call, put }) {
-      const res = yield call(API.joinNetwork, payload)
+    *enrollInLeague({ payload }, { call, put }) {
+      const res = yield call(API.enrollInLeague, payload)
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '加入联盟成功', top: 64, duration: 1 });
-        localStorage.setItem('userRole', result.role);
-        localStorage.setItem('networkName', result.networkName);
-        yield put({
-          type: 'common',
-          payload: {
-            userRole: result.role,
-            networkName: result.networkName,
-          }
-        });
+        notification.success({ message: result.message || '已成功申请加入联盟，请等待盟主审批', top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: result.message || '加入联盟失败', top: 64, duration: 1 })
+        notification.error({ message: result.message || '申请加入联盟失败', top: 64, duration: 1 })
       }
     },
-    *createNetwork({ payload }, { call, put }) {
-      const res = yield call(API.createNetwork, payload)
+    *createLeague({ payload }, { call, put }) {
+      const res = yield call(API.createLeague, payload)
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-
+        notification.success({ message: '联盟创建成功', top: 64, duration: 1 });
+        return true;
       } else {
-        notification.error({ message: result.message || '网络创建失败', top: 64, duration: 1 })
+        notification.error({ message: result.message || '联盟创建失败', top: 64, duration: 1 })
         return false
       }
     },

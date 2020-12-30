@@ -59,7 +59,7 @@ function CreatePeer(props) {
       <Button key="cancel" onClick={onCancel}>
         取消
       </Button>,
-      <Button key="submit" onClick={handleSubmit} type="primary" loading={addLoading}>
+      <Button key="submit" type="primary" onClick={handleSubmit} loading={addLoading}>
         提交
       </Button>,
     ],
@@ -110,7 +110,7 @@ function CreatePeer(props) {
         </Item>
         <Item
           label="节点别名"
-          name="peerAliasName"
+          name="peerNameAlias"
           initialValue=""
           rules={[
             {

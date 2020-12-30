@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Radio, Table, Space, Col, Row, Button } from 'antd';
+import { Spin, Table, Space, Col, Row, Button } from 'antd';
 import { connect } from 'dva';
 import { history } from 'umi';
 import moment from 'moment';
 import { Roles } from 'utils/roles';
-import { StatisticsCard, LeagueBar, LeagueScatter, Breadcrumb } from 'components';
+import { StatisticsCard, Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu';
-import { NetworkStatus, NetworkInfo } from 'utils/NetworkStatus';
+import { NetworkStatus, NetworkInfo } from 'utils/networkStatus';
+import CreateNetwork from './components/CreateNetwork';
 import style from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/leagueDashboard');
@@ -19,14 +20,13 @@ const statisticsList = [
 ];
 
 function LeagueDashboard(props) {
-  const { Dashboard, dispatch, qryBlockLoading, qryTransactionLoading, User } = props;
-  const { networkName, userRole } = User;
-  // eslint-disable-next-line no-unused-vars
-  const [pageNum, setPageNum] = useState(1);
+  const { Dashboard, dispatch, qryBlockLoading, qryNetworkLoading = false, qryTransactionLoading, User } = props;
+  const { leagueName, networkName, userRole } = User;
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
   const { networkStatusInfo, transactionList, blockList } = Dashboard;
   const [barType, setBarType] = useState('seven');
+  const [createVisible, setCreateVisible] = useState(false);
 
   const onChangeBarType = (e) => {
     setBarType({ barType: e.target.value });
@@ -36,23 +36,25 @@ function LeagueDashboard(props) {
   const getNetworkInfo = () => {
     dispatch({
       type: 'Dashboard/getNetworkInfo',
-      payload: {},
+      payload: {
+        networkName: networkName
+      },
     });
   }
-  // 创建网络
+
+  // 取消创建网络
+  const onClickCancel = res => {
+    setCreateVisible(false);
+    if (res) {
+      getNetworkInfo();
+    }
+  }
+
+  // 点击创建网络
   const onCreateNetwork = () => {
-    dispatch({
-      type: 'Dashboard/createNetwork',
-      payload: {},
-    });
+    setCreateVisible(true)
   }
-  // 删除网络
-  const onDeleteNetwork = () => {
-    dispatch({
-      type: 'Dashboard/deleteNetwork',
-      payload: {},
-    });
-  }
+
   // 获取区块列表
   const getBlockList = () => {
     const offset = (pageNum - 1) * 6;
@@ -102,6 +104,7 @@ function LeagueDashboard(props) {
       },
     });
   };
+
   //用户身份改变时，表格展示改变
   useEffect(() => {
     const block = [
@@ -193,47 +196,42 @@ function LeagueDashboard(props) {
   useEffect(() => {
     getBlockList();
     getTransactionList();
+    getNetworkInfo();
+    // 轮询网络状态
+    const interval = setInterval(() => getNetworkInfo(), 5000);
+    return () => clearInterval(interval);
   }, []);
-
-  // 轮询网络状态
-  useEffect(() => {
-    const interval = setInterval(() => getNetworkInfo, 2000);
-    return clearInterval(interval);
-  }, [])
 
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
-        <div className={style['league-basic-info']}>
-          <Row>
-            <Col span={8}>
-              <label>联盟名称：</label>
-              <span>{networkName}</span>
-            </Col>
-            <Col span={8}>
-              <label>创建时间：</label>
-              <span>{networkStatusInfo.createdAt}</span>
-            </Col>
-            <Col span={8}>
-              <label>网络状态: </label>
-              <span>{NetworkInfo[networkStatusInfo.networkStatus]}</span>
-              {(userRole === Roles.NetworkMember) && (networkStatusInfo.networkStatus === NetworkStatus.Errored) && (
-                <span>,请联系技术人员排查</span>
+        <Spin spinning={qryNetworkLoading}>
+          <div className={style['league-basic-info']}>
+            <Row>
+              <Col span={8}>
+                <label>联盟名称：</label>
+                <span>{leagueName}</span>
+              </Col>
+              <Col span={8}>
+                <label>创建时间：</label>
+                <span>{networkStatusInfo.createdAt}</span>
+              </Col>
+              <Col span={8}>
+                <label>网络状态: </label>
+                <span>{NetworkInfo[networkStatusInfo.networkStatus]}</span>
+                {(networkStatusInfo.networkStatus === NetworkStatus.Errored) && (
+                  <span>,请联系技术人员排查</span>
+                )}
+              </Col>
+              {(userRole === Roles.NetworkAdmin) && (networkStatusInfo.networkStatus === NetworkStatus.NotExist) && (
+                <Col span={8}>
+                  <Button type="primary" onClick={onCreateNetwork}>立即创建</Button>
+                </Col>
               )}
-            </Col>
-            {(userRole === Roles.NetworkAdmin) && (networkStatusInfo.networkStatus === NetworkStatus.Archived) && (
-              <Col span={8}>
-                <Button type="primary" onClick={onCreateNetwork} loading={props.createLoading}>立即创建</Button>
-              </Col>
-            )}
-            {(userRole === Roles.NetworkAdmin) && (networkStatusInfo.networkStatus === NetworkStatus.Errored) && (
-              <Col span={8}>
-                <Button type="primary" onClick={onDeleteNetwork} loading={props.deleteLoading}>删除网络</Button>
-              </Col>
-            )}
-          </Row>
-        </div>
+            </Row>
+          </div>
+        </Spin>
         <StatisticsCard statisticsList={statisticsList} />
         {/* {userRole === Roles.NetworkAdmin && (
           <div id="leagua-scatter" className={style['leagua-scatter-wrapper']}>
@@ -268,6 +266,7 @@ function LeagueDashboard(props) {
           pagination={false}
         />
       </div>
+      {createVisible && <CreateNetwork visible={createVisible} onCancel={onClickCancel} />}
     </div>
   );
 }
@@ -276,8 +275,8 @@ export default connect(({ User, Layout, Dashboard, loading }) => ({
   User,
   Layout,
   Dashboard,
-  createLoading: loading.effects['Dashboard/createNetwork'],
   deleteLoading: loading.effects['Dashboard/deleteNetwork'],
   qryBlockLoading: loading.effects['Dashboard/getBlockList'],
+  qryNetworkLoading: loading.effects['Dashboard/getNetworkInfo'],
   qryTransactionLoading: loading.effects['Dashboard/getTransactionList'],
 }))(LeagueDashboard);

@@ -14,7 +14,7 @@ const formItemLayout = {
   },
 };
 
-function CreateLeague(props) {
+function CreatePeerOrg(props) {
 
   const { dispatch, visible, onCancel, addLoading = false } = props;
   const [form] = Form.useForm();
@@ -25,10 +25,9 @@ function CreateLeague(props) {
       .then(async (values) => {
         let params = {
           ...values,
-          role: 'networkAdmin'
         };
         const res = await dispatch({
-          type: 'User/createLeague',
+          type: 'Organization/createPeerOrg',
           payload: params
         });
         if (res) {
@@ -44,7 +43,7 @@ function CreateLeague(props) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '创建联盟',
+    title: '创建组织',
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
@@ -60,24 +59,24 @@ function CreateLeague(props) {
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
         <Item
-          label="联盟名称"
-          name="leagueName"
+          label="组织名称"
+          name="orgName"
           rules={[
             {
               required: true,
-              message: '请输入联盟名称',
+              message: '请输入组织名称',
             },
           ]}
         >
-          <Input placeholder="请输入联盟名称" />
+          <Input placeholder="请输入组织名称" />
         </Item>
         <Item
-          label="网络名称"
-          name="networkName"
+          label="组织别名"
+          name="orgAliasName"
           rules={[
             {
               required: true,
-              message: '请输入网络名称',
+              message: '请输入组织别名',
             },
             {
               min: 6,
@@ -88,28 +87,22 @@ function CreateLeague(props) {
             }
           ]}
         >
-          <Input placeholder="请输入网络名称" />
+          <Input placeholder="请输入组织别名" />
         </Item>
-        <Item label='联盟描述' name='description' initialValue='' rules={[
+        <Item label='组织地址' name='orgAddress' initialValue='' rules={[
           {
             required: true,
-            message: '请输入联盟描述',
-          },
-          {
-            min: 1,
-            max: 100,
-            type: 'string',
-            message: '联盟描述由1~100个字符组成'
+            message: '请输入组织地址',
           }
         ]}>
-          <TextArea placeholder='请输入联盟描述' />
+          <TextArea placeholder='请输入组织地址' />
         </Item>
       </Form>
     </Modal>
   );
 }
 
-export default connect(({ User, loading }) => ({
-  User,
-  addLoading: loading.effects['User/createLeague'],
-}))(CreateLeague);
+export default connect(({ Organization, loading }) => ({
+  Organization,
+  addLoading: loading.effects['Organization/createPeerOrg'],
+}))(CreatePeerOrg);

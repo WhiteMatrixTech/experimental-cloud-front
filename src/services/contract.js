@@ -2,10 +2,24 @@ import { request } from '../utils/request';
 import { stringify } from 'qs';
 
 /**
- * 创建合约 || 修改合约
+ * 创建合约 
  */
 export async function addContract(params) {
   return request(`/network/${params.networkName}/chainCodes/create`, { method: 'POST', body: params });
+}
+
+/**
+ * 升级合约 
+ */
+export async function upgrateContract(params) {
+  return request(`/network/${params.networkName}/chainCodes/upgrate`, { method: 'POST', body: params });
+}
+
+/**
+ * 发布合约
+ */
+export async function releaseContract(params) {
+  return request(`/network/${params.networkName}/chainCodes/approve`, { method: 'POST', body: params });
 }
 
 /**
@@ -28,18 +42,14 @@ export async function getOrgListWithChannel(params) {
 export async function getChainCodeLoadInfo(params) {
   return request(`/api/kbaas-business/chain/code/load`, { method: 'POST', body: params });
 }
+
 /**
  * 我的合约 - 合约列表
  */
-export async function getPageListOfChainCode(params) {
+export async function getChainCodeList(params) {
   return request(`/network/${params.networkName}/chainCodes/query`, { method: 'POST', body: params });
 }
-/**
- * 我的合约 - 合约列表的totalDocs
- */
-export async function getPageTotalDocsOfChainCode(params) {
-  return request(`/network/${params.networkName}/chainCodes/totalCount`);
-}
+
 /**
  * 我的合约 -- 通过 / 驳回
  */

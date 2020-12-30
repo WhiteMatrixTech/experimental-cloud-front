@@ -87,7 +87,7 @@ const MenuList = [
         menuHref: "/about/contract/cTransfer",
         menuIcon: null,
         menuName: "合约调用",
-        isFeature: 1,
+        isFeature: 0,
         menuVos: []
       },
       {
@@ -96,7 +96,7 @@ const MenuList = [
         menuHref: "/about/contract/roleData",
         menuIcon: null,
         menuName: "隐私保护策略",
-        isFeature: 0,
+        isFeature: 1, // 是否只有盟主才显示
         menuVos: []
       },
       {
