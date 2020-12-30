@@ -34,7 +34,6 @@ function LeagueDashboard(props) {
 
   // 获取网络信息
   const getNetworkInfo = () => {
-    debugger
     dispatch({
       type: 'Dashboard/getNetworkInfo',
       payload: {},
@@ -202,8 +201,8 @@ function LeagueDashboard(props) {
     getBlockList();
     getTransactionList();
     // 轮询网络状态
-    const interval = setInterval(() => getNetworkInfo(), 2000);
-    return clearInterval(interval);
+    // const interval = setInterval(() => getNetworkInfo(), 5000);
+    // return () => clearInterval(interval);
   }, []);
 
   return (

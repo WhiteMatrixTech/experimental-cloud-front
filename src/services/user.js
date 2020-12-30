@@ -18,7 +18,7 @@ export async function login(params) {
  * 用户信息
  */
 export async function getUserInfo(params) {
-  return request(`/login/info`);
+  return request(`/userInfo`);
 };
 
 /**
