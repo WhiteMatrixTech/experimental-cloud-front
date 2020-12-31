@@ -11,7 +11,6 @@ const StepOne = (props) => {
   const onCheck = async () => {
     try {
       const values = await form.validateFields();
-      console.log('Success:', values);
       afterValidate(values, operType.next)
     } catch (errorInfo) {
       failedToValidate(operType.default)

@@ -108,7 +108,7 @@ class UnionMember extends Component {
     const { qryLoading = false, location: { query: { channelName = '', orgCount = '', peerCount = '', leagueName = '' } } } = this.props;
     const { pageSize, pageNum, addOrgVisible } = this.state;
     const { userRole } = this.props.User
-    const { orgListOfUnion, orgTotalOfUnion } = this.props.Contract;
+    const { orgListOfUnion, orgTotalOfUnion } = this.props.Union;
     const unionInfoList = [
       {
         label: '通道名称',

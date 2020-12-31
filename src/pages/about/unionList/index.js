@@ -38,14 +38,6 @@ function UnionList(props) {
     })
   }
 
-  // 获取通道列表
-  const getUNionListTotalDocs = () => {
-    dispatch({
-      type: 'Union/getUNionListTotalDocs',
-      payload: { networkName },
-    })
-  }
-
   // 翻页
   const onPageChange = pageInfo => {
     setPageNum(pageInfo.current)
@@ -59,8 +51,11 @@ function UnionList(props) {
   }
 
   // 关闭 创建通道弹窗
-  const onCloseCreateUnion = () => {
-    setCreateUnionVisible(false)
+  const onCloseCreateUnion = (res) => {
+    setCreateUnionVisible(false);
+    if (res) {
+      getUnionList();
+    }
   }
 
   // 点击 查看组织
@@ -141,14 +136,9 @@ function UnionList(props) {
   useEffect(() => {
     const data = [
       {
-        title: '通道ID',
-        dataIndex: 'id',
-        key: 'id',
-      },
-      {
         title: '通道名称',
-        dataIndex: 'channelName',
-        key: 'channelName',
+        dataIndex: 'channelId',
+        key: 'channelId',
       },
       {
         title: '通道别名',
@@ -161,7 +151,7 @@ function UnionList(props) {
         key: 'orgCount',
       },
       {
-        title: '状态',
+        title: '通道状态',
         dataIndex: 'channelStatus',
         key: 'channelStatus',
         render: text => text ? <Badge color={unionStatus[text].color} text={unionStatus[text].text} style={{ color: unionStatus[text].color }} /> : ''
@@ -175,7 +165,6 @@ function UnionList(props) {
       {
         title: '操作',
         key: 'action',
-        width: '18%',
         render: (text, record) => (
           <Space size='small'>
             {((record.channelStatus === 4 || record.channelStatus === 12) && userRole === Roles.NetworkAdmin) && <a>开启通道</a>}
@@ -213,7 +202,6 @@ function UnionList(props) {
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getUnionList();
-    getUNionListTotalDocs();
   }, [pageNum]);
 
 

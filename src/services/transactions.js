@@ -2,7 +2,7 @@ import { request } from '../utils/request';
 import { stringify } from 'qs';
 
 /**
- * 获取block的totalDocs
+ * 获取交易的totalDocs
  */
 export async function getTransactionTotalDocs(params) {
   return request(`/network/${params.networkName}/transactions/totalCount`);

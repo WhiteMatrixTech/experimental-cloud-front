@@ -24,9 +24,20 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            certificateChainList: result.list,
-            certificateChainTotal: result.totalDocs
+            certificateChainList: result.items,
           }
+        });
+      }
+    },
+    *getEvidenceTotalDocs({ payload }, { call, put }) {
+      const res = yield call(API.getEvidenceTotalDocs, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            certificateChainTotal: result,
+          },
         });
       }
     },

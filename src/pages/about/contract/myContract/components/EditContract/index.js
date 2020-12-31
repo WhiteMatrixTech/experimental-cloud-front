@@ -83,7 +83,7 @@ function EditContract(props) {
     name: 'file',
     listType: 'text',
     // TODO: 生产环境删除ip端口
-    action: `http://52.81.104.180:3000/chaincodes/uploadpackagearchive`,
+    action: `/chaincodes/uploadpackagearchive`,
     accept: '.zip, .jar, .rar, .gz',
     multiple: false,
     beforeUpload: handleBeforeUpload,

@@ -96,7 +96,7 @@ class UnionPeer extends Component {
     const { qryLoading = false, location: { query: { channelName = '', orgCount = '', peerCount = '', leagueName = '', companyPeerCount = '' } } } = this.props;
     const { pageSize, pageNum } = this.state;
     const { userRole } = this.props.User
-    const { peerListOfUnion, peerTotalOfUnion } = this.props.Contract;
+    const { peerListOfUnion, peerTotalOfUnion } = this.props.Union;
     const unionInfoList = [
       {
         label: '通道名称',

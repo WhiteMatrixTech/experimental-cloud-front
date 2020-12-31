@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { Button, Modal, Form, Select, Input } from 'antd';
+import MonacoEditor from 'react-monaco-editor';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
+const editorOptions = {
+  selectOnLineNumbers: true
+};
 const formItemLayout = {
   labelCol: {
     sm: { span: 6 },
@@ -16,8 +20,10 @@ const formItemLayout = {
 
 function UploadChain(props) {
   const { visible, onCancel, dispatch, Union, User } = props;
-  const { networkName } = User;
+  const { networkName, userInfo } = User;
+
   const [form] = Form.useForm();
+  const [jsonContent, setJsonContent] = useState('')
 
   useEffect(() => {
     dispatch({
@@ -27,13 +33,19 @@ function UploadChain(props) {
   }, [])
 
   const handleSubmit = () => {
-    form.validateFields().then(values => {
-      dispatch({
-        type: 'CertificateChain/getCertificateChainList',
+    form.validateFields().then(async (values) => {
+      const res = await dispatch({
+        type: 'CertificateChain/uploadChain',
         payload: {
           ...values,
+          networkName,
+          createUser: userInfo.loginName,
+          companyName: userInfo.companyName
         }
       })
+      if (res) {
+        onCancel('refresh')
+      }
     }).catch(info => {
       console.log('校验失败:', info);
     });
@@ -54,6 +66,13 @@ function UploadChain(props) {
     return promise.resolve();
   };
 
+  const editorDidMount = (editor, _) => {
+    editor.focus();
+  }
+  const onChange = (newValue, e) => {
+    setJsonContent(newValue);
+  }
+
   const drawerProps = {
     visible: visible,
     closable: true,
@@ -72,7 +91,7 @@ function UploadChain(props) {
 
   return (
     <Modal {...drawerProps}>
-      <Form {...formItemLayout} form={form}>
+      <Form layout="vertical" form={form}>
         <Form.Item
           label="通道"
           name="channelId"
@@ -89,17 +108,26 @@ function UploadChain(props) {
             placeholder="请选择通道"
           >
             {Union.unionList.map((item) => (
-              <Option value={item}>{item}</Option>
+              <Option key={item.channelId} value={item.channelId}>{item.channelId}</Option>
             ))}
           </Select>
         </Form.Item>
-        <Form.Item label='存证数据' name='evidenceData' initialValue='' rules={[
+        <Form.Item required label='存证数据' name='evidenceData' initialValue='' rules={[
           {
             validateTrigger: 'submit',
             validator: checkJSON,
           },
         ]}>
-          <TextArea row={6} />
+          <MonacoEditor
+            width="100%"
+            height="200"
+            language="json"
+            theme="vs-light"
+            value={jsonContent}
+            options={editorOptions}
+            onChange={onChange}
+            editorDidMount={editorDidMount}
+          />
         </Form.Item>
       </Form>
     </Modal>

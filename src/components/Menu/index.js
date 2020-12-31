@@ -33,9 +33,9 @@ class LeftMenu extends Component {
 
   getMenuItem = item => {
     const { userRole } = this.props.User;
-    // if (item.isFeature && userRole === Roles.NetworkMember) {
-    //   return ''
-    // }
+    if (item.isFeature && userRole === Roles.NetworkMember) {
+      return ''
+    }
     if (isEmpty(item.menuVos)) {
       return (
         <Menu.Item key={item.menuHref} onClick={() => this.hashChange(item)}>
@@ -51,9 +51,9 @@ class LeftMenu extends Component {
         </div>}
         >
           {item.menuVos.map(subItem => {
-            // if (subItem.isFeature && userRole === Roles.NetworkMember) {
-            //   return ''
-            // };
+            if (subItem.isFeature && userRole === Roles.NetworkMember) {
+              return ''
+            };
             return (
               <Menu.Item key={subItem.menuHref} onClick={() => this.hashChange(subItem)}>
                 <span style={{ paddingLeft: '8px' }}>{subItem.menuName}</span>
