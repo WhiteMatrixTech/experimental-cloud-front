@@ -38,18 +38,6 @@ export default {
         notification.error({ message: result.message || '通道创建失败', top: 64, duration: 1 })
       }
     },
-    *getNodeListWithOrg({ payload }, { call, put }) {
-      const res = yield call(API.getNodeListWithOrg, payload)
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            nodeListWithOrg: result.list,
-          }
-        });
-      }
-    },
     *getUnionList({ payload }, { call, put }) {
       const res = yield call(API.getUnionList, payload)
       const { statusCode, result } = res;
@@ -57,8 +45,8 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            unionList: result.list,
-            unionTotal: result.totalDocs
+            unionList: result,
+            unionTotal: result.length
           }
         });
       }

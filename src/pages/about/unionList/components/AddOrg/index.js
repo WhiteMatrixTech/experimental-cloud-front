@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Select, Form, Button, Modal } from 'antd';
 
@@ -15,9 +15,18 @@ const formItemLayout = {
 };
 
 function AddOrg(props) {
-  const { visible, onCancel, addLoading = false } = props;
+  const { visible, onCancel, addLoading = false, dispatch, User, Organization } = props;
+  const { networkName } = User;
+  const { orgList } = Organization;
 
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    dispatch({
+      type: 'Organization/getOrgList',
+      payload: { networkName }
+    });
+  }, [])
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
@@ -48,14 +57,14 @@ function AddOrg(props) {
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
-        <Item label='组织名称' name='strategyStatus' initialValue={null} rules={[
+        <Item label='组织名称' name='peerOrgNames' initialValue={null} rules={[
           {
             required: true,
             message: '请选择组织',
           },
         ]}>
-          <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择组织'>
-            <Option value='aaaa'>数研院</Option>
+          <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择组织' mode='multiple'>
+            {orgList.map(item => <Option key={item.orgName} value={item.orgName}>{item.orgName}</Option>)}
           </Select>
         </Item>
       </Form>
@@ -63,7 +72,9 @@ function AddOrg(props) {
   );
 };
 
-export default connect(({ Union, loading }) => ({
+export default connect(({ Union, User, Organization, loading }) => ({
+  User,
   Union,
+  Organization,
   addLoading: loading.effects['Union/addOrgForUnion']
 }))(AddOrg);

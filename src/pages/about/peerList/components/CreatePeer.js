@@ -15,18 +15,16 @@ const formItemLayout = {
 };
 
 function CreatePeer(props) {
-  const { Organization, visible, onCancel, addLoading = false, User } = props;
+  const { Organization, visible, onCancel, addLoading = false, User, dispatch } = props;
   const { networkName } = User;
   const { orgList } = Organization;
 
   const [form] = Form.useForm();
 
-
   useEffect(() => {
-    //获取组织列表
-    props.dispatch({
+    dispatch({
       type: 'Organization/getOrgList',
-      payload: {},
+      payload: { networkName }
     });
   }, [])
 
@@ -37,12 +35,11 @@ function CreatePeer(props) {
         form.resetFields();
         let params = {
           networkName,
-          networkVersion: '1.0.0',
           orgName: values.orgName,
-          nodeName: values.peerName,
-          nodeAliasName: values.peerAliasName
+          peerName: values.peerName,
+          peerNameAlias: values.peerNameAlias
         };
-        props.dispatch({
+        dispatch({
           type: 'Peer/createPeer',
           payload: params
         }).then(res => {
@@ -80,7 +77,6 @@ function CreatePeer(props) {
         <Item
           label="所属组织"
           name="orgName"
-          initialValue={null}
           rules={[
             {
               required: true,
@@ -88,13 +84,8 @@ function CreatePeer(props) {
             },
           ]}
         >
-          <Select
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-            placeholder="请选择所属组织"
-          >
-            {orgList.map((item) => (
-              <Option value={item}>{item}</Option>
-            ))}
+          <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择所属组织'>
+            {orgList.map(item => <Option key={item.orgName} value={item.orgName}>{item.orgName}</Option>)}
           </Select>
         </Item>
         <Item

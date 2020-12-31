@@ -63,8 +63,7 @@ class TopHeader extends PureComponent {
   // 跳转至IDE
   onClickIDE = e => {
     e.preventDefault();
-    console.log('process', process.env.UMI_ENV);
-    window.open('https://juejin.cn/');
+    window.open('https://161.189.217.169:9601');
   }
 
   render() {
@@ -74,7 +73,7 @@ class TopHeader extends PureComponent {
         <div className={styles['logo-sub']}>欢迎使用扬子江数字金融平台区块链BaaS服务</div>
         <div className={styles['header-right-info']}>
           <a className={styles['header-menu-item']} onClick={this.onClickIDE}>
-            Chain IDE
+            ChainIDE
           </a>
           <Badge showZero count={100}>
             <div className={styles['header-menu-item']} style={{ paddingRight: '12px' }} onClick={this.onClickMessage}>消息</div>

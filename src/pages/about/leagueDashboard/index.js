@@ -11,16 +11,9 @@ import CreateNetwork from './components/CreateNetwork';
 import style from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/leagueDashboard');
-const statisticsList = [
-  { label: '成员', num: '17' },
-  { label: '通道', num: '2' },
-  { label: '合约', num: '7' },
-  { label: '区块', num: '484' },
-  { label: '交易', num: '527' },
-];
 
 function LeagueDashboard(props) {
-  const { Dashboard, dispatch, qryBlockLoading, qryNetworkLoading = false, qryTransactionLoading, User } = props;
+  const { Dashboard, User, dispatch, qryBlockLoading, qryNetworkLoading = false, qryTransactionLoading } = props;
   const { leagueName, networkName, userRole } = User;
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
@@ -29,9 +22,28 @@ function LeagueDashboard(props) {
   const [pageNum, setPageNum] = useState(1);
   const [createVisible, setCreateVisible] = useState(false);
 
+  const statisticsList = [
+    { label: '成员', num: Dashboard.memberTotal },
+    { label: '通道', num: Dashboard.unionTotal },
+    { label: '合约', num: Dashboard.myContractTotal },
+    { label: '区块', num: Dashboard.blockTotal },
+    { label: '交易', num: Dashboard.transactionTotal },
+  ];
+
   const onChangeBarType = (e) => {
     setBarType({ barType: e.target.value });
   };
+
+  // 获取统计信息
+  const getStatisInfo = () => {
+    const params = {
+      networkName,
+    };
+    dispatch({
+      type: 'Dashboard/getStatisInfo',
+      payload: params,
+    });
+  }
 
   // 获取网络信息
   const getNetworkInfo = () => {
@@ -196,10 +208,16 @@ function LeagueDashboard(props) {
 
   useEffect(() => {
     getBlockList();
-    getTransactionList();
     getNetworkInfo();
-    // 轮询网络状态
-    const interval = setInterval(() => getNetworkInfo(), 30000);
+    getStatisInfo();
+    getTransactionList();
+    // 轮询
+    const interval = setInterval(() => {
+      getBlockList();
+      getNetworkInfo();
+      getStatisInfo();
+      getTransactionList();
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -216,7 +234,7 @@ function LeagueDashboard(props) {
               </Col>
               <Col span={8}>
                 <label>创建时间：</label>
-                <span>{networkStatusInfo.createdAt}</span>
+                <span>{moment(networkStatusInfo.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
               </Col>
               <Col span={8}>
                 <label>网络状态: </label>
@@ -272,7 +290,7 @@ function LeagueDashboard(props) {
   );
 }
 
-export default connect(({ User, Layout, Dashboard, loading }) => ({
+export default connect(({ Layout, Dashboard, User, loading }) => ({
   User,
   Layout,
   Dashboard,

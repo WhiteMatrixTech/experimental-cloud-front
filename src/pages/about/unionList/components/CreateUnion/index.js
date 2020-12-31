@@ -18,6 +18,7 @@ const formItemLayout = {
 function CreateUnion({ visible, User, onCancel, dispatch, Organization }) {
 
   const { orgList } = Organization;
+  const { networkName } = User;
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
@@ -41,7 +42,7 @@ function CreateUnion({ visible, User, onCancel, dispatch, Organization }) {
   useEffect(() => {
     dispatch({
       type: 'Organization/getOrgList',
-      payload: {}
+      payload: { networkName }
     });
   }, [])
 
@@ -94,7 +95,7 @@ function CreateUnion({ visible, User, onCancel, dispatch, Organization }) {
         ]}>
           <Input placeholder='请输入通道别名' />
         </Item>
-        <Item label='组织' name='peerOrgNames' initialValue={null} rules={[
+        <Item label='选择组织' name='peerOrgNames' rules={[
           {
             required: true,
             message: '请选择组织',

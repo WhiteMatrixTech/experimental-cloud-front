@@ -1,13 +1,24 @@
-import { getBlockList } from '../services/block.js';
-import { getTransactionList } from '../services/transactions.js';
+import { getBlockList, getBlockTotalDocs } from '../services/block.js';
+import { getTransactionList, getTransactionTotalDocs } from '../services/transactions.js';
+import { getMemberTotalDocs } from '../services/member.js';
+import { getUnionList } from '../services/union.js';
+import { getChainCodeList } from '../services/contract.js';
 import * as API from '../services/dashboard.js';
 import { notification } from 'antd';
+import moment from 'moment';
 
 export default {
   namespace: 'Dashboard',
 
   state: {
     networkStatusInfo: {}, // 网络状态信息
+
+    // 统计信息
+    blockTotal: 0,
+    transactionTotal: 0,
+    memberTotal: 0,
+    unionTotal: 0,
+    myContractTotal: 0,
 
     blockList: [], // 区块链列表
     transactionList: [], // 交易列表
@@ -72,6 +83,37 @@ export default {
           }
         });
       }
+    },
+    *getStatisInfo({ payload }, { call, put, all }) {
+      const [res1, res2, res3, res4, res5] = yield all([
+        call(getBlockTotalDocs, payload),
+        call(getTransactionTotalDocs, payload),
+        call(getMemberTotalDocs, {
+          ...payload,
+          approvalStatus: "any",
+          companyName: "",
+          createTimeEnd: 0,
+          createTimeStart: 0,
+          from: Number(moment(new Date()).format('x')),
+        }),
+        call(getUnionList, payload),
+        call(getChainCodeList, payload),
+      ]);
+      const blockTotal = res1.statusCode === 'ok' ? res1.result : 0;
+      const transactionTotal = res2.statusCode === 'ok' ? res2.result : 0;
+      const memberTotal = res3.statusCode === 'ok' ? res3.result : 0;
+      const unionTotal = res4.statusCode === 'ok' ? res4.result.length : 0;
+      const myContractTotal = res5.statusCode === 'ok' ? res5.result.length : 0;
+      yield put({
+        type: 'common',
+        payload: {
+          blockTotal,
+          transactionTotal,
+          memberTotal,
+          unionTotal,
+          myContractTotal,
+        }
+      });
     },
   },
 

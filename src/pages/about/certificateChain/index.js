@@ -11,8 +11,9 @@ import styles from './index.less';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/certificateChain')
 
 function CertificateChain(props) {
-  const { CertificateChain, qryLoading, dispatch } = props;
+  const { User, CertificateChain, qryLoading, dispatch } = props;
   const { certificateChainList, certificateChainTotal } = CertificateChain;
+  const { networkName } = User;
   const [pageNum, setPageNum] = useState(1);
   const [uploadVisible, setUploadVisible] = useState(false);
   const [pageSize] = useState(baseConfig.pageSize);
@@ -20,8 +21,9 @@ function CertificateChain(props) {
   const columns = [
     {
       title: '哈希',
-      dataIndex: 'hash',
-      key: 'hash',
+      dataIndex: 'evidenceHash',
+      key: 'evidenceHash',
+      width: '20%'
     },
     {
       title: '所属通道',
@@ -29,14 +31,14 @@ function CertificateChain(props) {
       key: 'channelId',
     },
     {
-      title: '创建组织',
-      dataIndex: 'createOrgName',
-      key: 'createOrgName',
+      title: '创建公司',
+      dataIndex: 'companyName',
+      key: 'companyName',
     },
     {
       title: '上链时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
       render: text => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '',
     },
     {
@@ -44,7 +46,7 @@ function CertificateChain(props) {
       key: 'action',
       render: (text, record) => (
         <Space size="small">
-          <a onClick={() => this.onClickDetail(record)}>详情</a>
+          <a>详情</a>
         </Space>
       ),
     },
@@ -56,23 +58,38 @@ function CertificateChain(props) {
   }
 
   // 取消存证上链
-  const onCloseUpload = () => {
-    setUploadVisible(false)
+  const onCloseUpload = (res) => {
+    setUploadVisible(false);
+    if (res === 'refresh') {
+      getEvidenceTotalDocs();
+      getCertificateChainList();
+    }
   }
 
   // 查询列表
   const getCertificateChainList = () => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
-      offset,
-      isLeague: -1,
+      networkName,
       limit: pageSize,
+      offset: offset,
+      ascend: false,
       from: Number(moment(new Date()).format('x'))
     }
     dispatch({
       type: 'CertificateChain/getCertificateChainList',
       payload: params
     })
+  }
+
+  const getEvidenceTotalDocs = () => {
+    const params = {
+      networkName,
+    };
+    dispatch({
+      type: 'CertificateChain/getEvidenceTotalDocs',
+      payload: params,
+    });
   }
 
   // 翻页
@@ -82,6 +99,7 @@ function CertificateChain(props) {
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
+    getEvidenceTotalDocs();
     getCertificateChainList();
   }, [pageNum]);
 
@@ -93,7 +111,7 @@ function CertificateChain(props) {
           <Button type='primary' onClick={onClickUpload}>存证上链</Button>
         </div>
         <Table
-          rowKey='id'
+          rowKey='_id'
           columns={columns}
           loading={qryLoading}
           dataSource={certificateChainList}
@@ -106,7 +124,8 @@ function CertificateChain(props) {
   )
 }
 
-export default connect(({ CertificateChain, loading }) => ({
+export default connect(({ User, CertificateChain, loading }) => ({
+  User,
   CertificateChain,
   qryLoading: loading.effects['CertificateChain/getCertificateChainList'],
 }))(CertificateChain);

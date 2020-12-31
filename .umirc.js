@@ -28,8 +28,8 @@ export default {
 
   proxy: {
     '/api': {
-      target: 'http://192.168.8.34:3000',
-      // target: 'http://192.168.8.5:3000',
+      // target: 'http://192.168.8.34:3000',
+      target: 'http://161.189.217.169:3000',
       changeOrigin: false,
       pathRewrite: { '^/api': '' },
     },

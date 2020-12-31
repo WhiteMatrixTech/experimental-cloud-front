@@ -68,8 +68,8 @@ function EnterpriseMember(props) {
     },
     {
       title: '联系人手机号',
-      dataIndex: 'contactCell',
-      key: 'contactCell',
+      dataIndex: 'contactPhone',
+      key: 'contactPhone',
       ellipsis: true,
       width: '8%',
     },
@@ -81,9 +81,9 @@ function EnterpriseMember(props) {
       width: '8%',
     },
     {
-      title: '申请时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
+      title: '创建时间',
+      dataIndex: 'createTimestamp',
+      key: 'createTimestamp',
       render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
       ellipsis: true,
       width: '8%',
@@ -278,14 +278,12 @@ function EnterpriseMember(props) {
       },
     });
   };
+
+  // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getMemberList();
     getMemberTotalDocs();
   }, [queryParams, pageNum]);
-  // 页码改变、搜索值改变时，重新查询列表
-  useEffect(() => {
-    console.log(memberTotal);
-  }, []);
 
   return (
     <div className="page-wrapper">

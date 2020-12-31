@@ -106,7 +106,7 @@ class UnionChain extends Component {
     const { qryLoading = false } = this.props;
     const { pageSize, pageNum } = this.state;
     const { userRole } = this.props.User
-    const { contractListOfUnion, contractTotalOfUnion, contractInfoOfUnion } = this.props.Contract;
+    const { contractListOfUnion, contractTotalOfUnion, contractInfoOfUnion } = this.props.Union;
     const unionInfoList = [
       {
         label: '通道名称',

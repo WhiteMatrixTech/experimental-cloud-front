@@ -87,11 +87,11 @@ function CreateNetwork(props) {
               message: '请输入组织名称',
             },
             {
-              min: 6,
+              min: 3,
               max: 15,
               type: 'string',
               pattern: /^[a-zA-Z0-9]+$/,
-              message: '组织名称由6~15位英文或数字组成'
+              message: '组织名称由3~15位英文或数字组成'
             }
           ]}
         >
@@ -120,11 +120,11 @@ function CreateNetwork(props) {
               message: '请输入节点名称',
             },
             {
-              min: 6,
+              min: 3,
               max: 15,
               type: 'string',
               pattern: /^[a-zA-Z0-9]+$/,
-              message: '节点名称由6~15位英文或数字组成'
+              message: '节点名称由3~15位英文或数字组成'
             }
           ]}
         >
