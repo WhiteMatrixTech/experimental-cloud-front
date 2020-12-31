@@ -5,7 +5,6 @@ export default {
   namespace: 'Peer',
 
   state: {
-    orgList: [],
     peerList: [],
     peerTotal: 0,
   },
@@ -15,18 +14,6 @@ export default {
   },
 
   effects: {
-    *getOrgList({ payload }, { call, put }) {
-      const res = yield call(API.getOrgList, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            orgList: result,
-          },
-        });
-      }
-    },
 
     *getPeerList({ payload }, { call, put }) {
       const res = yield call(API.getPeerList, payload);
@@ -35,7 +22,8 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            peerList: result.items,
+            peerList: result,
+            peerTotal: result.length
           },
         });
       }

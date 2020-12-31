@@ -1,13 +1,11 @@
-export const peerStatus = { // 节点状态
-  Running: { color: 'green', text: '运行中' },
+export const orgStatus = {
+  InUse: { color: 'green', text: '使用中' },
   Creating: { color: 'yellow', text: '创建中' },
   CreationFailed: { color: 'red', text: '创建失败' },
   Stopping: { color: 'yellow', text: '停用中' },
-  Stopped: { color: ':#E2E9F7', text: '已停用' },
   StopFailed: { color: 'red', text: '停用失败' },
+  Stopped: { color: ':#E2E9F7', text: '已停用' },
   Deleting: { color: 'yellow', text: '删除中' },
   DeletionFailed: { color: 'red', text: '删除失败' },
   Deleted: { color: 'volcano', text: '已删除' },
-  Starting: { color: 'yellow', text: '启动中' },
-  StartFailed: { color: 'red', text: '启动失败' },
 }

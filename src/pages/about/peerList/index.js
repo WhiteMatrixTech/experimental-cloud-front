@@ -20,17 +20,6 @@ function PeerList(props) {
   const [pageSize] = useState(baseConfig.pageSize)
   const [createPeerVisible, setCreatePeerVisible] = useState(false)
 
-  //获取组织列表
-  const getOrgList = () => {
-    const params = {
-      networkName,
-      networkVersion: '1.0.0'
-    }
-    dispatch({
-      type: 'Peer/getOrgList',
-      payload: params
-    })
-  }
   // 获取节点列表
   const getPeerList = current => {
     const offset = ((current || pageNum) - 1) * pageSize;
@@ -46,13 +35,6 @@ function PeerList(props) {
       payload: params
     })
   }
-
-  const getPeerTotalDocs = () => {
-    dispatch({
-      type: 'Peer/getPeerTotalDocs',
-      payload: { networkName },
-    });
-  };
 
   // 翻页
   const onPageChange = pageInfo => {
@@ -91,9 +73,9 @@ function PeerList(props) {
         render: text => text ? <Badge color={peerStatus[text].color} text={peerStatus[text].text} style={{ color: peerStatus[text].color }} /> : ''
       },
       {
-        title: '创建时间',
-        dataIndex: 'createTime',
-        key: 'createTime',
+        title: '更新时间',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
         render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
       },
     ]
@@ -113,7 +95,6 @@ function PeerList(props) {
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getPeerList();
-    getPeerTotalDocs();
   }, [pageNum]);
 
   useEffect(() => {
@@ -122,11 +103,6 @@ function PeerList(props) {
       clearInterval(interval)
     }
   }, []);
-
-  useEffect(() => {
-    getOrgList()
-  }, [])
-
 
   return (
     <div className='page-wrapper'>

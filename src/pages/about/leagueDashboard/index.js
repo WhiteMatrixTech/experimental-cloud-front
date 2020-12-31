@@ -198,7 +198,7 @@ function LeagueDashboard(props) {
     getTransactionList();
     getNetworkInfo();
     // 轮询网络状态
-    const interval = setInterval(() => getNetworkInfo(), 5000);
+    const interval = setInterval(() => getNetworkInfo(), 30000);
     return () => clearInterval(interval);
   }, []);
 

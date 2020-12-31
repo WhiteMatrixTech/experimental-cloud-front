@@ -15,11 +15,20 @@ const formItemLayout = {
 };
 
 function CreatePeer(props) {
-  const { Peer, visible, onCancel, addLoading = false, User } = props;
+  const { Organization, visible, onCancel, addLoading = false, User } = props;
   const { networkName } = User;
-  const { orgList } = Peer;
+  const { orgList } = Organization;
 
   const [form] = Form.useForm();
+
+
+  useEffect(() => {
+    //获取组织列表
+    props.dispatch({
+      type: 'Organization/getOrgList',
+      payload: {},
+    });
+  }, [])
 
   const handleSubmit = () => {
     form
@@ -133,8 +142,9 @@ function CreatePeer(props) {
   );
 }
 
-export default connect(({ User, Peer, loading }) => ({
+export default connect(({ User, Peer, Organization, loading }) => ({
   User,
   Peer,
+  Organization,
   addLoading: loading.effects['Peer/createPeer'],
 }))(CreatePeer);

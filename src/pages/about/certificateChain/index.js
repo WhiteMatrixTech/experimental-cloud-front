@@ -24,6 +24,16 @@ function CertificateChain(props) {
       key: 'hash',
     },
     {
+      title: '所属通道',
+      dataIndex: 'channelId',
+      key: 'channelId',
+    },
+    {
+      title: '创建组织',
+      dataIndex: 'createOrgName',
+      key: 'createOrgName',
+    },
+    {
       title: '上链时间',
       dataIndex: 'createTime',
       key: 'createTime',
