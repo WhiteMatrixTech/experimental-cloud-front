@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Modal } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -16,7 +15,7 @@ const formItemLayout = {
   },
 };
 
-function CreateUnion({ visible, editParams, onCancel, dispatch, Organization }) {
+function CreateUnion({ visible, User, onCancel, dispatch, Organization }) {
 
   const { orgList } = Organization;
   const [form] = Form.useForm();
@@ -25,6 +24,7 @@ function CreateUnion({ visible, editParams, onCancel, dispatch, Organization }) 
     form.validateFields().then(async (values) => {
       let params = {
         ...values,
+        networkName: User.networkName
       };
       const res = await dispatch({
         type: 'Union/createChannel',
@@ -64,7 +64,7 @@ function CreateUnion({ visible, editParams, onCancel, dispatch, Organization }) 
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
-        <Item label='通道名称' name='channelName' initialValue='' rules={[
+        <Item label='通道名称' name='channelId' initialValue='' rules={[
           {
             required: true,
             message: '请输入通道名称',
@@ -79,7 +79,7 @@ function CreateUnion({ visible, editParams, onCancel, dispatch, Organization }) 
         ]}>
           <Input placeholder='请输入通道名称' />
         </Item>
-        <Item label='通道别名' name='channelAliasName' initialValue='' rules={[
+        <Item label='通道别名' name='channelNameAlias' initialValue='' rules={[
           {
             required: true,
             message: '请输入通道别名',
@@ -119,7 +119,8 @@ function CreateUnion({ visible, editParams, onCancel, dispatch, Organization }) 
   );
 };
 
-export default connect(({ Union, Organization, loading }) => ({
+export default connect(({ User, Union, Organization, loading }) => ({
+  User,
   Union,
   Organization,
   qryLoading: loading.effects['Union/addUnion']

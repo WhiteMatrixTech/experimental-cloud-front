@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Table, Button } from 'antd';
+import { Table, Badge } from 'antd';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
 import { Roles } from 'utils/roles.js';
+import { orgStatus } from './_config';
 import CreatePeerOrg from './components/CreatePeerOrg';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
@@ -45,29 +46,29 @@ function OrganizationManagement(props) {
       key: 'orgAddress',
     },
     {
+      title: '当前状态',
+      dataIndex: 'orgStatus',
+      key: 'orgStatus',
+      render: text => text ? <Badge color={orgStatus[text].color} text={orgStatus[text].text} style={{ color: orgStatus[text].color }} /> : ''
+    },
+    {
       title: '创建时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
     },
   ];
 
-  // 点击 创建通道
+  // 点击 创建组织
   const onClickCreateOrg = () => {
     setCreateOrgVisible(true)
   }
 
-  // 关闭 创建通道弹窗
+  // 关闭 创建组织弹窗
   const onCloseCreateOrg = () => {
     setCreateOrgVisible(false)
   }
 
-  const getOrgTotalDocs = () => {
-    dispatch({
-      type: 'Organization/getOrgTotalDocs',
-      payload: { networkName },
-    });
-  };
   // 查询列表
   const getOrgList = () => {
     const paginator = (pageNum - 1) * pageSize;
@@ -83,6 +84,7 @@ function OrganizationManagement(props) {
       payload: params,
     });
   };
+
   // 翻页
   const onPageChange = (pageInfo) => {
     setPageNum(pageInfo.current);
@@ -91,20 +93,19 @@ function OrganizationManagement(props) {
   // 页码改变改变时，重新查询列表
   useEffect(() => {
     getOrgList();
-    getOrgTotalDocs();
   }, [pageNum]);
 
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow">
-        {userRole === Roles.NetworkAdmin &&
+        {/* {userRole === Roles.NetworkAdmin &&
           <div className='table-header-btn-wrapper'>
             <Button type='primary' onClick={onClickCreateOrg}>创建组织</Button>
           </div>
-        }
+        } */}
         <Table
-          rowKey="peerOrgId"
+          rowKey="_id"
           columns={columns}
           loading={qryLoading}
           dataSource={orgList}

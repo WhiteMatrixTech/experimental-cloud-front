@@ -26,6 +26,7 @@ function LeagueDashboard(props) {
   const [transactionColumns, setTransactionColumns] = useState([]);
   const { networkStatusInfo, transactionList, blockList } = Dashboard;
   const [barType, setBarType] = useState('seven');
+  const [pageNum, setPageNum] = useState(1);
   const [createVisible, setCreateVisible] = useState(false);
 
   const onChangeBarType = (e) => {
@@ -198,7 +199,7 @@ function LeagueDashboard(props) {
     getTransactionList();
     getNetworkInfo();
     // 轮询网络状态
-    const interval = setInterval(() => getNetworkInfo(), 5000);
+    const interval = setInterval(() => getNetworkInfo(), 30000);
     return () => clearInterval(interval);
   }, []);
 

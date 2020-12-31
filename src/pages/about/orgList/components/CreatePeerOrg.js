@@ -16,7 +16,7 @@ const formItemLayout = {
 
 function CreatePeerOrg(props) {
 
-  const { dispatch, visible, onCancel, addLoading = false } = props;
+  const { dispatch, visible, onCancel, addLoading = false, User } = props;
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
@@ -25,9 +25,10 @@ function CreatePeerOrg(props) {
       .then(async (values) => {
         let params = {
           ...values,
+          User: User.networkName,
         };
         const res = await dispatch({
-          type: 'Organization/createPeerOrg',
+          type: 'Organization/createOrg',
           payload: params
         });
         if (res) {
@@ -78,13 +79,6 @@ function CreatePeerOrg(props) {
               required: true,
               message: '请输入组织别名',
             },
-            {
-              min: 6,
-              max: 15,
-              type: 'string',
-              pattern: /^[a-zA-Z]+$/,
-              message: '网络名称由6~15位英文字母组成'
-            }
           ]}
         >
           <Input placeholder="请输入组织别名" />
@@ -102,7 +96,8 @@ function CreatePeerOrg(props) {
   );
 }
 
-export default connect(({ Organization, loading }) => ({
+export default connect(({ User, Organization, loading }) => ({
+  User,
   Organization,
   addLoading: loading.effects['Organization/createPeerOrg'],
 }))(CreatePeerOrg);

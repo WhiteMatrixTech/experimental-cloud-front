@@ -1,41 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Button, Modal, Form } from 'antd';
-import MonacoEditor from 'react-monaco-editor';
+import { Button, Modal, Form, Select, Input } from 'antd';
 
-const options = {
-  selectOnLineNumbers: true
-};
+const { TextArea } = Input;
+const { Option } = Select;
+
 const formItemLayout = {
   labelCol: {
-    sm: { span: 0 },
+    sm: { span: 6 },
   },
   wrapperCol: {
-    sm: { span: 24 },
+    sm: { span: 18 },
   },
 };
 
-function UploadChain({ visible, onCancel, dispatch }) {
+function UploadChain(props) {
+  const { visible, onCancel, dispatch, Union, User } = props;
+  const { networkName } = User;
   const [form] = Form.useForm();
-  const [jsonContent, setJsonContent] = useState('')
+
+  useEffect(() => {
+    dispatch({
+      type: 'Union/getUnionList',
+      payload: { networkName }
+    })
+  }, [])
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
       dispatch({
         type: 'CertificateChain/getCertificateChainList',
-        payload: { data: jsonContent }
+        payload: {
+          ...values,
+        }
       })
     }).catch(info => {
       console.log('校验失败:', info);
     });
   };
-
-  const editorDidMount = (editor, _) => {
-    editor.focus();
-  }
-  const onChange = (newValue, e) => {
-    setJsonContent(newValue);
-  }
 
   const checkJSON = (_, value) => {
     const promise = Promise; // 没有值的情况
@@ -49,7 +51,6 @@ function UploadChain({ visible, onCancel, dispatch }) {
     } catch (e) {
       return promise.reject('请输入json');
     }
-
     return promise.resolve();
   };
 
@@ -72,29 +73,42 @@ function UploadChain({ visible, onCancel, dispatch }) {
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
-        <Form.Item name='evidenceData' initialValue='' rules={[
+        <Form.Item
+          label="通道"
+          name="channelId"
+          initialValue={null}
+          rules={[
+            {
+              required: true,
+              message: '请选择通道',
+            },
+          ]}
+        >
+          <Select
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder="请选择通道"
+          >
+            {Union.unionList.map((item) => (
+              <Option value={item}>{item}</Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item label='存证数据' name='evidenceData' initialValue='' rules={[
           {
             validateTrigger: 'submit',
             validator: checkJSON,
           },
         ]}>
-          <MonacoEditor
-            width="100%"
-            height="400"
-            language="json"
-            theme="vs-light"
-            value={jsonContent}
-            options={options}
-            onChange={onChange}
-            editorDidMount={editorDidMount}
-          />
+          <TextArea row={6} />
         </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-export default connect(({ CertificateChain, loading }) => ({
+export default connect(({ Union, User, CertificateChain, loading }) => ({
+  Union,
+  User,
   CertificateChain,
   addLoading: loading.effects['CertificateChain/addContract']
 }))(UploadChain);

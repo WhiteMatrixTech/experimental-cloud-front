@@ -15,8 +15,8 @@ export default {
   },
 
   effects: {
-    *createPeerOrg({ payload }, { call, put }) {
-      const res = yield call(API.createPeerOrg, payload);
+    *createOrg({ payload }, { call, put }) {
+      const res = yield call(API.createOrg, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         notification.success({ message: '组织创建成功', top: 64, duration: 1 });
@@ -33,7 +33,8 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            orgList: result.items,
+            orgList: result,
+            orgTotal: result.length
           },
         });
       }
