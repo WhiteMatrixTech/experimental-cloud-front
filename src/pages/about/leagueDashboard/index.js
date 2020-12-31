@@ -26,6 +26,7 @@ function LeagueDashboard(props) {
   const [transactionColumns, setTransactionColumns] = useState([]);
   const { networkStatusInfo, transactionList, blockList } = Dashboard;
   const [barType, setBarType] = useState('seven');
+  const [pageNum, setPageNum] = useState(1);
   const [createVisible, setCreateVisible] = useState(false);
 
   const onChangeBarType = (e) => {
