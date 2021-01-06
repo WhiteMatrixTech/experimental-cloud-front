@@ -63,7 +63,7 @@ class TopHeader extends PureComponent {
   // 跳转至IDE
   onClickIDE = e => {
     e.preventDefault();
-    window.open('https://161.189.217.169:9601');
+    window.open(process.env.CHAIN_IDE_LINK);
   }
 
   render() {

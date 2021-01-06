@@ -4,6 +4,6 @@ function NetworkLayout(props) {
   return <>{children}</>
 }
 
-NetworkLayout.wrappers = ['wrappers/auth']
+// NetworkLayout.wrappers = ['wrappers/auth']
 
 export default NetworkLayout;

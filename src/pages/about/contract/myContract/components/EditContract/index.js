@@ -82,8 +82,8 @@ function EditContract(props) {
   const uploadProps = {
     name: 'file',
     listType: 'text',
-    // TODO: 生产环境删除ip端口
-    action: `/chaincodes/uploadpackagearchive`,
+    // TODO: umirc.js中配置地址
+    action: process.env.UPLOAD_CONTRACT_LINK,
     accept: '.zip, .jar, .rar, .gz',
     multiple: false,
     beforeUpload: handleBeforeUpload,
@@ -188,13 +188,13 @@ function EditContract(props) {
           <Input placeholder='请输入合约版本' />
         </Item>
         {operateType === 'new' && (
-          <Item label='是否初始化' name='initRequired' initialValue={false} rules={[
+          <Item label='是否初始化' name='initRequired' rules={[
             {
               required: true,
               message: '请选择是否需要初始化',
             }
           ]}>
-            <Switch onChange={onChangeInit} />
+            <Switch defaultChecked={false} onChange={onChangeInit} />
           </Item>
         )}
         {initRequired &&

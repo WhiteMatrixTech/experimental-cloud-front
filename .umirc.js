@@ -34,4 +34,10 @@ export default {
       pathRewrite: { '^/api': '' },
     },
   },
+
+  // 用于提供给代码中可用的变量
+  define: {
+    'process.env.CHAIN_IDE_LINK': 'https://161.189.217.169:9601', // ChainIDE地址
+    'process.env.UPLOAD_CONTRACT_LINK': 'http://161.189.217.169:3000/chaincodes/uploadpackagearchive', // 合约上传地址
+  }
 } 

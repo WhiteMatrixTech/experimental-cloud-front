@@ -67,7 +67,10 @@ const getResponseData = response => {
 export const request = (url, options) => {
   const defaultOptions = {
     credentials: 'include',
-    headers: {}
+    headers: {
+      "Cross-Method": "CORS",
+    },
+    mode: 'cors'
   };
   // token校验
   const accessToken = localStorage.getItem('accessToken');

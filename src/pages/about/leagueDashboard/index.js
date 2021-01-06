@@ -85,6 +85,10 @@ function LeagueDashboard(props) {
 
   // 查看区块详情
   const onClickBlockDetail = (record) => {
+    dispatch({
+      type: 'Layout/common',
+      payload: { selectedMenu: '/about/block' }
+    });
     history.push({
       pathname: `/about/block/${record.blockHash}`,
       query: {
@@ -110,6 +114,10 @@ function LeagueDashboard(props) {
 
   // 查看交易详情
   const onClickTransactionDetail = (record) => {
+    dispatch({
+      type: 'Layout/common',
+      payload: { selectedMenu: '/about/channel' }
+    });
     history.push({
       pathname: `/about/channel/${record.txId}`,
       query: {
