@@ -16,14 +16,38 @@ export default {
   },
 
   effects: {
-    *getMyInfoDetail({ payload }, { call, put }) {
-      const res = yield call(API.getMyInfoDetail, payload)
+    *getMyLeagueInfo({ payload }, { call, put }) {
+      const res = yield call(API.getMyLeagueInfo, payload)
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
             myLeague: result
+          }
+        });
+      }
+    },
+    *getMyCompanyInfo({ payload }, { call, put }) {
+      const res = yield call(API.getMyCompanyInfo, payload)
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            myCompany: result
+          }
+        });
+      }
+    },
+    *getMyOrgInfo({ payload }, { call, put }) {
+      const res = yield call(API.getMyOrgInfo, payload)
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            myOrgInfo: result
           }
         });
       }

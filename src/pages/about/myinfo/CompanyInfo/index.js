@@ -74,7 +74,7 @@ function MyCompanyInfo({
 
   useEffect(() => {
     dispatch({
-      type: 'MyInfo/getMyInfoDetail',
+      type: 'MyInfo/getMyCompanyInfo',
       payload: { companyId }
     })
   }, []);

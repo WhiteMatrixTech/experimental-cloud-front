@@ -49,7 +49,7 @@ function MyOrgInfo({
 
   useEffect(() => {
     dispatch({
-      type: 'MyInfo/getMyInfoDetail',
+      type: 'MyInfo/getMyOrgInfo',
       payload: { companyId }
     })
   }, []);

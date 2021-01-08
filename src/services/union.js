@@ -42,3 +42,30 @@ export async function getContractSummaryOfUnion(params) {
   return request(`/network/${params.networkName}/enterprises/query`, { method: 'POST', body: params });
 };
 
+/**
+ * 获取 通道下的区块列表
+ */
+export async function getBlockListOfUnion(params) {
+  return request(`/network/${params.networkName}/blocks/query`, { method: 'POST', body: params });
+};
+
+/**
+ * 获取 通道下的区块总数
+ */
+export async function getBlockTotalOfUnion(params) {
+  return request(`/network/${params.networkName}/blocks/totalCount/${params.channelId}`);
+};
+
+/**
+ * 获取 通道下的交易列表
+ */
+export async function getTransactionsListOfUnion(params) {
+  return request(`/network/${params.networkName}/transactions/query`, { method: 'POST', body: params });
+};
+
+/**
+ * 获取 通道下的交易总数
+ */
+export async function getTransactionsTotalOfUnion(params) {
+  return request(`/network/${params.networkName}/transactions/totalCount/${params.channelId}`);
+};

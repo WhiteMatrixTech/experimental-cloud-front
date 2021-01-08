@@ -133,7 +133,7 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            channelList: result.items,
+            channelList: result,
           },
         });
       }

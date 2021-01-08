@@ -2,17 +2,17 @@ import { request } from '../utils/request';
 import { stringify } from 'qs';
 
 /**
- * 创建合约 
+ * 创建合约 (后台自动创建--安装)
  */
 export async function addContract(params) {
-  return request(`/network/${params.networkName}/chainCodes/create`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/chainCodes/install`, { method: 'POST', body: params });
 }
 
 /**
  * 升级合约 
  */
 export async function upgrateContract(params) {
-  return request(`/network/${params.networkName}/chainCodes/upgrate`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/chainCodes/upgrade`, { method: 'POST', body: params });
 }
 
 /**
@@ -23,10 +23,17 @@ export async function releaseContract(params) {
 }
 
 /**
+ * 调用合约
+ */
+export async function invokeContract(params) {
+  return request(`/network/${params.networkName}/chainCodes/invoke`, { method: 'POST', body: params });
+}
+
+/**
  * 创建合约通道下拉框列表
  */
 export async function getChannelList(params) {
-  return request(`/api/kbaas-business/org/peer/chain/code/org/select`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/channels/listChannels`);
 }
 
 /**

@@ -38,7 +38,7 @@ function MyLeagueInfo({
 
   useEffect(() => {
     dispatch({
-      type: 'MyInfo/getMyInfoDetail',
+      type: 'MyInfo/getMyLeagueInfo',
       payload: { companyId }
     })
   }, []);

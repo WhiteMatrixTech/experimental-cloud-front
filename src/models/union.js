@@ -8,8 +8,6 @@ export default {
     unionList: [], // 通道列表
     unionTotal: 0,
 
-    nodeListWithOrg: [], // 组织下的节点列表
-
     orgListOfUnion: [], // 当前通道下的组织列表
     orgTotalOfUnion: 0,
 
@@ -18,7 +16,13 @@ export default {
 
     contractListOfUnion: [], // 当前通道下的合约列表
     contractTotalOfUnion: 0,
-    contractInfoOfUnion: {}
+    contractInfoOfUnion: {},
+
+    blockListOfUnion: [], // 当前通道下的区块列表
+    blockTotalOfUnion: 0,
+
+    transactionListOfUnion: [], // 当前通道下的交易列表
+    transactionTotalOfUnion: 0,
   },
 
   subscriptions: {
@@ -101,6 +105,45 @@ export default {
           }
         });
       }
+    },
+    *getBlockListOfUnion({ payload }, { call, put }) {
+      const res = yield call(API.getBlockListOfUnion, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            blockListOfUnion: result.items,
+          },
+        });
+      }
+    },
+    *getTransactionsListOfUnion({ payload }, { call, put }) {
+      const res = yield call(API.getTransactionsListOfUnion, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            transactionListOfUnion: result.items,
+          },
+        });
+      }
+    },
+    *getStatisInfo({ payload }, { call, put, all }) {
+      const [blockRes, transactionRes] = yield all([
+        call(API.getBlockTotalOfUnion, payload),
+        call(API.getTransactionsTotalOfUnion, payload),
+      ]);
+      const blockTotalOfUnion = blockRes.statusCode === 'ok' ? blockRes.result : 0;
+      const transactionTotalOfUnion = transactionRes.statusCode === 'ok' ? transactionRes.result : 0;
+      yield put({
+        type: 'common',
+        payload: {
+          blockTotalOfUnion,
+          transactionTotalOfUnion
+        }
+      });
     },
   },
 

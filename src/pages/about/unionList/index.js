@@ -103,6 +103,7 @@ function UnionList(props) {
       query: {
         cId: record._id,
       },
+      state: { ...record }
     })
   }
 

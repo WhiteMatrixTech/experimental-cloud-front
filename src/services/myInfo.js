@@ -2,9 +2,23 @@ import { request } from '../utils/request';
 import { stringify } from 'qs';
 
 /**
- * 查询我的信息详情
+ * 查询我的联盟信息
  */
-export async function getMyInfoDetail(params) {
+export async function getMyLeagueInfo(params) {
+  return request(`/network/${params.networkName}/enterprises/${params.companyId}?${stringify(params)}`);
+};
+
+/**
+ * 查询我的企业信息
+ */
+export async function getMyCompanyInfo(params) {
+  return request(`/network/${params.networkName}/enterprises/${params.companyId}?${stringify(params)}`);
+};
+
+/**
+ * 查询我的组织信息
+ */
+export async function getMyOrgInfo(params) {
   return request(`/network/${params.networkName}/enterprises/${params.companyId}?${stringify(params)}`);
 };
 

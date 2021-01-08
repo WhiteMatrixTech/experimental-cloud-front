@@ -27,8 +27,9 @@ function EditContract(props) {
   const [form] = Form.useForm();
   const [fileJson, setFileJson] = useState(null);
   const [initRequired, setInitRequired] = useState(false);
-  const { visible, editParams, onCancel, operateType, dispatch, Contract } = props;
-  const { channelList, orgListWithChannel } = Contract
+  const { visible, editParams, onCancel, operateType, dispatch, Contract, User } = props;
+  const { channelList, orgListWithChannel } = Contract;
+  const { networkName } = User;
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
@@ -75,7 +76,7 @@ function EditContract(props) {
   useEffect(() => {
     dispatch({
       type: 'Contract/getChannelList',
-      payload: {},
+      payload: { networkName },
     });
   }, [])
 
@@ -83,7 +84,7 @@ function EditContract(props) {
     name: 'file',
     listType: 'text',
     // TODO: umirc.js中配置地址
-    action: process.env.UPLOAD_CONTRACT_LINK,
+    action: `http://161.189.217.169:3000/network/${networkName}/chainCodes/uploadPackageArchive`,
     accept: '.zip, .jar, .rar, .gz',
     multiple: false,
     beforeUpload: handleBeforeUpload,
@@ -140,7 +141,7 @@ function EditContract(props) {
             onChange={onChangeChannel}
             placeholder='请选择通道'
           >
-            {channelList.map(item => <Option key={item.channelId} value={item.channelId}>{item.channelName}</Option>)}
+            {channelList.map(item => <Option key={item.channelId} value={item.channelId}>{item.channelId}</Option>)}
           </Select>
         </Item>
         <Item label='选择组织' name='endorsementOrgName' initialValue={null} rules={[
@@ -179,13 +180,8 @@ function EditContract(props) {
             required: true,
             message: '请输入合约版本',
           },
-          {
-            type: 'string',
-            pattern: /^\d+(\.\d+)*$/,
-            message: '合约版本必须由数字或点组成,且首字符为数字'
-          }
         ]}>
-          <Input placeholder='请输入合约版本' />
+          <Input type='number' step={0.1} placeholder='请输入合约版本' />
         </Item>
         {operateType === 'new' && (
           <Item label='是否初始化' name='initRequired' rules={[
@@ -228,7 +224,8 @@ function EditContract(props) {
   );
 };
 
-export default connect(({ Contract, loading }) => ({
+export default connect(({ Contract, User, loading }) => ({
   Contract,
+  User,
   qryLoading: loading.effects['Contract/addContract']
 }))(EditContract);

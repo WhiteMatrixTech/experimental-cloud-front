@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Radio, Table, Space, Col, Row } from 'antd';
+import { Table, Space, Col, Row } from 'antd';
 import { connect } from "dva";
 import { history } from 'umi';
 import moment from 'moment';
-import { StatisticsCard, LeagueBar, NetworkTopo, Breadcrumb } from 'components';
+import { StatisticsCard, Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { unionStatus } from '../_config';
 import style from './index.less';
 import peer from 'assets/images/dashboard/icon-peer.png';
 import msp from 'assets/images/dashboard/icon-msp.png';
@@ -118,53 +119,69 @@ class UnionDetail extends Component {
 
   // 获取交易列表
   getTransactionList = () => {
+    const { dispatch, location, User } = this.props;
+    const { networkName } = User;
     const params = {
-      companyId: 1,
-      limit: 1,
-      paginator: 0
-    }
-    this.props.dispatch({
-      type: 'Dashboard/getTransactionList',
-      payload: params
-    })
+      networkName,
+      offset: 0,
+      limit: 6,
+      ascend: false,
+      channelId: location?.state?.channelId,
+    };
+    dispatch({
+      type: 'Union/getTransactionsListOfUnion',
+      payload: params,
+    });
   }
 
   // 查看交易详情
   onClickTransactionDetail = record => {
+    this.props.dispatch({
+      type: 'Layout/common',
+      payload: { selectedMenu: '/about/channel' }
+    });
     history.push({
       pathname: `/about/channel/${record.txId}`,
       query: {
         channelId: record.txId,
       },
-    })
+    });
   }
 
-  // 获取区块列表
+  // 获取区块列表和总数
   getBlockList = () => {
+    const { dispatch, location, User } = this.props;
+    const { networkName } = User;
     const params = {
-      blockHash: '',
-      limit: 1,
-      paginator: 0
-    }
-    this.props.dispatch({
-      type: 'Block/getBlockList',
-      payload: params
-    })
+      networkName,
+      offset: 0,
+      limit: 6,
+      ascend: false,
+      channelId: location?.state?.channelId
+    };
+    dispatch({
+      type: 'Union/getBlockListOfUnion',
+      payload: params,
+    });
   }
 
   // 查看区块详情
   onClickBlockDetail = record => {
+    this.props.dispatch({
+      type: 'Layout/common',
+      payload: { selectedMenu: '/about/block' }
+    });
     history.push({
       pathname: `/about/block/${record.blockHash}`,
       query: {
         blockHash: record.blockHash,
       },
-    })
+    });
   }
 
   render() {
-    const { qryBlockLoading, qryTransactionLoading } = this.props;
-    const { blockList, transactionList } = this.props.Dashboard
+    const { location, qryBlockLoading, qryTransactionLoading } = this.props;
+    const { blockListOfUnion, transactionListOfUnion } = this.props.Union;
     return (
       <div className='page-wrapper'>
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -172,33 +189,33 @@ class UnionDetail extends Component {
           <div className={style['league-basic-info']}>
             <Row  >
               <Col span={8}>
-                <label >通道ID：</label>
-                <span>{'1'}</span>
+                <label>通道ID：</label>
+                <span>{location?.state?._id}</span>
               </Col>
               <Col span={8} >
-                <label >通道名称：</label>
-                <span>{'syychannel'}</span>
+                <label>通道名称：</label>
+                <span>{location?.state?.channelId}</span>
               </Col>
               <Col span={8} >
-                <label >通道别名：</label>
-                <span>{'数研院'}</span>
+                <label>通道别名：</label>
+                <span>{location?.state?.channelAliasName}</span>
               </Col>
               <Col span={8} >
-                <label >状态：</label>
-                <span>{'运行中'}</span>
+                <label>创建时间：</label>
+                <span>{location?.state?.createdAt ? moment(location?.state?.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}</span>
               </Col>
               <Col span={8} >
-                <label >创建时间：</label>
-                <span>{'2020-11-24 17:54:11'}</span>
+                <label>状态：</label>
+                <span>{location?.state?.channelStatus ? unionStatus[location?.state?.channelStatus].text : ''}</span>
               </Col>
             </Row>
           </div>
           <StatisticsCard statisticsList={statisticsList} imgList={imgList} />
-          <div className={style['network-topo-wrapper']}>
+          {/* <div className={style['network-topo-wrapper']}>
             <div className={style['network-topo-title']}>网络拓扑图</div>
             <NetworkTopo />
-          </div>
-          <div className={`${style['network-topo-bar-wrapper']} page-content-shadow`}>
+          </div> */}
+          {/* <div className={`${style['network-topo-bar-wrapper']} page-content-shadow`}>
             <div className={style['network-topo-bar-header']}>
               <div className={style.title}>交易时间表</div>
               <Radio.Group value={this.state.barType} onChange={this.onChangeBarType}>
@@ -207,19 +224,19 @@ class UnionDetail extends Component {
               </Radio.Group>
             </div>
             <LeagueBar type={this.state.barType} />
-          </div>
+          </div> */}
           <Table
             rowKey='_id'
             columns={this.blockColums}
             loading={qryBlockLoading}
-            dataSource={blockList}
+            dataSource={blockListOfUnion}
             className='page-content-shadow'
           />
           <Table
             rowKey='_id'
             columns={this.transactionColumns}
             loading={qryTransactionLoading}
-            dataSource={transactionList}
+            dataSource={transactionListOfUnion}
             className='page-content-shadow'
           />
         </div>
@@ -228,9 +245,10 @@ class UnionDetail extends Component {
   }
 }
 
-export default connect(({ Layout, Dashboard, loading }) => ({
+export default connect(({ Layout, Union, User, loading }) => ({
   Layout,
-  Dashboard,
-  qryBlockLoading: loading.effects['Dashboard/getBlockList'],
-  qryTransactionLoading: loading.effects['Dashboard/getTransactionList'],
+  Union,
+  User,
+  qryBlockLoading: loading.effects['Union/getBlockListOfUnion'],
+  qryTransactionLoading: loading.effects['Union/getTransactionList'],
 }))(UnionDetail)
