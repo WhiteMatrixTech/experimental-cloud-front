@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Spin, Card } from 'antd';
+import { Spin } from 'antd';
 import { Breadcrumb, DetailCard } from 'components';
 import ReactJson from 'react-json-view';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import styles from './index.less';
+
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/certificateChain');
 breadCrumbItem.push({
@@ -61,16 +63,26 @@ function certificateChainDetail({
 
   return (
     <div className="page-wrapper">
+      
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
         <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="基本信息" detailList={detailList} />
-          <Card title="存证信息">
-            <ReactJson name="evidenceData" src={evidenceData} />
-          </Card>
+          <DetailCard cardTitle="基本信息" detailList={detailList} /> 
+          <Fragment>
+            <div className={styles['detail-card-wrapper']} >
+              <div className={styles['detail-card-title']}>
+                <span className={styles['detail-title-border']}></span>
+                <span className={styles['detail-title-content']}>存证信息</span>
+              </div>
+              <div className={styles['detail-info-wrapper']}>
+                <ReactJson name="evidenceData" src={evidenceData} />
+              </div>
+            </div>
+          </Fragment>
         </Spin>
+        </div>
       </div>
-    </div>
+      
   );
 }
 

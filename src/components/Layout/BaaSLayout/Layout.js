@@ -12,6 +12,7 @@ class BaaSLayout extends PureComponent {
 		this.state = {}
 	}
 
+	
 	// 面包屑点击事件
 	onClickBreadcrumb = breadCrumbInfo => {
 		if (!breadCrumbInfo.menuVos || isEmpty(breadCrumbInfo.menuVos)) {

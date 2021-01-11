@@ -3,9 +3,9 @@ import { connect } from 'dva';
 import { Menu } from 'antd';
 import { history } from 'umi';
 import styles from './index.less';
-import isEmpty from 'lodash/isEmpty';
 import { MenuList } from 'utils/menu.js';
 import { Roles } from 'utils/roles.js';
+import { isEmpty } from 'lodash';
 const { SubMenu } = Menu;
 
 class LeftMenu extends Component {
@@ -68,7 +68,8 @@ class LeftMenu extends Component {
 
   render() {
     const { selectedMenu } = this.props.Layout;
-    return <div className={styles.leftMenu} >
+    return (
+    <div className={styles.leftMenu} >
       <Menu
         defaultSelectedKeys={[this.props.pathname]}
         selectedKeys={[selectedMenu]}
@@ -79,6 +80,7 @@ class LeftMenu extends Component {
         {MenuList.map(item => this.getMenuItem(item))}
       </Menu>
     </div>
+    )
   }
 }
 
