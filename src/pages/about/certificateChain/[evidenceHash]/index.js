@@ -1,4 +1,4 @@
-import React, { useEffect,Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Spin } from 'antd';
@@ -26,7 +26,7 @@ function certificateChainDetail({
 }) {
   const { networkName } = User;
   const { certificateChainDetail } = CertificateChain;
-  const evidenceData = certificateChainDetail.evidenceData ? JSON.parse(certificateChainDetail.evidenceData): '';
+  const evidenceData = certificateChainDetail.evidenceData ? JSON.parse(certificateChainDetail.evidenceData) : '';
   const detailList = [
     {
       label: '存证哈希',
@@ -63,26 +63,23 @@ function certificateChainDetail({
 
   return (
     <div className="page-wrapper">
-      
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
         <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="基本信息" detailList={detailList} /> 
-          <Fragment>
-            <div className={styles['detail-card-wrapper']} >
-              <div className={styles['detail-card-title']}>
-                <span className={styles['detail-title-border']}></span>
-                <span className={styles['detail-title-content']}>存证信息</span>
-              </div>
-              <div className={styles['detail-info-wrapper']}>
-                <ReactJson name="evidenceData" src={evidenceData} />
-              </div>
+          <DetailCard cardTitle="基本信息" detailList={detailList} />
+          <div className={styles['detail-card-wrapper']} >
+            <div className={styles['detail-card-title']}>
+              <span className={styles['detail-title-border']}></span>
+              <span className={styles['detail-title-content']}>存证信息</span>
             </div>
-          </Fragment>
+            <div className={styles['detail-info-wrapper']}>
+              <ReactJson name="evidenceData" src={evidenceData} />
+            </div>
+          </div>
         </Spin>
-        </div>
       </div>
-      
+    </div>
+
   );
 }
 
