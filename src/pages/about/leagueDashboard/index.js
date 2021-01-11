@@ -116,10 +116,10 @@ function LeagueDashboard(props) {
   const onClickTransactionDetail = (record) => {
     dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/channel' }
+      payload: { selectedMenu: '/about/transactions' }
     });
     history.push({
-      pathname: `/about/channel/${record.txId}`,
+      pathname: `/about/transactions/${record.txId}`,
       query: {
         channelId: record.txId,
       },

@@ -18,15 +18,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {
-      // return history.listen(({ pathname }) => {
-      //   if (pathname.indexOf('/about/block') > -1) {
-      //     const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block')
-      //     dispatch({
-      //       type: 'common',
-      //       payload: { breadCrumbItem }
-      //     })
-      //   }
-      // });
+
     },
   },
 
@@ -76,7 +68,7 @@ export default {
             blockDetail: '',
           },
         });
-        notification.error({ message: res.message , top: 64, duration: 1 });
+        notification.error({ message: res.message, top: 64, duration: 1 });
       }
     },
     *getBlockDetail({ payload }, { call, put }) {

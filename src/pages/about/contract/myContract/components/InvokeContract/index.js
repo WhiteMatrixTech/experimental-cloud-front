@@ -97,7 +97,7 @@ function InvokeContract(props) {
         ]}>
           <TextArea placeholder='请输入参数列表' />
         </Item>
-        <Item label='是否初始化' name='isInit' initialValue={true} rules={[
+        <Item label='是否初始化' name='isInit' initialValue={true} valuePropName='checked' rules={[
           {
             required: true,
             message: '请选择是否需要初始化',

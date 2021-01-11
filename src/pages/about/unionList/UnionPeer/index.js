@@ -61,13 +61,16 @@ class UnionPeer extends Component {
   // 获取 通道下的节点
   getPeerListOfUnion = (current, peerName) => {
     const { pageNum, pageSize } = this.state;
-    const { location: { query: { cId = '' } } } = this.props;
+    const { User, location } = this.props;
+    const { networkName } = User;
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
+      networkName,
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
-      id: cId,
+      ascend: false,
+      channelId: location?.state?.channelId,
     }
     if (peerName) {
       params.orgName = peerName
@@ -93,32 +96,32 @@ class UnionPeer extends Component {
   }
 
   render() {
-    const { qryLoading = false, location: { query: { channelName = '', orgCount = '', peerCount = '', leagueName = '', companyPeerCount = '' } } } = this.props;
+    const { qryLoading = false, location } = this.props;
     const { pageSize, pageNum } = this.state;
     const { userRole } = this.props.User
     const { peerListOfUnion, peerTotalOfUnion } = this.props.Union;
     const unionInfoList = [
       {
         label: '通道名称',
-        value: channelName
+        value: location?.state?.channelName
       },
       {
         label: '组织数量',
-        value: orgCount
+        value: location?.state?.orgCount
       },
       {
         label: '节点总数',
-        value: peerCount
-      }
+        value: location?.state?.peerCount
+      },
     ]
     if (userRole === Roles.NetworkAdmin) {
       unionInfoList.slice(1, 0, {
         label: '所属联盟',
-        value: leagueName
+        value: location?.state?.leagueName
       })
       unionInfoList.slice(3, 0, {
         label: '我的节点数',
-        value: companyPeerCount
+        value: location?.state?.companyPeerCount
       })
     }
     return (

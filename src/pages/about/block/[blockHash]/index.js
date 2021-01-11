@@ -21,7 +21,6 @@ function BlockDetail({
   },
   User,
   Block,
-  Layout,
   qryLoading = false,
   dispatch,
 }) {
@@ -91,10 +90,10 @@ function BlockDetail({
   const onClickDetail = (record) => {
     dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/channel' },
+      payload: { selectedMenu: '/about/transactions' },
     });
     history.push({
-      pathname: `/about/channel/${record.txId}`,
+      pathname: `/about/transactions/${record.txId}`,
       query: {
         channelId: record.txId,
       },

@@ -185,13 +185,13 @@ function EditContract(props) {
           <Input type='number' step={0.1} placeholder='请输入合约版本' />
         </Item>
         {operateType === 'new' && (
-          <Item label='是否初始化' name='initRequired' rules={[
+          <Item label='是否初始化' name='initRequired' initialValue={false} valuePropName='checked' rules={[
             {
               required: true,
               message: '请选择是否需要初始化',
             }
           ]}>
-            <Switch defaultChecked={false} onChange={onChangeInit} />
+            <Switch onChange={onChangeInit} />
           </Item>
         )}
         {initRequired &&

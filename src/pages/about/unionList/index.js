@@ -64,11 +64,8 @@ function UnionList(props) {
       pathname: `/about/unionList/UnionMember`,
       query: {
         cId: record._id,
-        channelName: record.channelName,
-        orgCount: record.orgCount,
-        peerCount: record.peerCount,
-        leagueName: record.leagueName
       },
+      state: { ...record }
     })
   }
 
@@ -78,11 +75,8 @@ function UnionList(props) {
       pathname: `/about/unionList/UnionPeer`,
       query: {
         cId: record._id,
-        channelName: record.channelName,
-        orgCount: record.orgCount,
-        peerCount: record.peerCount,
-        leagueName: record.leagueName
       },
+      state: { ...record }
     })
   }
 
@@ -93,6 +87,7 @@ function UnionList(props) {
       query: {
         cId: record._id,
       },
+      state: { ...record }
     })
   }
 

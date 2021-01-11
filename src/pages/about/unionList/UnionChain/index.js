@@ -71,13 +71,16 @@ class UnionChain extends Component {
   // 获取 通道下的合约
   getContractListOfUnion = (current, chainCodeName) => {
     const { pageNum, pageSize } = this.state;
-    const { location: { query: { cId = '' } } } = this.props;
+    const { User, location } = this.props;
+    const { networkName } = User;
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
+      networkName,
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
-      id: cId,
+      ascend: false,
+      channelId: location?.state?.channelId,
     }
     if (chainCodeName) {
       params.orgName = chainCodeName
@@ -105,7 +108,7 @@ class UnionChain extends Component {
   render() {
     const { qryLoading = false } = this.props;
     const { pageSize, pageNum } = this.state;
-    const { userRole } = this.props.User
+    const { userRole } = this.props.User;
     const { contractListOfUnion, contractTotalOfUnion, contractInfoOfUnion } = this.props.Union;
     const unionInfoList = [
       {

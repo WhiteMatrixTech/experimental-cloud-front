@@ -138,10 +138,10 @@ class UnionDetail extends Component {
   onClickTransactionDetail = record => {
     this.props.dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/channel' }
+      payload: { selectedMenu: '/about/transactions' }
     });
     history.push({
-      pathname: `/about/channel/${record.txId}`,
+      pathname: `/about/transactions/${record.txId}`,
       query: {
         channelId: record.txId,
       },
