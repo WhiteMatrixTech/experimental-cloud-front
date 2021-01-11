@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Table, Badge } from 'antd';
+import { Table, Badge, Button } from 'antd';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
@@ -99,11 +99,11 @@ function OrganizationManagement(props) {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow">
-        {/* {userRole === Roles.NetworkAdmin &&
+        {userRole === Roles.NetworkAdmin &&
           <div className='table-header-btn-wrapper'>
             <Button type='primary' onClick={onClickCreateOrg}>创建组织</Button>
           </div>
-        } */}
+        }
         <Table
           rowKey="_id"
           columns={columns}

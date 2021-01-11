@@ -82,7 +82,7 @@ function CallTransfer(props) {
                   <Option value='aaa'>aaa</Option>
                 </Select>
               </Item>
-              <Item label='选择合约' name='chainCodeId' initialValue={null} rules={[
+              <Item label='选择合约' name='chainCodeName' initialValue={null} rules={[
                 {
                   required: true,
                   message: '请选择合约',
@@ -95,7 +95,7 @@ function CallTransfer(props) {
                   <Option value='aaa'>aaa</Option>
                 </Select>
               </Item>
-              <Item label='方法名' name='method' initialValue='' rules={[
+              <Item label='方法名' name='methodName' initialValue='' rules={[
                 {
                   required: true,
                   message: '请输入方法名',
@@ -103,7 +103,7 @@ function CallTransfer(props) {
               ]}>
                 <Input placeholder='请输入方法名' />
               </Item>
-              <Item label='参数列表' name='args' initialValue='' rules={[
+              <Item label='参数列表' name='paramString' initialValue='' rules={[
                 {
                   required: true,
                   message: '请输入参数列表',

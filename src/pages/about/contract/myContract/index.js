@@ -7,6 +7,7 @@ import moment from 'moment';
 import { Breadcrumb, SearchBar } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import EditContract from './components/EditContract';
+import InvokeContract from './components/InvokeContract';
 import baseConfig from 'utils/config';
 import { chainCodeStatusInfo, ChainCodeStatus } from './_config';
 
@@ -24,6 +25,7 @@ class MyContract extends Component {
       pageSize: baseConfig.pageSize,
       chainCodeName: '', // 合约名称搜索关键字
       editModalVisible: false, // 新增、修改、升级合约弹窗是否可见
+      invokeVisible: false, // 合约调用弹窗 是否可见
       operateType: 'new', // 打开弹窗类型--新增、修改、升级
       editParams: {}, // 修改、升级合约的信息
     }
@@ -72,6 +74,7 @@ class MyContract extends Component {
             {/* {record.chainCodeStatus === 2 && <a onClick={() => this.onClickModify(record)}>修改</a>} */}
             {(record.chainCodeStatus === ChainCodeStatus.Installed) && <a onClick={() => this.onClickToConfirm(record, 'approve')}>发布</a>}
             {(record.chainCodeStatus === ChainCodeStatus.Approved) && <a onClick={() => this.onClickUpgrade(record)}>升级</a>}
+            {(record.chainCodeStatus === ChainCodeStatus.Approved) && <a onClick={() => this.onClickInvoke(record)}>调用</a>}
             {/* {(record.chainCodeStatus === 1 || record.chainCodeStatus === 3) &&
               <>
                 <a onClick={() => this.onClickToConfirm(record, 'agree')}>通过</a>
@@ -162,7 +165,7 @@ class MyContract extends Component {
 
   // 关闭 新增&修改&升级合约 弹窗
   onCloseModal = () => {
-    this.setState({ editModalVisible: false })
+    this.setState({ editModalVisible: false, invokeVisible: false })
   }
 
   // 点击新增合约
@@ -173,6 +176,11 @@ class MyContract extends Component {
   // 点击修改合约
   onClickModify = () => {
     this.setState({ operateType: 'modify', editModalVisible: true })
+  }
+
+  // 点击调用合约
+  onClickInvoke = record => {
+    this.setState({ invokeVisible: true, editParams: record })
   }
 
   // 升级合约
@@ -226,7 +234,7 @@ class MyContract extends Component {
 
   render() {
     const { qryLoading = false } = this.props;
-    const { pageSize, pageNum, editModalVisible, operateType, editParams } = this.state;
+    const { pageSize, pageNum, editModalVisible, invokeVisible, operateType, editParams } = this.state;
     const { myContractList, myContractTotal } = this.props.Contract
     return (
       <div className='page-wrapper'>
@@ -243,6 +251,7 @@ class MyContract extends Component {
           />
         </div>
         {editModalVisible && <EditContract visible={editModalVisible} operateType={operateType} onCancel={this.onCloseModal} editParams={editParams} />}
+        {invokeVisible && <InvokeContract visible={invokeVisible} onCancel={this.onCloseModal} editParams={editParams} />}
       </div >
     )
   }

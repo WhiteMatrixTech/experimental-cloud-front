@@ -109,8 +109,8 @@ class UnionDetail extends Component {
   }
 
   componentDidMount() {
-    // this.getBlockList()
-    // this.getTransactionList()
+    this.getBlockList()
+    this.getTransactionList()
   }
 
   onChangeBarType = e => {

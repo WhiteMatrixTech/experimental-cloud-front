@@ -25,7 +25,7 @@ function CreatePeerOrg(props) {
       .then(async (values) => {
         let params = {
           ...values,
-          User: User.networkName,
+          networkName: User.networkName,
         };
         const res = await dispatch({
           type: 'Organization/createOrg',

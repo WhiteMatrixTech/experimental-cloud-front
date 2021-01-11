@@ -131,7 +131,7 @@ export async function updateStrategyStatus(params) {
  * 获取策略 关联成员列表
  */
 export async function getPageListOfRoleMember(params) {
-  return request(`/network/${params.networkName}/strategies/strategyName`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/strategies/${params.strategyName}`);
 }
 
 /**

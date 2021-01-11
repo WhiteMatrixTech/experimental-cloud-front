@@ -37,6 +37,7 @@ function EditContract(props) {
       if (!initRequired) {
         values.initArgs = ''
       }
+      values.networkName = networkName;
       if (operateType === 'new') {
         dispatch({
           type: 'Contract/addContract',

@@ -58,10 +58,10 @@ class PrivacyStrategy extends Component {
             {record.strategyStatus === 1 ? (
               <a onClick={() => this.onClickToConfirm(record, 'stop')}>停用</a>
             ) : (
-              <a onClick={() => this.onClickToConfirm(record, 'enable')}>启用</a>
-            )}
+                <a onClick={() => this.onClickToConfirm(record, 'enable')}>启用</a>
+              )}
             <a onClick={() => this.onClickConfig(record)}>配置策略</a>
-            <a onClick={() => this.onClickDetail(record)}>隐私保护记录</a>
+            {/* <a onClick={() => this.onClickDetail(record)}>隐私保护记录</a> */}
           </Space>
         ),
       },
@@ -79,7 +79,7 @@ class PrivacyStrategy extends Component {
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       offset,
-      networkName:this.props.User.networkName,
+      networkName: this.props.User.networkName,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
       ascend: false,
@@ -92,10 +92,10 @@ class PrivacyStrategy extends Component {
 
   //获取策略列表的totalDocs
   getRoleDateTotalDocs = () => {
-    const {networkName} = this.props.User;
+    const { networkName } = this.props.User;
     this.props.dispatch({
       type: 'Contract/getRoleDateTotalDocs',
-      payload:{networkName} ,
+      payload: { networkName },
     })
   }
 
@@ -157,7 +157,7 @@ class PrivacyStrategy extends Component {
       .dispatch({
         type: 'Contract/updateStrategyStatus',
         payload: {
-          networkName:this.props.User.networkName,
+          networkName: this.props.User.networkName,
           strategyStatus,
           strategyName: record.strategyName,
         },
@@ -178,7 +178,7 @@ class PrivacyStrategy extends Component {
         strategyName: record.strategyName,
         strategyStatus: record.strategyStatus,
         strategyDesc: record.strategyDesc,
-        networkName:this.props.User.networkName,
+        networkName: this.props.User.networkName,
       },
     });
   };
@@ -239,7 +239,7 @@ class PrivacyStrategy extends Component {
   }
 }
 
-export default connect(({User, Contract, loading }) => ({
+export default connect(({ User, Contract, loading }) => ({
   User,
   Contract,
   qryLoading: loading.effects['Contract/getPageListOfRoleData'],

@@ -13,7 +13,7 @@ function ConfigStrategy(props) {
     dispatch,
     configLoading = false,
   } = props;
-  const {networkName} = User;
+  const { networkName } = User;
   const [initValue, setInitValue] = useState([]);
   const [memberList, setMemberList] = useState([]);
   const { strategyMemberList, leagueName } = props.Contract;
@@ -76,15 +76,14 @@ function ConfigStrategy(props) {
   useEffect(() => {
     dispatch({
       type: 'Contract/getPageListOfRoleMember',
-      payload: {networkName, strategyName: editParams.strategyName },
+      payload: { networkName, strategyName: editParams.strategyName },
     });
   }, []);
+
   useEffect(() => {
     getValue();
     getInitValue();
   }, [strategyMemberList]);
-
-  
 
   return (
     <Modal {...drawerProps}>
@@ -98,7 +97,7 @@ function ConfigStrategy(props) {
   );
 }
 
-export default connect(({User, Contract, loading }) => ({
+export default connect(({ User, Contract, loading }) => ({
   User,
   Contract,
   configLoading: loading.effects['Contract/updateStrategyMember'],

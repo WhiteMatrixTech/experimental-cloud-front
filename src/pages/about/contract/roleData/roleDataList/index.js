@@ -66,7 +66,7 @@ class ContractDetail extends Component {
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
-      networkName:this.props.User.networkName,
+      networkName: this.props.User.networkName,
     }
     if (methodName) {
       params.methodName = methodName
@@ -98,8 +98,8 @@ class ContractDetail extends Component {
 
   // 点击配置策略
   onClickConfig = () => {
-    const { location: { query: { id } } } = this.props;
-    this.setState({ configModalVisible: true, strategyObj: { _id: id } })
+    const { location: { query: { strategyName = '', strategyStatus = '', strategyDesc = '' } } } = this.props;
+    this.setState({ configModalVisible: true, strategyObj: { strategyName, strategyStatus, strategyDesc } })
   }
 
   render() {
@@ -160,7 +160,7 @@ class ContractDetail extends Component {
   }
 }
 
-export default connect(({User, Contract, loading }) => ({
+export default connect(({ User, Contract, loading }) => ({
   User,
   Contract,
   qryLoading: loading.effects['Contract/getPageListOfRecord']
