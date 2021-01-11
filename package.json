@@ -45,6 +45,7 @@
     "react-copy-to-clipboard": "^5.0.2",
     "react-html-table-to-excel": "^2.0.0",
     "react-images": "^0.5.19",
+    "react-json-view": "^1.19.1",
     "react-media-player": "^0.7.6",
     "react-monaco-editor": "^0.41.2",
     "webpack": "^4.29.0"

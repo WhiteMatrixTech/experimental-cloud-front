@@ -6,26 +6,36 @@ export default {
 
   state: {
     certificateChainList: [], // 已存证上链列表
+    certificateChainDetail: {}, //存证的详情
     certificateChainTotal: 0,
-
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {
-
-    },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
     *getCertificateChainList({ payload }, { call, put }) {
-      const res = yield call(API.getCertificateChainList, payload)
+      const res = yield call(API.getCertificateChainList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
             certificateChainList: result.items,
-          }
+          },
+        });
+      }
+    },
+    *getCertificateChainDetail({ payload }, { call, put }) {
+      const res = yield call(API.getcertificateChainDetail, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            certificateChainDetail: result,
+          },
         });
       }
     },

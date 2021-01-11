@@ -8,7 +8,7 @@ import baseConfig from 'utils/config';
 import { Roles } from 'utils/roles.js';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channel');
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 
 function Transactions(props) {
   const { Transactions, qryLoading, dispatch, User } = props;
@@ -23,7 +23,7 @@ function Transactions(props) {
   const getTransactionTotalDocs = () => {
     const params = {
       networkName,
-    }
+    };
     dispatch({
       type: 'Transactions/getTransactionTotalDocs',
       payload: params,
@@ -70,7 +70,7 @@ function Transactions(props) {
   // 点击查看详情
   const onClickDetail = (record) => {
     history.push({
-      pathname: `/about/channel/${record.txId}`,
+      pathname: `/about/transactions/${record.txId}`,
       query: {
         channelId: record.txId,
       },
