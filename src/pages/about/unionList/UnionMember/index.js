@@ -56,7 +56,17 @@ class UnionMember extends Component {
   }
 
   componentDidMount() {
-    this.getOrgListOfUnion()
+    const { User, location } = this.props;
+    const { networkName } = User;
+    const params = {
+      networkName,
+      channelId: location?.state?.channelId,
+    }
+    this.props.dispatch({
+      type: 'Union/getPeerListOfUnion',
+      payload: params
+    });
+    this.getOrgListOfUnion();
   }
 
   // 获取 通道下的组织
@@ -111,19 +121,19 @@ class UnionMember extends Component {
     const { qryLoading = false, location } = this.props;
     const { pageSize, pageNum, addOrgVisible } = this.state;
     const { userRole } = this.props.User
-    const { orgListOfUnion, orgTotalOfUnion } = this.props.Union;
+    const { orgListOfUnion, orgTotalOfUnion, peerTotalOfUnion } = this.props.Union;
     const unionInfoList = [
       {
         label: '通道名称',
-        value: location?.state?.channelName
+        value: location?.state?.channelId
       },
       {
         label: '组织数量',
-        value: location?.state?.orgCount
+        value: orgTotalOfUnion
       },
       {
         label: '节点总数',
-        value: location?.state?.peerCount
+        value: peerTotalOfUnion
       },
     ]
     if (userRole === Roles.NetworkAdmin) {

@@ -60,12 +60,21 @@ class UnionChain extends Component {
   }
 
   componentDidMount() {
-    const { location: { query: { cId = '' } } } = this.props;
-    this.getContractListOfUnion()
-    this.props.dispatch({
-      type: 'Union/getContractSummaryOfUnion',
-      payload: { id: cId }
-    })
+    const { User, location, dispatch } = this.props;
+    const { networkName } = User;
+    const params = {
+      networkName,
+      channelId: location?.state?.channelId,
+    };
+    dispatch({
+      type: 'Union/getOrgListOfUnion',
+      payload: params
+    });
+    dispatch({
+      type: 'Union/getPeerListOfUnion',
+      payload: params
+    });
+    this.getContractListOfUnion();
   }
 
   // 获取 通道下的合约
@@ -106,34 +115,27 @@ class UnionChain extends Component {
   }
 
   render() {
-    const { qryLoading = false } = this.props;
+    const { qryLoading = false, location } = this.props;
     const { pageSize, pageNum } = this.state;
-    const { userRole } = this.props.User;
-    const { contractListOfUnion, contractTotalOfUnion, contractInfoOfUnion } = this.props.Union;
+    const { contractListOfUnion, contractTotalOfUnion, orgTotalOfUnion, peerTotalOfUnion } = this.props.Union;
     const unionInfoList = [
       {
         label: '通道名称',
-        value: contractInfoOfUnion.channelName
+        value: location?.state?.channelId
       },
       {
-        label: '合约数量',
-        value: contractInfoOfUnion.chainCodeCount
+        label: '组织数量',
+        value: orgTotalOfUnion
       },
       {
-        label: '我背书的',
-        value: contractInfoOfUnion.myJoinedCount
+        label: '节点总数',
+        value: peerTotalOfUnion
       },
       {
-        label: '我创建的',
-        value: contractInfoOfUnion.myCreateCount
-      }
+        label: '合约总数',
+        value: contractTotalOfUnion
+      },
     ]
-    if (userRole === Roles.NetworkAdmin) {
-      unionInfoList.slice(1, 0, {
-        label: '所属联盟',
-        value: contractInfoOfUnion.leagueName
-      })
-    }
     return (
       <div className='page-wrapper'>
         <Breadcrumb breadCrumbItem={breadCrumbItem} />

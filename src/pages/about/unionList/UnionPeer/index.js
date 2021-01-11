@@ -55,7 +55,17 @@ class UnionPeer extends Component {
   }
 
   componentDidMount() {
-    this.getPeerListOfUnion()
+    const { User, location } = this.props;
+    const { networkName } = User;
+    const params = {
+      networkName,
+      channelId: location?.state?.channelId,
+    }
+    this.props.dispatch({
+      type: 'Union/getOrgListOfUnion',
+      payload: params
+    });
+    this.getPeerListOfUnion();
   }
 
   // 获取 通道下的节点
@@ -103,7 +113,7 @@ class UnionPeer extends Component {
     const unionInfoList = [
       {
         label: '通道名称',
-        value: location?.state?.channelName
+        value: location?.state?.channelId
       },
       {
         label: '组织数量',

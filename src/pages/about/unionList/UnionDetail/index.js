@@ -19,13 +19,6 @@ breadCrumbItem.push({
   menuHref: `/`,
 })
 
-const statisticsList = [
-  { label: '组织', num: '17' },
-  { label: '节点', num: '2' },
-  { label: '区块', num: '7' },
-  { label: '交易', num: '484' },
-  { label: '合约', num: '527' }
-]
 const imgList = [msp, peer, block, transcation, chaincode]
 
 class UnionDetail extends Component {
@@ -109,12 +102,27 @@ class UnionDetail extends Component {
   }
 
   componentDidMount() {
-    this.getBlockList()
-    this.getTransactionList()
+    this.getStatisInfo();
+    this.getBlockList();
+    this.getTransactionList();
   }
 
   onChangeBarType = e => {
     this.setState({ barType: e.target.value })
+  }
+
+  // 获取汇总信息
+  getStatisInfo = () => {
+    const { dispatch, location, User } = this.props;
+    const { networkName } = User;
+    const params = {
+      networkName,
+      channelId: location?.state?.channelId,
+    };
+    dispatch({
+      type: 'Union/getStatisInfo',
+      payload: params,
+    });
   }
 
   // 获取交易列表
@@ -181,7 +189,22 @@ class UnionDetail extends Component {
 
   render() {
     const { location, qryBlockLoading, qryTransactionLoading } = this.props;
-    const { blockListOfUnion, transactionListOfUnion } = this.props.Union;
+    const {
+      blockListOfUnion,
+      transactionListOfUnion,
+      orgTotalOfUnion,
+      peerTotalOfUnion,
+      blockTotalOfUnion,
+      contractListOfUnion,
+      transactionTotalOfUnion
+    } = this.props.Union;
+    const statisticsList = [
+      { label: '组织', num: orgTotalOfUnion },
+      { label: '节点', num: peerTotalOfUnion },
+      { label: '区块', num: blockTotalOfUnion },
+      { label: '交易', num: contractListOfUnion },
+      { label: '合约', num: transactionTotalOfUnion }
+    ]
     return (
       <div className='page-wrapper'>
         <Breadcrumb breadCrumbItem={breadCrumbItem} />

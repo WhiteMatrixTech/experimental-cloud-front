@@ -16,7 +16,6 @@ export default {
 
     contractListOfUnion: [], // 当前通道下的合约列表
     contractTotalOfUnion: 0,
-    contractInfoOfUnion: {},
 
     blockListOfUnion: [], // 当前通道下的区块列表
     blockTotalOfUnion: 0,
@@ -62,8 +61,8 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            orgListOfUnion: result.list,
-            orgTotalOfUnion: result.totalDocs
+            orgListOfUnion: result,
+            orgTotalOfUnion: result.length
           }
         });
       }
@@ -75,8 +74,8 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            peerListOfUnion: result.list,
-            peerTotalOfUnion: result.totalDocs
+            peerListOfUnion: result,
+            peerTotalOfUnion: result.length
           }
         });
       }
@@ -88,20 +87,8 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            contractListOfUnion: result.list,
-            contractTotalOfUnion: result.totalDocs
-          }
-        });
-      }
-    },
-    *getContractSummaryOfUnion({ payload }, { call, put }) {
-      const res = yield call(API.getContractSummaryOfUnion, payload)
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            contractInfoOfUnion: result
+            contractListOfUnion: result,
+            contractTotalOfUnion: result.length
           }
         });
       }
@@ -131,16 +118,25 @@ export default {
       }
     },
     *getStatisInfo({ payload }, { call, put, all }) {
-      const [blockRes, transactionRes] = yield all([
+      const [blockRes, transactionRes, orgRes, nodeRes, contractRes] = yield all([
         call(API.getBlockTotalOfUnion, payload),
         call(API.getTransactionsTotalOfUnion, payload),
+        call(API.getOrgListOfUnion, payload),
+        call(API.getPeerListOfUnion, payload),
+        call(API.getContractListOfUnion, payload)
       ]);
       const blockTotalOfUnion = blockRes.statusCode === 'ok' ? blockRes.result : 0;
-      const transactionTotalOfUnion = transactionRes.statusCode === 'ok' ? transactionRes.result : 0;
+      const transactionTotalOfUnion = (transactionRes.statusCode === 'ok' && transactionRes.result) ? transactionRes.result : 0;
+      const orgTotalOfUnion = orgRes.statusCode === 'ok' ? orgRes.result.length : 0;
+      const peerTotalOfUnion = nodeRes.statusCode === 'ok' ? nodeRes.result.length : 0;
+      const contractListOfUnion = contractRes.statusCode === 'ok' ? contractRes.result.length : 0;
       yield put({
         type: 'common',
         payload: {
+          orgTotalOfUnion,
+          peerTotalOfUnion,
           blockTotalOfUnion,
+          contractListOfUnion,
           transactionTotalOfUnion
         }
       });
