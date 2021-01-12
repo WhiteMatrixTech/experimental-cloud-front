@@ -85,7 +85,7 @@ function EditContract(props) {
     name: 'file',
     listType: 'text',
     // TODO: umirc.js中配置地址
-    action: `http://161.189.217.169:3000/network/${networkName}/chainCodes/uploadPackageArchive`,
+    action: `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/uploadPackageArchive`,
     accept: '.zip, .jar, .rar, .gz',
     multiple: false,
     beforeUpload: handleBeforeUpload,

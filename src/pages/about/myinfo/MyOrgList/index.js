@@ -4,6 +4,7 @@ import { Spin } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { orgStatus } from '../../orgList/_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false)
 breadCrumbItem.push({
@@ -11,14 +12,14 @@ breadCrumbItem.push({
   menuHref: `/`,
 })
 
-function MyOrgInfo({
-  match: {
-    params: { memberDetail: companyId },
-  },
-  MyInfo: { myOrgInfo },
-  qryLoading = false,
-  dispatch
-}) {
+function MyOrgInfo(props) {
+  const {
+    User,
+    dispatch,
+    qryLoading = false,
+    MyInfo: { myOrgInfo },
+  } = props;
+  const { networkName } = User;
 
   const myOrgInfoList = [
     {
@@ -39,7 +40,7 @@ function MyOrgInfo({
     },
     {
       label: '组织状态',
-      value: myOrgInfo.orgStatus
+      value: myOrgInfo.orgStatus ? orgStatus[myOrgInfo.orgStatus].text : ''
     },
     {
       label: '创建时间',
@@ -50,7 +51,7 @@ function MyOrgInfo({
   useEffect(() => {
     dispatch({
       type: 'MyInfo/getMyOrgInfo',
-      payload: { companyId }
+      payload: { networkName }
     })
   }, []);
 
@@ -67,7 +68,8 @@ function MyOrgInfo({
   )
 }
 
-export default connect(({ MyInfo, loading }) => ({
+export default connect(({ User, MyInfo, loading }) => ({
+  User,
   MyInfo,
   qryLoading: loading.effects['MyInfo/getMyInfoDetail']
 }))(MyOrgInfo);

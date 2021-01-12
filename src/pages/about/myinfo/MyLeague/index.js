@@ -11,14 +11,14 @@ breadCrumbItem.push({
   menuHref: `/`,
 })
 
-function MyLeagueInfo({
-  match: {
-    params: { memberDetail: companyId },
-  },
-  MyInfo: { myLeague },
-  qryLoading = false,
-  dispatch
-}) {
+function MyLeagueInfo(props) {
+  const {
+    User,
+    dispatch,
+    qryLoading = false,
+    MyInfo: { myLeague },
+  } = props;
+  const { networkName } = User;
 
   const myLeagueInfo = [
     {
@@ -32,14 +32,14 @@ function MyLeagueInfo({
     {
       label: '联盟描述',
       fullRow: true,
-      value: myLeague.leagueDesc
+      value: myLeague.description
     },
-  ]
+  ];
 
   useEffect(() => {
     dispatch({
       type: 'MyInfo/getMyLeagueInfo',
-      payload: { companyId }
+      payload: { networkName }
     })
   }, []);
 
@@ -56,7 +56,8 @@ function MyLeagueInfo({
   )
 }
 
-export default connect(({ MyInfo, loading }) => ({
+export default connect(({ User, MyInfo, loading }) => ({
+  User,
   MyInfo,
   qryLoading: loading.effects['MyInfo/getMyInfoDetail']
 }))(MyLeagueInfo);

@@ -11,14 +11,14 @@ breadCrumbItem.push({
   menuHref: `/`,
 })
 
-function MyCompanyInfo({
-  match: {
-    params: { memberDetail: companyId },
-  },
-  MyInfo: { myCompany },
-  qryLoading = false,
-  dispatch
-}) {
+function MyCompanyInfo(props) {
+  const {
+    User,
+    dispatch,
+    qryLoading = false,
+    MyInfo: { myCompany },
+  } = props;
+  const { networkName } = User;
 
   const companyBasicInfo = [
     {
@@ -31,31 +31,27 @@ function MyCompanyInfo({
     },
     {
       label: '统一社会信用代码',
-      value: myCompany.companyBusinessNumber
+      value: myCompany.companyCertBusinessNumber
     },
     {
       label: '办公地址',
       value: myCompany.companyAddress
     }
-  ]
+  ];
   const companyLegalInfo = [
     {
       label: '法人代表姓名',
-      value: myCompany.legalName
+      value: myCompany.legalPersonName
     },
     {
       label: '法人代表身份证号',
       value: myCompany.legalPersonIdCardNumber
     },
-  ]
+  ];
   const companyContactsInfo = [
     {
       label: '联系人姓名',
       value: myCompany.contactName
-    },
-    {
-      label: '联系人手机号',
-      value: myCompany.contactMobile
     },
     {
       label: '联系人电话',
@@ -70,12 +66,12 @@ function MyCompanyInfo({
       fullRow: true,
       value: myCompany.companyDesc
     },
-  ]
+  ];
 
   useEffect(() => {
     dispatch({
       type: 'MyInfo/getMyCompanyInfo',
-      payload: { companyId }
+      payload: { networkName }
     })
   }, []);
 
@@ -94,7 +90,8 @@ function MyCompanyInfo({
   )
 }
 
-export default connect(({ MyInfo, loading }) => ({
+export default connect(({ User, MyInfo, loading }) => ({
+  User,
   MyInfo,
   qryLoading: loading.effects['MyInfo/getMyInfoDetail']
 }))(MyCompanyInfo);
