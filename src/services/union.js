@@ -15,6 +15,13 @@ export async function getUnionList(params) {
 };
 
 /**
+ * 获取 通道信息
+ */
+export async function getUnionInfo(params) {
+  return request(`/network/${params.networkName}/channels/channelInfo/${params.channelId}`);
+};
+
+/**
  * 获取 通道下的组织列表
  */
 export async function getOrgListOfUnion(params) {
@@ -33,6 +40,13 @@ export async function getPeerListOfUnion(params) {
  */
 export async function getContractListOfUnion(params) {
   return request(`/network/${params.networkName}/chainCodes/query`, { method: 'POST', body: params });
+};
+
+/**
+ * 获取 通道下的合约总数
+ */
+export async function getContractTotalOfUnion(params) {
+  return request(`/network/${params.networkName}/chainCodes/totalCount/${params.channelId}`);
 };
 
 /**

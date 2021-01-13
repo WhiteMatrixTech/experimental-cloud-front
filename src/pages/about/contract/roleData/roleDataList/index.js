@@ -7,7 +7,7 @@ import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import ConfigStrategy from '../components/ConfigStrategy';
 import baseConfig from 'utils/config';
 
-class ContractDetail extends Component {
+class PrivacyStrategyDetail extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -72,7 +72,7 @@ class ContractDetail extends Component {
       params.methodName = methodName
     }
     this.props.dispatch({
-      type: 'Contract/getPageListOfRecord',
+      type: 'PrivacyStrategy/getPageListOfRecord',
       payload: params
     })
   }
@@ -105,7 +105,7 @@ class ContractDetail extends Component {
   render() {
     const { qryLoading = false, location: { query: { strategyName = '', strategyStatus = '', strategyDesc = '' } } } = this.props;
     const { pageSize, pageNum, configModalVisible, strategyObj } = this.state;
-    const { protectRecordList, protectRecordTotal } = this.props.Contract;
+    const { protectRecordList, protectRecordTotal } = this.props.PrivacyStrategy;
     const strategyInfoList = [
       {
         label: '策略名称',
@@ -160,8 +160,8 @@ class ContractDetail extends Component {
   }
 }
 
-export default connect(({ User, Contract, loading }) => ({
+export default connect(({ User, PrivacyStrategy, loading }) => ({
   User,
-  Contract,
-  qryLoading: loading.effects['Contract/getPageListOfRecord']
-}))(ContractDetail);
+  PrivacyStrategy,
+  qryLoading: loading.effects['PrivacyStrategy/getPageListOfRecord']
+}))(PrivacyStrategyDetail);

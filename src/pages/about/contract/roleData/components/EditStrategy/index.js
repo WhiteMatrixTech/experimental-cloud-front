@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Modal } from 'antd';
 
@@ -27,7 +27,7 @@ function EditStrategy(props) {
     addLoading = false,
   } = props;
 
-  const {networkName} = User
+  const { networkName } = User
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
@@ -36,11 +36,11 @@ function EditStrategy(props) {
       .then((values) => {
         form.resetFields();
         let params = values;
-         params.networkName = networkName;
+        params.networkName = networkName;
         form.setFieldsValue(values);
         if (operateType === 'new') {
           dispatch({
-            type: 'Contract/createAndUpdateStrategy',
+            type: 'PrivacyStrategy/createAndUpdateStrategy',
             payload: params,
           }).then((res) => {
             if (res) {
@@ -49,7 +49,7 @@ function EditStrategy(props) {
             }
           });
           dispatch({
-            type: 'Contract/getRoleDateTotalDocs',
+            type: 'PrivacyStrategy/getRoleDateTotalDocs',
             payload: networkName,
           });
         } else {
@@ -60,7 +60,7 @@ function EditStrategy(props) {
             ...params,
           };
           dispatch({
-            type: 'Contract/modifyAndUpdateStrategy',
+            type: 'PrivacyStrategy/modifyAndUpdateStrategy',
             payload: params,
           }).then((res) => {
             if (res) {
@@ -69,7 +69,7 @@ function EditStrategy(props) {
             }
           });
           dispatch({
-            type: 'Contract/getRoleDateTotalDocs',
+            type: 'PrivacyStrategy/getRoleDateTotalDocs',
             payload: networkName,
           });
         }
@@ -119,8 +119,8 @@ function EditStrategy(props) {
           {operateType === 'new' ? (
             <Input placeholder="请输入隐私保护策略名称" />
           ) : (
-            <Input disabled={true} placeholder="请输入隐私保护策略名称" />
-          )}
+              <Input disabled={true} placeholder="请输入隐私保护策略名称" />
+            )}
         </Item>
         <Item
           label="状态"
@@ -164,8 +164,8 @@ function EditStrategy(props) {
   );
 }
 
-export default connect(({User, Contract, loading }) => ({
+export default connect(({ User, PrivacyStrategy, loading }) => ({
   User,
-  Contract,
-  addLoading: loading.effects['Contract/createAndUpdateStrategy'],
+  PrivacyStrategy,
+  addLoading: loading.effects['PrivacyStrategy/createAndUpdateStrategy'],
 }))(EditStrategy);

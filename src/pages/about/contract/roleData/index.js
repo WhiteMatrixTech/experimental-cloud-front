@@ -85,7 +85,7 @@ class PrivacyStrategy extends Component {
       ascend: false,
     };
     this.props.dispatch({
-      type: 'Contract/getPageListOfRoleData',
+      type: 'PrivacyStrategy/getPageListOfRoleData',
       payload: params,
     });
   };
@@ -94,7 +94,7 @@ class PrivacyStrategy extends Component {
   getRoleDateTotalDocs = () => {
     const { networkName } = this.props.User;
     this.props.dispatch({
-      type: 'Contract/getRoleDateTotalDocs',
+      type: 'PrivacyStrategy/getRoleDateTotalDocs',
       payload: { networkName },
     })
   }
@@ -155,7 +155,7 @@ class PrivacyStrategy extends Component {
   changeStrategyStatus = (record, strategyStatus) => {
     this.props
       .dispatch({
-        type: 'Contract/updateStrategyStatus',
+        type: 'PrivacyStrategy/updateStrategyStatus',
         payload: {
           networkName: this.props.User.networkName,
           strategyStatus,
@@ -193,7 +193,7 @@ class PrivacyStrategy extends Component {
       operateType,
       strategyObj,
     } = this.state;
-    const { strategyList, strategyTotal } = this.props.Contract;
+    const { strategyList, strategyTotal } = this.props.PrivacyStrategy;
     return (
       <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -239,10 +239,10 @@ class PrivacyStrategy extends Component {
   }
 }
 
-export default connect(({ User, Contract, loading }) => ({
+export default connect(({ User, PrivacyStrategy, loading }) => ({
   User,
-  Contract,
-  qryLoading: loading.effects['Contract/getPageListOfRoleData'],
+  PrivacyStrategy,
+  qryLoading: loading.effects['PrivacyStrategy/getPageListOfRoleData'],
 }))(PrivacyStrategy);
 
 

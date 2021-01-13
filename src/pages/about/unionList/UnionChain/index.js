@@ -6,7 +6,6 @@ import { Breadcrumb, DetailCard, SearchBar } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import { chainCodeStatusInfo } from '../../contract/myContract/_config';
 import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles.js';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/unionList')
 breadCrumbItem.push({
@@ -72,6 +71,10 @@ class UnionChain extends Component {
     });
     dispatch({
       type: 'Union/getPeerListOfUnion',
+      payload: params
+    });
+    dispatch({
+      type: 'Union/getContractTotalOfUnion',
       payload: params
     });
     this.getContractListOfUnion();

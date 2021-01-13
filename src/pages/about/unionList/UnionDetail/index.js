@@ -195,15 +195,15 @@ class UnionDetail extends Component {
       orgTotalOfUnion,
       peerTotalOfUnion,
       blockTotalOfUnion,
-      contractListOfUnion,
+      contractTotalOfUnion,
       transactionTotalOfUnion
     } = this.props.Union;
     const statisticsList = [
       { label: '组织', num: orgTotalOfUnion },
       { label: '节点', num: peerTotalOfUnion },
       { label: '区块', num: blockTotalOfUnion },
-      { label: '交易', num: contractListOfUnion },
-      { label: '合约', num: transactionTotalOfUnion }
+      { label: '交易', num: transactionTotalOfUnion },
+      { label: '合约', num: contractTotalOfUnion }
     ]
     return (
       <div className='page-wrapper'>

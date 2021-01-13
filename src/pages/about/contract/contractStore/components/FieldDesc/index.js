@@ -5,8 +5,8 @@ import { Table, Modal } from 'antd';
 import baseConfig from 'utils/config';
 
 function FieldDesc(props) {
-  const { visible, record = {}, onCancel, dispatch, qryLoading = false } = props
-  const { fieldDescList, fieldDescTotal } = props.Contract
+  const { visible, record = {}, onCancel, dispatch, qryLoading = false, ContractStore } = props;
+  const { fieldDescList, fieldDescTotal } = ContractStore;
   const [pageNum, setPageNum] = useState(1)
   const [pageSize] = useState(baseConfig.pageSize)
 
@@ -57,7 +57,7 @@ function FieldDesc(props) {
       id: record._id
     }
     dispatch({
-      type: 'Contract/getStoreSupplyExplainListOfChainCode',
+      type: 'ContractStore/getStoreSupplyExplainListOfChainCode',
       payload: params
     })
   }, [pageNum]);
@@ -77,7 +77,7 @@ function FieldDesc(props) {
   );
 };
 
-export default connect(({ Contract, loading }) => ({
-  Contract,
-  qryLoading: loading.effects['Contract/getStoreSupplyExplainListOfChainCode']
+export default connect(({ ContractStore, loading }) => ({
+  ContractStore,
+  qryLoading: loading.effects['ContractStore/getStoreSupplyExplainListOfChainCode']
 }))(FieldDesc);

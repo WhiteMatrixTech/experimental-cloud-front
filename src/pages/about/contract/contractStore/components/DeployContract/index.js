@@ -132,7 +132,7 @@ function DeployContract({ visible, record, onCancel, dispatch }) {
   );
 };
 
-export default connect(({ Contract, loading }) => ({
-  Contract,
-  qryLoading: loading.effects['Contract/deployContract']
+export default connect(({ ContractStore, loading }) => ({
+  ContractStore,
+  qryLoading: loading.effects['ContractStore/deployContract']
 }))(DeployContract);

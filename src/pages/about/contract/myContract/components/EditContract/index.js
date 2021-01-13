@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Input, Select, Form, Switch, Button, Upload, Modal, notification } from 'antd';
+import { Input, Select, Form, Switch, Button, Upload, Modal, notification, message } from 'antd';
 import { normFile, handleBeforeUpload } from './_func';
 
 const { Item } = Form;
@@ -32,6 +32,10 @@ function EditContract(props) {
   const { networkName } = User;
 
   const handleSubmit = () => {
+    if (!fileJson) {
+      message.warning('请上传合约文件');
+      return
+    };
     form.validateFields().then(values => {
       values.chainCodePackageMetadata = fileJson;
       if (!initRequired) {
@@ -69,7 +73,7 @@ function EditContract(props) {
   const onChangeChannel = value => {
     dispatch({
       type: 'Contract/getOrgListWithChannel',
-      payload: { channelId: value },
+      payload: { networkName, channelId: value },
     });
     form.setFieldsValue({ 'endorsementOrgName': null })
   }

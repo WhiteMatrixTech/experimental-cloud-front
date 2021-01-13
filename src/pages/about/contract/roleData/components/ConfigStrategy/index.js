@@ -13,10 +13,10 @@ function ConfigStrategy(props) {
     dispatch,
     configLoading = false,
   } = props;
-  const { networkName } = User;
+  const { networkName, leagueName } = User;
   const [initValue, setInitValue] = useState([]);
   const [memberList, setMemberList] = useState([]);
-  const { strategyMemberList, leagueName } = props.Contract;
+  const { strategyMemberList } = props.PrivacyStrategy;
 
   const handleSubmit = () => {
     const params = {
@@ -25,7 +25,7 @@ function ConfigStrategy(props) {
       strategyMember: initValue,
     };
     dispatch({
-      type: 'Contract/updateStrategyMember',
+      type: 'PrivacyStrategy/updateStrategyMember',
       payload: params,
     }).then((res) => {
       if (res) {
@@ -57,7 +57,7 @@ function ConfigStrategy(props) {
 
   const getValue = () => {
     const value = [];
-    strategyMemberList.map((item) => {
+    strategyMemberList.forEach((item) => {
       value.push(item.memberName);
     });
     setMemberList(value);
@@ -65,7 +65,7 @@ function ConfigStrategy(props) {
 
   const getInitValue = () => {
     const value = [];
-    strategyMemberList.map((item) => {
+    strategyMemberList.forEach((item) => {
       if (item.checked) {
         value.push(item.memberName);
       }
@@ -75,7 +75,7 @@ function ConfigStrategy(props) {
 
   useEffect(() => {
     dispatch({
-      type: 'Contract/getPageListOfRoleMember',
+      type: 'PrivacyStrategy/getPageListOfRoleMember',
       payload: { networkName, strategyName: editParams.strategyName },
     });
   }, []);
@@ -97,8 +97,8 @@ function ConfigStrategy(props) {
   );
 }
 
-export default connect(({ User, Contract, loading }) => ({
+export default connect(({ User, PrivacyStrategy, loading }) => ({
   User,
-  Contract,
-  configLoading: loading.effects['Contract/updateStrategyMember'],
+  PrivacyStrategy,
+  configLoading: loading.effects['PrivacyStrategy/updateStrategyMember'],
 }))(ConfigStrategy);

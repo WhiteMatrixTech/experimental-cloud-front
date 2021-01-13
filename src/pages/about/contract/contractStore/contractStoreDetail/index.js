@@ -74,16 +74,17 @@ class ContractStoreDetail extends Component {
   // 获取合约列表
   getStoreSupplyListOfChainCode = current => {
     const { pageNum, pageSize } = this.state;
-    const { location: { query: { chainCodeName = '' } } } = this.props;
+    const { User, dispatch, location: { query: { chainCodeName = '' } } } = this.props;
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
-      chainCodeName
+      chainCodeName,
+      networkName: User.networkName,
     }
-    this.props.dispatch({
-      type: 'Contract/getStoreSupplyListOfChainCode',
+    dispatch({
+      type: 'ContractStore/getStoreSupplyListOfChainCode',
       payload: params
     })
   }
@@ -124,7 +125,7 @@ class ContractStoreDetail extends Component {
   render() {
     const { qryLoading = false } = this.props;
     const { pageSize, pageNum, record, fieldDescVisible, deployContractVisible } = this.state;
-    const { curRepository, repositoryDetailList, repositoryDetailTotal } = this.props.Contract;
+    const { curRepository, repositoryDetailList, repositoryDetailTotal } = this.props.ContractStore;
     const contractInfoList = [
       {
         label: '合约名称',
@@ -177,7 +178,8 @@ class ContractStoreDetail extends Component {
   }
 }
 
-export default connect(({ Contract, loading }) => ({
-  Contract,
-  qryLoading: loading.effects['Contract/getStoreSupplyListOfChainCode']
+export default connect(({ User, ContractStore, loading }) => ({
+  User,
+  ContractStore,
+  qryLoading: loading.effects['ContractStore/getStoreSupplyListOfChainCode']
 }))(ContractStoreDetail);

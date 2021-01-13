@@ -7,7 +7,6 @@ import { Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import RepositoryCard from './components/RepositoryCard';
 import DeployContract from './components/DeployContract';
-import baseConfig from 'utils/config';
 import style from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false)
@@ -42,10 +41,10 @@ class ContractRepository extends Component {
       ascend: false,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
-      networkName:this.props.User.networkName,
+      networkName: this.props.User.networkName,
     }
     this.props.dispatch({
-      type: 'Contract/getRepositoryListOfChainCode',
+      type: 'ContractStore/getRepositoryListOfChainCode',
       payload: params
     })
   }
@@ -69,7 +68,7 @@ class ContractRepository extends Component {
   // 点击查看合约仓库详情
   viewDetail = record => {
     this.props.dispatch({
-      type: 'Contract/common',
+      type: 'ContractStore/common',
       payload: { curRepository: record }
     })
     history.push({
@@ -83,7 +82,7 @@ class ContractRepository extends Component {
   render() {
     const { qryLoading = false } = this.props;
     const { pageSize, pageNum, deployModalVisible, curRepository } = this.state;
-    const { repositoryList, repositoryTotal } = this.props.Contract;
+    const { repositoryList, repositoryTotal } = this.props.ContractStore;
 
     return (
       <div className='page-wrapper'>
@@ -115,8 +114,8 @@ class ContractRepository extends Component {
   }
 }
 
-export default connect(({User, Contract, loading }) => ({
+export default connect(({ User, ContractStore, loading }) => ({
   User,
-  Contract,
-  qryLoading: loading.effects['Contract/getRepositoryListOfChainCode']
+  ContractStore,
+  qryLoading: loading.effects['ContractStore/getRepositoryListOfChainCode']
 }))(ContractRepository);
