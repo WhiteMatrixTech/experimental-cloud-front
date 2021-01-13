@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
-import { Button, Modal, Form, Select, Input } from 'antd';
+import { Button, Modal, Form, Select } from 'antd';
 import MonacoEditor from 'react-monaco-editor';
 
-const { TextArea } = Input;
 const { Option } = Select;
-
 const editorOptions = {
   selectOnLineNumbers: true
-};
-const formItemLayout = {
-  labelCol: {
-    sm: { span: 6 },
-  },
-  wrapperCol: {
-    sm: { span: 18 },
-  },
 };
 
 function UploadChain(props) {

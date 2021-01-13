@@ -26,6 +26,15 @@ export default {
     wrappers: resolve(__dirname, './src/pages/wrappers/'),
   },
 
+  externals: {
+    echarts: 'window.echarts',
+    konva: 'window.konva',
+  },
+  scripts: [
+    'http://echarts.baidu.com/build/dist/echarts.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/konva/7.2.2/konva.min.js'
+  ],
+
   proxy: {
     '/api': {
       // target: 'http://192.168.8.34:3000',
