@@ -66,7 +66,7 @@ export default {
           }
         });
         localStorage.setItem('accessToken', result.access_token);
-        return true
+        return result
       } else {
         yield put({
           type: 'common',
