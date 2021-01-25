@@ -9,7 +9,7 @@ const chainWebpack = (config, { webpack }) => {
   ])
 };
 export default {
-  history: { type: 'hash' },
+  history: { type: 'browser' },
   hash: true,
   ignoreMomentLocale: true,
   publicPath: './',
@@ -31,7 +31,7 @@ export default {
     konva: 'window.konva',
   },
   scripts: [
-    'http://echarts.baidu.com/build/dist/echarts.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/echarts/5.0.0/echarts.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/konva/7.2.2/konva.min.js'
   ],
 
