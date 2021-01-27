@@ -36,12 +36,7 @@ export async function getChannelList(params) {
   return request(`/network/${params.networkName}/channels/listChannels`);
 }
 
-/**
- * 创建合约 组织下拉框列表
- */
-export async function getOrgListWithChannel(params) {
-  return request(`/network/${params.networkName}/orgs/listOrgs/${params.channelId}`);
-}
+
 
 
 

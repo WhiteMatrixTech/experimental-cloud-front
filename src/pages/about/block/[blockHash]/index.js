@@ -139,7 +139,7 @@ function BlockDetail({
       },
       {
         label: '所属通道',
-        value: blockDetail.channelName,
+        value: blockDetail.channelId,
       },
     ];
     if (userRole === Roles.NetworkMember) {

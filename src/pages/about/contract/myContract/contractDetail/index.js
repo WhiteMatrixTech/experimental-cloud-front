@@ -62,7 +62,7 @@ class ContractDetail extends Component {
     const { location: { query: { chainCodeId } } } = this.props;
     this.props.dispatch({
       type: 'Contract/getDetailOfChainCode',
-      payload: { chainCodeId, networkName:this.props.User.networkName }
+      payload: { chainCodeId, networkName: this.props.User.networkName }
     })
     this.getChainCodeHistory()
     this.getChainCodeHistoryTotalDocs()
@@ -70,7 +70,7 @@ class ContractDetail extends Component {
   // 获取合约列表的totalCount
   getChainCodeHistoryTotalDocs = () => {
     const params = {
-     networkName:this.props.User.networkName,
+      networkName: this.props.User.networkName,
     };
     this.props.dispatch({
       type: 'Contract/getChainCodeHistoryTotalDocs',
@@ -120,41 +120,42 @@ class ContractDetail extends Component {
   render() {
     const { qryLoading = false } = this.props;
     const { pageSize, pageNum } = this.state;
+    const chaincodeInfo = this.props.location?.state;
     const { curContractDetail, curContractVersionList, curContractVersionTotal } = this.props.Contract;
     const contractInfoList = [
       {
         label: '合约名称',
-        value: curContractDetail.chainCodeName
+        value: chaincodeInfo.chainCodeName
       },
       {
         label: '所属通道',
-        value: curContractDetail.channelName
+        value: chaincodeInfo.channelId
       },
       {
         label: '合约语言类型',
-        value: curContractDetail.chainCodeLanguage
+        value: chaincodeInfo.chainCodePackageMetaData ? chaincodeInfo.chainCodePackageMetaData.language : ''
       },
       {
         label: '当前版本',
-        value: curContractDetail.version
+        value: chaincodeInfo.chainCodeVersion
       },
       {
         label: '创建组织',
-        value: curContractDetail.createOrgName
+        value: chaincodeInfo.createOrgName
       },
       {
         label: '创建时间',
-        value: curContractDetail.createdAt ? moment(curContractDetail.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -'
+        value: chaincodeInfo.createdAt ? moment(chaincodeInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -'
       },
       {
         label: '背书组织',
         fullRow: true,
-        value: JSON.stringify(curContractDetail.endorsementOrgName)
+        value: chaincodeInfo.endorsementPolicy ? JSON.stringify(chaincodeInfo.endorsementPolicy.orgsToApprove) : ''
       },
       {
         label: '合约描述',
         fullRow: true,
-        value: curContractDetail.chainCodeDesc
+        value: chaincodeInfo.description
       },
     ]
     return (
@@ -178,7 +179,7 @@ class ContractDetail extends Component {
   }
 }
 
-export default connect(({User, Contract, loading }) => ({
+export default connect(({ User, Contract, loading }) => ({
   User,
   Contract,
   qryLoading: loading.effects['Contract/getDetailOfChainCode'] || loading.effects['Contract/getChainCodeHistory']

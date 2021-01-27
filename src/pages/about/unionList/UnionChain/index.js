@@ -25,8 +25,8 @@ class UnionChain extends Component {
     this.columns = [
       {
         title: '合约ID',
-        dataIndex: 'id',
-        key: 'id',
+        dataIndex: '_id',
+        key: '_id',
       },
       {
         title: '合约名称',
@@ -39,9 +39,9 @@ class UnionChain extends Component {
         key: 'createOrgName',
       },
       {
-        title: '当前版本',
-        dataIndex: 'currVersion',
-        key: 'currVersion',
+        title: '合约版本',
+        dataIndex: 'chainCodeVersion',
+        key: 'chainCodeVersion',
       },
       {
         title: '状态',

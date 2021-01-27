@@ -91,8 +91,8 @@ function Block(props) {
       },
       {
         title: '所属通道',
-        dataIndex: 'channelName',
-        key: 'channelName',
+        dataIndex: 'channelId',
+        key: 'channelId',
       },
       {
         title: '交易数量',

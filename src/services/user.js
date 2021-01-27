@@ -21,12 +21,6 @@ export async function getUserInfo(params) {
   return request(`/userInfo`);
 };
 
-/**
- * 登出
- */
-export async function loginout(params) {
-  return request(`/logout`);
-};
 
 /**
  * 创建联盟

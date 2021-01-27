@@ -28,19 +28,13 @@ class TopHeader extends PureComponent {
   handleUserMenuClick = ({ key }) => {
     // 登出
     if (key === 'loginOut') {
-      this.props.dispatch({
-        type: 'User/loginout',
-        payload: []
-      }).then(res => {
-        if (res) {
-          // 清空缓存
-          window.localStorage.clear();
-          // 强制刷新页面
-          window.location.reload();
-          // 跳转至登录界面
-          // history.replace('/user/login');
-        }
-      })
+      // 清空缓存
+      window.localStorage.clear();
+      // 强制刷新页面
+      window.location.reload();
+      // 跳转至登录界面
+      // history.replace('/user/login');
+
     } else if (key === 'changeLeague') {
       window.localStorage.setItem('roleToken', '');
       history.replace('/selectLeague');
@@ -70,7 +64,7 @@ class TopHeader extends PureComponent {
     const { userInfo } = this.props.User;
     return (
       <Header className={styles.header}>
-        <div className={styles['logo-sub']}>欢迎使用扬子江数字金融平台区块链BaaS服务</div>
+        <div className={styles['logo-sub']}>欢迎使用纯白矩阵ChainBaaS区块链管理平台</div>
         <div className={styles['header-right-info']}>
           <a className={styles['header-menu-item']} onClick={this.onClickIDE}>
             ChainIDE

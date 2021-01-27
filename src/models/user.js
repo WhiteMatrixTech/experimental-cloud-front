@@ -90,13 +90,6 @@ export default {
         });
       }
     },
-    *loginout({ payload }, { call, put }) {
-      const res = yield call(API.loginout, payload)
-      const { statusCode } = res;
-      if (statusCode === 'ok') {
-        return true
-      }
-    },
     *getNetworkList({ payload }, { call, put }) {
       const res = yield call(API.getNetworkList, payload)
       const { statusCode, result } = res;

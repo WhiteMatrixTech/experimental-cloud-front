@@ -28,36 +28,38 @@ function EditContract(props) {
   const [fileJson, setFileJson] = useState(null);
   const [initRequired, setInitRequired] = useState(false);
   const { visible, editParams, onCancel, operateType, dispatch, Contract, User } = props;
-  const { channelList, orgListWithChannel } = Contract;
+  const { channelList } = Contract;
   const { networkName } = User;
 
   const handleSubmit = () => {
-    if (!fileJson) {
-      message.warning('请上传合约文件');
-      return
-    };
     form.validateFields().then(values => {
-      values.chainCodePackageMetadata = fileJson;
+      values.chainCodePackageMetaData = fileJson;
+      const { upload, ...rest } = values;
+      const params = rest;
       if (!initRequired) {
-        values.initArgs = ''
+        params.initArgs = ''
       }
-      values.networkName = networkName;
+      params.networkName = networkName;
+      params.endorsementPolicy = {
+        policyType: 'Default',
+        orgsToApprove: ['string']
+      };
       if (operateType === 'new') {
         dispatch({
           type: 'Contract/addContract',
-          payload: values
+          payload: params
         }).then(res => {
           if (res) {
-            onCancel();
+            onCancel(true);
           }
         })
       } else {
         dispatch({
           type: 'Contract/upgrateContract',
-          payload: values
+          payload: params
         }).then(res => {
           if (res) {
-            onCancel();
+            onCancel(true);
           }
         })
       }
@@ -85,6 +87,8 @@ function EditContract(props) {
     });
   }, [])
 
+  const accessToken = localStorage.getItem('accessToken');
+  const roleToken = localStorage.getItem('roleToken');
   const uploadProps = {
     name: 'file',
     listType: 'text',
@@ -93,6 +97,10 @@ function EditContract(props) {
     accept: '.zip, .jar, .rar, .gz',
     multiple: false,
     beforeUpload: handleBeforeUpload,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      RoleAuth: roleToken
+    },
     onChange(info) {
       if (info.file.status === 'done') {
         notification.success({ message: `Succeed in uploading contract ${info.file.name}`, top: 64, duration: 1 })
@@ -114,7 +122,7 @@ function EditContract(props) {
       <Button key='cancel' onClick={onCancel}>
         取消
       </Button>,
-      <Button key='submit' onClick={handleSubmit} type="primary">
+      <Button key='submit' onClick={handleSubmit} disabled={!fileJson} type="primary">
         提交
       </Button>
     ]
@@ -147,21 +155,6 @@ function EditContract(props) {
             placeholder='请选择通道'
           >
             {channelList.map(item => <Option key={item.channelId} value={item.channelId}>{item.channelId}</Option>)}
-          </Select>
-        </Item>
-        <Item label='选择组织' name='endorsementOrgName' initialValue={null} rules={[
-          {
-            required: true,
-            message: '请选择组织',
-          },
-        ]}>
-          <Select
-            getPopupContainer={triggerNode => triggerNode.parentNode}
-            disabled={operateType !== 'new'}
-            notFoundContent='请先选择通道'
-            placeholder='请选择组织'
-          >
-            {orgListWithChannel.map(item => <Option key={item.orgId} value={item.orgId}>{item.orgName}</Option>)}
           </Select>
         </Item>
         <Item label='合约名称' name='chainCodeName' initialValue='' rules={[

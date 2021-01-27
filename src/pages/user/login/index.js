@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, connect, history } from 'umi';
-import { parse, stringify } from 'qs';
+import { parse } from 'qs';
 import { Form } from 'antd';
 import LoginFrom from './components/Login';
 import { LoginMessage } from 'components';
@@ -25,8 +25,7 @@ function Login(props) {
         if (res) {
           const redirect = localStorage.getItem('redirect');
           if (redirect) {
-            const params = { token: res.access_token };
-            window.location.replace(`${redirect}?${stringify(params)}`);
+            window.location.replace(`${redirect}#${res.access_token}`);
           } else {
             history.replace('/selectLeague');
           }

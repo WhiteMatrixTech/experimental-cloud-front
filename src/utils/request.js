@@ -75,10 +75,11 @@ export const request = (url, options) => {
   // token校验
   const accessToken = localStorage.getItem('accessToken');
   const roleToken = localStorage.getItem('roleToken');
-  if (accessToken) {
+  const needsToken = window.location.href.indexOf('/user/login') === -1;
+  if (accessToken && needsToken) {
     defaultOptions.headers.Authorization = `Bearer ${accessToken}`;
   }
-  if (roleToken) {
+  if (roleToken && needsToken) {
     defaultOptions.headers.RoleAuth = roleToken;
   }
   const newOptions = { ...defaultOptions, ...options };

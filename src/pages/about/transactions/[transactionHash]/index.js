@@ -39,7 +39,7 @@ function TransactionDetail({
     },
     {
       label: '交易通道',
-      value: transactionDetail.channelName,
+      value: transactionDetail.channelId,
     },
     {
       label: '交易组织',

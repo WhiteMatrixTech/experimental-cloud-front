@@ -102,7 +102,7 @@ function UploadChain(props) {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item required label='存证数据' name='evidenceData' initialValue='' rules={[
+        <Form.Item required label='存证数据' name='evidenceData' initialValue={jsonContent} rules={[
           {
             validateTrigger: 'submit',
             validator: checkJSON,

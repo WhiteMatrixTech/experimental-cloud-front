@@ -6,7 +6,6 @@ export default {
 
   state: {
     channelList: [], // 创建合约通道下拉框列表
-    orgListWithChannel: [], // 创建合约组织下拉框列表
     myContractList: [], // 我的合约列表
     myContractTotal: 0,
 
@@ -30,7 +29,7 @@ export default {
           type: 'common',
           payload: {
             myContractList: result.items,
-            myContractTotal: result.length
+            myContractTotal: result.items.length
           },
         });
       }
@@ -123,19 +122,6 @@ export default {
           type: 'common',
           payload: {
             channelList: result,
-          },
-        });
-      }
-    },
-
-    *getOrgListWithChannel({ payload }, { call, put }) {
-      const res = yield call(API.getOrgListWithChannel, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            orgListWithChannel: result.items,
           },
         });
       }

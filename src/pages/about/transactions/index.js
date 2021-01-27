@@ -89,13 +89,13 @@ function Transactions(props) {
       },
       {
         title: '所属通道',
-        dataIndex: 'channelName',
-        key: 'channelName',
+        dataIndex: 'channelId',
+        key: 'channelId',
       },
       {
         title: '交易组织',
-        dataIndex: 'txEndorseMsp',
-        key: 'txEndorseMsp',
+        dataIndex: 'txMsp',
+        key: 'txMsp',
       },
       {
         title: '合约名称',

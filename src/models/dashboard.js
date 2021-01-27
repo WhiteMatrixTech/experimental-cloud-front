@@ -97,13 +97,19 @@ export default {
           from: Number(moment(new Date()).format('x')),
         }),
         call(getUnionList, payload),
-        call(getChainCodeList, payload),
+        call(getChainCodeList, {
+          ...payload,
+          offset: 0,
+          limit: 5,
+          from: Number(moment(new Date()).format('x')),
+          ascend: false,
+        }),
       ]);
       const blockTotal = res1.statusCode === 'ok' ? res1.result : 0;
       const transactionTotal = res2.statusCode === 'ok' ? res2.result : 0;
       const memberTotal = res3.statusCode === 'ok' ? res3.result : 0;
       const unionTotal = res4.statusCode === 'ok' ? res4.result.length : 0;
-      const myContractTotal = res5.statusCode === 'ok' ? res5.result.length : 0;
+      const myContractTotal = res5.statusCode === 'ok' ? res5.result.items.length : 0;
       yield put({
         type: 'common',
         payload: {

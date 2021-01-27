@@ -29,7 +29,6 @@ class MyContract extends Component {
       operateType: 'new', // 打开弹窗类型--新增、修改、升级
       editParams: {}, // 修改、升级合约的信息
     }
-    this.interval = null;
     this.columns = [
       {
         title: '合约ID',
@@ -44,8 +43,8 @@ class MyContract extends Component {
       },
       {
         title: '所属通道',
-        dataIndex: 'channelName',
-        key: 'channelName',
+        dataIndex: 'channelId',
+        key: 'channelId',
       },
       {
         title: '所属组织',
@@ -89,11 +88,7 @@ class MyContract extends Component {
   }
 
   componentDidMount() {
-    // this.interval = setInterval(() => this.getChainCodeList(), 2000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
+    this.getChainCodeList();
   }
 
   // 获取合约列表
@@ -164,8 +159,11 @@ class MyContract extends Component {
   }
 
   // 关闭 新增&修改&升级合约 弹窗
-  onCloseModal = () => {
-    this.setState({ editModalVisible: false, invokeVisible: false })
+  onCloseModal = (callback) => {
+    this.setState({ editModalVisible: false, invokeVisible: false });
+    if (callback) {
+      this.getChainCodeList();
+    }
   }
 
   // 点击新增合约
@@ -229,6 +227,7 @@ class MyContract extends Component {
         chainCodeName: record.chainCodeName,
         channelName: record.channelName
       },
+      state: record,
     })
   }
 

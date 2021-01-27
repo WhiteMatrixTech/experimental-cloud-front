@@ -35,8 +35,7 @@ export default {
 
   proxy: {
     '/api': {
-      // target: 'http://192.168.8.34:3000',
-      target: 'http://161.189.217.169:3000',
+      target: 'http://52.81.165.200:3000',
       changeOrigin: false,
       pathRewrite: { '^/api': '' },
     },
@@ -44,7 +43,7 @@ export default {
 
   // 用于提供给代码中可用的变量
   define: {
-    'process.env.CHAIN_IDE_LINK': 'https://161.189.217.169:9601', // ChainIDE地址
-    'process.env.BAAS_BACKEND_LINK': 'http://161.189.217.169:3000', // BaaS Backend地址
+    'process.env.CHAIN_IDE_LINK': 'https://fabric.chainide.cn', // ChainIDE地址
+    'process.env.BAAS_BACKEND_LINK': 'http://52.81.165.200:3000', // BaaS Backend地址
   }
 } 
