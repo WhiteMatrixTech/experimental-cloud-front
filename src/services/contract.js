@@ -49,6 +49,13 @@ export async function getChainCodeList(params) {
 }
 
 /**
+ * 我的合约 - 合约总数
+ */
+export async function getChainCodeTotal(params) {
+  return request(`/network/${params.networkName}/chainCodes/totalCount`);
+}
+
+/**
  * 我的合约 -- 通过 / 驳回
  */
 export async function setChainCodeApproveReject(params) {

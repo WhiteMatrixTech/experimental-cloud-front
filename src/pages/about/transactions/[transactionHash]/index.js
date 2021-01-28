@@ -14,7 +14,7 @@ breadCrumbItem.push({
 
 function TransactionDetail({
   match: {
-    params: { txId },
+    params: { transactionHash },
   },
   User,
   dispatch,
@@ -66,7 +66,7 @@ function TransactionDetail({
   useEffect(() => {
     dispatch({
       type: 'Transactions/getTransactionDetail',
-      payload: { txId, networkName },
+      payload: { txId: transactionHash, networkName },
     });
   }, []);
 

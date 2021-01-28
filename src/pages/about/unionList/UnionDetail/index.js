@@ -254,6 +254,7 @@ class UnionDetail extends Component {
             loading={qryBlockLoading}
             dataSource={blockListOfUnion}
             className='page-content-shadow'
+            pagination={false}
           />
           <Table
             rowKey='_id'
@@ -261,6 +262,7 @@ class UnionDetail extends Component {
             loading={qryTransactionLoading}
             dataSource={transactionListOfUnion}
             className='page-content-shadow'
+            pagination={false}
           />
         </div>
       </div>

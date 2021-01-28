@@ -71,6 +71,10 @@ function SelectLeague(props) {
             leagueName: league.leagueName,
           }
         });
+        dispatch({
+          type: 'Layout/common',
+          payload: { selectedMenu: '/about/leagueDashboard' }
+        });
         localStorage.setItem('userRole', league.role);
         localStorage.setItem('leagueName', league.leagueName);
         localStorage.setItem('networkName', league.networkName);
@@ -144,7 +148,8 @@ function SelectLeague(props) {
   );
 };
 
-export default connect(({ User, loading }) => ({
+export default connect(({ User, Layout, loading }) => ({
   User,
+  Layout,
   joinLoading: loading.effects['User/enrollInLeague']
 }))(SelectLeague);

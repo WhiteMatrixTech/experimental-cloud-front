@@ -26,12 +26,13 @@ function InvokeContract(props) {
   const handleSubmit = () => {
     form.validateFields().then(values => {
       values.networkName = networkName;
+      let params = values;
       dispatch({
-        type: 'Contract/addContract',
-        payload: values
+        type: 'Contract/invokeContract',
+        payload: params
       }).then(res => {
         if (res) {
-          onCancel();
+          onCancel(true);
         }
       })
     }).catch(info => {
@@ -74,6 +75,7 @@ function InvokeContract(props) {
           <Select
             getPopupContainer={triggerNode => triggerNode.parentNode}
             placeholder='请选择通道'
+            disabled
           >
             {channelList.map(item => <Option key={item.channelId} value={item.channelId}>{item.channelId}</Option>)}
           </Select>
@@ -89,13 +91,13 @@ function InvokeContract(props) {
         ]}>
           <Input placeholder='请输入方法名' />
         </Item>
-        <Item label='参数列表' name='paramString' initialValue='' rules={[
-          {
-            required: true,
-            message: '请输入参数列表',
-          }
-        ]}>
-          <TextArea placeholder='请输入参数列表' />
+        <Item label='参数列表' name='params' initialValue={[]} >
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentNode}
+            placeholder='请输入参数'
+            mode='tags'
+          >
+          </Select>
         </Item>
         <Item label='是否初始化' name='isInit' initialValue={true} valuePropName='checked' rules={[
           {
@@ -103,7 +105,7 @@ function InvokeContract(props) {
             message: '请选择是否需要初始化',
           }
         ]}>
-          <Switch disabled />
+          <Switch />
         </Item>
       </Form>
     </Modal>

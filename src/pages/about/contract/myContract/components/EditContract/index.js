@@ -42,7 +42,7 @@ function EditContract(props) {
       params.networkName = networkName;
       params.endorsementPolicy = {
         policyType: 'Default',
-        orgsToApprove: ['string']
+        orgsToApprove: []
       };
       if (operateType === 'new') {
         dispatch({
@@ -142,7 +142,7 @@ function EditContract(props) {
             <Button type="primary">上传合约</Button>
           </Upload>
         </Item>
-        <Item label='所属通道' name='channelId' initialValue={null} rules={[
+        <Item label='所属通道' name='channelId' initialValue={editParams.channelId} rules={[
           {
             required: true,
             message: '请选择通道',
@@ -157,7 +157,7 @@ function EditContract(props) {
             {channelList.map(item => <Option key={item.channelId} value={item.channelId}>{item.channelId}</Option>)}
           </Select>
         </Item>
-        <Item label='合约名称' name='chainCodeName' initialValue='' rules={[
+        <Item label='合约名称' name='chainCodeName' initialValue={editParams.chainCodeName} rules={[
           {
             required: true,
             message: '请输入合约名称',
@@ -181,16 +181,14 @@ function EditContract(props) {
         ]}>
           <Input type='number' step={0.1} placeholder='请输入合约版本' />
         </Item>
-        {operateType === 'new' && (
-          <Item label='是否初始化' name='initRequired' initialValue={false} valuePropName='checked' rules={[
-            {
-              required: true,
-              message: '请选择是否需要初始化',
-            }
-          ]}>
-            <Switch onChange={onChangeInit} />
-          </Item>
-        )}
+        <Item label='是否初始化' name='initRequired' initialValue={false} valuePropName='checked' rules={[
+          {
+            required: true,
+            message: '请选择是否需要初始化',
+          }
+        ]}>
+          <Switch onChange={onChangeInit} />
+        </Item>
         {initRequired &&
           <Item label='参数列表' name='initArgs' initialValue='' rules={[
             {

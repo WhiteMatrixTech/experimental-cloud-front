@@ -4,6 +4,7 @@ import { history } from 'umi';
 import { Table, Space, Badge, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { Roles } from 'utils/roles.js';
 import { Breadcrumb, SearchBar } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import EditContract from './components/EditContract';
@@ -29,62 +30,6 @@ class MyContract extends Component {
       operateType: 'new', // 打开弹窗类型--新增、修改、升级
       editParams: {}, // 修改、升级合约的信息
     }
-    this.columns = [
-      {
-        title: '合约ID',
-        dataIndex: '_id',
-        key: '_id',
-        ellipsis: true,
-      },
-      {
-        title: '合约名称',
-        dataIndex: 'chainCodeName',
-        key: 'chainCodeName',
-      },
-      {
-        title: '所属通道',
-        dataIndex: 'channelId',
-        key: 'channelId',
-      },
-      {
-        title: '所属组织',
-        dataIndex: 'createOrgName',
-        key: 'createOrgName',
-      },
-      {
-        title: '创建时间',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
-      },
-      {
-        title: '状态',
-        dataIndex: 'chainCodeStatus',
-        key: 'chainCodeStatus',
-        render: text => text ? <Badge color={chainCodeStatusInfo[text].color} text={chainCodeStatusInfo[text].text} style={{ color: chainCodeStatusInfo[text].color }} /> : ''
-      },
-      {
-        title: '操作',
-        key: 'action',
-        width: '18%',
-        render: (text, record) => (
-          <Space size="small">
-            {/* <a onClick={() => this.onDownloadContract(record)}>下载</a> */}
-            {/* {record.chainCodeStatus === 2 && <a onClick={() => this.onClickModify(record)}>修改</a>} */}
-            {(record.chainCodeStatus === ChainCodeStatus.Installed) && <a onClick={() => this.onClickToConfirm(record, 'approve')}>发布</a>}
-            {(record.chainCodeStatus === ChainCodeStatus.Approved) && <a onClick={() => this.onClickUpgrade(record)}>升级</a>}
-            {(record.chainCodeStatus === ChainCodeStatus.Approved) && <a onClick={() => this.onClickInvoke(record)}>调用</a>}
-            {/* {(record.chainCodeStatus === 1 || record.chainCodeStatus === 3) &&
-              <>
-                <a onClick={() => this.onClickToConfirm(record, 'agree')}>通过</a>
-                <a onClick={() => this.onClickToConfirm(record, 'reject')}>驳回</a>
-              </>
-            } */}
-            <a onClick={() => this.onClickDetail(record)}>详情</a>
-          </Space>
-        ),
-      },
-    ]
   }
 
   componentDidMount() {
@@ -94,7 +39,7 @@ class MyContract extends Component {
   // 获取合约列表
   getChainCodeList = (current, seachChainCodeName) => {
     const { pageNum, pageSize, chainCodeName } = this.state;
-    const { networkName } = this.props.User
+    const { networkName } = this.props.User;
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       networkName,
@@ -108,10 +53,13 @@ class MyContract extends Component {
       params.chainCodeName = seachChainCodeName || chainCodeName
     }
     this.props.dispatch({
+      type: 'Contract/getChainCodeTotal',
+      payload: { networkName }
+    });
+    this.props.dispatch({
       type: 'Contract/getChainCodeList',
       payload: params
-    })
-
+    });
   }
 
   // 按合约名称查找
@@ -187,18 +135,22 @@ class MyContract extends Component {
   }
 
   // 发布合约
-  onClickRelease = record => {
-    this.props.dispatch({
-      type: 'Contract/releaseChaincode',
-      payload: {
-        networkName: this.props.User.networkName,
-        chainCodeId: record._id
-      }
-    }).then(res => {
-      if (res) {
-        this.getChainCodeList()
-      }
-    })
+  onClickRelease = async (record) => {
+    const { networkName } = this.props.User;
+    const params = {
+      networkName,
+      channelId: record.channelId,
+      chainCodeName: record.chainCodeName,
+      endorsementPolicy: { ...record.endorsementPolicy },
+
+    }
+    const res = await this.props.dispatch({
+      type: 'Contract/releaseContract',
+      payload: params
+    });
+    if (res) {
+      this.getChainCodeList();
+    }
   }
 
 
@@ -234,7 +186,67 @@ class MyContract extends Component {
   render() {
     const { qryLoading = false } = this.props;
     const { pageSize, pageNum, editModalVisible, invokeVisible, operateType, editParams } = this.state;
-    const { myContractList, myContractTotal } = this.props.Contract
+    const { myContractList, myContractTotal } = this.props.Contract;
+    const { userRole } = this.props.User;
+    const columns = [
+      {
+        title: '合约ID',
+        dataIndex: '_id',
+        key: '_id',
+        ellipsis: true,
+      },
+      {
+        title: '合约名称',
+        dataIndex: 'chainCodeName',
+        key: 'chainCodeName',
+      },
+      {
+        title: '所属通道',
+        dataIndex: 'channelId',
+        key: 'channelId',
+      },
+      {
+        title: '所属组织',
+        dataIndex: 'createOrgName',
+        key: 'createOrgName',
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      },
+      {
+        title: '状态',
+        dataIndex: 'chainCodeStatus',
+        key: 'chainCodeStatus',
+        render: text => text ? <Badge color={chainCodeStatusInfo[text].color} text={chainCodeStatusInfo[text].text} style={{ color: chainCodeStatusInfo[text].color }} /> : ''
+      },
+      {
+        title: '操作',
+        key: 'action',
+        width: '18%',
+        render: (text, record) => (
+          <Space size="small">
+            {/* <a onClick={() => this.onDownloadContract(record)}>下载</a> */}
+            {/* {record.chainCodeStatus === 2 && <a onClick={() => this.onClickModify(record)}>修改</a>} */}
+            {(record.chainCodeStatus === ChainCodeStatus.Installed) &&
+              (userRole === Roles.NetworkAdmin) &&
+              <a onClick={() => this.onClickToConfirm(record, 'approve')}>发布</a>
+            }
+            {(record.chainCodeStatus === ChainCodeStatus.Approved) && <a onClick={() => this.onClickUpgrade(record)}>升级</a>}
+            {(record.chainCodeStatus === ChainCodeStatus.Approved) && <a onClick={() => this.onClickInvoke(record)}>调用</a>}
+            {/* {(record.chainCodeStatus === 1 || record.chainCodeStatus === 3) &&
+              <>
+                <a onClick={() => this.onClickToConfirm(record, 'agree')}>通过</a>
+                <a onClick={() => this.onClickToConfirm(record, 'reject')}>驳回</a>
+              </>
+            } */}
+            <a onClick={() => this.onClickDetail(record)}>详情</a>
+          </Space>
+        ),
+      },
+    ]
     return (
       <div className='page-wrapper'>
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -242,7 +254,7 @@ class MyContract extends Component {
           <SearchBar placeholder='输入合约名称' onSearch={this.onSearch} btnName='创建合约' onClickBtn={this.onClickAdd} />
           <Table
             rowKey='_id'
-            columns={this.columns}
+            columns={columns}
             loading={qryLoading}
             dataSource={myContractList}
             onChange={this.onPageChange}

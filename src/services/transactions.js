@@ -18,5 +18,5 @@ export async function getTransactionList(params) {
  * 查询交易详情
  */
 export async function getTransactionDetail(params) {
-  return request(`/network/${params.networkName}/transactions/${params.txId}?${stringify(params)}`);
+  return request(`/network/${params.networkName}/transactions/${params.txId}`);
 }

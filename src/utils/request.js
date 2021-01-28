@@ -23,7 +23,6 @@ const checkStatus = (response, check_500) => {
   if ((response.status >= 200 && response.status < 300) || (response.status === 500 && check_500)) {
     return response;
   }
-  // const errortext = codeMessage[response.status] || response.statusText;
   const errortext = codeMessage[response.status] || response.message;
   const error = new Error(errortext);
   error.response = response;
@@ -31,7 +30,7 @@ const checkStatus = (response, check_500) => {
 };
 
 const authorization = response => {
-  if (response.statusCode === 500 && response.message === 'jwt expired') {
+  if (response.statusCode === 401 && response.message === 'Unauthorized') {
     // 登录已过期
     notification.error({ message: '登录已过期', top: 64, duration: 1 });
     // 清空缓存
@@ -101,7 +100,7 @@ export const request = (url, options) => {
   }
   const requestUrl = config.baseUrl + url;
   return fetch(requestUrl, newOptions)
-    .then((res) => checkStatus(res, true))
+    // .then((res) => checkStatus(res, true))
     .then(getResponseData)
     .then((data) => authorization(data))
     .catch((e) => {

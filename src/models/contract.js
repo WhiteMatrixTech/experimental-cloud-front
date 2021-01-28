@@ -29,7 +29,19 @@ export default {
           type: 'common',
           payload: {
             myContractList: result.items,
-            myContractTotal: result.items.length
+          },
+        });
+      }
+    },
+
+    *getChainCodeTotal({ payload }, { call, put }) {
+      const res = yield call(API.getChainCodeTotal, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            myContractTotal: result
           },
         });
       }
@@ -157,6 +169,17 @@ export default {
         return true;
       } else {
         notification.error({ message: res.message || '发布合约失败', top: 64, duration: 1 });
+      }
+    },
+
+    *invokeContract({ payload }, { call, put }) {
+      const res = yield call(API.invokeContract, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok' && result) {
+        notification.success({ message: '调用合约成功', top: 64, duration: 1 });
+        return true;
+      } else {
+        notification.error({ message: res.message || '调用合约失败', top: 64, duration: 1 });
       }
     },
   },
