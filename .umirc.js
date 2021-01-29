@@ -9,8 +9,10 @@ const chainWebpack = (config, { webpack }) => {
   ])
 };
 export default {
+  history: { type: 'browser' },
+  hash: true,
   ignoreMomentLocale: true,
-  publicPath: '/',
+  publicPath: './',
   chainWebpack,
   title: 'BaaS',
 

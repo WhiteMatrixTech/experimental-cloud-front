@@ -81,15 +81,15 @@ const MenuList = [
         isFeature: 0,
         menuVos: []
       },
-      // {
-      //   id: 431,
-      //   menuPid: 43,
-      //   menuHref: "/about/contract/cTransfer",
-      //   menuIcon: null,
-      //   menuName: "合约调用",
-      //   isFeature: 0,
-      //   menuVos: []
-      // },
+      {
+        id: 431,
+        menuPid: 43,
+        menuHref: "/about/contract/cTransfer",
+        menuIcon: null,
+        menuName: "合约调用",
+        isFeature: 0,
+        menuVos: []
+      },
       {
         id: 432,
         menuPid: 43,
