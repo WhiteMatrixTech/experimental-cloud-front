@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from "dva";
-import { Input, Select, Form, Radio, Button } from 'antd';
+import { Input, Select, Form, Radio, Switch, Button } from 'antd';
 import { Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import style from './index.less';
@@ -25,9 +25,13 @@ breadCrumbItem.push({
 })
 
 function CallTransfer(props) {
-  const [form] = Form.useForm()
-  const [invokeTypeAvaliable, setInvokeTypeAvaliable] = useState(false)
-  const [invokeType, setInvokeType] = useState(null)
+  const { Contract, User, dispatch } = props;
+  const { channelList } = Contract;
+  const { networkName } = User;
+
+  const [form] = Form.useForm();
+  const [invokeTypeAvaliable, setInvokeTypeAvaliable] = useState(false);
+  const [invokeType, setInvokeType] = useState(null);
 
   // 通道改变时，获取通道下的合约
   const onChannelChange = () => {
@@ -60,6 +64,13 @@ function CallTransfer(props) {
     });
   }
 
+  useEffect(() => {
+    dispatch({
+      type: 'Contract/getChannelList',
+      payload: { networkName },
+    });
+  }, []);
+
   return (
     <div className='page-wrapper'>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -79,7 +90,7 @@ function CallTransfer(props) {
                   placeholder='请选择通道'
                   onChange={onChannelChange}
                 >
-                  <Option value='aaa'>aaa</Option>
+                  {channelList.map(item => <Option key={item.channelId} value={item.channelId}>{item.channelId}</Option>)}
                 </Select>
               </Item>
               <Item label='选择合约' name='chainCodeName' initialValue={null} rules={[
@@ -103,13 +114,21 @@ function CallTransfer(props) {
               ]}>
                 <Input placeholder='请输入方法名' />
               </Item>
-              <Item label='参数列表' name='paramString' initialValue='' rules={[
+              <Item label='参数列表' name='params' initialValue={[]} >
+                <Select
+                  getPopupContainer={triggerNode => triggerNode.parentNode}
+                  placeholder='请输入参数'
+                  mode='tags'
+                >
+                </Select>
+              </Item>
+              <Item label='是否初始化' name='isInit' initialValue={true} valuePropName='checked' rules={[
                 {
                   required: true,
-                  message: '请输入参数列表',
+                  message: '请选择是否需要初始化',
                 }
               ]}>
-                <Input placeholder='请输入参数列表' />
+                <Switch />
               </Item>
               <Item label='调用类型' name='invokeType' initialValue={null} rules={[
                 {
@@ -132,7 +151,8 @@ function CallTransfer(props) {
   )
 }
 
-export default connect(({ Contract, loading }) => ({
+export default connect(({ User, Contract, loading }) => ({
+  User,
   Contract,
   qryLoading: loading.effects['Contract/deployContract']
 }))(CallTransfer);

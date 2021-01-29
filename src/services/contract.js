@@ -23,10 +23,17 @@ export async function releaseContract(params) {
 }
 
 /**
- * 调用合约
+ * 调用合约--invoke
  */
-export async function invokeContract(params) {
-  return request(`/network/${params.networkName}/chainCodes/invoke`, { method: 'POST', body: params });
+export async function invokeChainCodeMethod(params) {
+  return request(`/network/${params.networkName}/chainCodes/invokeChainCodeMethod`, { method: 'POST', body: params });
+}
+
+/**
+ * 调用合约--query
+ */
+export async function queryChainCodeMethod(params) {
+  return request(`/network/${params.networkName}/chainCodes/queryChainCodeMethod`, { method: 'POST', body: params });
 }
 
 /**

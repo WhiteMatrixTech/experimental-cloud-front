@@ -65,7 +65,7 @@ const getResponseData = response => {
  */
 export const request = (url, options) => {
   const defaultOptions = {
-    credentials: 'include',
+    // credentials: 'include',
     headers: {
       "Cross-Method": "CORS",
     },
@@ -98,7 +98,7 @@ export const request = (url, options) => {
       };
     }
   }
-  const requestUrl = config.baseUrl + url;
+  const requestUrl = process.env.BAAS_BACKEND_LINK + url;
   return fetch(requestUrl, newOptions)
     // .then((res) => checkStatus(res, true))
     .then(getResponseData)

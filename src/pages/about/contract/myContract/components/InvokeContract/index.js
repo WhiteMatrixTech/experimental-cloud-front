@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Input, Select, Form, Switch, Button, Modal } from 'antd';
+import { Input, Select, Form, Switch, Button, Modal, Radio } from 'antd';
 
 const { Item } = Form;
 const { Option } = Select;
-const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: {
@@ -26,18 +25,16 @@ function InvokeContract(props) {
   const handleSubmit = () => {
     form.validateFields().then(values => {
       values.networkName = networkName;
-      let params = values;
+      const { invokeType, ...params } = values;
       dispatch({
-        type: 'Contract/invokeContract',
+        type: `Contract/${invokeType}`,
         payload: params
       }).then(res => {
         if (res) {
           onCancel(true);
         }
       })
-    }).catch(info => {
-      console.log('校验失败:', info);
-    });
+    })
   };
 
   useEffect(() => {
@@ -45,7 +42,7 @@ function InvokeContract(props) {
       type: 'Contract/getChannelList',
       payload: { networkName },
     });
-  }, [])
+  }, []);
 
   const drawerProps = {
     visible: visible,
@@ -98,6 +95,17 @@ function InvokeContract(props) {
             mode='tags'
           >
           </Select>
+        </Item>
+        <Item label='调用类型' name='invokeType' initialValue='invokeChainCodeMethod' rules={[
+          {
+            required: true,
+            message: '请选择调用类型',
+          }
+        ]}>
+          <Radio.Group>
+            <Radio value='invokeChainCodeMethod'>invoke</Radio>
+            <Radio value='queryChainCodeMethod'>query</Radio>
+          </Radio.Group>
         </Item>
         <Item label='是否初始化' name='isInit' initialValue={true} valuePropName='checked' rules={[
           {
