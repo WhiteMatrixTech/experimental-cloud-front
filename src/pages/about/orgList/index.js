@@ -65,8 +65,11 @@ function OrganizationManagement(props) {
   }
 
   // 关闭 创建组织弹窗
-  const onCloseCreateOrg = () => {
-    setCreateOrgVisible(false)
+  const onCloseCreateOrg = (callback) => {
+    setCreateOrgVisible(false);
+    if (callback) {
+      getOrgList();
+    }
   }
 
   // 查询列表
@@ -99,11 +102,9 @@ function OrganizationManagement(props) {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow">
-        {userRole === Roles.NetworkAdmin &&
-          <div className='table-header-btn-wrapper'>
-            <Button type='primary' onClick={onClickCreateOrg}>创建组织</Button>
-          </div>
-        }
+        <div className='table-header-btn-wrapper'>
+          <Button type='primary' onClick={onClickCreateOrg}>创建组织</Button>
+        </div>
         <Table
           rowKey="_id"
           columns={columns}

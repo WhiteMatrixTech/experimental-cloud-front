@@ -52,7 +52,7 @@ const MenuList = [
     menuHref: "/about/orgList",
     menuIcon: "KBasszuzhiguanli",
     menuName: "组织管理",
-    isFeature: 1, // 是否只有盟主才显示
+    isFeature: 0, // 是否只有盟主才显示
     menuVos: []
   },
   {

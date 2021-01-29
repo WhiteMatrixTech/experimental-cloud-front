@@ -57,7 +57,9 @@ class TopHeader extends PureComponent {
   // 跳转至IDE
   onClickIDE = e => {
     e.preventDefault();
-    window.open(process.env.CHAIN_IDE_LINK);
+    const accessToken = localStorage.getItem('accessToken');
+    const link = `${process.env.CHAIN_IDE_LINK}#${accessToken}`;
+    window.open(link);
   }
 
   render() {

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Input, Form, Button, Modal } from 'antd';
+import { Input, Form, Select, Button, Modal } from 'antd';
 
 const { Item } = Form;
-const { TextArea } = Input;
+const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
@@ -16,8 +16,17 @@ const formItemLayout = {
 
 function CreatePeerOrg(props) {
 
-  const { dispatch, visible, onCancel, addLoading = false, User } = props;
+  const { dispatch, visible, onCancel, addLoading = false, User, Contract } = props;
+  const { networkName } = User;
+  const { channelList } = Contract;
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    dispatch({
+      type: 'Contract/getChannelList',
+      payload: { networkName },
+    });
+  }, [])
 
   const handleSubmit = () => {
     form
@@ -25,7 +34,7 @@ function CreatePeerOrg(props) {
       .then(async (values) => {
         let params = {
           ...values,
-          networkName: User.networkName,
+          networkName,
         };
         const res = await dispatch({
           type: 'Organization/createOrg',
@@ -59,6 +68,19 @@ function CreatePeerOrg(props) {
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
+        <Item label='所属通道' name='channelId' rules={[
+          {
+            required: true,
+            message: '请选择通道',
+          },
+        ]}>
+          <Select
+            getPopupContainer={triggerNode => triggerNode.parentNode}
+            placeholder='请选择通道'
+          >
+            {channelList.map(item => <Option key={item.channelId} value={item.channelId}>{item.channelId}</Option>)}
+          </Select>
+        </Item>
         <Item
           label="组织名称"
           name="orgName"
@@ -67,13 +89,20 @@ function CreatePeerOrg(props) {
               required: true,
               message: '请输入组织名称',
             },
+            {
+              min: 4,
+              max: 20,
+              type: 'string',
+              pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
+              message: '组织名必须由4-20位数字英文字母或字符\\ - _ 组成'
+            }
           ]}
         >
           <Input placeholder="请输入组织名称" />
         </Item>
         <Item
           label="组织别名"
-          name="orgAliasName"
+          name="orgNameAlias"
           rules={[
             {
               required: true,
@@ -83,21 +112,41 @@ function CreatePeerOrg(props) {
         >
           <Input placeholder="请输入组织别名" />
         </Item>
-        <Item label='组织地址' name='orgAddress' initialValue='' rules={[
+        <Item label='初始化节点名' name='initPeerName' initialValue='' rules={[
           {
             required: true,
-            message: '请输入组织地址',
+            message: '请输入初始化节点名',
+          },
+          {
+            min: 4,
+            max: 20,
+            type: 'string',
+            pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
+            message: '初始化节点名必须由4-20位数字英文字母或字符\\ - _ 组成'
           }
         ]}>
-          <TextArea placeholder='请输入组织地址' />
+          <Input placeholder='请输入初始化节点名' />
+        </Item>
+        <Item
+          label="初始化节点别名"
+          name="initPeerAliasName"
+          rules={[
+            {
+              required: true,
+              message: '请输入初始化节点别名',
+            },
+          ]}
+        >
+          <Input placeholder="请输入初始化节点别名" />
         </Item>
       </Form>
     </Modal>
   );
 }
 
-export default connect(({ User, Organization, loading }) => ({
+export default connect(({ User, Organization, Contract, loading }) => ({
   User,
   Organization,
+  Contract,
   addLoading: loading.effects['Organization/createPeerOrg'],
 }))(CreatePeerOrg);
