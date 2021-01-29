@@ -92,7 +92,6 @@ function EditContract(props) {
   const uploadProps = {
     name: 'file',
     listType: 'text',
-    // TODO: umirc.js中配置地址
     action: `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/uploadPackageArchive`,
     accept: '.zip, .jar, .rar, .gz',
     multiple: false,

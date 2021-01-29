@@ -15,6 +15,7 @@ export default {
   publicPath: '/',
   chainWebpack,
   title: 'BaaS',
+  favicon: 'https://fabric-baas-front.oss-cn-shanghai.aliyuncs.com/favicon.png',
 
   alias: {
     components: resolve(__dirname, './src/components'),
@@ -46,6 +47,6 @@ export default {
   // 用于提供给代码中可用的变量
   define: {
     'process.env.CHAIN_IDE_LINK': 'http://fabric.test.chainide.cn', // ChainIDE地址
-    'process.env.BAAS_BACKEND_LINK': 'http://yzjszjr-chainbaas-api.test.chainide.cn', // BaaS Backend地址
+    'process.env.BAAS_BACKEND_LINK': 'https://yzjszjr-chainbaas-api.test.chainide.cn', // BaaS Backend地址
   }
 } 

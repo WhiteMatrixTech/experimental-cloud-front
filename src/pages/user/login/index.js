@@ -43,17 +43,6 @@ function Login(props) {
     })
   }, []);
 
-  useEffect(() => {
-    const search = location.search ? location.search.replace('?', '') : '';
-    const { redirect } = parse(search);
-    if (redirect) {
-      const sourceLink = decodeURIComponent(redirect);
-      localStorage.setItem('redirect', sourceLink);
-    } else {
-      localStorage.removeItem('redirect');
-    }
-  }, []);
-
   return (
     <div className={styles.main}>
       <h3>登录</h3>
