@@ -1,6 +1,6 @@
-import React from 'react';
+import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
-import { Input, Form, Button, Modal } from 'antd';
+import React from 'react';
 
 const { Item } = Form;
 const { TextArea } = Input;
@@ -15,7 +15,6 @@ const formItemLayout = {
 };
 
 function CreateLeague(props) {
-
   const { dispatch, visible, onCancel, addLoading = false } = props;
   const [form] = Form.useForm();
 
@@ -25,11 +24,11 @@ function CreateLeague(props) {
       .then(async (values) => {
         let params = {
           ...values,
-          role: 'networkAdmin'
+          role: 'networkAdmin',
         };
         const res = await dispatch({
           type: 'User/createLeague',
-          payload: params
+          payload: params,
         });
         if (res) {
           onCancel(true);
@@ -83,26 +82,31 @@ function CreateLeague(props) {
               min: 6,
               max: 15,
               type: 'string',
-              pattern: /^[a-zA-Z]+$/,
-              message: '网络名称由6~15位英文字母组成'
-            }
+              pattern: /^[a-zA-Z0-9]+$/,
+              message: '网络名称由6~15位英文字母组成',
+            },
           ]}
         >
           <Input placeholder="请输入网络名称" />
         </Item>
-        <Item label='联盟描述' name='description' initialValue='' rules={[
-          {
-            required: true,
-            message: '请输入联盟描述',
-          },
-          {
-            min: 1,
-            max: 100,
-            type: 'string',
-            message: '联盟描述由1~100个字符组成'
-          }
-        ]}>
-          <TextArea placeholder='请输入联盟描述' />
+        <Item
+          label="联盟描述"
+          name="description"
+          initialValue=""
+          rules={[
+            {
+              required: true,
+              message: '请输入联盟描述',
+            },
+            {
+              min: 1,
+              max: 100,
+              type: 'string',
+              message: '联盟描述由1~100个字符组成',
+            },
+          ]}
+        >
+          <TextArea placeholder="请输入联盟描述" />
         </Item>
       </Form>
     </Modal>

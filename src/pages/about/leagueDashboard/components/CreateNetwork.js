@@ -1,6 +1,6 @@
-import React from 'react';
+import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
-import { Input, Form, Button, Modal } from 'antd';
+import React from 'react';
 
 const { Item } = Form;
 
@@ -14,7 +14,6 @@ const formItemLayout = {
 };
 
 function CreateNetwork(props) {
-
   const { dispatch, visible, onCancel, createLoading = false, User } = props;
   const { userInfo } = User;
   const [form] = Form.useForm();
@@ -25,11 +24,11 @@ function CreateNetwork(props) {
       .then(async (values) => {
         let params = {
           ...values,
-          companyName: userInfo.companyName
+          companyName: userInfo.companyName,
         };
         const res = await dispatch({
           type: 'Dashboard/createNetwork',
-          payload: params
+          payload: params,
         });
         if (res) {
           onCancel(true);
@@ -72,9 +71,9 @@ function CreateNetwork(props) {
               min: 6,
               max: 15,
               type: 'string',
-              pattern: /^[a-zA-Z]+$/,
-              message: '网络名称由6~15位英文字母组成'
-            }
+              pattern: /^[a-zA-Z0-9]+$/,
+              message: '网络名称由6~15位英文字母组成',
+            },
           ]}
         >
           <Input disabled placeholder="请输入网络名称" />
@@ -82,7 +81,7 @@ function CreateNetwork(props) {
         <Item
           label="组织名称"
           name="initOrgName"
-          initialValue=''
+          initialValue=""
           rules={[
             {
               required: true,
@@ -93,8 +92,8 @@ function CreateNetwork(props) {
               max: 15,
               type: 'string',
               pattern: /^[a-zA-Z0-9]+$/,
-              message: '组织名称由3~15位英文或数字组成'
-            }
+              message: '组织名称由3~15位英文或数字组成',
+            },
           ]}
         >
           <Input placeholder="请输入组织名称" />
@@ -102,7 +101,7 @@ function CreateNetwork(props) {
         <Item
           label="组织别名"
           name="initOrgAliasName"
-          initialValue=''
+          initialValue=""
           rules={[
             {
               required: true,
@@ -115,7 +114,7 @@ function CreateNetwork(props) {
         <Item
           label="节点名称"
           name="initPeerName"
-          initialValue=''
+          initialValue=""
           rules={[
             {
               required: true,
@@ -126,8 +125,8 @@ function CreateNetwork(props) {
               max: 15,
               type: 'string',
               pattern: /^[a-zA-Z0-9]+$/,
-              message: '节点名称由3~15位英文或数字组成'
-            }
+              message: '节点名称由3~15位英文或数字组成',
+            },
           ]}
         >
           <Input placeholder="请输入节点名称" />
@@ -135,7 +134,7 @@ function CreateNetwork(props) {
         <Item
           label="节点别名"
           name="initPeerAliasName"
-          initialValue=''
+          initialValue=""
           rules={[
             {
               required: true,
