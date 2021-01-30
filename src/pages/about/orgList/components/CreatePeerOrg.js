@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
-import { Input, Form, Select, Button, Modal } from 'antd';
+import React, { useEffect } from 'react';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -15,7 +15,6 @@ const formItemLayout = {
 };
 
 function CreatePeerOrg(props) {
-
   const { dispatch, visible, onCancel, addLoading = false, User, Contract } = props;
   const { networkName } = User;
   const { channelList } = Contract;
@@ -26,7 +25,7 @@ function CreatePeerOrg(props) {
       type: 'Contract/getChannelList',
       payload: { networkName },
     });
-  }, [])
+  }, []);
 
   const handleSubmit = () => {
     form
@@ -38,7 +37,7 @@ function CreatePeerOrg(props) {
         };
         const res = await dispatch({
           type: 'Organization/createOrg',
-          payload: params
+          payload: params,
         });
         if (res) {
           onCancel(true);
@@ -68,17 +67,25 @@ function CreatePeerOrg(props) {
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
-        <Item label='所属通道' name='channelId' rules={[
-          {
-            required: true,
-            message: '请选择通道',
-          },
-        ]}>
+        <Item
+          label="所属通道"
+          name="channelId"
+          rules={[
+            {
+              required: true,
+              message: '请选择通道',
+            },
+          ]}
+        >
           <Select
-            getPopupContainer={triggerNode => triggerNode.parentNode}
-            placeholder='请选择通道'
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder="请选择通道"
           >
-            {channelList.map(item => <Option key={item.channelId} value={item.channelId}>{item.channelId}</Option>)}
+            {channelList.map((item) => (
+              <Option key={item.channelId} value={item.channelId}>
+                {item.channelId}
+              </Option>
+            ))}
           </Select>
         </Item>
         <Item
@@ -93,9 +100,9 @@ function CreatePeerOrg(props) {
               min: 4,
               max: 20,
               type: 'string',
-              pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
-              message: '组织名必须由4-20位数字英文字母或字符\\ - _ 组成'
-            }
+              pattern: /^[a-zA-Z0-9]\w{4,20}$/,
+              message: '组织名必须由4-20位数字英文字母或字符组成',
+            },
           ]}
         >
           <Input placeholder="请输入组织名称" />
@@ -112,20 +119,25 @@ function CreatePeerOrg(props) {
         >
           <Input placeholder="请输入组织别名" />
         </Item>
-        <Item label='初始化节点名' name='initPeerName' initialValue='' rules={[
-          {
-            required: true,
-            message: '请输入初始化节点名',
-          },
-          {
-            min: 4,
-            max: 20,
-            type: 'string',
-            pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
-            message: '初始化节点名必须由4-20位数字英文字母或字符\\ - _ 组成'
-          }
-        ]}>
-          <Input placeholder='请输入初始化节点名' />
+        <Item
+          label="初始化节点名"
+          name="initPeerName"
+          initialValue=""
+          rules={[
+            {
+              required: true,
+              message: '请输入初始化节点名',
+            },
+            {
+              min: 4,
+              max: 20,
+              type: 'string',
+              pattern: /^[a-zA-Z0-9]\w{4,20}$/,
+              message: '初始化节点名必须由4-20位数字英文字母或字符组成',
+            },
+          ]}
+        >
+          <Input placeholder="请输入初始化节点名" />
         </Item>
         <Item
           label="初始化节点别名"

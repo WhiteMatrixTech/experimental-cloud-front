@@ -1,24 +1,12 @@
 import { Form, Input, Popover, Progress } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 const FormItem = Form.Item;
 
 const passwordStatusMap = {
-  ok: (
-    <div className={styles.success}>
-      强度：强
-    </div>
-  ),
-  pass: (
-    <div className={styles.warning}>
-      强度：中
-    </div>
-  ),
-  poor: (
-    <div className={styles.error}>
-      强度：弱
-    </div>
-  ),
+  ok: <div className={styles.success}>强度：强</div>,
+  pass: <div className={styles.warning}>强度：中</div>,
+  poor: <div className={styles.error}>强度：弱</div>,
 };
 const passwordProgressMap = {
   ok: 'success',
@@ -38,17 +26,17 @@ const StepTwo = (props) => {
     try {
       const values = await form.validateFields();
       const stepValue = { ...values };
-      afterValidate(stepValue, operType.submit)
+      afterValidate(stepValue, operType.submit);
     } catch (errorInfo) {
       failedToValidate(operType.default);
     }
-  }
+  };
 
   useEffect(() => {
     if (curOper === operType.submit) {
-      onCheck()
+      onCheck();
     }
-  }, [curOper])
+  }, [curOper]);
 
   const getPasswordStatus = () => {
     const value = form.getFieldValue('password');
@@ -130,10 +118,7 @@ const StepTwo = (props) => {
           },
         ]}
       >
-        <Input
-          size="large"
-          placeholder="联系人手机号"
-        />
+        <Input size="large" placeholder="联系人手机号" />
       </FormItem>
       <FormItem
         name="contactEmail"
@@ -148,10 +133,7 @@ const StepTwo = (props) => {
           },
         ]}
       >
-        <Input
-          size="large"
-          placeholder='联系人邮箱'
-        />
+        <Input size="large" placeholder="联系人邮箱" />
       </FormItem>
       <FormItem
         name="loginName"
@@ -161,17 +143,13 @@ const StepTwo = (props) => {
             message: '请输入用户名!',
           },
           {
-
             type: 'string',
-            pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
-            message: '用户名不合法, 至少需要5个字符'
+            pattern: /^[a-zA-Z0-9\-_]{5,20}$/,
+            message: '用户名不合法, 至少需要5个字符',
           },
         ]}
       >
-        <Input
-          size="large"
-          placeholder='用户名'
-        />
+        <Input size="large" placeholder="用户名" />
       </FormItem>
       <Popover
         getPopupContainer={(node) => {
@@ -196,7 +174,7 @@ const StepTwo = (props) => {
                 }}
               >
                 请至少输入 6 个字符。请不要使用容易被猜到的密码
-                </div>
+              </div>
             </div>
           )
         }
@@ -219,11 +197,7 @@ const StepTwo = (props) => {
             },
           ]}
         >
-          <Input
-            size="large"
-            type="pass"
-            placeholder="至少6位密码，区分大小写"
-          />
+          <Input size="large" type="pass" placeholder="至少6位密码，区分大小写" />
         </FormItem>
       </Popover>
       <FormItem
@@ -238,13 +212,9 @@ const StepTwo = (props) => {
           },
         ]}
       >
-        <Input
-          size="large"
-          type="password"
-          placeholder='确认密码'
-        />
+        <Input size="large" type="password" placeholder="确认密码" />
       </FormItem>
-    </Form >
+    </Form>
   );
 };
 

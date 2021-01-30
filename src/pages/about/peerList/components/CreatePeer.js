@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
-import { Input, Select, Form, Button, Modal } from 'antd';
+import React, { useEffect } from 'react';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -24,9 +24,9 @@ function CreatePeer(props) {
   useEffect(() => {
     dispatch({
       type: 'Organization/getOrgList',
-      payload: { networkName }
+      payload: { networkName },
     });
-  }, [])
+  }, []);
 
   const handleSubmit = () => {
     form
@@ -37,17 +37,17 @@ function CreatePeer(props) {
           networkName,
           orgName: values.orgName,
           peerName: values.peerName,
-          peerNameAlias: values.peerNameAlias
+          peerNameAlias: values.peerNameAlias,
         };
         dispatch({
           type: 'Peer/createPeer',
-          payload: params
-        }).then(res => {
+          payload: params,
+        }).then((res) => {
           if (res) {
-            onCancel()
-            props.getPeerList()
+            onCancel();
+            props.getPeerList();
           }
-        })
+        });
         form.setFieldsValue(values);
       })
       .catch((info) => {
@@ -84,8 +84,15 @@ function CreatePeer(props) {
             },
           ]}
         >
-          <Select getPopupContainer={triggerNode => triggerNode.parentNode} placeholder='请选择所属组织'>
-            {orgList.map(item => <Option key={item.orgName} value={item.orgName}>{item.orgName}</Option>)}
+          <Select
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder="请选择所属组织"
+          >
+            {orgList.map((item) => (
+              <Option key={item.orgName} value={item.orgName}>
+                {item.orgName}
+              </Option>
+            ))}
           </Select>
         </Item>
         <Item
@@ -101,7 +108,7 @@ function CreatePeer(props) {
               min: 4,
               max: 20,
               type: 'string',
-              pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]{4,20}$/,
+              pattern: /^[a-zA-Z0-9]{4,20}$/,
               message: '节点名必须由4~20位数字与英文字母组合,英文字母开头',
             },
           ]}
