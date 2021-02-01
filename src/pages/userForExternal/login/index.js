@@ -23,7 +23,8 @@ function Login(props) {
         payload: values
       }).then(res => {
         if (res) {
-          const redirect = localStorage.getItem('redirect');
+          const search = window.location.search ? window.location.search.replace('?', '') : '';
+          const { redirect } = parse(search);
           if (redirect) {
             window.top.postMessage(res.access_token, redirect);
             window.location.replace(`${redirect}#${res.access_token}`);

@@ -4,12 +4,6 @@ import { parse } from 'qs';
 
 const search = window.location.search ? window.location.search.replace('?', '') : '';
 const { redirect } = parse(search);
-if (redirect) {
-  const sourceLink = decodeURIComponent(redirect);
-  localStorage.setItem('redirect', sourceLink);
-} else {
-  localStorage.removeItem('redirect');
-}
 
 export default (props) => {
   const accessToken = localStorage.getItem('accessToken');
