@@ -74,5 +74,5 @@ export async function getTransactionsListOfUnion(params) {
  * 获取 通道下的交易总数
  */
 export async function getTransactionsTotalOfUnion(params) {
-  return request(`/network/${params.networkName}/transactions/totalCount/${params.channelId}`);
+  return request(`/network/${params.networkName}/transactions/totalCount/channel/${params.channelId}`);
 };

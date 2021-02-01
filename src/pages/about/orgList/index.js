@@ -53,8 +53,8 @@ function OrganizationManagement(props) {
     },
     {
       title: '创建时间',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
     },
   ];

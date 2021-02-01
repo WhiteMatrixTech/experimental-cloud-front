@@ -231,7 +231,7 @@ class MyContract extends Component {
             {/* <a onClick={() => this.onDownloadContract(record)}>下载</a> */}
             {/* {record.chainCodeStatus === 2 && <a onClick={() => this.onClickModify(record)}>修改</a>} */}
             {(record.chainCodeStatus === ChainCodeStatus.Installed) &&
-              (userRole === Roles.NetworkAdmin) &&
+              // (userRole === Roles.NetworkAdmin) &&
               <a onClick={() => this.onClickToConfirm(record, 'approve')}>发布</a>
             }
             {(record.chainCodeStatus === ChainCodeStatus.Approved) && <a onClick={() => this.onClickUpgrade(record)}>升级</a>}

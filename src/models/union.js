@@ -140,7 +140,7 @@ export default {
       const transactionTotalOfUnion = (transactionRes.statusCode === 'ok' && transactionRes.result) ? transactionRes.result : 0;
       const orgTotalOfUnion = orgRes.statusCode === 'ok' ? orgRes.result.length : 0;
       const peerTotalOfUnion = nodeRes.statusCode === 'ok' ? nodeRes.result.length : 0;
-      const contractListOfUnion = contractRes.statusCode === 'ok' ? contractRes.result.length : 0;
+      const contractListOfUnion = contractRes.statusCode === 'ok' ? contractRes.result : 0;
       yield put({
         type: 'common',
         payload: {
