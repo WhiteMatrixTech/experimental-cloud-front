@@ -8,6 +8,7 @@ import { StatisticsCard, Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { NetworkStatus, NetworkInfo } from 'utils/networkStatus';
 import CreateNetwork from './components/CreateNetwork';
+import config from 'utils/config';
 import style from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/leagueDashboard');
@@ -74,7 +75,7 @@ function LeagueDashboard(props) {
     const params = {
       networkName,
       offset: offset,
-      limit: 6,
+      limit: config.pageSize,
       ascend: false,
     };
     dispatch({
@@ -103,7 +104,7 @@ function LeagueDashboard(props) {
     const params = {
       networkName,
       offset: offset,
-      limit: 6,
+      limit: config.pageSize,
       ascend: false,
     };
     dispatch({

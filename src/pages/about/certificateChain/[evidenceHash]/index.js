@@ -26,7 +26,6 @@ function certificateChainDetail({
 }) {
   const { networkName } = User;
   const { certificateChainDetail } = CertificateChain;
-  const evidenceData = certificateChainDetail.evidenceData ? JSON.parse(certificateChainDetail.evidenceData) : '';
   const detailList = [
     {
       label: '存证哈希',
@@ -54,6 +53,19 @@ function certificateChainDetail({
     },
   ];
 
+  const getEvidenceData = () => {
+    if (certificateChainDetail.evidenceData) {
+      let evidenceData = '';
+      try {
+        evidenceData = JSON.parse(certificateChainDetail.evidenceData);
+      } catch (err) {
+        evidenceData = { evidenceData: certificateChainDetail.evidenceData };
+      }
+      return evidenceData;
+    }
+    return '';
+  }
+
   useEffect(() => {
     dispatch({
       type: 'CertificateChain/getCertificateChainDetail',
@@ -73,7 +85,7 @@ function certificateChainDetail({
               <span className={styles['detail-title-content']}>存证信息</span>
             </div>
             <div className={styles['detail-info-wrapper']}>
-              <ReactJson name="evidenceData" src={evidenceData} />
+              <ReactJson name="evidenceData" src={getEvidenceData()} />
             </div>
           </div>
         </Spin>

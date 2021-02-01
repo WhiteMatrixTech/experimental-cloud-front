@@ -7,6 +7,7 @@ import { StatisticsCard, Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import { unionStatus } from '../_config';
 import style from './index.less';
+import config from 'utils/config';
 import peer from 'assets/images/dashboard/icon-peer.png';
 import msp from 'assets/images/dashboard/icon-msp.png';
 import chaincode from 'assets/images/dashboard/icon-chaincode.png';
@@ -132,7 +133,7 @@ class UnionDetail extends Component {
     const params = {
       networkName,
       offset: 0,
-      limit: 6,
+      limit: config.pageSize,
       ascend: false,
       channelId: location?.state?.channelId,
     };
@@ -163,7 +164,7 @@ class UnionDetail extends Component {
     const params = {
       networkName,
       offset: 0,
-      limit: 6,
+      limit: config.pageSize,
       ascend: false,
       channelId: location?.state?.channelId
     };

@@ -119,15 +119,15 @@ const MenuList = [
     isFeature: 0,
     menuVos: []
   },
-  {
-    id: 47,
-    menuPid: 2,
-    menuHref: "/about/certificate",
-    menuIcon: "KBasszhengshuguanli",
-    menuName: "证书管理",
-    isFeature: 0,
-    menuVos: []
-  },
+  // {
+  //   id: 47,
+  //   menuPid: 2,
+  //   menuHref: "/about/certificate",
+  //   menuIcon: "KBasszhengshuguanli",
+  //   menuName: "证书管理",
+  //   isFeature: 0,
+  //   menuVos: []
+  // },
   {
     id: 48,
     menuPid: 2,
@@ -187,7 +187,7 @@ const MenuList = [
         menuHref: "/about/myinfo/MyOrgList",
         menuIcon: null,
         menuName: "我的组织",
-        isFeature: 1,
+        isFeature: 0,
         menuVos: []
       }
     ]

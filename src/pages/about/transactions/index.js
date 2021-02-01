@@ -54,7 +54,7 @@ function Transactions(props) {
   const onSearchList = () => {
     const params = {
       networkName,
-      Id: txId,
+      txId,
     };
     dispatch({
       type: 'Transactions/onSearch',
