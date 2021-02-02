@@ -1,8 +1,8 @@
 import { Button, Steps } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { Link, connect, history } from 'umi';
-import StepOne from './step1';
-import StepTwo from './step2';
+import StepOne from './_step1';
+import StepTwo from './_step2';
 import styles from './index.less';
 
 const { Step } = Steps;

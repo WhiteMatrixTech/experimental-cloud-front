@@ -37,8 +37,8 @@ class UnionDetail extends Component {
       },
       {
         title: '所属通道',
-        dataIndex: 'channelName',
-        key: 'channelName',
+        dataIndex: 'channelId',
+        key: 'channelId',
       },
       {
         title: '交易数量',
@@ -71,8 +71,8 @@ class UnionDetail extends Component {
       },
       {
         title: '所属通道',
-        dataIndex: 'channelName',
-        key: 'channelName',
+        dataIndex: 'channelId',
+        key: 'channelId',
       },
       {
         title: '交易组织',

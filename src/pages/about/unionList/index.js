@@ -153,9 +153,14 @@ function UnionList(props) {
         render: text => text ? <Badge color={unionStatus[text].color} text={unionStatus[text].text} style={{ color: unionStatus[text].color }} /> : ''
       },
       {
+        title: '创建者',
+        dataIndex: 'createUser',
+        key: 'createUser'
+      },
+      {
         title: '创建时间',
-        dataIndex: 'createTime',
-        key: 'createTime',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
         render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
       },
       {
@@ -179,18 +184,8 @@ function UnionList(props) {
         title: '所属联盟',
         dataIndex: 'leagueName',
         key: 'leagueName',
-      }, {
-        title: '我的节点数',
-        dataIndex: 'companyPeerCount',
-        key: 'companyPeerCount',
-      }, {
-        title: '节点总数',
-        dataIndex: 'peerCount',
-        key: 'peerCount',
       }]
       data.splice(3, 0, rest[0])
-      data.splice(5, 0, rest[1])
-      data.splice(6, 0, rest[2])
     }
     setColumns(data)
   }, [userRole]);

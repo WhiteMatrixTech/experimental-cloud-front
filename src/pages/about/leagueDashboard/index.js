@@ -139,8 +139,8 @@ function LeagueDashboard(props) {
       },
       {
         title: '所属通道',
-        dataIndex: 'channelName',
-        key: 'channelName',
+        dataIndex: 'channelId',
+        key: 'channelId',
       },
       {
         title: '交易数量',
@@ -173,8 +173,8 @@ function LeagueDashboard(props) {
       },
       {
         title: '所属通道',
-        dataIndex: 'channelName',
-        key: 'channelName',
+        dataIndex: 'channelId',
+        key: 'channelId',
       },
       {
         title: '交易组织',

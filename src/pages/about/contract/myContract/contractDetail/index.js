@@ -41,8 +41,8 @@ class ContractDetail extends Component {
       },
       {
         title: '创建时间',
-        dataIndex: 'createTime',
-        key: 'createTime',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
         render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
       },
       {

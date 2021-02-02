@@ -6,6 +6,7 @@ const search = window.location.search ? window.location.search.replace('?', '') 
 const { redirect } = parse(search);
 
 export default (props) => {
+
   const { route, routes, location } = props;
   const accessToken = localStorage.getItem('accessToken');
   const roleToken = localStorage.getItem('roleToken');
