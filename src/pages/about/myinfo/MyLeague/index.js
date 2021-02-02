@@ -36,12 +36,12 @@ function MyLeagueInfo(props) {
     },
   ];
 
-  useEffect(() => {
-    dispatch({
-      type: 'MyInfo/getMyLeagueInfo',
-      payload: { networkName }
-    })
-  }, []);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'MyInfo/getMyLeagueInfo',
+  //     payload: { networkName }
+  //   })
+  // }, []);
 
 
   return (

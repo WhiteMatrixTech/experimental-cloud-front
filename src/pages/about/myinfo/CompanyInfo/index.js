@@ -68,12 +68,12 @@ function MyCompanyInfo(props) {
     },
   ];
 
-  useEffect(() => {
-    dispatch({
-      type: 'MyInfo/getMyCompanyInfo',
-      payload: { networkName }
-    })
-  }, []);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'MyInfo/getMyCompanyInfo',
+  //     payload: { networkName }
+  //   })
+  // }, []);
 
 
   return (

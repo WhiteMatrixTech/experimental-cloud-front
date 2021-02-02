@@ -58,15 +58,16 @@ class ContractDetail extends Component {
     ]
   }
 
-  componentDidMount() {
-    const { location: { query: { chainCodeId } } } = this.props;
-    this.props.dispatch({
-      type: 'Contract/getDetailOfChainCode',
-      payload: { chainCodeId, networkName: this.props.User.networkName }
-    })
-    this.getChainCodeHistory()
-    this.getChainCodeHistoryTotalDocs()
-  }
+  // componentDidMount() {
+  //   const { location: { query: { chainCodeId } } } = this.props;
+  //   this.props.dispatch({
+  //     type: 'Contract/getDetailOfChainCode',
+  //     payload: { chainCodeId, networkName: this.props.User.networkName }
+  //   })
+  //   this.getChainCodeHistory()
+  //   this.getChainCodeHistoryTotalDocs()
+  // }
+
   // 获取合约列表的totalCount
   getChainCodeHistoryTotalDocs = () => {
     const params = {

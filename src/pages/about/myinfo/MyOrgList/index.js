@@ -48,12 +48,12 @@ function MyOrgInfo(props) {
     },
   ]
 
-  useEffect(() => {
-    dispatch({
-      type: 'MyInfo/getMyOrgInfo',
-      payload: { networkName }
-    })
-  }, []);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'MyInfo/getMyOrgInfo',
+  //     payload: { networkName }
+  //   })
+  // }, []);
 
 
   return (

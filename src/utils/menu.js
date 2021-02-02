@@ -128,15 +128,15 @@ const MenuList = [
   //   isFeature: 0,
   //   menuVos: []
   // },
-  {
-    id: 48,
-    menuPid: 2,
-    menuHref: "/about/logsList",
-    menuIcon: "KBassdakaixinfeng",
-    menuName: "日志管理",
-    isFeature: 0,
-    menuVos: []
-  },
+  // {
+  //   id: 48,
+  //   menuPid: 2,
+  //   menuHref: "/about/logsList",
+  //   menuIcon: "KBassdakaixinfeng",
+  //   menuName: "日志管理",
+  //   isFeature: 0,
+  //   menuVos: []
+  // },
   {
     id: 49,
     menuPid: 2,
@@ -146,15 +146,15 @@ const MenuList = [
     isFeature: 1, // 是否只有盟主才显示
     menuVos: []
   },
-  {
-    id: 50,
-    menuPid: 2,
-    menuHref: "/about/message",
-    menuIcon: "KBassxiaoxiguanli",
-    menuName: "消息管理",
-    isFeature: 0,
-    menuVos: []
-  },
+  // {
+  //   id: 50,
+  //   menuPid: 2,
+  //   menuHref: "/about/message",
+  //   menuIcon: "KBassxiaoxiguanli",
+  //   menuName: "消息管理",
+  //   isFeature: 0,
+  //   menuVos: []
+  // },
   {
     id: 52,
     menuPid: 2,

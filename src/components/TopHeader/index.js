@@ -71,9 +71,9 @@ class TopHeader extends PureComponent {
           <a className={styles['header-menu-item']} onClick={this.onClickIDE}>
             ChainIDE
           </a>
-          <Badge showZero count={100}>
+          {/* <Badge showZero count={100}>
             <div className={styles['header-menu-item']} style={{ paddingRight: '12px' }} onClick={this.onClickMessage}>消息</div>
-          </Badge>
+          </Badge> */}
           <Dropdown placement="bottomCenter" overlay={this.getUserMenu()}>
             <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
               {userInfo.loginName} <DownOutlined />
