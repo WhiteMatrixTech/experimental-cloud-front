@@ -154,6 +154,7 @@ function Transactions(props) {
             pageSize,
             total: transactionTotal,
             current: pageNum,
+            showSizeChanger: false,
             position: ['bottomCenter'],
           }}
         />

@@ -3,6 +3,7 @@ import { getTransactionList, getTransactionTotalDocs } from '../services/transac
 import { getMemberTotalDocs } from '../services/member.js';
 import { getUnionList } from '../services/union.js';
 import { getChainCodeList } from '../services/contract.js';
+import { getMyNetworkList } from '../services/user.js';
 import * as API from '../services/dashboard.js';
 import { notification } from 'antd';
 import moment from 'moment';
@@ -84,7 +85,7 @@ export default {
         });
       }
     },
-    *getStatisInfo({ payload }, { call, put, all }) {
+    *getStatisInfoForAdmin({ payload }, { call, put, all }) {
       const [res1, res2, res3, res4, res5] = yield all([
         call(getBlockTotalDocs, payload),
         call(getTransactionTotalDocs, payload),
@@ -108,6 +109,36 @@ export default {
       const blockTotal = res1.statusCode === 'ok' ? res1.result : 0;
       const transactionTotal = res2.statusCode === 'ok' ? res2.result : 0;
       const memberTotal = res3.statusCode === 'ok' ? res3.result : 0;
+      const unionTotal = res4.statusCode === 'ok' ? res4.result.length : 0;
+      const myContractTotal = res5.statusCode === 'ok' ? res5.result.items.length : 0;
+      yield put({
+        type: 'common',
+        payload: {
+          blockTotal,
+          transactionTotal,
+          memberTotal,
+          unionTotal,
+          myContractTotal,
+        }
+      });
+    },
+    *getStatisInfoForMember({ payload }, { call, put, all }) {
+      const [res1, res2, res3, res4, res5] = yield all([
+        call(getBlockTotalDocs, payload),
+        call(getTransactionTotalDocs, payload),
+        call(getMyNetworkList, payload),
+        call(getUnionList, payload),
+        call(getChainCodeList, {
+          ...payload,
+          offset: 0,
+          limit: 5,
+          from: Number(moment(new Date()).format('x')),
+          ascend: false,
+        }),
+      ]);
+      const blockTotal = res1.statusCode === 'ok' ? res1.result : 0;
+      const transactionTotal = res2.statusCode === 'ok' ? res2.result : 0;
+      const memberTotal = res3.statusCode === 'ok' ? res3.result.length : 0;
       const unionTotal = res4.statusCode === 'ok' ? res4.result.length : 0;
       const myContractTotal = res5.statusCode === 'ok' ? res5.result.items.length : 0;
       yield put({
