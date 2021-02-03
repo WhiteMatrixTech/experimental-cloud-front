@@ -24,7 +24,7 @@ function LeagueDashboard(props) {
   const [createVisible, setCreateVisible] = useState(false);
 
   const statisticsList = [
-    { label: '成员', num: Dashboard.memberTotal },
+    { label: `${userRole === Roles.NetworkMember ? '已入联盟' : '成员'}`, num: Dashboard.memberTotal },
     { label: '通道', num: Dashboard.unionTotal },
     { label: '合约', num: Dashboard.myContractTotal },
     { label: '区块', num: Dashboard.blockTotal },
@@ -41,7 +41,7 @@ function LeagueDashboard(props) {
       networkName,
     };
     dispatch({
-      type: 'Dashboard/getStatisInfo',
+      type: `Dashboard/${userRole === Roles.NetworkMember ? 'getStatisInfoForMember' : 'getStatisInfoForAdmin'}`,
       payload: params,
     });
   }

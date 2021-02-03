@@ -111,7 +111,7 @@ function OrganizationManagement(props) {
           loading={qryLoading}
           dataSource={orgList}
           onChange={onPageChange}
-          pagination={{ pageSize, total: orgTotal, current: pageNum, position: ['bottomCenter'] }}
+          pagination={{ pageSize, total: orgTotal, current: pageNum, showSizeChanger: false, position: ['bottomCenter'] }}
         />
       </div>
       {createOrgVisible && <CreatePeerOrg visible={createOrgVisible} onCancel={onCloseCreateOrg} />}

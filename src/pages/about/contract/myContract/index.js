@@ -187,7 +187,6 @@ class MyContract extends Component {
     const { qryLoading = false } = this.props;
     const { pageSize, pageNum, editModalVisible, invokeVisible, operateType, editParams } = this.state;
     const { myContractList, myContractTotal } = this.props.Contract;
-    const { userRole } = this.props.User;
     const columns = [
       {
         title: '合约ID',
@@ -258,7 +257,7 @@ class MyContract extends Component {
             loading={qryLoading}
             dataSource={myContractList}
             onChange={this.onPageChange}
-            pagination={{ pageSize, total: myContractTotal, current: pageNum, position: ['bottomCenter'] }}
+            pagination={{ pageSize, total: myContractTotal, current: pageNum, showSizeChanger: false, position: ['bottomCenter'] }}
           />
         </div>
         {editModalVisible && <EditContract visible={editModalVisible} operateType={operateType} onCancel={this.onCloseModal} editParams={editParams} />}

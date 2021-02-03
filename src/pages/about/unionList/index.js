@@ -212,7 +212,7 @@ function UnionList(props) {
           className='page-content-shadow'
           dataSource={unionList}
           onChange={onPageChange}
-          pagination={{ pageSize, total: unionTotal, current: pageNum, position: ['bottomCenter'] }}
+          pagination={{ pageSize, total: unionTotal, current: pageNum, showSizeChanger: false, position: ['bottomCenter'] }}
         />
       </div>
       {createUnionVisible && <CreateUnion visible={createUnionVisible} onCancel={onCloseCreateUnion} />}

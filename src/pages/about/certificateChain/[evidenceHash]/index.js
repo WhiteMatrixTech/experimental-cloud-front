@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Spin } from 'antd';
+import { isObejct } from 'lodash';
 import { Breadcrumb, DetailCard } from 'components';
 import ReactJson from 'react-json-view';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
@@ -57,7 +58,11 @@ function certificateChainDetail({
     if (certificateChainDetail.evidenceData) {
       let evidenceData = '';
       try {
-        evidenceData = JSON.parse(certificateChainDetail.evidenceData);
+        let parsedData = null;
+        parsedData = JSON.parse(certificateChainDetail.evidenceData);
+        if (!isObejct(parsedData)) {
+          evidenceData = { evidenceData: parsedData };
+        }
       } catch (err) {
         evidenceData = { evidenceData: certificateChainDetail.evidenceData };
       }

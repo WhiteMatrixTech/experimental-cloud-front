@@ -133,6 +133,7 @@ function CertificateChain(props) {
             pageSize,
             total: certificateChainTotal,
             current: pageNum,
+            showSizeChanger: false,
             position: ['bottomCenter'],
           }}
         />

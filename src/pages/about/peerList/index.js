@@ -21,14 +21,9 @@ function PeerList(props) {
   const [createPeerVisible, setCreatePeerVisible] = useState(false)
 
   // 获取节点列表
-  const getPeerList = current => {
-    const offset = ((current || pageNum) - 1) * pageSize;
+  const getPeerList = () => {
     const params = {
       networkName,
-      networkVersion: '1.0.0',
-      offset,
-      limit: pageSize,
-      from: Number(moment(new Date()).format('x')),
     }
     dispatch({
       type: 'Peer/getPeerList',
@@ -39,9 +34,7 @@ function PeerList(props) {
   // 翻页
   const onPageChange = pageInfo => {
     setPageNum(pageInfo.current)
-    getPeerList(pageInfo.current)
   }
-
 
   // 点击 创建节点
   const onClickCreatePeer = () => {
@@ -120,7 +113,7 @@ function PeerList(props) {
           className='page-content-shadow'
           dataSource={peerList}
           onChange={onPageChange}
-          pagination={{ pageSize, total: peerTotal, current: pageNum, position: ['bottomCenter'] }}
+          pagination={{ pageSize, total: peerTotal, current: pageNum, showSizeChanger: false, position: ['bottomCenter'] }}
         />
       </div>
       {createPeerVisible && <CreatePeer getPeerList={getPeerList} visible={createPeerVisible} onCancel={onCloseCreatePeerModal} />}
