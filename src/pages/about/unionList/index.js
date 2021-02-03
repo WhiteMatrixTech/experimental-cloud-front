@@ -142,15 +142,16 @@ function UnionList(props) {
         key: 'channelAliasName',
       },
       {
-        title: '组织数量',
-        dataIndex: 'orgCount',
-        key: 'orgCount',
-      },
-      {
         title: '通道状态',
         dataIndex: 'channelStatus',
         key: 'channelStatus',
         render: text => text ? <Badge color={unionStatus[text].color} text={unionStatus[text].text} style={{ color: unionStatus[text].color }} /> : ''
+      },
+      {
+        title: '通道描述',
+        dataIndex: 'channelDesc',
+        key: 'channelDesc',
+        ellipsis: true,
       },
       {
         title: '创建者',
@@ -166,6 +167,7 @@ function UnionList(props) {
       {
         title: '操作',
         key: 'action',
+        width: '20%',
         render: (text, record) => (
           <Space size='small'>
             {((record.channelStatus === 4 || record.channelStatus === 12) && userRole === Roles.NetworkAdmin) && <a>开启通道</a>}
@@ -179,14 +181,6 @@ function UnionList(props) {
         ),
       },
     ]
-    if (userRole === Roles.NetworkMember) {
-      const rest = [{
-        title: '所属联盟',
-        dataIndex: 'leagueName',
-        key: 'leagueName',
-      }]
-      data.splice(3, 0, rest[0])
-    }
     setColumns(data)
   }, [userRole]);
 

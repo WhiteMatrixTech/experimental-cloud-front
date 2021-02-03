@@ -85,7 +85,7 @@ function Transactions(props) {
         dataIndex: 'txId',
         key: 'txId',
         ellipsis: true,
-        width: userRole === Roles.NetworkMember ? '17%' : '20%',
+        width: '20%',
       },
       {
         title: '所属通道',
@@ -118,14 +118,6 @@ function Transactions(props) {
         ),
       },
     ];
-    if (userRole === Roles.NetworkMember) {
-      const insertColumn = {
-        title: '所属联盟',
-        dataIndex: 'leagueName',
-        key: 'leagueName',
-      };
-      data.splice(1, 0, insertColumn);
-    }
     setColumns(data);
   }, [userRole]);
 
