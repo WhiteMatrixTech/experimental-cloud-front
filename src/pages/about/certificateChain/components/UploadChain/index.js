@@ -10,7 +10,7 @@ const editorOptions = {
 
 function UploadChain(props) {
   const { visible, onCancel, dispatch, Union, User } = props;
-  const { networkName, userInfo } = User;
+  const { networkName } = User;
 
   const [form] = Form.useForm();
   const [jsonContent, setJsonContent] = useState('')
@@ -29,8 +29,6 @@ function UploadChain(props) {
         payload: {
           ...values,
           networkName,
-          createUser: userInfo.loginName,
-          companyName: userInfo.companyName
         }
       })
       if (res) {

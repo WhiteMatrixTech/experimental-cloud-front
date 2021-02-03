@@ -64,10 +64,10 @@ class MyContract extends Component {
 
   // 按合约名称查找
   onSearch = (value, event) => {
-    if (event.type && (event.type === 'click' || event.type === 'keydown')) {
-      this.setState({ pageNum: 1, chainCodeName: value || '' })
-      this.getPageListOfChainCode(1, value)
-    }
+    // if (event.type && (event.type === 'click' || event.type === 'keydown')) {
+    //   this.setState({ pageNum: 1, chainCodeName: value || '' })
+    //   this.getPageListOfChainCode(1, value)
+    // }
   }
 
   // 翻页
