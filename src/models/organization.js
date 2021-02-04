@@ -19,7 +19,7 @@ export default {
       const res = yield call(API.createOrg, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '组织创建成功', top: 64, duration: 1 });
+        notification.success({ message: result.message || '组织创建成功', top: 64, duration: 1 });
         return true
       } else {
         notification.error({ message: result.message || '组织创建失败', top: 64, duration: 1 })

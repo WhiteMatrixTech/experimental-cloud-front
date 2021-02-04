@@ -35,7 +35,7 @@ export default {
       const succMessage = `节点创建成功`;
       const failMessage = `节点创建失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: res.message || succMessage, top: 64, duration: 1 });
+        notification.success({ message: result.message || succMessage, top: 64, duration: 1 });
         return true;
       } else {
         notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
