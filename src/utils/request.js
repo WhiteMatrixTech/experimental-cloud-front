@@ -65,9 +65,8 @@ const getResponseData = response => {
  */
 export const request = (url, options) => {
   const defaultOptions = {
-    // credentials: 'include',
     headers: {
-      "Cross-Method": "CORS",
+
     },
     mode: 'cors'
   };
