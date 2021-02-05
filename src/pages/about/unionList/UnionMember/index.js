@@ -70,17 +70,11 @@ class UnionMember extends Component {
   }
 
   // 获取 通道下的组织
-  getOrgListOfUnion = (current, orgName) => {
-    const { pageNum, pageSize } = this.state;
+  getOrgListOfUnion = (orgName) => {
     const { User, location } = this.props;
     const { networkName } = User;
-    const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       networkName,
-      offset,
-      limit: pageSize,
-      from: Number(moment(new Date()).format('x')),
-      ascend: false,
       channelId: location?.state?.channelId,
     }
     if (orgName) {
@@ -102,7 +96,7 @@ class UnionMember extends Component {
   onSearch = (value, event) => {
     if (event.type && (event.type === 'click' || event.type === 'keydown')) {
       this.setState({ pageNum: 1, orgName: value || '' })
-      this.getOrgListOfUnion(1, value)
+      this.getOrgListOfUnion(value)
     }
   }
 
@@ -147,7 +141,7 @@ class UnionMember extends Component {
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className='page-content'>
           <DetailCard cardTitle='基本信息' detailList={unionInfoList} boxShadow='0 4px 12px 0 rgba(0,0,0,.05)' />
-          <SearchBar placeholder='输入组织名' onSearch={this.onSearch} btnName={userRole === Roles.NetworkAdmin ? '添加组织' : null} onClickBtn={this.onClickAddOrg} />
+          {/* <SearchBar placeholder='输入组织名' onSearch={this.onSearch} btnName={userRole === Roles.NetworkAdmin ? '添加组织' : null} onClickBtn={this.onClickAddOrg} /> */}
           <Table
             rowKey='_id'
             loading={qryLoading}

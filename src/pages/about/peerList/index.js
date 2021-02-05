@@ -62,6 +62,12 @@ function PeerList(props) {
         ellipsis: true
       },
       {
+        title: '节点全名',
+        dataIndex: 'nodeFullName',
+        key: 'nodeFullName',
+        ellipsis: true
+      },
+      {
         title: '状态',
         dataIndex: 'nodeStatus',
         key: 'nodeStatus',

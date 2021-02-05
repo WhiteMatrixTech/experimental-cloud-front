@@ -27,6 +27,14 @@ export default {
     wrappers: resolve(__dirname, './src/pages/wrappers/'),
   },
 
+  locale: {
+    default: 'zh-CN',
+    antd: false,
+    title: false,
+    baseNavigator: true,
+    baseSeparator: '-',
+  },
+
   externals: {
     echarts: 'window.echarts',
     konva: 'window.konva',
@@ -49,4 +57,4 @@ export default {
     'process.env.CHAIN_IDE_LINK': 'https://fabric.test.chainide.cn/project/welcome', // ChainIDE地址
     'process.env.BAAS_BACKEND_LINK': 'https://yzjszjr-chainbaas-api.test.chainide.cn', // BaaS Backend地址
   }
-} 
+}

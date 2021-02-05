@@ -26,13 +26,18 @@ class UnionPeer extends Component {
     this.columns = [
       {
         title: '节点名称',
-        dataIndex: 'peerName',
+        dataIndex: 'nodeName',
         key: 'peerName',
       },
       {
         title: '节点别名',
-        dataIndex: 'peerAliasName',
+        dataIndex: 'nodeAliasName',
         key: 'peerAliasName',
+      },
+      {
+        title: '节点全名',
+        dataIndex: 'nodeFullName',
+        key: 'nodeFullName',
       },
       {
         title: '所属组织',
@@ -41,14 +46,14 @@ class UnionPeer extends Component {
       },
       {
         title: '状态',
-        dataIndex: 'peerStatus',
-        key: 'peerStatus',
+        dataIndex: 'nodeStatus',
+        key: 'nodeStatus',
         render: text => text ? <Badge color={peerStatus[text].color} text={peerStatus[text].text} style={{ color: peerStatus[text].color }} /> : ''
       },
       {
         title: '创建时间',
-        dataIndex: 'createTime',
-        key: 'createTime',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
         render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
       }
     ]
@@ -69,17 +74,11 @@ class UnionPeer extends Component {
   }
 
   // 获取 通道下的节点
-  getPeerListOfUnion = (current, peerName) => {
-    const { pageNum, pageSize } = this.state;
+  getPeerListOfUnion = (peerName) => {
     const { User, location } = this.props;
     const { networkName } = User;
-    const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       networkName,
-      offset,
-      limit: pageSize,
-      from: Number(moment(new Date()).format('x')),
-      ascend: false,
       channelId: location?.state?.channelId,
     }
     if (peerName) {
@@ -94,14 +93,13 @@ class UnionPeer extends Component {
   // 翻页
   onPageChange = pageInfo => {
     this.setState({ pageNum: pageInfo.current })
-    this.getPeerListOfUnion(pageInfo.current)
   }
 
   // 按 组织名 搜索
   onSearch = (value, event) => {
     if (event.type && (event.type === 'click' || event.type === 'keydown')) {
       this.setState({ pageNum: 1, peerName: value || '' })
-      this.getPeerListOfUnion(1, value)
+      this.getPeerListOfUnion(value)
     }
   }
 
@@ -109,7 +107,7 @@ class UnionPeer extends Component {
     const { qryLoading = false, location } = this.props;
     const { pageSize, pageNum } = this.state;
     const { userRole } = this.props.User
-    const { peerListOfUnion, peerTotalOfUnion } = this.props.Union;
+    const { peerListOfUnion, orgTotalOfUnion, peerTotalOfUnion } = this.props.Union;
     const unionInfoList = [
       {
         label: '通道名称',
@@ -117,11 +115,11 @@ class UnionPeer extends Component {
       },
       {
         label: '组织数量',
-        value: location?.state?.orgCount
+        value: orgTotalOfUnion
       },
       {
         label: '节点总数',
-        value: location?.state?.peerCount
+        value: peerTotalOfUnion
       },
     ]
     if (userRole === Roles.NetworkAdmin) {
@@ -139,7 +137,7 @@ class UnionPeer extends Component {
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className='page-content'>
           <DetailCard cardTitle='基本信息' detailList={unionInfoList} boxShadow='0 4px 12px 0 rgba(0,0,0,.05)' />
-          <SearchBar placeholder='输入节点名称' onSearch={this.onSearch} />
+          {/* <SearchBar placeholder='输入节点名称' onSearch={this.onSearch} /> */}
           <Table
             rowKey='_id'
             loading={qryLoading}

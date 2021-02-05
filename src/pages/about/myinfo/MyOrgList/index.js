@@ -44,16 +44,16 @@ function MyOrgInfo(props) {
     },
     {
       label: '创建时间',
-      value: myOrgInfo.createTime ? moment(myOrgInfo.createTime).format('YYYY-MM-DD HH:mm:ss') : '- -'
+      value: myOrgInfo.createdAt ? moment(myOrgInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -'
     },
   ]
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'MyInfo/getMyOrgInfo',
-  //     payload: { networkName }
-  //   })
-  // }, []);
+  useEffect(() => {
+    dispatch({
+      type: 'MyInfo/getMyOrgInfo',
+      payload: { networkName }
+    })
+  }, []);
 
 
   return (

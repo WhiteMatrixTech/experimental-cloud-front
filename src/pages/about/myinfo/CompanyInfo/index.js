@@ -4,6 +4,7 @@ import { Spin } from 'antd';
 import { Breadcrumb, DetailCard } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import { ApprovalStatus } from '../_config';
+import { injectIntl } from 'umi';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false)
 breadCrumbItem.push({
@@ -33,10 +34,10 @@ function MyCompanyInfo(props) {
       label: '统一社会信用代码',
       value: myCompany.companyCertBusinessNumber
     },
-    {
-      label: '办公地址',
-      value: myCompany.companyAddress
-    }
+    // {
+    //   label: '办公地址',
+    //   value: myCompany.companyAddress
+    // }
   ];
   const companyLegalInfo = [
     {
@@ -61,19 +62,19 @@ function MyCompanyInfo(props) {
       label: '联系人邮箱',
       value: myCompany.contactEmail
     },
-    {
-      label: '备注',
-      fullRow: true,
-      value: myCompany.companyDesc
-    },
+    // {
+    //   label: '备注',
+    //   fullRow: true,
+    //   value: myCompany.companyDesc
+    // },
   ];
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'MyInfo/getMyCompanyInfo',
-  //     payload: { networkName }
-  //   })
-  // }, []);
+  useEffect(() => {
+    dispatch({
+      type: 'MyInfo/getMyCompanyInfo',
+      payload: { networkName }
+    })
+  }, []);
 
 
   return (
@@ -90,8 +91,8 @@ function MyCompanyInfo(props) {
   )
 }
 
-export default connect(({ User, MyInfo, loading }) => ({
+export default injectIntl(connect(({ User, MyInfo, loading }) => ({
   User,
   MyInfo,
   qryLoading: loading.effects['MyInfo/getMyInfoDetail']
-}))(MyCompanyInfo);
+}))(MyCompanyInfo));

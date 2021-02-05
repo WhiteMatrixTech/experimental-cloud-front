@@ -8,7 +8,7 @@ import get from 'lodash/get';
 
 /**
  * 删除左右两端的空格
- * @param {*} str 
+ * @param {*} str
  */
 export const trim = (str) => {
   return str.replace(/(^\s*)|(\s*$)/g, "");
@@ -22,7 +22,7 @@ export const getCookie = () => {
       for (let i = 0; i < cookieArr.length; i++) {
         let cookie = cookieArr[i].split("=");
         if (cookie[0]) {
-          if ("ZSMART_LOCALE" == trim(cookie[0])) {
+          if ("BAAS_LOCALE" === trim(cookie[0])) {
             return cookie[1] || ""
           }
         }
