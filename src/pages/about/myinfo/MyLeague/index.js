@@ -31,7 +31,7 @@ function MyLeagueInfo(props) {
     },
     {
       label: '创建时间',
-      value: myLeague.createdTime ? moment(myLeague.createTime).format('YYYY-MM-DD HH:mm:ss') : '- -'
+      value: myLeague.createdTime ? moment(myLeague.createdTime).format('YYYY-MM-DD HH:mm:ss') : '- -'
     },
     {
       label: '联盟描述',
