@@ -56,8 +56,8 @@ export default {
       const res = yield call(API.setStatusOfLeagueConpany, payload);
       const { statusCode, result } = res;
       const { isValid } = payload;
-      const succMessage = `${isValid === 0 ? '停用' : '启用'}企业成员成功`;
-      const failMessage = `${isValid === 0 ? '停用' : '启用'}企业成员失败`;
+      const succMessage = `${isValid === 'invalid' ? '停用' : '启用'}企业成员成功`;
+      const failMessage = `${isValid === 'invalid' ? '停用' : '启用'}企业成员失败`;
       if (statusCode === 'ok' && result === 1) {
         notification.success({ message: succMessage, top: 64, duration: 1 });
         return true;
@@ -69,8 +69,8 @@ export default {
       const res = yield call(API.setCompanyApprove, payload);
       const { statusCode, result } = res;
       const { approvalStatus } = payload;
-      const succMessage = `${approvalStatus === 1 ? '通过' : '驳回'}企业成员成功`;
-      const failMessage = `${approvalStatus === 1 ? '通过' : '驳回'}企业成员失败`;
+      const succMessage = `${approvalStatus === 'approved' ? '通过' : '驳回'}企业成员成功`;
+      const failMessage = `${approvalStatus === 'approved' ? '通过' : '驳回'}企业成员失败`;
       if (statusCode === 'ok' && result === 1) {
         notification.success({ message: succMessage, top: 64, duration: 1 });
         return true;

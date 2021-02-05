@@ -26,22 +26,25 @@ function MyLeagueInfo(props) {
       value: myLeague.leagueName
     },
     {
+      label: '盟主公司',
+      value: myLeague.leaderCompanyName
+    },
+    {
       label: '创建时间',
-      value: myLeague.createTime ? moment(myLeague.createTime).format('YYYY-MM-DD HH:mm:ss') : '- -'
+      value: myLeague.createdTime ? moment(myLeague.createTime).format('YYYY-MM-DD HH:mm:ss') : '- -'
     },
     {
       label: '联盟描述',
-      fullRow: true,
       value: myLeague.description
     },
   ];
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'MyInfo/getMyLeagueInfo',
-  //     payload: { networkName }
-  //   })
-  // }, []);
+  useEffect(() => {
+    dispatch({
+      type: 'MyInfo/getMyLeagueInfo',
+      payload: { networkName }
+    })
+  }, []);
 
 
   return (
