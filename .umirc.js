@@ -24,6 +24,7 @@ export default {
     utils: resolve(__dirname, './src/utils'),
     themes: resolve(__dirname, './src/themes'),
     assets: resolve(__dirname, './src/assets'),
+    locales: resolve(__dirname, './src/locales'),
     wrappers: resolve(__dirname, './src/pages/wrappers/'),
   },
 
