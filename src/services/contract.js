@@ -9,7 +9,7 @@ export async function addContract(params) {
 }
 
 /**
- * 升级合约 
+ * 升级合约
  */
 export async function upgrateContract(params) {
   return request(`/network/${params.networkName}/chainCodes/upgrade`, { method: 'POST', body: params });
@@ -42,11 +42,6 @@ export async function queryChainCodeMethod(params) {
 export async function getChannelList(params) {
   return request(`/network/${params.networkName}/channels/listChannels`);
 }
-
-
-
-
-
 
 /**
  * 我的合约 - 合约列表

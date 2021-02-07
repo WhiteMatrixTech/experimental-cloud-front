@@ -142,15 +142,8 @@ function BlockDetail({
         value: blockDetail.channelId,
       },
     ];
-    if (userRole === Roles.NetworkMember) {
-      const insertItem = {
-        label: '所属联盟',
-        value: blockDetail.leagueName,
-      };
-      data.splice(4, 0, insertItem);
-    }
     setDetailList(data);
-  }, [blockDetail, userRole]);
+  }, [blockDetail]);
 
   return (
     <div className="page-wrapper">

@@ -62,7 +62,7 @@ export default {
         notification.success({ message: succMessage, top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
       }
     },
     *setCompanyApprove({ payload }, { call, put }) {
@@ -75,7 +75,7 @@ export default {
         notification.success({ message: succMessage, top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
       }
     },
   },

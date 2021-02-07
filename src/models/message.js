@@ -14,89 +14,87 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {
-
-    },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
     *getMessageList({ payload }, { call, put }) {
-      const res = yield call(API.getMessageList, payload)
+      const res = yield call(API.getMessageList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
             messageList: result.list,
-            messageTotal: result.totalDocs
-          }
+            messageTotal: result.totalDocs,
+          },
         });
       }
     },
     *getMesDetail({ payload }, { call, put }) {
-      const res = yield call(API.getMesDetail, payload)
+      const res = yield call(API.getMesDetail, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            messageDetail: result
-          }
+            messageDetail: result,
+          },
         });
       }
     },
     *getAllUnreadMessage({ payload }, { call, put }) {
-      const res = yield call(API.getAllUnreadMessage, payload)
+      const res = yield call(API.getAllUnreadMessage, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            unreadMesNum: result
-          }
+            unreadMesNum: result,
+          },
         });
       }
     },
     *getUnreadMesGroup({ payload }, { call, put }) {
-      const res = yield call(API.getUnreadMesGroup, payload)
+      const res = yield call(API.getUnreadMesGroup, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            unreadMesGroup: result
-          }
+            unreadMesGroup: result,
+          },
         });
       }
     },
     *bacthReadMes({ payload }, { call, put }) {
-      const res = yield call(API.bacthReadMes, payload)
+      const res = yield call(API.bacthReadMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: '消息标记已读成功', top: 64, duration: 1 })
-        return true
+        notification.success({ message: '消息标记已读成功', top: 64, duration: 1 });
+        return true;
       } else {
-        notification.error({ message: res.message || '消息标记已读失败', top: 64, duration: 1 })
+        notification.error({ message: result.message || '消息标记已读失败', top: 64, duration: 1 });
       }
     },
     *batchDeleteMes({ payload }, { call, put }) {
-      const res = yield call(API.batchDeleteMes, payload)
+      const res = yield call(API.batchDeleteMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: '批量删除消息成功', top: 64, duration: 1 })
-        return true
+        notification.success({ message: '批量删除消息成功', top: 64, duration: 1 });
+        return true;
       } else {
-        notification.error({ message: res.message || '批量删除消息失败', top: 64, duration: 1 })
+        notification.error({ message: result.message || '批量删除消息失败', top: 64, duration: 1 });
       }
     },
     *deleteMes({ payload }, { call, put }) {
-      const res = yield call(API.deleteMes, payload)
+      const res = yield call(API.deleteMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: '删除消息成功', top: 64, duration: 1 })
-        return true
+        notification.success({ message: '删除消息成功', top: 64, duration: 1 });
+        return true;
       } else {
-        notification.error({ message: res.message || '删除消息失败', top: 64, duration: 1 })
+        notification.error({ message: result.message || '删除消息失败', top: 64, duration: 1 });
       }
     },
   },

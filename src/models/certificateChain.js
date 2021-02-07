@@ -58,7 +58,7 @@ export default {
         notification.success({ message: '存证上链成功', top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || '存证上链失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '存证上链失败', top: 64, duration: 1 });
       }
     },
   },

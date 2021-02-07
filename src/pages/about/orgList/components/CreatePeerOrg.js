@@ -77,10 +77,7 @@ function CreatePeerOrg(props) {
             },
           ]}
         >
-          <Select
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-            placeholder="请选择通道"
-          >
+          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择通道">
             {channelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
@@ -100,7 +97,7 @@ function CreatePeerOrg(props) {
               min: 4,
               max: 20,
               type: 'string',
-              pattern: /^[a-zA-Z0-9]\w{4,20}$/,
+              pattern: /^[a-zA-Z0-9]{4,20}$/,
               message: '组织名必须由4-20位数字英文字母或字符组成',
             },
           ]}
@@ -132,7 +129,7 @@ function CreatePeerOrg(props) {
               min: 4,
               max: 20,
               type: 'string',
-              pattern: /^[a-zA-Z0-9]\w{4,20}$/,
+              pattern: /^[a-zA-Z0-9]{4,20}$/,
               message: '初始化节点名必须由4-20位数字英文字母或字符组成',
             },
           ]}
