@@ -24,7 +24,10 @@ function LeagueDashboard(props) {
   const [createVisible, setCreateVisible] = useState(false);
 
   const statisticsList = [
-    { label: `${userRole === Roles.NetworkMember ? '已入联盟' : '成员'}`, num: Dashboard.memberTotal },
+    {
+      label: `${userRole === Roles.NetworkMember ? '已入联盟' : '成员'}`,
+      num: Dashboard.memberTotal,
+    },
     { label: '通道', num: Dashboard.unionTotal },
     { label: '合约', num: Dashboard.myContractTotal },
     { label: '区块', num: Dashboard.blockTotal },
@@ -44,30 +47,30 @@ function LeagueDashboard(props) {
       type: `Dashboard/${userRole === Roles.NetworkMember ? 'getStatisInfoForMember' : 'getStatisInfoForAdmin'}`,
       payload: params,
     });
-  }
+  };
 
   // 获取网络信息
   const getNetworkInfo = () => {
     dispatch({
       type: 'Dashboard/getNetworkInfo',
       payload: {
-        networkName: networkName
+        networkName: networkName,
       },
     });
-  }
+  };
 
   // 取消创建网络
-  const onClickCancel = res => {
+  const onClickCancel = (res) => {
     setCreateVisible(false);
     if (res) {
       getNetworkInfo();
     }
-  }
+  };
 
   // 点击创建网络
   const onCreateNetwork = () => {
-    setCreateVisible(true)
-  }
+    setCreateVisible(true);
+  };
 
   // 获取区块列表
   const getBlockList = () => {
@@ -88,7 +91,7 @@ function LeagueDashboard(props) {
   const onClickBlockDetail = (record) => {
     dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/block' }
+      payload: { selectedMenu: '/about/block' },
     });
     history.push({
       pathname: `/about/block/${record.blockHash}`,
@@ -117,7 +120,7 @@ function LeagueDashboard(props) {
   const onClickTransactionDetail = (record) => {
     dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/transactions' }
+      payload: { selectedMenu: '/about/transactions' },
     });
     history.push({
       pathname: `/about/transactions/${record.txId}`,
@@ -248,13 +251,13 @@ function LeagueDashboard(props) {
               <Col span={8}>
                 <label>网络状态: </label>
                 <span>{NetworkInfo[networkStatusInfo.networkStatus]}</span>
-                {(networkStatusInfo.networkStatus === NetworkStatus.Errored) && (
-                  <span>,请联系技术人员排查</span>
-                )}
+                {networkStatusInfo.networkStatus === NetworkStatus.CreationFailed && <span>,请联系技术人员排查</span>}
               </Col>
-              {(userRole === Roles.NetworkAdmin) && (networkStatusInfo.networkStatus === NetworkStatus.NotExist) && (
+              {userRole === Roles.NetworkAdmin && networkStatusInfo.networkStatus === NetworkStatus.NotExist && (
                 <Col span={8}>
-                  <Button type="primary" onClick={onCreateNetwork}>立即创建</Button>
+                  <Button type="primary" onClick={onCreateNetwork}>
+                    立即创建
+                  </Button>
                 </Col>
               )}
             </Row>
@@ -277,22 +280,8 @@ function LeagueDashboard(props) {
           </div>
           <LeagueBar type={barType} />
         </div> */}
-        <Table
-          rowKey="_id"
-          columns={blockColumns}
-          loading={qryBlockLoading}
-          dataSource={blockList}
-          className="page-content-shadow"
-          pagination={false}
-        />
-        <Table
-          rowKey="_id"
-          columns={transactionColumns}
-          loading={qryTransactionLoading}
-          dataSource={transactionList}
-          className="page-content-shadow"
-          pagination={false}
-        />
+        <Table rowKey="_id" columns={blockColumns} loading={qryBlockLoading} dataSource={blockList} className="page-content-shadow" pagination={false} />
+        <Table rowKey="_id" columns={transactionColumns} loading={qryTransactionLoading} dataSource={transactionList} className="page-content-shadow" pagination={false} />
       </div>
       {createVisible && <CreateNetwork visible={createVisible} onCancel={onClickCancel} />}
     </div>

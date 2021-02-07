@@ -15,7 +15,6 @@ const formItemLayout = {
 
 function CreateNetwork(props) {
   const { dispatch, visible, onCancel, createLoading = false, User } = props;
-  const { userInfo } = User;
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
@@ -24,7 +23,6 @@ function CreateNetwork(props) {
       .then(async (values) => {
         let params = {
           ...values,
-          companyName: userInfo.companyName,
         };
         const res = await dispatch({
           type: 'Dashboard/createNetwork',
