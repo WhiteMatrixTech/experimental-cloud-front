@@ -14,10 +14,12 @@ export default {
     curContractVersionTotal: 0,
     curVersionApprovalList: [], // 当前版本合约审批历史列表
     curVersionApprovalTotal: 0,
+
+    invokeResult: null,
   },
 
   subscriptions: {
-    setup({ dispatch, history }) { },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
@@ -41,7 +43,7 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            myContractTotal: result
+            myContractTotal: result,
           },
         });
       }
@@ -118,11 +120,11 @@ export default {
       const { chainCodeStatus } = payload;
       const succMessage = `${chainCodeStatus === 4 ? '通过' : '驳回'}合约成功`;
       const failMessage = `${chainCodeStatus === 4 ? '通过' : '驳回'}合约失败`;
-      if (statusCode === 'ok' && result) {
+      if (statusCode === 'ok') {
         notification.success({ message: succMessage, top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
       }
     },
 
@@ -142,55 +144,71 @@ export default {
     *addContract({ payload }, { call, put }) {
       const res = yield call(API.addContract, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result) {
+      if (statusCode === 'ok') {
         notification.success({ message: '新增合约成功', top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || '新增合约失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '新增合约失败', top: 64, duration: 1 });
       }
     },
 
     *upgrateContract({ payload }, { call, put }) {
       const res = yield call(API.upgrateContract, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result) {
+      if (statusCode === 'ok') {
         notification.success({ message: '合约升级成功', top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || '合约升级失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '合约升级失败', top: 64, duration: 1 });
       }
     },
 
     *releaseContract({ payload }, { call, put }) {
       const res = yield call(API.releaseContract, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result) {
+      if (statusCode === 'ok') {
         notification.success({ message: '发布合约成功', top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || '发布合约失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '发布合约失败', top: 64, duration: 1 });
       }
     },
 
     *invokeChainCodeMethod({ payload }, { call, put }) {
       const res = yield call(API.invokeChainCodeMethod, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result) {
-        notification.success({ message: '调用合约成功', top: 64, duration: 1 });
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            invokeResult: {
+              status: 'Success',
+              message: result || {},
+            },
+          },
+        });
         return true;
       } else {
-        notification.error({ message: res.message || '调用合约失败', top: 64, duration: 1 });
+        yield put({
+          type: 'common',
+          payload: {
+            invokeResult: {
+              status: 'Failed',
+              message: { error: result.message },
+            },
+          },
+        });
       }
     },
 
     *queryChainCodeMethod({ payload }, { call, put }) {
       const res = yield call(API.queryChainCodeMethod, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result) {
+      if (statusCode === 'ok') {
         notification.success({ message: '调用合约成功', top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || '调用合约失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '调用合约失败', top: 64, duration: 1 });
       }
     },
   },

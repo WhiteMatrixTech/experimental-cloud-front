@@ -1,6 +1,7 @@
 import { notification } from 'antd';
 import { fetch } from 'dva';
-import config from './config';
+import { extend } from 'umi-request';
+
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -20,7 +21,7 @@ const codeMessage = {
 };
 
 const checkStatus = (response, check_500) => {
-  if ((response.status >= 200 && response.status < 300) || (response.status === 500 && check_500)) {
+  if ((response.status >= 200 && response.status < 300) || response.status === 500) {
     return response;
   }
   const errortext = codeMessage[response.status] || response.message;
@@ -29,46 +30,86 @@ const checkStatus = (response, check_500) => {
   throw error;
 };
 
-const authorization = response => {
+const authorization = (response) => {
   if (response.statusCode === 401 && response.message === 'Unauthorized') {
     // 登录已过期
     notification.error({ message: '登录已过期', top: 64, duration: 1 });
-    // 清空缓存
-    window.localStorage.clear();
-    // 强制刷新页面
-    window.location.reload();
-    // 抛出错误信息
-    const error = new Error(response.message);
-    error.response = response;
-    throw error;
+    setTimeout(() => {
+      // 清空缓存
+      window.localStorage.clear();
+      // 强制刷新页面
+      window.location.reload();
+      // 抛出错误信息
+      const error = new Error(response.message);
+      error.response = response;
+      throw error;
+    }, 1000);
   }
-  const data = {
-    result: response,
-    statusCode: response.statusCode || 'ok',
-  };
-  return data
-}
+  return response;
+};
 
-const getResponseData = response => {
+const getResponseData = (response) => {
   // 登出时会重定向
   if (response.redirected) {
     return response.text();
   }
   return response.json();
-}
+};
+
+/** 异常处理程序 */
+const errorHandler = (error) => {
+  const { response } = error;
+  return response.json().then((formatResponseData) => {
+    return authorization(formatResponseData);
+  });
+};
+
+export const request = (url, options) => {
+  let headers = {
+    'Content-Type': 'application/json',
+  };
+  // token校验
+  const accessToken = localStorage.getItem('accessToken');
+  const roleToken = localStorage.getItem('roleToken');
+  const needsToken = window.location.href.indexOf('/userForexternal/login') === -1;
+  if (accessToken && needsToken) {
+    headers.Authorization = `Bearer ${accessToken}`;
+  }
+  if (roleToken && needsToken) {
+    headers.RoleAuth = roleToken;
+  }
+  // 配置umi request请求时的默认参数
+  const _requestFunc = extend({
+    errorHandler, // 默认错误处理
+    mode: 'cors',
+    timeout: 10000,
+    headers: headers,
+    // parseResponse: false,
+    credentials: 'include', // 默认请求是否带上cookie,
+    prefix: process.env.BAAS_BACKEND_LINK,
+  });
+  let newOptions = { method: options ? options.method : 'GET' };
+  if (options && options.method) {
+    newOptions.data = options.body;
+  }
+  return _requestFunc(url, newOptions).then((response) => {
+    const data = {
+      result: response,
+      statusCode: response.statusCode || 'ok',
+    };
+    return data;
+  });
+};
+
 /**
  * Requests a URL, returning a promise.
- *
  * @param  {string} url       The URL we want to request
  * @param  {object} [options] The options we want to pass to "fetch"
- * @return {object}           An object containing either "data" or "err"
  */
-export const request = (url, options) => {
+export const fetchRequest = (url, options) => {
   const defaultOptions = {
-    headers: {
-
-    },
-    mode: 'cors'
+    headers: {},
+    mode: 'cors',
   };
   // token校验
   const accessToken = localStorage.getItem('accessToken');
@@ -99,7 +140,7 @@ export const request = (url, options) => {
   }
   const requestUrl = process.env.BAAS_BACKEND_LINK + url;
   return fetch(requestUrl, newOptions)
-    // .then((res) => checkStatus(res, true))
+    .then((res) => checkStatus(res, true))
     .then(getResponseData)
     .then((data) => authorization(data))
     .catch((e) => {

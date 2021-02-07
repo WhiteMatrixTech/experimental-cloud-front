@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { history } from 'umi';
 import { Table, Space, Badge, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { Roles } from 'utils/roles.js';
 import { Breadcrumb, SearchBar } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import EditContract from './components/EditContract';
@@ -12,15 +11,15 @@ import InvokeContract from './components/InvokeContract';
 import baseConfig from 'utils/config';
 import { chainCodeStatusInfo, ChainCodeStatus } from './_config';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false)
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 breadCrumbItem.push({
-  menuName: "我的合约",
+  menuName: '我的合约',
   menuHref: `/`,
-})
+});
 
 class MyContract extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       pageNum: 1,
       pageSize: baseConfig.pageSize,
@@ -29,7 +28,7 @@ class MyContract extends Component {
       invokeVisible: false, // 合约调用弹窗 是否可见
       operateType: 'new', // 打开弹窗类型--新增、修改、升级
       editParams: {}, // 修改、升级合约的信息
-    }
+    };
   }
 
   componentDidMount() {
@@ -47,20 +46,20 @@ class MyContract extends Component {
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
       ascend: false,
-    }
+    };
     // 判断输入搜索合约名称
     if (seachChainCodeName || chainCodeName) {
-      params.chainCodeName = seachChainCodeName || chainCodeName
+      params.chainCodeName = seachChainCodeName || chainCodeName;
     }
     this.props.dispatch({
       type: 'Contract/getChainCodeTotal',
-      payload: { networkName }
+      payload: { networkName },
     });
     this.props.dispatch({
       type: 'Contract/getChainCodeList',
-      payload: params
+      payload: params,
     });
-  }
+  };
 
   // 按合约名称查找
   onSearch = (value, event) => {
@@ -68,13 +67,13 @@ class MyContract extends Component {
     //   this.setState({ pageNum: 1, chainCodeName: value || '' })
     //   this.getPageListOfChainCode(1, value)
     // }
-  }
+  };
 
   // 翻页
-  onPageChange = pageInfo => {
-    this.setState({ pageNum: pageInfo.current })
-    this.getChainCodeList(pageInfo.current, '')
-  }
+  onPageChange = (pageInfo) => {
+    this.setState({ pageNum: pageInfo.current });
+    this.getChainCodeList(pageInfo.current, '');
+  };
 
   // 点击操作按钮, 进行二次确认
   onClickToConfirm = (record, type) => {
@@ -82,19 +81,19 @@ class MyContract extends Component {
     let callback = null;
     switch (type) {
       case 'agree':
-        tipTitle = '通过'
-        callback = () => this.approvalContract(record, 4)
-        break
+        tipTitle = '通过';
+        callback = () => this.approvalContract(record, 4);
+        break;
       case 'reject':
-        tipTitle = '驳回'
-        callback = () => this.approvalContract(record, 2)
-        break
+        tipTitle = '驳回';
+        callback = () => this.approvalContract(record, 2);
+        break;
       case 'approve':
-        tipTitle = '发布'
-        callback = () => this.onClickRelease(record)
-        break
+        tipTitle = '发布';
+        callback = () => this.onClickRelease(record);
+        break;
       default:
-        break
+        break;
     }
     Modal.confirm({
       title: 'Confirm',
@@ -102,37 +101,41 @@ class MyContract extends Component {
       content: `确认要${tipTitle}合约 【${record.chainCodeName}】 吗?`,
       okText: '确认',
       cancelText: '取消',
-      onOk: callback
+      onOk: callback,
     });
-  }
+  };
 
   // 关闭 新增&修改&升级合约 弹窗
   onCloseModal = (callback) => {
     this.setState({ editModalVisible: false, invokeVisible: false });
+    this.props.dispatch({
+      type: 'Contract/common',
+      payload: { invokeResult: null },
+    });
     if (callback) {
       this.getChainCodeList();
     }
-  }
+  };
 
   // 点击新增合约
   onClickAdd = () => {
-    this.setState({ operateType: 'new', editModalVisible: true })
-  }
+    this.setState({ operateType: 'new', editModalVisible: true });
+  };
 
   // 点击修改合约
   onClickModify = () => {
-    this.setState({ operateType: 'modify', editModalVisible: true })
-  }
+    this.setState({ operateType: 'modify', editModalVisible: true });
+  };
 
   // 点击调用合约
-  onClickInvoke = record => {
-    this.setState({ invokeVisible: true, editParams: record })
-  }
+  onClickInvoke = (record) => {
+    this.setState({ invokeVisible: true, editParams: record });
+  };
 
   // 升级合约
-  onClickUpgrade = record => {
-    this.setState({ operateType: 'upgrate', editModalVisible: true, editParams: record })
-  }
+  onClickUpgrade = (record) => {
+    this.setState({ operateType: 'upgrate', editModalVisible: true, editParams: record });
+  };
 
   // 发布合约
   onClickRelease = async (record) => {
@@ -142,46 +145,46 @@ class MyContract extends Component {
       channelId: record.channelId,
       chainCodeName: record.chainCodeName,
       endorsementPolicy: { ...record.endorsementPolicy },
-
-    }
+    };
     const res = await this.props.dispatch({
       type: 'Contract/releaseContract',
-      payload: params
+      payload: params,
     });
     if (res) {
       this.getChainCodeList();
     }
-  }
-
+  };
 
   // 通过 & 驳回 合约
   approvalContract = (record, chainCodeStatus) => {
-    this.props.dispatch({
-      type: 'Contract/setChainCodeApproveReject',
-      payload: {
-        networkName: this.props.User.networkName,
-        chainCodeStatus,
-        chainCodeId: record._id
-      }
-    }).then(res => {
-      if (res) {
-        this.getChainCodeList()
-      }
-    })
-  }
+    this.props
+      .dispatch({
+        type: 'Contract/setChainCodeApproveReject',
+        payload: {
+          networkName: this.props.User.networkName,
+          chainCodeStatus,
+          chainCodeId: record._id,
+        },
+      })
+      .then((res) => {
+        if (res) {
+          this.getChainCodeList();
+        }
+      });
+  };
 
   // 查看合约详情
-  onClickDetail = record => {
+  onClickDetail = (record) => {
     history.push({
       pathname: `/about/contract/myContract/contractDetail`,
       query: {
         chainCodeId: record._id,
         chainCodeName: record.chainCodeName,
-        channelName: record.channelName
+        channelName: record.channelName,
       },
       state: record,
-    })
-  }
+    });
+  };
 
   render() {
     const { qryLoading = false } = this.props;
@@ -213,13 +216,13 @@ class MyContract extends Component {
         title: '创建时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
       },
       {
         title: '状态',
         dataIndex: 'chainCodeStatus',
         key: 'chainCodeStatus',
-        render: text => text ? <Badge color={chainCodeStatusInfo[text].color} text={chainCodeStatusInfo[text].text} style={{ color: chainCodeStatusInfo[text].color }} /> : ''
+        render: (text) => (text ? <Badge color={chainCodeStatusInfo[text].color} text={chainCodeStatusInfo[text].text} style={{ color: chainCodeStatusInfo[text].color }} /> : ''),
       },
       {
         title: '操作',
@@ -229,12 +232,12 @@ class MyContract extends Component {
           <Space size="small">
             {/* <a onClick={() => this.onDownloadContract(record)}>下载</a> */}
             {/* {record.chainCodeStatus === 2 && <a onClick={() => this.onClickModify(record)}>修改</a>} */}
-            {(record.chainCodeStatus === ChainCodeStatus.Installed) &&
+            {record.chainCodeStatus === ChainCodeStatus.Installed && (
               // (userRole === Roles.NetworkAdmin) &&
               <a onClick={() => this.onClickToConfirm(record, 'approve')}>发布</a>
-            }
-            {(record.chainCodeStatus === ChainCodeStatus.Approved) && <a onClick={() => this.onClickUpgrade(record)}>升级</a>}
-            {(record.chainCodeStatus === ChainCodeStatus.Approved) && <a onClick={() => this.onClickInvoke(record)}>调用</a>}
+            )}
+            {record.chainCodeStatus === ChainCodeStatus.Approved && <a onClick={() => this.onClickUpgrade(record)}>升级</a>}
+            {record.chainCodeStatus === ChainCodeStatus.Approved && <a onClick={() => this.onClickInvoke(record)}>调用</a>}
             {/* {(record.chainCodeStatus === 1 || record.chainCodeStatus === 3) &&
               <>
                 <a onClick={() => this.onClickToConfirm(record, 'agree')}>通过</a>
@@ -245,14 +248,14 @@ class MyContract extends Component {
           </Space>
         ),
       },
-    ]
+    ];
     return (
-      <div className='page-wrapper'>
+      <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
-        <div className='page-content page-content-shadow'>
-          <SearchBar placeholder='输入合约名称' onSearch={this.onSearch} btnName='创建合约' onClickBtn={this.onClickAdd} />
+        <div className="page-content page-content-shadow">
+          <SearchBar placeholder="输入合约名称" onSearch={this.onSearch} btnName="创建合约" onClickBtn={this.onClickAdd} />
           <Table
-            rowKey='_id'
+            rowKey="_id"
             columns={columns}
             loading={qryLoading}
             dataSource={myContractList}
@@ -262,14 +265,13 @@ class MyContract extends Component {
         </div>
         {editModalVisible && <EditContract visible={editModalVisible} operateType={operateType} onCancel={this.onCloseModal} editParams={editParams} />}
         {invokeVisible && <InvokeContract visible={invokeVisible} onCancel={this.onCloseModal} editParams={editParams} />}
-      </div >
-    )
+      </div>
+    );
   }
 }
 
 export default connect(({ User, Contract, loading }) => ({
   User,
   Contract,
-  qryLoading: loading.effects['Contract/getPageListOfChainCode']
+  qryLoading: loading.effects['Contract/getPageListOfChainCode'],
 }))(MyContract);
-

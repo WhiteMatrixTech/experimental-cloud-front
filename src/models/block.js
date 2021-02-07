@@ -1,7 +1,6 @@
 import * as API from '../services/block';
 import { notification } from 'antd';
 
-
 export default {
   namespace: 'Block',
 
@@ -17,9 +16,7 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {
-
-    },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
@@ -59,7 +56,7 @@ export default {
             blockDetail: result,
           },
         });
-      } else if (statusCode === 404) {
+      } else {
         yield put({
           type: 'common',
           payload: {
@@ -68,7 +65,7 @@ export default {
             blockDetail: '',
           },
         });
-        notification.error({ message: res.message, top: 64, duration: 1 });
+        notification.error({ message: result.message, top: 64, duration: 1 });
       }
     },
     *getBlockDetail({ payload }, { call, put }) {

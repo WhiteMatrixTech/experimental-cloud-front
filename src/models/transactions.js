@@ -12,7 +12,7 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) { },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
@@ -52,7 +52,7 @@ export default {
             transactionDetail: result,
           },
         });
-      } else if (statusCode === 404) {
+      } else {
         yield put({
           type: 'common',
           payload: {
@@ -61,7 +61,7 @@ export default {
             transactionDetail: '',
           },
         });
-        notification.error({ message: res.message, top: 64, duration: 1 });
+        notification.error({ message: result.message, top: 64, duration: 1 });
       }
     },
 

@@ -10,11 +10,10 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) { },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
-
     *getPeerList({ payload }, { call, put }) {
       const res = yield call(API.getPeerList, payload);
       const { statusCode, result } = res;
@@ -23,7 +22,7 @@ export default {
           type: 'common',
           payload: {
             peerList: result,
-            peerTotal: result.length
+            peerTotal: result.length,
           },
         });
       }
@@ -38,7 +37,7 @@ export default {
         notification.success({ message: result.message || succMessage, top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
       }
     },
   },

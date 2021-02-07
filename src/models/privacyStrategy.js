@@ -8,8 +8,8 @@ export default {
     strategyList: [], // 隐私保护策略列表
     strategyTotal: 0,
 
-    strategyMemberList: [],// 关联成员列表
-    leagueName: '',        //联盟名称
+    strategyMemberList: [], // 关联成员列表
+    leagueName: '', //联盟名称
     curStrategyMember: [], // 当前策略已关联成员
 
     protectRecordList: [], // 隐私保护记录列表
@@ -17,11 +17,10 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) { },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
-
     *getPageListOfRoleData({ payload }, { call, put }) {
       const res = yield call(API.getPageListOfRoleData, payload);
       const { statusCode, result } = res;
@@ -54,10 +53,8 @@ export default {
       if (statusCode === 'ok' && result) {
         notification.success({ message: succMessage, top: 64, duration: 1 });
         return true;
-      } else if (res.statusCode === 400 && res.message.indexOf('E11000') != -1) {
-        notification.error({ message: 'Duplicate Key Error' || failMessage, top: 64, duration: 1 });
       } else {
-        notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
       }
     },
 
@@ -70,7 +67,7 @@ export default {
         notification.success({ message: succMessage, top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
       }
     },
     *updateStrategyStatus({ payload }, { call, put }) {
@@ -83,7 +80,7 @@ export default {
         notification.success({ message: succMessage, top: 64, duration: 1 });
         return true;
       } else {
-        notification.error({ message: res.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
       }
     },
     *getPageListOfRoleMember({ payload }, { call, put }) {
@@ -111,7 +108,7 @@ export default {
         return true;
       } else {
         notification.error({
-          message: res.message || '配置隐私保护策略失败',
+          message: result.message || '配置隐私保护策略失败',
           top: 64,
           duration: 1,
         });
