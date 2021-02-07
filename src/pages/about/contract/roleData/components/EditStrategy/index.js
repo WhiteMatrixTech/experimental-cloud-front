@@ -16,18 +16,9 @@ const formItemLayout = {
 };
 
 function EditStrategy(props) {
-  const {
-    User,
-    visible,
-    editParams = {},
-    onCancel,
-    getPageListOfRoleData,
-    operateType,
-    dispatch,
-    addLoading = false,
-  } = props;
+  const { User, visible, editParams = {}, onCancel, getPageListOfRoleData, operateType, dispatch, addLoading = false } = props;
 
-  const { networkName } = User
+  const { networkName } = User;
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
@@ -108,19 +99,15 @@ function EditStrategy(props) {
               message: '请输入隐私保护策略名称',
             },
             {
-              min: 1,
-              max: 50,
+              min: 3,
+              max: 32,
               type: 'string',
-              pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]{1,50}$/,
-              message: '策略名必须由1-50位数字英文字母与汉字组合',
+              pattern: /^[a-z][a-z0-9-_]+$/,
+              message: '策略名必须由3-32位数字、字母、下划线或短横线组成, 以字母开头',
             },
           ]}
         >
-          {operateType === 'new' ? (
-            <Input placeholder="请输入隐私保护策略名称" />
-          ) : (
-              <Input disabled={true} placeholder="请输入隐私保护策略名称" />
-            )}
+          {operateType === 'new' ? <Input placeholder="请输入隐私保护策略名称" /> : <Input disabled={true} placeholder="请输入隐私保护策略名称" />}
         </Item>
         <Item
           label="状态"
@@ -133,10 +120,7 @@ function EditStrategy(props) {
             },
           ]}
         >
-          <Select
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-            placeholder="请选择隐私保护策略状态"
-          >
+          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择隐私保护策略状态">
             <Option value={0}>停用</Option>
             <Option value={1}>启用</Option>
           </Select>
