@@ -1,4 +1,5 @@
-export const peerStatus = { // 节点状态
+export const peerStatus = {
+  // 节点状态
   Running: { color: 'green', text: '运行中' },
   Creating: { color: 'orange', text: '创建中' },
   CreationFailed: { color: 'red', text: '创建失败' },
@@ -10,4 +11,6 @@ export const peerStatus = { // 节点状态
   Deleted: { color: 'volcano', text: '已删除' },
   Starting: { color: 'orange', text: '启动中' },
   StartFailed: { color: 'red', text: '启动失败' },
-}
+};
+
+export const availableNodeStatus = ['Running', 'CreationFailed', 'Creating'];
