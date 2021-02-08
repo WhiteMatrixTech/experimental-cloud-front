@@ -7,6 +7,7 @@ export default {
   state: {
     peerList: [],
     peerTotal: 0,
+    peerSSH: '',
   },
 
   subscriptions: {
@@ -23,6 +24,19 @@ export default {
           payload: {
             peerList: result,
             peerTotal: result.length,
+          },
+        });
+      }
+    },
+
+    *getPeerSSH({ payload }, { call, put }) {
+      const res = yield call(API.getPeerSSH, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            peerSSH: result,
           },
         });
       }

@@ -27,6 +27,19 @@ export default {
         });
       }
     },
+    *getCertificateByHash({ payload }, { call, put }) {
+      const res = yield call(API.getCertificateByHash, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            certificateChainList: result,
+            certificateChainTotal: result.length,
+          },
+        });
+      }
+    },
     *getCertificateChainDetail({ payload }, { call, put }) {
       const res = yield call(API.getcertificateChainDetail, payload);
       const { statusCode, result } = res;

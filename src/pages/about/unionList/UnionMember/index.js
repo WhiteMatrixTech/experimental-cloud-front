@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { Table } from 'antd';
-import moment from 'moment';
 import { Breadcrumb, DetailCard, SearchBar } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import AddOrg from '../components/AddOrg';
 import baseConfig from 'utils/config';
 import { Roles } from 'utils/roles.js';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/unionList')
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/unionList');
 breadCrumbItem.push({
-  menuName: "查看组织",
+  menuName: '查看组织',
   menuHref: `/`,
-})
+});
 
 class UnionMember extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       pageNum: 1,
       pageSize: baseConfig.pageSize,
@@ -25,7 +24,7 @@ class UnionMember extends Component {
 
       addOrgVisible: false, // 添加组织是否可见
       peerObj: {}, // 当前操作的通道
-    }
+    };
     this.columns = [
       {
         title: '组织名称',
@@ -51,8 +50,8 @@ class UnionMember extends Component {
         title: '组织地址',
         dataIndex: 'orgAddress',
         key: 'orgAddress',
-      }
-    ]
+      },
+    ];
   }
 
   componentDidMount() {
@@ -61,10 +60,10 @@ class UnionMember extends Component {
     const params = {
       networkName,
       channelId: location?.state?.channelId,
-    }
+    };
     this.props.dispatch({
       type: 'Union/getPeerListOfUnion',
-      payload: params
+      payload: params,
     });
     this.getOrgListOfUnion();
   }
@@ -76,85 +75,89 @@ class UnionMember extends Component {
     const params = {
       networkName,
       channelId: location?.state?.channelId,
-    }
+    };
     if (orgName) {
-      params.orgName = orgName
+      params.orgName = orgName;
     }
     this.props.dispatch({
       type: 'Union/getOrgListOfUnion',
-      payload: params
-    })
-  }
+      payload: params,
+    });
+  };
 
   // 翻页
-  onPageChange = pageInfo => {
-    this.setState({ pageNum: pageInfo.current })
-    this.getOrgListOfUnion(pageInfo.current)
-  }
+  onPageChange = (pageInfo) => {
+    this.setState({ pageNum: pageInfo.current });
+    this.getOrgListOfUnion(pageInfo.current);
+  };
 
   // 按 组织名 搜索
   onSearch = (value, event) => {
     if (event.type && (event.type === 'click' || event.type === 'keydown')) {
-      this.setState({ pageNum: 1, orgName: value || '' })
-      this.getOrgListOfUnion(value)
+      this.setState({ pageNum: 1, orgName: value || '' });
+      this.getOrgListOfUnion(value);
     }
-  }
+  };
 
   // 关闭 添加组织 弹窗
   onCloseModal = () => {
-    this.setState({ addOrgVisible: false })
-  }
+    this.setState({ addOrgVisible: false });
+  };
 
   // 点击 添加组织
   onClickAddOrg = () => {
-    const { location: { query: { cId } } } = this.props;
-    this.setState({ addOrgVisible: true, peerObj: { _id: cId } })
-  }
+    const {
+      location: {
+        query: { cId },
+      },
+    } = this.props;
+    this.setState({ addOrgVisible: true, peerObj: { _id: cId } });
+  };
 
   render() {
     const { qryLoading = false, location } = this.props;
     const { pageSize, pageNum, addOrgVisible } = this.state;
-    const { userRole } = this.props.User
+    const { userRole } = this.props.User;
     const { orgListOfUnion, orgTotalOfUnion, peerTotalOfUnion } = this.props.Union;
     const unionInfoList = [
       {
         label: '通道名称',
-        value: location?.state?.channelId
+        value: location?.state?.channelId,
       },
       {
         label: '组织数量',
-        value: orgTotalOfUnion
+        value: orgTotalOfUnion,
       },
       {
         label: '节点总数',
-        value: peerTotalOfUnion
+        value: peerTotalOfUnion,
       },
-    ]
+    ];
     if (userRole === Roles.NetworkAdmin) {
       unionInfoList.slice(1, 0, {
         label: '所属联盟',
-        value: location?.state?.leagueName
-      })
+        value: location?.state?.leagueName,
+      });
     }
     return (
-      <div className='page-wrapper'>
+      <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
-        <div className='page-content'>
-          <DetailCard cardTitle='基本信息' detailList={unionInfoList} boxShadow='0 4px 12px 0 rgba(0,0,0,.05)' />
+        <div className="page-content">
+          <DetailCard cardTitle="基本信息" detailList={unionInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
           {/* <SearchBar placeholder='输入组织名' onSearch={this.onSearch} btnName={userRole === Roles.NetworkAdmin ? '添加组织' : null} onClickBtn={this.onClickAddOrg} /> */}
           <Table
-            rowKey='_id'
+            rowKey="_id"
             loading={qryLoading}
             columns={this.columns}
-            className='page-content-shadow'
+            className="page-content-shadow"
             dataSource={orgListOfUnion}
             onChange={this.onPageChange}
             pagination={{ pageSize, total: orgTotalOfUnion, current: pageNum, position: ['bottomCenter'] }}
           />
         </div>
         {addOrgVisible && <AddOrg visible={addOrgVisible} onCancel={this.onCloseModal} />}
-      </div >
-    )
+      </div>
+    );
   }
 }
 
@@ -162,5 +165,5 @@ export default connect(({ Union, Layout, User, loading }) => ({
   Union,
   Layout,
   User,
-  qryLoading: loading.effects['Union/getOrgListOfUnion']
+  qryLoading: loading.effects['Union/getOrgListOfUnion'],
 }))(UnionMember);

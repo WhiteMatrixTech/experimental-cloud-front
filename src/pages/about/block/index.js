@@ -5,14 +5,13 @@ import { Table, Space } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, SearchBar } from 'components';
 import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles.js';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 
 function Block(props) {
   const { Block, qryLoading, dispatch, User } = props;
-  const { networkName, userRole } = User;
+  const { networkName } = User;
   const { blockList, blockTotal } = Block;
   const [columns, setColumns] = useState([]);
   const [pageNum, setPageNum] = useState(1);

@@ -8,6 +8,13 @@ export async function getPeerList(params) {
 }
 
 /**
+ * 获取节点 ssh命令
+ */
+export async function getPeerSSH(params) {
+  return request(`/network/${params.networkName}/nodes/ssh/${params.nodeName}`);
+}
+
+/**
  * 创建节点
  */
 export async function createPeer(params) {

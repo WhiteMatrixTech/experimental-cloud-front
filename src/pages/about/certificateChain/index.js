@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
-import { Table, Space, Button } from 'antd';
+import { Table, Space } from 'antd';
 import moment from 'moment';
-import { Breadcrumb } from 'components';
+import { Breadcrumb, SearchBar } from 'components';
 import baseConfig from 'utils/config';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import UploadChain from './components/UploadChain';
-import styles from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/certificateChain');
 
@@ -16,6 +15,7 @@ function CertificateChain(props) {
   const { certificateChainList, certificateChainTotal } = CertificateChain;
   const { networkName } = User;
   const [pageNum, setPageNum] = useState(1);
+  const [evidenceHash, setEvidenceHash] = useState('');
   const [uploadVisible, setUploadVisible] = useState(false);
   const [pageSize] = useState(baseConfig.pageSize);
 
@@ -87,6 +87,13 @@ function CertificateChain(props) {
       ascend: false,
       from: Number(moment(new Date()).format('x')),
     };
+    if (evidenceHash) {
+      dispatch({
+        type: 'CertificateChain/getCertificateByHash',
+        payload: { networkName, evidenceHash },
+      });
+      return;
+    }
     dispatch({
       type: 'CertificateChain/getCertificateChainList',
       payload: params,
@@ -103,6 +110,14 @@ function CertificateChain(props) {
     });
   };
 
+  // 搜索
+  const onSearch = (value, event) => {
+    if (event.type && (event.type === 'click' || event.type === 'keydown')) {
+      setPageNum(1);
+      setEvidenceHash(value || '');
+    }
+  };
+
   // 翻页
   const onPageChange = (pageInfo) => {
     setPageNum(pageInfo.current);
@@ -110,19 +125,17 @@ function CertificateChain(props) {
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
-    getEvidenceTotalDocs();
     getCertificateChainList();
-  }, [pageNum]);
+    if (!evidenceHash) {
+      getEvidenceTotalDocs();
+    }
+  }, [evidenceHash, pageNum]);
 
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow">
-        <div className={styles['search-wrapper']}>
-          <Button type="primary" onClick={onClickUpload}>
-            存证上链
-          </Button>
-        </div>
+        <SearchBar placeholder="输入存证哈希" onSearch={onSearch} btnName="存证上链" onClickBtn={onClickUpload} />
         <Table
           rowKey="_id"
           columns={columns}
