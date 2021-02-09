@@ -8,6 +8,8 @@ function SSHCommand(props) {
   const { networkName } = User;
   const { peerSSH } = Peer;
 
+  const realNodeSSH = `ssh ec2-user@${peerSSH} -i ${networkName}.pem`;
+
   useEffect(() => {
     dispatch({
       type: 'Peer/getPeerSSH',
@@ -22,7 +24,7 @@ function SSHCommand(props) {
     title: 'SSH命令',
     onCancel: () => onCancel(),
     footer: [
-      <CopyToClipboard text={peerSSH} onCopy={() => message.success('节点ssh命令复制成功!')}>
+      <CopyToClipboard text={realNodeSSH} onCopy={() => message.success('节点ssh命令复制成功!')}>
         <Button key="submit" type="primary">
           复制
         </Button>
@@ -30,7 +32,7 @@ function SSHCommand(props) {
     ],
   };
 
-  return <Modal {...drawerProps}>{peerSSH}</Modal>;
+  return <Modal {...drawerProps}>{realNodeSSH}</Modal>;
 }
 
 export default connect(({ User, Peer, loading }) => ({
