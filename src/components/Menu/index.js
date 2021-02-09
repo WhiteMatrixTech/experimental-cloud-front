@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Menu } from 'antd';
 import { history } from 'umi';
+import { tree2Arr } from 'utils';
 import styles from './index.less';
 import { MenuList } from 'utils/menu.js';
 import { Roles } from 'utils/roles.js';
@@ -10,31 +11,54 @@ const { SubMenu } = Menu;
 
 class LeftMenu extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {
+      openKeys: [],
+    };
   }
 
   componentDidMount() {
-    // 加载页面时，默认展示第一个菜单
-    if (this.props.pathname.indexOf('/about/leagueDashboard') === -1) {
-      history.push('/about/leagueDashboard');
+    const { pathname, dispatch } = this.props;
+    const allMenu = tree2Arr(MenuList, 'menuVos');
+    const menuLen = allMenu.length;
+    for (let i = 0; i < menuLen; i++) {
+      const menu = allMenu[i];
+      if (pathname.indexOf(menu.menuHref) > -1) {
+        if (menu.menuPid !== 2) {
+          const parentMenu = allMenu.find((item) => item.id === menu.menuPid);
+          this.setState({
+            openKeys: [parentMenu.menuHref],
+          });
+        }
+        dispatch({
+          type: 'Layout/common',
+          payload: { selectedMenu: menu.menuHref },
+        });
+        break;
+      }
     }
   }
 
-  hashChange = menu => {
+  hashChange = (menu) => {
     this.props.dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: menu.menuHref }
+      payload: { selectedMenu: menu.menuHref },
     });
     if (this.props.pathname !== menu.menuHref) {
       history.push(menu.menuHref);
     }
-  }
+  };
 
-  getMenuItem = item => {
+  onOpenChange = (openKeys) => {
+    this.setState({
+      openKeys: openKeys,
+    });
+  };
+
+  getMenuItem = (item) => {
     const { userRole } = this.props.User;
     if (item.isFeature && userRole === Roles.NetworkMember) {
-      return ''
+      return '';
     }
     if (isEmpty(item.menuVos)) {
       return (
@@ -42,45 +66,42 @@ class LeftMenu extends Component {
           <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
           <span>{item.menuName}</span>
         </Menu.Item>
-      )
+      );
     } else {
       return (
-        <SubMenu key={item.menuHref} title={<div className={styles.menuTtile}>
-          <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
-          <span>{item.menuName}</span>
-        </div>}
+        <SubMenu
+          key={item.menuHref}
+          title={
+            <div className={styles.menuTtile}>
+              <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
+              <span>{item.menuName}</span>
+            </div>
+          }
         >
-          {item.menuVos.map(subItem => {
+          {item.menuVos.map((subItem) => {
             if (subItem.isFeature && userRole === Roles.NetworkMember) {
-              return ''
-            };
+              return '';
+            }
             return (
               <Menu.Item key={subItem.menuHref} onClick={() => this.hashChange(subItem)}>
                 <span style={{ paddingLeft: '8px' }}>{subItem.menuName}</span>
               </Menu.Item>
-            )
-
+            );
           })}
         </SubMenu>
-      )
+      );
     }
-  }
+  };
 
   render() {
     const { selectedMenu } = this.props.Layout;
     return (
-    <div className={styles.leftMenu} >
-      <Menu
-        defaultSelectedKeys={[this.props.pathname]}
-        selectedKeys={[selectedMenu]}
-        mode="inline"
-        theme="dark"
-        defaultOpenKeys={[]}
-      >
-        {MenuList.map(item => this.getMenuItem(item))}
-      </Menu>
-    </div>
-    )
+      <div className={styles.leftMenu}>
+        <Menu onOpenChange={this.onOpenChange} defaultSelectedKeys={[this.props.pathname]} openKeys={this.state.openKeys} selectedKeys={[selectedMenu]} mode="inline" theme="dark">
+          {MenuList.map((item) => this.getMenuItem(item))}
+        </Menu>
+      </div>
+    );
   }
 }
 

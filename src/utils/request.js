@@ -1,5 +1,6 @@
 import { notification } from 'antd';
 import { fetch } from 'dva';
+import { history } from 'umi';
 import { extend } from 'umi-request';
 
 const codeMessage = {
@@ -34,16 +35,14 @@ const authorization = (response) => {
   if (response.statusCode === 401 && response.message === 'Unauthorized') {
     // 登录已过期
     notification.error({ message: '登录已过期', top: 64, duration: 1 });
+    // 清空缓存
+    window.localStorage.clear();
+    // 强制刷新页面
+    // window.location.reload();
     setTimeout(() => {
-      // 清空缓存
-      window.localStorage.clear();
-      // 强制刷新页面
-      window.location.reload();
-      // 抛出错误信息
-      const error = new Error(response.message);
-      error.response = response;
-      throw error;
+      history.push('/user/login');
     }, 1000);
+    return;
   }
   return response;
 };

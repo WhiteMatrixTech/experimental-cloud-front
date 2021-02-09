@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { history, connect } from 'umi';
 import { PlusOutlined, RocketTwoTone } from '@ant-design/icons';
 import { Row, Col, Button, Spin, Empty, Divider } from 'antd';
