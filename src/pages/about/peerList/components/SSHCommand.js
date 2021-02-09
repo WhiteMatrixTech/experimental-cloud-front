@@ -4,13 +4,14 @@ import { Button, Modal, message } from 'antd';
 import { connect } from 'dva';
 
 function SSHCommand(props) {
-  const { visible, nodeRecord, onCancel, User, dispatch } = props;
+  const { visible, nodeRecord, onCancel, User, Peer, dispatch } = props;
   const { networkName } = User;
+  const { peerSSH } = Peer;
 
   useEffect(() => {
     dispatch({
       type: 'Peer/getPeerSSH',
-      payload: { networkName, nodeName: nodeRecord.nodeName },
+      payload: { networkName, orgName: nodeRecord.orgName, nodeName: nodeRecord.nodeName },
     });
   }, []);
 
@@ -21,10 +22,7 @@ function SSHCommand(props) {
     title: 'SSH命令',
     onCancel: () => onCancel(),
     footer: [
-      <Button key="cancel" onClick={onCancel}>
-        取消
-      </Button>,
-      <CopyToClipboard text="lalalalala" onCopy={() => message.success('节点ssh命令复制成功')}>
+      <CopyToClipboard text={peerSSH} onCopy={() => message.success('节点ssh命令复制成功!')}>
         <Button key="submit" type="primary">
           复制
         </Button>
@@ -32,7 +30,7 @@ function SSHCommand(props) {
     ],
   };
 
-  return <Modal {...drawerProps}>1111</Modal>;
+  return <Modal {...drawerProps}>{peerSSH}</Modal>;
 }
 
 export default connect(({ User, Peer, loading }) => ({
