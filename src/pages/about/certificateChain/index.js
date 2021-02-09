@@ -159,5 +159,5 @@ function CertificateChain(props) {
 export default connect(({ User, CertificateChain, loading }) => ({
   User,
   CertificateChain,
-  qryLoading: loading.effects['CertificateChain/getCertificateChainList'],
+  qryLoading: loading.effects['CertificateChain/getCertificateChainList'] || loading.effects['CertificateChain/getCertificateByHash'],
 }))(CertificateChain);

@@ -1,4 +1,5 @@
 import { request } from '../utils/request';
+import { stringify } from 'qs';
 
 /**
  * 获取节点的列表
@@ -11,7 +12,7 @@ export async function getPeerList(params) {
  * 获取节点 ssh命令
  */
 export async function getPeerSSH(params) {
-  return request(`/network/${params.networkName}/nodes/ssh/${params.nodeName}`);
+  return request(`/network/${params.networkName}/nodes/getNodeIp?${stringify(params)}`);
 }
 
 /**

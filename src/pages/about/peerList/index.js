@@ -117,7 +117,7 @@ function PeerList(props) {
         render: (_, record) => (
           <Space size="small">
             <a onClick={() => onDownLoadCertificate(record)}>下载证书</a>
-            {/* {availableNodeStatus.includes(record.nodeStatus) && <a onClick={() => onClickGetSSH(record)}>获取ssh命令</a>} */}
+            {availableNodeStatus.includes(record.nodeStatus) && <a onClick={() => onClickGetSSH(record)}>获取ssh命令</a>}
           </Space>
         ),
       },
