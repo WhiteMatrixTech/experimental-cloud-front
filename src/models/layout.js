@@ -3,11 +3,11 @@ export default {
 
   state: {
     getUnreadMessage: 0, // 未读消息条数
-    selectedMenu: '/about/leagueDashboard', // 当前选中菜单
+    selectedMenu: localStorage.getItem('selectedMenu') || '/about/leagueDashboard', // 当前选中菜单
   },
 
   subscriptions: {
-    setup({ dispatch, history }) { },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
@@ -16,8 +16,8 @@ export default {
       yield put({
         type: 'common',
         payload: {
-          userType
-        }
+          userType,
+        },
       });
     },
   },
