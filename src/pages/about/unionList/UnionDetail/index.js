@@ -25,9 +25,6 @@ const imgList = [msp, peer, block, transcation, chaincode]
 class UnionDetail extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      barType: 'seven'
-    }
     this.blockColums = [
       {
         title: '区块HASH',
@@ -106,10 +103,6 @@ class UnionDetail extends Component {
     this.getStatisInfo();
     this.getBlockList();
     this.getTransactionList();
-  }
-
-  onChangeBarType = e => {
-    this.setState({ barType: e.target.value })
   }
 
   // 获取汇总信息
@@ -235,20 +228,6 @@ class UnionDetail extends Component {
             </Row>
           </div>
           <StatisticsCard statisticsList={statisticsList} imgList={imgList} />
-          {/* <div className={style['network-topo-wrapper']}>
-            <div className={style['network-topo-title']}>网络拓扑图</div>
-            <NetworkTopo />
-          </div> */}
-          {/* <div className={`${style['network-topo-bar-wrapper']} page-content-shadow`}>
-            <div className={style['network-topo-bar-header']}>
-              <div className={style.title}>交易时间表</div>
-              <Radio.Group value={this.state.barType} onChange={this.onChangeBarType}>
-                <Radio.Button value='seven' >7天</Radio.Button>
-                <Radio.Button value='thirty' >30天</Radio.Button>
-              </Radio.Group>
-            </div>
-            <LeagueBar type={this.state.barType} />
-          </div> */}
           <Table
             rowKey='_id'
             columns={this.blockColums}

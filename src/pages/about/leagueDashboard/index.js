@@ -19,7 +19,6 @@ function LeagueDashboard(props) {
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
   const { networkStatusInfo, transactionList, blockList } = Dashboard;
-  const [barType, setBarType] = useState('seven');
   const [pageNum, setPageNum] = useState(1);
   const [createVisible, setCreateVisible] = useState(false);
 
@@ -33,10 +32,6 @@ function LeagueDashboard(props) {
     { label: '区块', num: Dashboard.blockTotal },
     { label: '交易', num: Dashboard.transactionTotal },
   ];
-
-  const onChangeBarType = (e) => {
-    setBarType({ barType: e.target.value });
-  };
 
   // 获取统计信息
   const getStatisInfo = () => {
@@ -264,22 +259,6 @@ function LeagueDashboard(props) {
           </div>
         </Spin>
         <StatisticsCard statisticsList={statisticsList} />
-        {/* {userRole === Roles.NetworkAdmin && (
-          <div id="leagua-scatter" className={style['leagua-scatter-wrapper']}>
-            <div className={style['league-scatter-title']}>联盟图</div>
-            <LeagueScatter />
-          </div>
-        )}
-        <div className={`${style['leagua-bar-wrapper']} page-content-shadow`}>
-          <div className={style['leagua-bar-header']}>
-            <div className={style.title}>交易时间表</div>
-            <Radio.Group value={barType} onChange={onChangeBarType}>
-              <Radio.Button value="seven">7天</Radio.Button>
-              <Radio.Button value="thirty">30天</Radio.Button>
-            </Radio.Group>
-          </div>
-          <LeagueBar type={barType} />
-        </div> */}
         <Table rowKey="_id" columns={blockColumns} loading={qryBlockLoading} dataSource={blockList} className="page-content-shadow" pagination={false} />
         <Table rowKey="_id" columns={transactionColumns} loading={qryTransactionLoading} dataSource={transactionList} className="page-content-shadow" pagination={false} />
       </div>

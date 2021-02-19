@@ -41,7 +41,7 @@ function CreateNetwork(props) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '创建联盟',
+    title: '创建网络',
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
