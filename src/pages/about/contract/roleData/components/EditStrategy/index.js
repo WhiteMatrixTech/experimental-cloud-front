@@ -102,7 +102,7 @@ function EditStrategy(props) {
               min: 3,
               max: 32,
               type: 'string',
-              pattern: /^[a-z][a-z0-9-_]+$/,
+              pattern: /^[a-z][a-zA-Z0-9-_]+$/,
               message: '策略名必须由3-32位数字、字母、下划线或短横线组成, 以字母开头',
             },
           ]}

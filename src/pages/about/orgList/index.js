@@ -4,7 +4,6 @@ import { Table, Badge, Button } from 'antd';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles.js';
 import { orgStatus } from './_config';
 import CreatePeerOrg from './components/CreatePeerOrg';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
@@ -13,11 +12,11 @@ const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/orgList');
 
 function OrganizationManagement(props) {
   const { Organization, qryLoading, dispatch, User } = props;
-  const { networkName, userRole } = User;
+  const { networkName } = User;
   const { orgList, orgTotal } = Organization;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
-  const [createOrgVisible, setCreateOrgVisible] = useState(false)
+  const [createOrgVisible, setCreateOrgVisible] = useState(false);
 
   const columns = [
     {
@@ -49,7 +48,7 @@ function OrganizationManagement(props) {
       title: '当前状态',
       dataIndex: 'orgStatus',
       key: 'orgStatus',
-      render: text => text ? <Badge color={orgStatus[text].color} text={orgStatus[text].text} style={{ color: orgStatus[text].color }} /> : ''
+      render: (text) => (text ? <Badge color={orgStatus[text].color} text={orgStatus[text].text} style={{ color: orgStatus[text].color }} /> : ''),
     },
     {
       title: '创建时间',
@@ -61,8 +60,8 @@ function OrganizationManagement(props) {
 
   // 点击 创建组织
   const onClickCreateOrg = () => {
-    setCreateOrgVisible(true)
-  }
+    setCreateOrgVisible(true);
+  };
 
   // 关闭 创建组织弹窗
   const onCloseCreateOrg = (callback) => {
@@ -70,7 +69,7 @@ function OrganizationManagement(props) {
     if (callback) {
       getOrgList();
     }
-  }
+  };
 
   // 查询列表
   const getOrgList = () => {
@@ -102,8 +101,10 @@ function OrganizationManagement(props) {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow">
-        <div className='table-header-btn-wrapper'>
-          <Button type='primary' onClick={onClickCreateOrg}>创建组织</Button>
+        <div className="table-header-btn-wrapper">
+          <Button type="primary" onClick={onClickCreateOrg}>
+            创建组织
+          </Button>
         </div>
         <Table
           rowKey="_id"
