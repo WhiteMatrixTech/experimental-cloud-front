@@ -20,6 +20,8 @@ function LeagueDashboard(props) {
   const [transactionColumns, setTransactionColumns] = useState([]);
   const { networkStatusInfo, transactionList, blockList } = Dashboard;
   const [pageNum, setPageNum] = useState(1);
+  const [showCreateNetworkBtn, setShowCreateNetworkBtn] = useState(false);
+  const [showCreateChannelBtn, setShowCreateChannelBtn] = useState(false);
   const [createVisible, setCreateVisible] = useState(false);
 
   const statisticsList = [
@@ -241,6 +243,15 @@ function LeagueDashboard(props) {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (userRole === Roles.NetworkAdmin && networkStatusInfo.networkStatus === NetworkStatus.NotExist) {
+      setShowCreateNetworkBtn(true);
+    }
+    if (userRole === Roles.NetworkAdmin && Dashboard.unionTotal === 0 && networkStatusInfo.networkStatus === NetworkStatus.Running) {
+      setShowCreateChannelBtn(true);
+    }
+  }, [userRole, networkStatusInfo, Dashboard.unionTotal]);
+
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -259,15 +270,14 @@ function LeagueDashboard(props) {
               <Col span={8}>
                 <label>网络状态: </label>
                 <span>{NetworkInfo[networkStatusInfo.networkStatus]}</span>
-                {networkStatusInfo.networkStatus === NetworkStatus.CreationFailed && <span>,请联系技术人员排查</span>}
-                {userRole === Roles.NetworkAdmin && networkStatusInfo.networkStatus === NetworkStatus.Running && (
+                {showCreateChannelBtn && (
                   <>
                     <span>，网络中暂无通道，</span>
                     <a onClick={linkToUnion}>去创建</a>
                   </>
                 )}
               </Col>
-              {userRole === Roles.NetworkAdmin && networkStatusInfo.networkStatus === NetworkStatus.NotExist && (
+              {showCreateNetworkBtn && (
                 <Col span={8}>
                   <Button type="primary" onClick={onCreateNetwork}>
                     立即创建
