@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Menu } from 'antd';
+import { Menu, message } from 'antd';
 import { history } from 'umi';
 import { tree2Arr } from 'utils';
 import styles from './index.less';
 import { MenuList } from 'utils/menu.js';
 import { Roles } from 'utils/roles.js';
 import { isEmpty } from 'lodash';
+import { NetworkStatus } from 'utils/networkStatus';
+
 const { SubMenu } = Menu;
 
 function LeftMenu(props) {
-  const { pathname, dispatch, User, Layout } = props;
+  const { pathname, dispatch, User, Dashboard, Layout } = props;
   const { userRole } = User;
   const { selectedMenu } = Layout;
+  const { networkStatusInfo } = Dashboard;
   const [openKeys, setOpenKeys] = useState([]);
 
   const hashChange = (menu) => {
+    if (networkStatusInfo.networkStatus !== NetworkStatus.Running) {
+      const warnMes = userRole === Roles.NetworkAdmin ? '请先创建网络' : '请等待盟主创建网络';
+      message.warn(warnMes);
+      return;
+    }
     if (pathname !== menu.menuHref) {
       history.push(menu.menuHref);
       dispatch({
@@ -98,4 +106,4 @@ function LeftMenu(props) {
   );
 }
 
-export default connect(({ Layout, User }) => ({ Layout, User }))(LeftMenu);
+export default connect(({ Layout, User, Dashboard }) => ({ Layout, User, Dashboard }))(LeftMenu);

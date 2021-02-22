@@ -67,6 +67,19 @@ function LeagueDashboard(props) {
     setCreateVisible(true);
   };
 
+  // 点击去创建通道
+  const linkToUnion = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: 'Layout/common',
+      payload: { selectedMenu: '/about/unionList' },
+    });
+    history.push({
+      pathname: '/about/unionList',
+      state: { openModal: true },
+    });
+  };
+
   // 获取区块列表
   const getBlockList = () => {
     const offset = (pageNum - 1) * 6;
@@ -247,6 +260,12 @@ function LeagueDashboard(props) {
                 <label>网络状态: </label>
                 <span>{NetworkInfo[networkStatusInfo.networkStatus]}</span>
                 {networkStatusInfo.networkStatus === NetworkStatus.CreationFailed && <span>,请联系技术人员排查</span>}
+                {userRole === Roles.NetworkAdmin && networkStatusInfo.networkStatus === NetworkStatus.Running && (
+                  <>
+                    <span>，网络中暂无通道，</span>
+                    <a onClick={linkToUnion}>去创建</a>
+                  </>
+                )}
               </Col>
               {userRole === Roles.NetworkAdmin && networkStatusInfo.networkStatus === NetworkStatus.NotExist && (
                 <Col span={8}>
