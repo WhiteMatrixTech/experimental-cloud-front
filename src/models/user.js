@@ -41,7 +41,7 @@ export default {
     *register({ payload }, { call, put }) {
       const res = yield call(API.register, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result.success) {
+      if (statusCode === 'ok' && result.user) {
         yield put({
           type: 'common',
           payload: {
