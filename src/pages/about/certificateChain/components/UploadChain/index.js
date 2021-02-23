@@ -46,14 +46,9 @@ function UploadChain(props) {
     const promise = Promise; // 没有值的情况
 
     if (!value) {
-      return promise.reject('请输入json');
+      return promise.reject('请输入存证数据');
     } // 有值的情况
 
-    try {
-      const json = JSON.parse(value);
-    } catch (e) {
-      return promise.reject('请输入json');
-    }
     return promise.resolve();
   };
 

@@ -13,7 +13,7 @@ const { SubMenu } = Menu;
 
 function LeftMenu(props) {
   const { pathname, dispatch, User, Dashboard, Layout } = props;
-  const { userRole } = User;
+  const { userRole, networkName } = User;
   const { selectedMenu } = Layout;
   const { networkStatusInfo } = Dashboard;
   const [openKeys, setOpenKeys] = useState([]);
@@ -53,7 +53,7 @@ function LeftMenu(props) {
         <SubMenu
           key={item.menuHref}
           title={
-            <div className={styles.menuTtile}>
+            <div className={styles.menuTitle}>
               <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
               <span>{item.menuName}</span>
             </div>
@@ -95,6 +95,15 @@ function LeftMenu(props) {
     return () => {
       localStorage.setItem('selectedMenu', selectedMenu);
     };
+  }, []);
+
+  useEffect(() => {
+    dispatch({
+      type: 'Dashboard/getNetworkInfo',
+      payload: {
+        networkName: networkName,
+      },
+    });
   }, []);
 
   return (

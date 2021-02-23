@@ -36,12 +36,12 @@ function LeagueDashboard(props) {
   ];
 
   // 获取统计信息
-  const getStatisInfo = () => {
+  const getStaticInfo = () => {
     const params = {
       networkName,
     };
     dispatch({
-      type: `Dashboard/${userRole === Roles.NetworkMember ? 'getStatisInfoForMember' : 'getStatisInfoForAdmin'}`,
+      type: `Dashboard/${userRole === Roles.NetworkMember ? 'getStaticInfoForMember' : 'getStaticInfoForAdmin'}`,
       payload: params,
     });
   };
@@ -231,13 +231,13 @@ function LeagueDashboard(props) {
   useEffect(() => {
     getBlockList();
     getNetworkInfo();
-    getStatisInfo();
+    getStaticInfo();
     getTransactionList();
     // 轮询
     const interval = setInterval(() => {
       getBlockList();
       getNetworkInfo();
-      getStatisInfo();
+      getStaticInfo();
       getTransactionList();
     }, 30000);
     return () => clearInterval(interval);

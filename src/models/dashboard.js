@@ -27,19 +27,19 @@ export default {
 
   effects: {
     *getNetworkInfo({ payload }, { call, put }) {
-      const res = yield call(API.getNetworkInfo, payload)
+      const res = yield call(API.getNetworkInfo, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
             networkStatusInfo: result,
-          }
+          },
         });
       }
     },
     *createNetwork({ payload }, { call, put }) {
-      const res = yield call(API.createNetwork, payload)
+      const res = yield call(API.createNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' || result.status === 'Starting') {
         notification.success({ message: '创建网络请求发起成功', top: 64, duration: 1 });
@@ -49,50 +49,50 @@ export default {
       }
     },
     *deleteNetwork({ payload }, { call, put }) {
-      const res = yield call(API.deleteNetwork, payload)
+      const res = yield call(API.deleteNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         notification.success({ message: '网络删除成功', top: 64, duration: 1 });
         yield put({
           type: 'getNetworkInfo',
-          payload: {}
+          payload: {},
         });
       } else {
         notification.error({ message: result.message || '网络删除失败', top: 64, duration: 1 });
       }
     },
     *getBlockList({ payload }, { call, put }) {
-      const res = yield call(getBlockList, payload)
+      const res = yield call(getBlockList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
             blockList: result.items,
-          }
+          },
         });
       }
     },
     *getTransactionList({ payload }, { call, put }) {
-      const res = yield call(getTransactionList, payload)
+      const res = yield call(getTransactionList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
             transactionList: result.items,
-          }
+          },
         });
       }
     },
-    *getStatisInfoForAdmin({ payload }, { call, put, all }) {
+    *getStaticInfoForAdmin({ payload }, { call, put, all }) {
       const [res1, res2, res3, res4, res5] = yield all([
         call(getBlockTotalDocs, payload),
         call(getTransactionTotalDocs, payload),
         call(getMemberTotalDocs, {
           ...payload,
-          approvalStatus: "any",
-          companyName: "",
+          approvalStatus: 'any',
+          companyName: '',
           createTimeEnd: 0,
           createTimeStart: 0,
           from: Number(moment(new Date()).format('x')),
@@ -119,10 +119,10 @@ export default {
           memberTotal,
           unionTotal,
           myContractTotal,
-        }
+        },
       });
     },
-    *getStatisInfoForMember({ payload }, { call, put, all }) {
+    *getStaticInfoForMember({ payload }, { call, put, all }) {
       const [res1, res2, res3, res4, res5] = yield all([
         call(getBlockTotalDocs, payload),
         call(getTransactionTotalDocs, payload),
@@ -149,7 +149,7 @@ export default {
           memberTotal,
           unionTotal,
           myContractTotal,
-        }
+        },
       });
     },
   },
