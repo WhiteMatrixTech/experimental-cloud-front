@@ -27,7 +27,7 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            blockTotal: result,
+            blockTotal: result.count,
           },
         });
       }
@@ -89,7 +89,7 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            transactionTotal: result,
+            transactionTotal: result.count,
           },
         });
       }

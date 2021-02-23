@@ -43,7 +43,7 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            myContractTotal: result,
+            myContractTotal: result.count,
           },
         });
       }
@@ -152,8 +152,8 @@ export default {
       }
     },
 
-    *upgrateContract({ payload }, { call, put }) {
-      const res = yield call(API.upgrateContract, payload);
+    *upgradeContract({ payload }, { call, put }) {
+      const res = yield call(API.upgradeContract, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         notification.success({ message: '合约升级成功', top: 64, duration: 1 });

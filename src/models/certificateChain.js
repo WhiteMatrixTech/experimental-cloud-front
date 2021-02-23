@@ -59,7 +59,7 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            certificateChainTotal: result,
+            certificateChainTotal: result.count,
           },
         });
       }
