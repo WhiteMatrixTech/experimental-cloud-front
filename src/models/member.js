@@ -23,7 +23,7 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            memberTotal: result,
+            memberTotal: result.count,
           },
         });
       }

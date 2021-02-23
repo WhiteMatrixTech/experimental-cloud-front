@@ -40,7 +40,7 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            strategyTotal: result,
+            strategyTotal: result.count,
           },
         });
       }

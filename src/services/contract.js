@@ -11,7 +11,7 @@ export async function addContract(params) {
 /**
  * 升级合约
  */
-export async function upgrateContract(params) {
+export async function upgradeContract(params) {
   return request(`/network/${params.networkName}/chainCodes/upgrade`, { method: 'POST', body: params });
 }
 

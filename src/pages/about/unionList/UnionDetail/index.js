@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Space, Col, Row } from 'antd';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { history } from 'umi';
 import moment from 'moment';
 import { StatisticsCard, Breadcrumb } from 'components';
@@ -12,20 +12,20 @@ import peer from 'assets/images/dashboard/icon-peer.png';
 import msp from 'assets/images/dashboard/icon-msp.png';
 import chaincode from 'assets/images/dashboard/icon-chaincode.png';
 import block from 'assets/images/dashboard/icon-block.png';
-import transcation from 'assets/images/dashboard/icon-transcation.png';
+import transactions from 'assets/images/dashboard/icon-transcation.png';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/unionList')
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/unionList');
 breadCrumbItem.push({
-  menuName: "通道详情",
+  menuName: '通道详情',
   menuHref: `/`,
-})
+});
 
-const imgList = [msp, peer, block, transcation, chaincode]
+const imgList = [msp, peer, block, transactions, chaincode];
 
 class UnionDetail extends Component {
   constructor(props) {
-    super(props)
-    this.blockColums = [
+    super(props);
+    this.blockColumns = [
       {
         title: '区块HASH',
         dataIndex: 'blockHash',
@@ -46,7 +46,7 @@ class UnionDetail extends Component {
         title: '生成时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
       },
       {
         title: '操作',
@@ -57,14 +57,14 @@ class UnionDetail extends Component {
           </Space>
         ),
       },
-    ]
+    ];
     this.transactionColumns = [
       {
         title: '交易ID',
         dataIndex: 'txId',
         key: 'txId',
         ellipsis: true,
-        width: '17%'
+        width: '17%',
       },
       {
         title: '所属通道',
@@ -85,7 +85,7 @@ class UnionDetail extends Component {
         title: '生成时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
       },
       {
         title: '操作',
@@ -96,17 +96,17 @@ class UnionDetail extends Component {
           </Space>
         ),
       },
-    ]
+    ];
   }
 
   componentDidMount() {
-    this.getStatisInfo();
+    this.getStaticInfo();
     this.getBlockList();
     this.getTransactionList();
   }
 
   // 获取汇总信息
-  getStatisInfo = () => {
+  getStaticInfo = () => {
     const { dispatch, location, User } = this.props;
     const { networkName } = User;
     const params = {
@@ -114,10 +114,10 @@ class UnionDetail extends Component {
       channelId: location?.state?.channelId,
     };
     dispatch({
-      type: 'Union/getStatisInfo',
+      type: 'Union/getStaticInfo',
       payload: params,
     });
-  }
+  };
 
   // 获取交易列表
   getTransactionList = () => {
@@ -134,13 +134,13 @@ class UnionDetail extends Component {
       type: 'Union/getTransactionsListOfUnion',
       payload: params,
     });
-  }
+  };
 
   // 查看交易详情
-  onClickTransactionDetail = record => {
+  onClickTransactionDetail = (record) => {
     this.props.dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/transactions' }
+      payload: { selectedMenu: '/about/transactions' },
     });
     history.push({
       pathname: `/about/transactions/${record.txId}`,
@@ -148,7 +148,7 @@ class UnionDetail extends Component {
         channelId: record.txId,
       },
     });
-  }
+  };
 
   // 获取区块列表和总数
   getBlockList = () => {
@@ -159,19 +159,19 @@ class UnionDetail extends Component {
       offset: 0,
       limit: config.pageSize,
       ascend: false,
-      channelId: location?.state?.channelId
+      channelId: location?.state?.channelId,
     };
     dispatch({
       type: 'Union/getBlockListOfUnion',
       payload: params,
     });
-  }
+  };
 
   // 查看区块详情
-  onClickBlockDetail = record => {
+  onClickBlockDetail = (record) => {
     this.props.dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/block' }
+      payload: { selectedMenu: '/about/block' },
     });
     history.push({
       pathname: `/about/block/${record.blockHash}`,
@@ -179,71 +179,49 @@ class UnionDetail extends Component {
         blockHash: record.blockHash,
       },
     });
-  }
+  };
 
   render() {
     const { location, qryBlockLoading, qryTransactionLoading } = this.props;
-    const {
-      blockListOfUnion,
-      transactionListOfUnion,
-      orgTotalOfUnion,
-      peerTotalOfUnion,
-      blockTotalOfUnion,
-      contractTotalOfUnion,
-      transactionTotalOfUnion
-    } = this.props.Union;
+    const { blockListOfUnion, transactionListOfUnion, orgTotalOfUnion, peerTotalOfUnion, blockTotalOfUnion, contractTotalOfUnion, transactionTotalOfUnion } = this.props.Union;
     const statisticsList = [
       { label: '组织', num: orgTotalOfUnion },
       { label: '节点', num: peerTotalOfUnion },
       { label: '区块', num: blockTotalOfUnion },
       { label: '交易', num: transactionTotalOfUnion },
-      { label: '合约', num: contractTotalOfUnion }
-    ]
+      { label: '合约', num: contractTotalOfUnion },
+    ];
     return (
-      <div className='page-wrapper'>
+      <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
-        <div className='page-content'>
+        <div className="page-content">
           <div className={style['league-basic-info']}>
-            <Row  >
+            <Row>
               <Col span={8}>
                 <label>通道ID：</label>
                 <span>{location?.state?._id}</span>
               </Col>
-              <Col span={8} >
+              <Col span={8}>
                 <label>通道名称：</label>
                 <span>{location?.state?.channelId}</span>
               </Col>
-              <Col span={8} >
+              <Col span={8}>
                 <label>通道别名：</label>
                 <span>{location?.state?.channelAliasName}</span>
               </Col>
-              <Col span={8} >
+              <Col span={8}>
                 <label>创建时间：</label>
                 <span>{location?.state?.createdAt ? moment(location?.state?.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}</span>
               </Col>
-              <Col span={8} >
+              <Col span={8}>
                 <label>状态：</label>
                 <span>{location?.state?.channelStatus ? unionStatus[location?.state?.channelStatus].text : ''}</span>
               </Col>
             </Row>
           </div>
           <StatisticsCard statisticsList={statisticsList} imgList={imgList} />
-          <Table
-            rowKey='_id'
-            columns={this.blockColums}
-            loading={qryBlockLoading}
-            dataSource={blockListOfUnion}
-            className='page-content-shadow'
-            pagination={false}
-          />
-          <Table
-            rowKey='_id'
-            columns={this.transactionColumns}
-            loading={qryTransactionLoading}
-            dataSource={transactionListOfUnion}
-            className='page-content-shadow'
-            pagination={false}
-          />
+          <Table rowKey="_id" columns={this.blockColumns} loading={qryBlockLoading} dataSource={blockListOfUnion} className="page-content-shadow" pagination={false} />
+          <Table rowKey="_id" columns={this.transactionColumns} loading={qryTransactionLoading} dataSource={transactionListOfUnion} className="page-content-shadow" pagination={false} />
         </div>
       </div>
     );
@@ -256,4 +234,4 @@ export default connect(({ Layout, Union, User, loading }) => ({
   User,
   qryBlockLoading: loading.effects['Union/getBlockListOfUnion'],
   qryTransactionLoading: loading.effects['Union/getTransactionList'],
-}))(UnionDetail)
+}))(UnionDetail);

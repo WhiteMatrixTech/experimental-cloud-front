@@ -56,7 +56,7 @@ function EditContract(props) {
           });
         } else {
           dispatch({
-            type: 'Contract/upgrateContract',
+            type: 'Contract/upgradeContract',
             payload: params,
           }).then((res) => {
             if (res) {
