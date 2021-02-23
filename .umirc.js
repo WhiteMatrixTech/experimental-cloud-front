@@ -4,9 +4,9 @@ import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
 const chainWebpack = (config, { webpack }) => {
   config.plugin('monaco-editor').use(MonacoWebpackPlugin, [
     {
-      languages: ['json']
-    }
-  ])
+      languages: ['json', 'text'],
+    },
+  ]);
 };
 export default {
   history: { type: 'browser' },
@@ -38,12 +38,8 @@ export default {
 
   externals: {
     echarts: 'window.echarts',
-    konva: 'window.konva',
   },
-  scripts: [
-    'https://cdnjs.cloudflare.com/ajax/libs/echarts/5.0.0/echarts.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/konva/7.2.2/konva.min.js'
-  ],
+  scripts: ['https://cdnjs.cloudflare.com/ajax/libs/echarts/5.0.0/echarts.min.js'],
 
   proxy: {
     '/api': {
@@ -57,5 +53,5 @@ export default {
   define: {
     'process.env.CHAIN_IDE_LINK': 'https://fabric.test.chainide.cn/project/welcome', // ChainIDE地址
     'process.env.BAAS_BACKEND_LINK': 'https://yzjszjr-chainbaas-api.test.chainide.cn', // BaaS Backend地址
-  }
-}
+  },
+};
