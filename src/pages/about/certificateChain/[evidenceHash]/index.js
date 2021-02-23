@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Spin } from 'antd';
-import { isObejct } from 'lodash';
+import { isObject } from 'lodash';
 import { Breadcrumb, DetailCard } from 'components';
 import ReactJson from 'react-json-view';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import styles from './index.less';
-
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/certificateChain');
 breadCrumbItem.push({
@@ -60,7 +59,8 @@ function certificateChainDetail({
       try {
         let parsedData = null;
         parsedData = JSON.parse(certificateChainDetail.evidenceData);
-        if (!isObejct(parsedData)) {
+        evidenceData = parsedData;
+        if (!isObject(parsedData)) {
           evidenceData = { evidenceData: parsedData };
         }
       } catch (err) {
@@ -69,7 +69,7 @@ function certificateChainDetail({
       return evidenceData;
     }
     return '';
-  }
+  };
 
   useEffect(() => {
     dispatch({
@@ -84,7 +84,7 @@ function certificateChainDetail({
       <div className="page-content">
         <Spin spinning={qryLoading}>
           <DetailCard cardTitle="基本信息" detailList={detailList} />
-          <div className={styles['detail-card-wrapper']} >
+          <div className={styles['detail-card-wrapper']}>
             <div className={styles['detail-card-title']}>
               <span className={styles['detail-title-border']}></span>
               <span className={styles['detail-title-content']}>存证信息</span>
@@ -96,7 +96,6 @@ function certificateChainDetail({
         </Spin>
       </div>
     </div>
-
   );
 }
 
