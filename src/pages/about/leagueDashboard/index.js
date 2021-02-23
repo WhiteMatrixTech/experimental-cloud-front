@@ -18,7 +18,7 @@ function LeagueDashboard(props) {
   const { leagueName, networkName, userRole } = User;
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
-  const { networkStatusInfo, transactionList, blockList } = Dashboard;
+  const { networkStatusInfo, transactionList, blockList, unionTotal } = Dashboard;
   const [pageNum, setPageNum] = useState(1);
   const [showCreateNetworkBtn, setShowCreateNetworkBtn] = useState(false);
   const [showCreateChannelBtn, setShowCreateChannelBtn] = useState(false);
@@ -246,11 +246,15 @@ function LeagueDashboard(props) {
   useEffect(() => {
     if (userRole === Roles.NetworkAdmin && networkStatusInfo.networkStatus === NetworkStatus.NotExist) {
       setShowCreateNetworkBtn(true);
+    } else {
+      setShowCreateNetworkBtn(false);
     }
     if (userRole === Roles.NetworkAdmin && Dashboard.unionTotal === 0 && networkStatusInfo.networkStatus === NetworkStatus.Running) {
       setShowCreateChannelBtn(true);
+    } else {
+      setShowCreateChannelBtn(false);
     }
-  }, [userRole, networkStatusInfo, Dashboard.unionTotal]);
+  }, [unionTotal, userRole, networkStatusInfo]);
 
   return (
     <div className="page-wrapper">
