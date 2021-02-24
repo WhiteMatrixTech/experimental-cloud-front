@@ -19,7 +19,6 @@ function LeagueDashboard(props) {
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
   const { networkStatusInfo, transactionList, blockList, unionTotal } = Dashboard;
-  const [pageNum, setPageNum] = useState(1);
   const [showCreateNetworkBtn, setShowCreateNetworkBtn] = useState(false);
   const [showCreateChannelBtn, setShowCreateChannelBtn] = useState(false);
   const [createVisible, setCreateVisible] = useState(false);
@@ -84,7 +83,7 @@ function LeagueDashboard(props) {
 
   // 获取区块列表
   const getBlockList = () => {
-    const offset = (pageNum - 1) * 6;
+    const offset = 0;
     const params = {
       networkName,
       offset: offset,
@@ -113,7 +112,7 @@ function LeagueDashboard(props) {
 
   // 获取交易列表
   const getTransactionList = () => {
-    const offset = (pageNum - 1) * 6;
+    const offset = 0;
     const params = {
       networkName,
       offset: offset,
@@ -293,7 +292,14 @@ function LeagueDashboard(props) {
         </Spin>
         <StatisticsCard statisticsList={statisticsList} />
         <Table rowKey="_id" columns={blockColumns} loading={qryBlockLoading} dataSource={blockList} className="page-content-shadow" pagination={false} />
-        <Table rowKey="_id" columns={transactionColumns} loading={qryTransactionLoading} dataSource={transactionList} className="page-content-shadow" pagination={false} />
+        <Table
+          rowKey="_id"
+          columns={transactionColumns}
+          loading={qryTransactionLoading}
+          dataSource={transactionList}
+          className="page-content-shadow"
+          pagination={false}
+        />
       </div>
       {createVisible && <CreateNetwork visible={createVisible} onCancel={onClickCancel} />}
     </div>

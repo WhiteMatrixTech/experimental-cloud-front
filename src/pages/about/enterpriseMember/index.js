@@ -4,6 +4,7 @@ import { history } from 'umi';
 import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { Roles } from 'utils/roles';
 import isEmpty from 'lodash/isEmpty';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
@@ -30,7 +31,7 @@ const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember');
 
 function EnterpriseMember(props) {
   const { Member, qryLoading, dispatch, User } = props;
-  const { networkName } = User;
+  const { networkName, userRole } = User;
   const { memberList, memberTotal } = Member;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
@@ -123,12 +124,8 @@ function EnterpriseMember(props) {
               <a onClick={() => onClickToConfirm(record, 'reject')}>驳回</a>
             </>
           )}
-          {record.isValid === 'valid' && record.approvalStatus === 'approved' && (
-            <a onClick={() => onClickToConfirm(record, 'invalidate')}>停用</a>
-          )}
-          {record.isValid === 'invalid' && record.approvalStatus === 'approved' && (
-            <a onClick={() => onClickToConfirm(record, 'validate')}>启用</a>
-          )}
+          {record.isValid === 'valid' && record.approvalStatus === 'approved' && <a onClick={() => onClickToConfirm(record, 'invalidate')}>停用</a>}
+          {record.isValid === 'invalid' && record.approvalStatus === 'approved' && <a onClick={() => onClickToConfirm(record, 'validate')}>启用</a>}
           <a onClick={() => onClickDetail(record)}>详情</a>
         </Space>
       ),
@@ -171,9 +168,7 @@ function EnterpriseMember(props) {
       .then((values) => {
         const params = {
           companyName: values.companyName,
-          createTimeStart: isEmpty(values.createTime)
-            ? 0
-            : Number(values.createTime[0].format('x')),
+          createTimeStart: isEmpty(values.createTime) ? 0 : Number(values.createTime[0].format('x')),
           createTimeEnd: isEmpty(values.createTime) ? 0 : Number(values.createTime[1].format('x')),
           approvalStatus: values.approvalStatus === null ? 'any' : values.approvalStatus,
         };
@@ -285,6 +280,12 @@ function EnterpriseMember(props) {
     getMemberTotalDocs();
   }, [queryParams, pageNum]);
 
+  useEffect(() => {
+    if (userRole !== Roles.NetworkAdmin) {
+      history.push('/403');
+    }
+  }, [userRole]);
+
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -309,10 +310,7 @@ function EnterpriseMember(props) {
               </Col>
               <Col span={8}>
                 <Item label="审批状态" name="approvalStatus" initialValue={null}>
-                  <Select
-                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    placeholder="请选择审批状态"
-                  >
+                  <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择审批状态">
                     {Object.keys(statusList).map((item) => (
                       <Option key={item} value={item}>
                         {statusList[item]}

@@ -11,12 +11,21 @@ import { tree2Arr } from '../utils';
  */
 const MenuList = [
   {
-    id: 36,
+    id: 35,
     menuPid: 2,
     menuHref: '/about/leagueDashboard',
     menuIcon: 'KBassyibiaopan',
-    menuName: '仪表盘',
+    menuName: '联盟总览',
     isFeature: 0,
+    menuVos: [],
+  },
+  {
+    id: 36,
+    menuPid: 2,
+    menuHref: '/about/dataDashboard',
+    menuIcon: 'KBassyibiaopan',
+    menuName: '仪表盘',
+    isFeature: 1,
     menuVos: [],
   },
   {
