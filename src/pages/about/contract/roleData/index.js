@@ -58,8 +58,8 @@ class PrivacyStrategy extends Component {
             {record.strategyStatus === 1 ? (
               <a onClick={() => this.onClickToConfirm(record, 'stop')}>停用</a>
             ) : (
-                <a onClick={() => this.onClickToConfirm(record, 'enable')}>启用</a>
-              )}
+              <a onClick={() => this.onClickToConfirm(record, 'enable')}>启用</a>
+            )}
             <a onClick={() => this.onClickConfig(record)}>配置策略</a>
             {/* <a onClick={() => this.onClickDetail(record)}>隐私保护记录</a> */}
           </Space>
@@ -96,8 +96,8 @@ class PrivacyStrategy extends Component {
     this.props.dispatch({
       type: 'PrivacyStrategy/getRoleDateTotalDocs',
       payload: { networkName },
-    })
-  }
+    });
+  };
 
   // 翻页
   onPageChange = (pageInfo) => {
@@ -185,14 +185,7 @@ class PrivacyStrategy extends Component {
 
   render() {
     const { qryLoading = false } = this.props;
-    const {
-      pageSize,
-      pageNum,
-      editModalVisible,
-      configModalVisible,
-      operateType,
-      strategyObj,
-    } = this.state;
+    const { pageSize, pageNum, editModalVisible, configModalVisible, operateType, strategyObj } = this.state;
     const { strategyList, strategyTotal } = this.props.PrivacyStrategy;
     return (
       <div className="page-wrapper">
@@ -244,5 +237,3 @@ export default connect(({ User, PrivacyStrategy, loading }) => ({
   PrivacyStrategy,
   qryLoading: loading.effects['PrivacyStrategy/getPageListOfRoleData'],
 }))(PrivacyStrategy);
-
-
