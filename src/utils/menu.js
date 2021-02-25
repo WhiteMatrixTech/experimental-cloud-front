@@ -49,7 +49,7 @@ const MenuList = [
   {
     id: 39,
     menuPid: 2,
-    menuHref: '/about/unionList',
+    menuHref: '/about/channels',
     menuIcon: 'KBasstongdaoguanli',
     menuName: '通道管理',
     isFeature: 0,
@@ -58,7 +58,7 @@ const MenuList = [
   {
     id: 41,
     menuPid: 2,
-    menuHref: '/about/orgList',
+    menuHref: '/about/organizations',
     menuIcon: 'KBasszuzhiguanli',
     menuName: '组织管理',
     isFeature: 0, // 是否只有盟主才显示
@@ -67,7 +67,7 @@ const MenuList = [
   {
     id: 42,
     menuPid: 2,
-    menuHref: '/about/peerList',
+    menuHref: '/about/nodes',
     menuIcon: 'KBassjiedianguanli',
     menuName: '节点管理',
     isFeature: 0,
@@ -102,7 +102,7 @@ const MenuList = [
       {
         id: 432,
         menuPid: 43,
-        menuHref: '/about/contract/roleData',
+        menuHref: '/about/contract/privacyStrategy',
         menuIcon: null,
         menuName: '隐私保护策略',
         isFeature: 1, // 是否只有盟主才显示
@@ -122,7 +122,7 @@ const MenuList = [
   {
     id: 46,
     menuPid: 2,
-    menuHref: '/about/certificateChain',
+    menuHref: '/about/evidence',
     menuIcon: 'KBassqiyeguanli',
     menuName: '存证上链',
     isFeature: 0,

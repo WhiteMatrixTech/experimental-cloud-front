@@ -1,10 +1,11 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
-import { Table, Space, Badge, Modal } from 'antd';
+import { Table, Space, Badge, Modal, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { Breadcrumb, SearchBar } from 'components';
+import { Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import EditContract from './components/EditContract';
 import InvokeContract from './components/InvokeContract';
@@ -36,7 +37,7 @@ class MyContract extends Component {
   }
 
   // 获取合约列表
-  getChainCodeList = (current, seachChainCodeName) => {
+  getChainCodeList = (current, searchChainCodeName) => {
     const { pageNum, pageSize, chainCodeName } = this.state;
     const { networkName } = this.props.User;
     const offset = ((current || pageNum) - 1) * pageSize;
@@ -48,8 +49,8 @@ class MyContract extends Component {
       ascend: false,
     };
     // 判断输入搜索合约名称
-    if (seachChainCodeName || chainCodeName) {
-      params.chainCodeName = seachChainCodeName || chainCodeName;
+    if (searchChainCodeName || chainCodeName) {
+      params.chainCodeName = searchChainCodeName || chainCodeName;
     }
     this.props.dispatch({
       type: 'Contract/getChainCodeTotal',
@@ -134,7 +135,7 @@ class MyContract extends Component {
 
   // 升级合约
   onClickUpgrade = (record) => {
-    this.setState({ operateType: 'upgrate', editModalVisible: true, editParams: record });
+    this.setState({ operateType: 'upgrade', editModalVisible: true, editParams: record });
   };
 
   // 发布合约
@@ -222,7 +223,12 @@ class MyContract extends Component {
         title: '状态',
         dataIndex: 'chainCodeStatus',
         key: 'chainCodeStatus',
-        render: (text) => (text ? <Badge color={chainCodeStatusInfo[text].color} text={chainCodeStatusInfo[text].text} style={{ color: chainCodeStatusInfo[text].color }} /> : ''),
+        render: (text) =>
+          text ? (
+            <Badge color={chainCodeStatusInfo[text].color} text={chainCodeStatusInfo[text].text} style={{ color: chainCodeStatusInfo[text].color }} />
+          ) : (
+            ''
+          ),
       },
       {
         title: '操作',
@@ -249,11 +255,16 @@ class MyContract extends Component {
         ),
       },
     ];
+
     return (
       <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className="page-content page-content-shadow">
-          <SearchBar placeholder="输入合约名称" onSearch={this.onSearch} btnName="创建合约" onClickBtn={this.onClickAdd} />
+          <div className="table-header-btn-wrapper">
+            <Button type="primary" onClick={this.onClickAdd}>
+              创建合约
+            </Button>
+          </div>
           <Table
             rowKey="_id"
             columns={columns}

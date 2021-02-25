@@ -19,14 +19,14 @@ const formItemLayout = {
 const modalTitle = {
   new: '新增合约',
   modify: '修改合约',
-  upgrate: '升级合约',
+  upgrade: '升级合约',
 };
 
 function EditContract(props) {
   const [form] = Form.useForm();
   const [fileJson, setFileJson] = useState(null);
   const [initRequired, setInitRequired] = useState(false);
-  const { visible, editParams, onCancel, operateType, dispatch, Contract, User } = props;
+  const { visible, editParams, onCancel, operateType, dispatch, Contract, User, btnLoading = false } = props;
   const { channelList } = Contract;
   const { networkName } = User;
 
@@ -135,7 +135,7 @@ function EditContract(props) {
       <Button key="cancel" onClick={onCancel}>
         取消
       </Button>,
-      <Button key="submit" onClick={handleSubmit} disabled={!fileJson} type="primary">
+      <Button key="submit" loading={btnLoading} onClick={handleSubmit} disabled={!fileJson} type="primary">
         提交
       </Button>,
     ],
@@ -161,7 +161,12 @@ function EditContract(props) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} disabled={operateType !== 'new'} onChange={onChangeChannel} placeholder="请选择通道">
+          <Select
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            disabled={operateType !== 'new'}
+            onChange={onChangeChannel}
+            placeholder="请选择通道"
+          >
             {channelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
@@ -254,5 +259,5 @@ function EditContract(props) {
 export default connect(({ Contract, User, loading }) => ({
   Contract,
   User,
-  qryLoading: loading.effects['Contract/addContract'],
+  btnLoading: loading.effects['Contract/addContract'] || loading.effects['Contract/upgradeContract'],
 }))(EditContract);

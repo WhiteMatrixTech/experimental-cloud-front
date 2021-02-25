@@ -1,7 +1,7 @@
 import { getBlockList, getBlockTotalDocs } from '../services/block.js';
 import { getTransactionList, getTransactionTotalDocs } from '../services/transactions.js';
-import { getMemberTotalDocs } from '../services/member.js';
-import { getUnionList } from '../services/union.js';
+import { getMemberTotalDocs } from '../services/enterprise-member.js';
+import { getChannelList } from '../services/channel.js';
 import { getChainCodeList } from '../services/contract.js';
 import { getMyNetworkList } from '../services/user.js';
 import * as API from '../services/dashboard.js';
@@ -18,7 +18,7 @@ export default {
     blockTotal: 0,
     transactionTotal: 0,
     memberTotal: 0,
-    unionTotal: 0,
+    channelTotal: 0,
     myContractTotal: 0,
 
     blockList: [], // 区块链列表
@@ -97,7 +97,7 @@ export default {
           createTimeStart: 0,
           from: Number(moment(new Date()).format('x')),
         }),
-        call(getUnionList, payload),
+        call(getChannelList, payload),
         call(getChainCodeList, {
           ...payload,
           offset: 0,
@@ -109,7 +109,7 @@ export default {
       const blockTotal = res1.statusCode === 'ok' ? res1.result.count : 0;
       const transactionTotal = res2.statusCode === 'ok' ? res2.result.count : 0;
       const memberTotal = res3.statusCode === 'ok' ? res3.result.count : 0;
-      const unionTotal = res4.statusCode === 'ok' ? res4.result.length : 0;
+      const channelTotal = res4.statusCode === 'ok' ? res4.result.length : 0;
       const myContractTotal = res5.statusCode === 'ok' ? res5.result.items.length : 0;
       yield put({
         type: 'common',
@@ -117,7 +117,7 @@ export default {
           blockTotal,
           transactionTotal,
           memberTotal,
-          unionTotal,
+          channelTotal,
           myContractTotal,
         },
       });
@@ -127,7 +127,7 @@ export default {
         call(getBlockTotalDocs, payload),
         call(getTransactionTotalDocs, payload),
         call(getMyNetworkList, payload),
-        call(getUnionList, payload),
+        call(getChannelList, payload),
         call(getChainCodeList, {
           ...payload,
           offset: 0,
@@ -139,7 +139,7 @@ export default {
       const blockTotal = res1.statusCode === 'ok' ? res1.result.count : 0;
       const transactionTotal = res2.statusCode === 'ok' ? res2.result.count : 0;
       const memberTotal = res3.statusCode === 'ok' ? res3.result.length : 0;
-      const unionTotal = res4.statusCode === 'ok' ? res4.result.length : 0;
+      const channelTotal = res4.statusCode === 'ok' ? res4.result.length : 0;
       const myContractTotal = res5.statusCode === 'ok' ? res5.result.items.length : 0;
       yield put({
         type: 'common',
@@ -147,7 +147,7 @@ export default {
           blockTotal,
           transactionTotal,
           memberTotal,
-          unionTotal,
+          channelTotal,
           myContractTotal,
         },
       });

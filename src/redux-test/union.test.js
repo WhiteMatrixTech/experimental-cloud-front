@@ -1,121 +1,123 @@
-import * as API from '../services/union';
-import {call, put } from 'redux-saga/effects'
+import * as API from '../services/channel';
+import { call, put } from 'redux-saga/effects';
 
-const unionModel = require('../models/union').default
-const {reducers,state,effects} = unionModel
+const channelModel = require('../models/channel').default;
+const { reducers, state, effects } = channelModel;
 
+describe('channel->test', () => {
+  describe('channelModel->reducers', () => {
+    test('common->test', () => {
+      expect(
+        reducers.common(
+          { ...state },
+          {
+            type: 'common',
+            payload: {
+              channelTotal: 1,
+            },
+          },
+        ),
+      ).toEqual({ ...state, channelTotal: 1 });
+    });
+  });
 
-describe('union->test',()=>{
-      describe('unionModel->reducers',() => {
-            test('common->test',() => {
-                  expect(reducers.common(
-                    {...state},
-                    {type:'common',payload:{
-                          unionTotal: 1
-                    }}
-                  )).toEqual({...state,unionTotal: 1})
-              })
-      })
+  describe('channelModel->effects', () => {
+    test('getChannelList->test', () => {
+      const saga = effects.getChannelList;
+      const actionCreator = {
+        type: 'common',
+        payload: {
+          channelList: [],
+          channelTotal: 0,
+        },
+      };
+      const generator = saga(actionCreator, { call, put });
+      let next = generator.next();
+      expect(next.value).toEqual(call(API.getChannelList, actionCreator.payload));
+      generator.next({
+        statusCode: 'ok',
+        result: 9,
+      });
+      next = generator.next();
+      expect(next.done).toEqual(true);
+    });
 
-      describe('unionModel->effects',()=>{
-            test('getUnionList->test',() => {
-                const saga = effects.getUnionList
-                const actionCreator = {
-                type:'common',
-                payload:{
-                  unionList: [],
-                 unionTotal: 0
-                  }
-              }
-                const generator = saga(actionCreator,{call,put})
-                let next = generator.next()
-                expect(next.value).toEqual(call(API.getUnionList,actionCreator.payload))
-                generator.next({
-                  statusCode : 'ok',
-                  result: 9
-                  })
-                next = generator.next()      
-                expect(next.done).toEqual(true)
-            }) 
+    test('getOrgListOfChannel->test', () => {
+      const saga = effects.getOrgListOfChannel;
+      const actionCreator = {
+        type: 'common',
+        payload: {
+          orgListOfChannel: [],
+          orgTotalOfChannel: 0,
+        },
+      };
+      const generator = saga(actionCreator, { call, put });
+      let next = generator.next();
+      expect(next.value).toEqual(call(API.getOrgListOfChannel, actionCreator.payload));
+      generator.next({
+        statusCode: 'ok',
+        result: 9,
+      });
+      next = generator.next();
+      expect(next.done).toEqual(true);
+    });
+    test('getNodeListOfChannel->test', () => {
+      const saga = effects.getNodeListOfChannel;
+      const actionCreator = {
+        type: 'common',
+        payload: {
+          nodeListOfChannel: [],
+          nodeTotalOfChannel: 0,
+        },
+      };
+      const generator = saga(actionCreator, { call, put });
+      let next = generator.next();
+      expect(next.value).toEqual(call(API.getNodeListOfChannel, actionCreator.payload));
+      generator.next({
+        statusCode: 'ok',
+        result: 9,
+      });
+      next = generator.next();
+      expect(next.done).toEqual(true);
+    });
 
-            test('getOrgListOfUnion->test',() => {
-                const saga = effects.getOrgListOfUnion
-                const actionCreator = {
-                type:'common',
-                payload:{
-                  orgListOfUnion: [],
-                 orgTotalOfUnion: 0
-                  }
-              }
-                const generator = saga(actionCreator,{call,put})
-                let next = generator.next()
-                expect(next.value).toEqual(call(API.getOrgListOfUnion,actionCreator.payload))
-                generator.next({
-                  statusCode : 'ok',
-                  result: 9
-                  })
-                next = generator.next()      
-                expect(next.done).toEqual(true)
-            }) 
-            test('getPeerListOfUnion->test',() => {
-                const saga = effects.getPeerListOfUnion
-                const actionCreator = {
-                type:'common',
-                payload:{
-                  peerListOfUnion: [],
-                 peerTotalOfUnion: 0
-                  }
-              }
-                const generator = saga(actionCreator,{call,put})
-                let next = generator.next()
-                expect(next.value).toEqual(call(API.getPeerListOfUnion,actionCreator.payload))
-                generator.next({
-                  statusCode : 'ok',
-                  result: 9
-                  })
-                next = generator.next()      
-                expect(next.done).toEqual(true)
-            }) 
+    test('getContractListOfChannel->test', () => {
+      const saga = effects.getContractListOfChannel;
+      const actionCreator = {
+        type: 'common',
+        payload: {
+          contractListOfChannel: [],
+          contractTotalOfChannel: 0,
+        },
+      };
+      const generator = saga(actionCreator, { call, put });
+      let next = generator.next();
+      expect(next.value).toEqual(call(API.getContractListOfChannel, actionCreator.payload));
+      generator.next({
+        statusCode: 'ok',
+        result: 9,
+      });
+      next = generator.next();
+      expect(next.done).toEqual(true);
+    });
 
-            test('getContractListOfUnion->test',() => {
-                const saga = effects.getContractListOfUnion
-                const actionCreator = {
-                type:'common',
-                payload:{
-                  contractListOfUnion: [],
-                 contractTotalOfUnion: 0
-                  }
-              }
-                const generator = saga(actionCreator,{call,put})
-                let next = generator.next()
-                expect(next.value).toEqual(call(API.getContractListOfUnion,actionCreator.payload))
-                generator.next({
-                  statusCode : 'ok',
-                  result: 9
-                  })
-                next = generator.next()      
-                expect(next.done).toEqual(true)
-            }) 
-
-            test('getContractSummaryOfUnion->test',() => {
-                const saga = effects.getContractSummaryOfUnion
-                const actionCreator = {
-                type:'common',
-                payload:{
-                 contractInfoOfUnion:''
-                  }
-              }
-                const generator = saga(actionCreator,{call,put})
-                let next = generator.next()
-                expect(next.value).toEqual(call(API.getContractSummaryOfUnion,actionCreator.payload))
-                generator.next({
-                  statusCode : 'ok',
-                  result: 9
-                  })
-                next = generator.next()      
-                expect(next.done).toEqual(true)
-            }) 
-
-
-      })
-})
+    test('getContractSummaryOfChannel->test', () => {
+      const saga = effects.getContractSummaryOfChannel;
+      const actionCreator = {
+        type: 'common',
+        payload: {
+          contractInfoOfChannel: '',
+        },
+      };
+      const generator = saga(actionCreator, { call, put });
+      let next = generator.next();
+      expect(next.value).toEqual(call(API.getContractSummaryOfChannel, actionCreator.payload));
+      generator.next({
+        statusCode: 'ok',
+        result: 9,
+      });
+      next = generator.next();
+      expect(next.done).toEqual(true);
+    });
+  });
+});

@@ -7,10 +7,10 @@ const routes = getRoutes();
 const pathname = history.location.pathname;
 
 const allRoute = tree2Arr(routes, 'routes');
-const macthRoute = allRoute.find((item) => item.path.indexOf(pathname) > -1);
+const matchRoute = allRoute.find((item) => item.path.indexOf(pathname) > -1);
 
 // 当前路由找不到，则返回404页面
-if (!macthRoute) {
+if (!matchRoute) {
   history.push('/404');
 }
 

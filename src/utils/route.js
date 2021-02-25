@@ -28,11 +28,11 @@ export function getRoutes() {
           exact: true,
         },
         {
-          path: '/about/certificateChain',
+          path: '/about/evidence',
           exact: true,
         },
         {
-          path: '/about/certificateChain/:evidenceHash',
+          path: '/about/evidence/:evidenceHash',
           exact: true,
         },
         {
@@ -60,11 +60,11 @@ export function getRoutes() {
           exact: true,
         },
         {
-          path: '/about/contract/roleData',
+          path: '/about/contract/privacyStrategy',
           exact: true,
         },
         {
-          path: '/about/contract/roleData/roleDataList',
+          path: '/about/contract/privacyStrategy/protectRecord',
           exact: true,
         },
         {
@@ -112,11 +112,11 @@ export function getRoutes() {
           exact: true,
         },
         {
-          path: '/about/orgList',
+          path: '/about/organizations',
           exact: true,
         },
         {
-          path: '/about/peerList',
+          path: '/about/nodes',
           exact: true,
         },
         {
@@ -128,23 +128,23 @@ export function getRoutes() {
           exact: true,
         },
         {
-          path: '/about/unionList',
+          path: '/about/channels',
           exact: true,
         },
         {
-          path: '/about/unionList/UnionChain',
+          path: '/about/channels/chaincodeList',
           exact: true,
         },
         {
-          path: '/about/unionList/UnionDetail',
+          path: '/about/channels/channelDetail',
           exact: true,
         },
         {
-          path: '/about/unionList/UnionMember',
+          path: '/about/channels/organizationList',
           exact: true,
         },
         {
-          path: '/about/unionList/UnionPeer',
+          path: '/about/channels/nodeList',
           exact: true,
         },
       ],

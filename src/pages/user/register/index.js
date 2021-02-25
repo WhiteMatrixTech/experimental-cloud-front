@@ -24,7 +24,7 @@ const Register = (props) => {
   const [current, setCurrent] = useState(0);
 
   const { submitting, dispatch, User } = props;
-  const { userAndregister } = User;
+  const { userAndRegister } = User;
 
   const next = () => {
     setCurOper(operType.next);
@@ -37,11 +37,11 @@ const Register = (props) => {
 
   const register = () => {
     setCurOper(operType.submit);
-  }
+  };
 
-  const cacheBasicInfo = basicInfo => {
+  const cacheBasicInfo = (basicInfo) => {
     setBasicInfo(basicInfo);
-  }
+  };
 
   const afterValidate = (value, step) => {
     if (step === operType.next) {
@@ -63,20 +63,20 @@ const Register = (props) => {
       });
       setCurOper(operType.default);
     }
-  }
+  };
 
-  const failedToValidate = step => {
+  const failedToValidate = (step) => {
     setCurOper(step);
-  }
+  };
 
   useEffect(() => {
-    if (userAndregister) {
+    if (userAndRegister) {
       history.push({
         pathname: '/user/register-result',
         state: { account: accountInfo.contactEmail },
       });
     }
-  }, [userAndregister]);
+  }, [userAndRegister]);
 
   const stepsProps = {
     curOper,
@@ -84,46 +84,36 @@ const Register = (props) => {
     operType,
     failedToValidate,
     afterValidate: (value, step) => afterValidate(value, step),
-  }
+  };
 
   return (
     <div className={styles.main}>
-      <h3>
-        注册
-      </h3>
+      <h3>注册</h3>
       <Steps className={styles.step} current={current}>
-        {steps.map(item => (
+        {steps.map((item) => (
           <Step key={item.title} title={item.title} />
         ))}
       </Steps>
       {current > 0 ? <StepTwo {...stepsProps} /> : <StepOne {...stepsProps} />}
       <div className={styles.operate}>
-        {current === 0 &&
-          <Button
-            size="large"
-            className={styles.next}
-            type="primary"
-            onClick={next}
-          >下一步</Button>}
-        {current === 1 && <Button
-          size="large"
-          className={styles.prev}
-          onClick={prev}
-        >
-          上一步
-        </Button>}
-        {current === 1 && <Button
-          size="large"
-          loading={submitting}
-          className={styles.submit}
-          type="primary"
-          onClick={register}
-        >
-          注册
-        </Button>}
+        {current === 0 && (
+          <Button size="large" className={styles.next} type="primary" onClick={next}>
+            下一步
+          </Button>
+        )}
+        {current === 1 && (
+          <Button size="large" className={styles.prev} onClick={prev}>
+            上一步
+          </Button>
+        )}
+        {current === 1 && (
+          <Button size="large" loading={submitting} className={styles.submit} type="primary" onClick={register}>
+            注册
+          </Button>
+        )}
         <Link className={styles.login} to="/user/login">
           使用已有账户登录
-          </Link>
+        </Link>
       </div>
     </div>
   );

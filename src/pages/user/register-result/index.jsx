@@ -8,7 +8,7 @@ const RegisterResult = ({ location, dispatch }) => {
   useEffect(() => {
     dispatch({
       type: 'User/common',
-      payload: { userAndregister: false }
+      payload: { userAndRegister: false }
     })
   }, []);
 

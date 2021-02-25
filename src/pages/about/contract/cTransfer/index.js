@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { Input, Select, Form, Radio, Switch, Button } from 'antd';
 import { Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
@@ -18,11 +18,11 @@ const formItemLayout = {
   },
 };
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false)
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 breadCrumbItem.push({
-  menuName: "合约调用",
+  menuName: '合约调用',
   menuHref: `/`,
-})
+});
 
 function CallTransfer(props) {
   const { Contract, User, dispatch } = props;
@@ -30,39 +30,39 @@ function CallTransfer(props) {
   const { networkName } = User;
 
   const [form] = Form.useForm();
-  const [invokeTypeAvaliable, setInvokeTypeAvaliable] = useState(false);
+  const [invokeTypeAvailable, setInvokeTypeAvailable] = useState(false);
   const [invokeType, setInvokeType] = useState(null);
 
   // 通道改变时，获取通道下的合约
-  const onChannelChange = () => {
-
-  }
+  const onChannelChange = () => {};
 
   // 调用类型改变
-  const onInvokeTypeChange = e => {
-    setInvokeType(e.target.value)
-  }
+  const onInvokeTypeChange = (e) => {
+    setInvokeType(e.target.value);
+  };
 
   // 表单域改变
   const onFieldsChange = (changedFields, allFields) => {
-    const validFields = allFields.slice(0, 4)
-    if (validFields.every(item => (item.value !== null) && (item.value !== ''))) {
-      setInvokeTypeAvaliable(true)
+    const validFields = allFields.slice(0, 4);
+    if (validFields.every((item) => item.value !== null && item.value !== '')) {
+      setInvokeTypeAvailable(true);
     } else {
-      setInvokeTypeAvaliable(false)
-      setInvokeType(null)
+      setInvokeTypeAvailable(false);
+      setInvokeType(null);
     }
-  }
+  };
 
   const handleSubmit = () => {
-    form.validateFields().then(values => {
-      form.resetFields();
-      form.setFieldsValue(values)
-
-    }).catch(info => {
-      console.log('校验失败:', info);
-    });
-  }
+    form
+      .validateFields()
+      .then((values) => {
+        form.resetFields();
+        form.setFieldsValue(values);
+      })
+      .catch((info) => {
+        console.log('校验失败:', info);
+      });
+  };
 
   useEffect(() => {
     dispatch({
@@ -72,87 +72,117 @@ function CallTransfer(props) {
   }, []);
 
   return (
-    <div className='page-wrapper'>
+    <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content page-content-shadow'>
+      <div className="page-content page-content-shadow">
         <div className={style['call-contract-wrapper']}>
           <div className={style['call-condition']}>
             <h3 className={style.title}>调用条件</h3>
             <Form {...formItemLayout} form={form} onFieldsChange={onFieldsChange}>
-              <Item label='所属通道' name='channelId' initialValue={null} rules={[
-                {
-                  required: true,
-                  message: '请选择通道',
-                },
-              ]}>
-                <Select
-                  getPopupContainer={triggerNode => triggerNode.parentNode}
-                  placeholder='请选择通道'
-                  onChange={onChannelChange}
-                >
-                  {channelList.map(item => <Option key={item.channelId} value={item.channelId}>{item.channelId}</Option>)}
+              <Item
+                label="所属通道"
+                name="channelId"
+                initialValue={null}
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择通道',
+                  },
+                ]}
+              >
+                <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择通道" onChange={onChannelChange}>
+                  {channelList.map((item) => (
+                    <Option key={item.channelId} value={item.channelId}>
+                      {item.channelId}
+                    </Option>
+                  ))}
                 </Select>
               </Item>
-              <Item label='选择合约' name='chainCodeName' initialValue={null} rules={[
-                {
-                  required: true,
-                  message: '请选择合约',
-                },
-              ]}>
-                <Select
-                  getPopupContainer={triggerNode => triggerNode.parentNode}
-                  placeholder='请选择合约'
-                >
-                  <Option value='aaa'>aaa</Option>
+              <Item
+                label="选择合约"
+                name="chainCodeName"
+                initialValue={null}
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择合约',
+                  },
+                ]}
+              >
+                <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择合约">
+                  <Option value="aaa">aaa</Option>
                 </Select>
               </Item>
-              <Item label='方法名' name='methodName' initialValue='' rules={[
-                {
-                  required: true,
-                  message: '请输入方法名',
-                }
-              ]}>
-                <Input placeholder='请输入方法名' />
+              <Item
+                label="方法名"
+                name="methodName"
+                initialValue=""
+                rules={[
+                  {
+                    required: true,
+                    message: '请输入方法名',
+                  },
+                ]}
+              >
+                <Input placeholder="请输入方法名" />
               </Item>
-              <Item label='参数列表' name='params' initialValue={[]} >
-                <Select
-                  getPopupContainer={triggerNode => triggerNode.parentNode}
-                  placeholder='请输入参数'
-                  mode='tags'
-                >
-                </Select>
+              <Item label="参数列表" name="params" initialValue={[]}>
+                <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请输入参数" mode="tags"></Select>
               </Item>
-              <Item label='是否初始化' name='isInit' initialValue={true} valuePropName='checked' rules={[
-                {
-                  required: true,
-                  message: '请选择是否需要初始化',
-                }
-              ]}>
+              <Item
+                label="是否初始化"
+                name="isInit"
+                initialValue={true}
+                valuePropName="checked"
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择是否需要初始化',
+                  },
+                ]}
+              >
                 <Switch />
               </Item>
-              <Item label='调用类型' name='invokeType' initialValue={null} rules={[
-                {
-                  required: true,
-                  message: '请选择调用类型',
-                }
-              ]}>
+              <Item
+                label="调用类型"
+                name="invokeType"
+                initialValue={null}
+                rules={[
+                  {
+                    required: true,
+                    message: '请选择调用类型',
+                  },
+                ]}
+              >
                 <Radio.Group onChange={onInvokeTypeChange}>
-                  <Radio.Button value='invoke' disabled={!invokeTypeAvaliable}>invoke</Radio.Button>
-                  <Radio.Button value='query' disabled={!invokeTypeAvaliable}>query</Radio.Button>
+                  <Radio.Button value="invoke" disabled={!invokeTypeAvailable}>
+                    invoke
+                  </Radio.Button>
+                  <Radio.Button value="query" disabled={!invokeTypeAvailable}>
+                    query
+                  </Radio.Button>
                 </Radio.Group>
-                {invokeType === 'invoke' && <Button className={style['invoke-button']} type='primary'>调用</Button>}
-                {invokeType === 'query' && <Button className={style['invoke-button']} type='primary'>查询</Button>}
+                {invokeType === 'invoke' && (
+                  <Button className={style['invoke-button']} type="primary">
+                    调用
+                  </Button>
+                )}
+                {invokeType === 'query' && (
+                  <Button className={style['invoke-button']} type="primary">
+                    查询
+                  </Button>
+                )}
               </Item>
             </Form>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default connect(({ User, Contract, loading }) => ({
   User,
   Contract,
-  qryLoading: loading.effects['Contract/deployContract']
+  qryLoading: loading.effects['Contract/deployContract'],
 }))(CallTransfer);

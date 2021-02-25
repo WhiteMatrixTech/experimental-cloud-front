@@ -21,8 +21,8 @@ export default {
   },
 
   effects: {
-    *getPageListOfRoleData({ payload }, { call, put }) {
-      const res = yield call(API.getPageListOfRoleData, payload);
+    *getPageListOPrivacyStrategy({ payload }, { call, put }) {
+      const res = yield call(API.getPageListOPrivacyStrategy, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
@@ -33,8 +33,8 @@ export default {
         });
       }
     },
-    *getRoleDateTotalDocs({ payload }, { call, put }) {
-      const res = yield call(API.getRoleDateTotalDocs, payload);
+    *getPrivacyStrategyTotalDocs({ payload }, { call, put }) {
+      const res = yield call(API.getPrivacyStrategyTotalDocs, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
