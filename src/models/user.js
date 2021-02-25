@@ -15,7 +15,7 @@ export default {
     loginInfo: '',
     loginStatus: '',
     cacheAccount: {}, // 当前注册的账户
-    userAndregister: false, // 控制注册成功后的自动跳转
+    userAndRegister: false, // 控制注册成功后的自动跳转
 
     networkList: [], // 网络列表
     myNetworkList: [], // 我的网络列表
@@ -46,7 +46,7 @@ export default {
           type: 'common',
           payload: {
             cacheAccount: result,
-            userAndregister: true,
+            userAndRegister: true,
           },
         });
       } else {

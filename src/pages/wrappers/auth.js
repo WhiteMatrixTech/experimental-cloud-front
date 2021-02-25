@@ -12,12 +12,12 @@ export default (props) => {
   const pathname = location.pathname;
   const allRoute = tree2Arr(routes, 'routes');
 
-  const macthRoute = allRoute.find((item) => item.path.indexOf(route.path) > -1);
+  const matchRoute = allRoute.find((item) => item.path.indexOf(route.path) > -1);
   if (redirect) {
-    return <Redirect to={`/userForexternal/login?redirect=${redirect}`} />;
+    return <Redirect to={`/userForExternal/login?redirect=${redirect}`} />;
   }
   // 当前路由找不到，则返回404页面
-  if (!macthRoute) {
+  if (!matchRoute) {
     return <Redirect to="/404" />;
   }
 

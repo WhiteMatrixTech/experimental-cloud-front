@@ -3,13 +3,13 @@ import { request } from '../utils/request';
 /**
  * 隐私保护策略列表
  */
-export async function getPageListOfRoleData(params) {
+export async function getPageListOPrivacyStrategy(params) {
   return request(`/network/${params.networkName}/strategies/query`, { method: 'POST', body: params });
 }
 /**
  * 获取策略列表的totalDocs
  */
-export async function getRoleDateTotalDocs(params) {
+export async function getPrivacyStrategyTotalDocs(params) {
   return request(`/network/${params.networkName}/strategies/totalCount`);
 }
 /**
@@ -52,4 +52,3 @@ export async function updateStrategyMember(params) {
 export async function getPageListOfRecord(params) {
   return request(`/api/kbaas-general/data/role/invoke/record`, { method: 'POST', body: params });
 }
-

@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { history } from 'umi';
 import { Table, Space, Spin } from 'antd';
 import moment from 'moment';
@@ -7,27 +8,27 @@ import { Breadcrumb, DetailCard } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import baseConfig from 'utils/config';
 
-let breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false)
+let breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 breadCrumbItem = breadCrumbItem.concat([
   {
-    menuName: "我的合约",
+    menuName: '我的合约',
     menuHref: `/about/contract/myContract`,
-    isLeftMenu: true
+    isLeftMenu: true,
   },
   {
-    menuName: "合约详情",
+    menuName: '合约详情',
     menuHref: `/`,
-  }
-])
+  },
+]);
 
 class ContractDetail extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       pageNum: 1,
       pageSize: baseConfig.pageSize,
-      chainCodeName: ''
-    }
+      chainCodeName: '',
+    };
     this.columns = [
       {
         title: '合约版本',
@@ -43,7 +44,7 @@ class ContractDetail extends Component {
         title: '创建时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
       },
       {
         title: '操作',
@@ -55,7 +56,7 @@ class ContractDetail extends Component {
           </Space>
         ),
       },
-    ]
+    ];
   }
 
   // componentDidMount() {
@@ -77,11 +78,15 @@ class ContractDetail extends Component {
       type: 'Contract/getChainCodeHistoryTotalDocs',
       payload: params,
     });
-  }
+  };
   // 获取合约列表
-  getChainCodeHistory = current => {
+  getChainCodeHistory = (current) => {
     const { pageNum, pageSize } = this.state;
-    const { location: { query: { chainCodeName = '', channelName = '' } } } = this.props;
+    const {
+      location: {
+        query: { chainCodeName = '', channelName = '' },
+      },
+    } = this.props;
     const offset = ((current || pageNum) - 1) * pageSize;
     const params = {
       offset,
@@ -90,98 +95,97 @@ class ContractDetail extends Component {
       from: Number(moment(new Date()).format('x')),
       chainCodeName,
       networkName: this.props.User.networkName,
-      channelName
-    }
+      channelName,
+    };
     this.props.dispatch({
       type: 'Contract/getChainCodeHistory',
-      payload: params
-    })
-  }
+      payload: params,
+    });
+  };
 
   // 翻页
-  onPageChange = pageInfo => {
-    this.setState({ pageNum: pageInfo.current })
-    this.getChainCodeHistory(pageInfo.current)
-  }
-
+  onPageChange = (pageInfo) => {
+    this.setState({ pageNum: pageInfo.current });
+    this.getChainCodeHistory(pageInfo.current);
+  };
 
   // 查看合约详情
-  onClickDetail = record => {
+  onClickDetail = (record) => {
     history.push({
       pathname: `/about/contract/myContract/contractHistoryDetail`,
       query: {
         version: record.version,
         chainCodeId: record._id,
         chainCodeName: record.chainCodeName,
-        channelName: record.channelName
+        channelName: record.channelName,
       },
-    })
-  }
+    });
+  };
 
   render() {
     const { qryLoading = false } = this.props;
     const { pageSize, pageNum } = this.state;
     const chaincodeInfo = this.props.location?.state;
-    const { curContractDetail, curContractVersionList, curContractVersionTotal } = this.props.Contract;
+    const { curContractVersionList, curContractVersionTotal } = this.props.Contract;
     const contractInfoList = [
       {
         label: '合约名称',
-        value: chaincodeInfo.chainCodeName
+        value: chaincodeInfo.chainCodeName,
       },
       {
         label: '所属通道',
-        value: chaincodeInfo.channelId
+        value: chaincodeInfo.channelId,
       },
       {
         label: '合约语言类型',
-        value: chaincodeInfo.chainCodePackageMetaData ? chaincodeInfo.chainCodePackageMetaData.language : ''
+        value: chaincodeInfo.chainCodePackageMetaData ? chaincodeInfo.chainCodePackageMetaData.language : '',
       },
       {
         label: '当前版本',
-        value: chaincodeInfo.chainCodeVersion
+        value: chaincodeInfo.chainCodeVersion,
       },
       {
         label: '创建组织',
-        value: chaincodeInfo.createOrgName
+        value: chaincodeInfo.createOrgName,
       },
       {
         label: '创建时间',
-        value: chaincodeInfo.createdAt ? moment(chaincodeInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -'
+        value: chaincodeInfo.createdAt ? moment(chaincodeInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -',
       },
       {
         label: '背书组织',
         fullRow: true,
-        value: chaincodeInfo.endorsementPolicy ? JSON.stringify(chaincodeInfo.endorsementPolicy.orgsToApprove) : ''
+        value: chaincodeInfo.endorsementPolicy ? JSON.stringify(chaincodeInfo.endorsementPolicy.orgsToApprove) : '',
       },
       {
         label: '合约描述',
         fullRow: true,
-        value: chaincodeInfo.description
+        value: chaincodeInfo.description,
       },
-    ]
+    ];
     return (
-      <div className='page-wrapper'>
+      <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <Spin spinning={qryLoading}>
-          <div className='page-content'>
-            <DetailCard cardTitle='合约信息' detailList={contractInfoList} columnsNum={3} boxShadow='0 4px 12px 0 rgba(0,0,0,.05)' />
+          <div className="page-content">
+            <DetailCard cardTitle="合约信息" detailList={contractInfoList} columnsNum={3} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
             <Table
-              rowKey='id'
+              rowKey="id"
               columns={this.columns}
-              className='page-content-shadow'
+              className="page-content-shadow"
               dataSource={curContractVersionList}
               onChange={this.onPageChange}
               pagination={{ pageSize, total: curContractVersionTotal, current: pageNum, position: ['bottomCenter'] }}
             />
           </div>
         </Spin>
-      </div >
-    )
+      </div>
+    );
   }
 }
 
 export default connect(({ User, Contract, loading }) => ({
   User,
   Contract,
-  qryLoading: loading.effects['Contract/getDetailOfChainCode'] || loading.effects['Contract/getChainCodeHistory']
+  qryLoading: loading.effects['Contract/getDetailOfChainCode'] || loading.effects['Contract/getChainCodeHistory'],
 }))(ContractDetail);

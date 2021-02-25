@@ -19,7 +19,8 @@ function LeftMenu(props) {
   const [openKeys, setOpenKeys] = useState([]);
 
   const hashChange = (menu) => {
-    if (networkStatusInfo.networkStatus !== NetworkStatus.Running) {
+    const unavailableNetworkStatus = [NetworkStatus.NotExist, NetworkStatus.UnknownError];
+    if (unavailableNetworkStatus.includes(networkStatusInfo.networkStatus)) {
       const warnMes = userRole === Roles.NetworkAdmin ? '请先创建网络' : '请等待盟主创建网络';
       message.warn(warnMes);
       return;
@@ -82,7 +83,7 @@ function LeftMenu(props) {
       if (pathname.indexOf(menu.menuHref) > -1) {
         if (menu.menuPid !== 2) {
           const parentMenu = allMenu.find((item) => item.id === menu.menuPid);
-          setOpenKeys(parentMenu.menuHref);
+          setOpenKeys([parentMenu.menuHref]);
         }
         dispatch({
           type: 'Layout/common',

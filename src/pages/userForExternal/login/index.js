@@ -7,50 +7,49 @@ import { LoginMessage } from 'components';
 import LoginStatus from 'utils/loginStatus';
 import styles from './index.less';
 
-
 const { UserName, Password, Submit } = LoginFrom;
 
 function Login(props) {
-
   const [form] = Form.useForm();
-  const { logining, dispatch, location, User } = props;
+  const { loginLoading, dispatch, location, User } = props;
   const { loginInfo, loginStatus } = User;
 
   const handleSubmit = () => {
-    form.validateFields().then(values => {
-      dispatch({
-        type: 'User/login',
-        payload: values
-      }).then(res => {
-        if (res) {
-          const search = window.location.search ? window.location.search.replace('?', '') : '';
-          const { redirect } = parse(search);
-          if (redirect) {
-            window.top.postMessage(res.access_token, redirect);
-            window.location.replace(`${redirect}#${res.access_token}`);
-          } else {
-            history.replace('/selectLeague');
+    form
+      .validateFields()
+      .then((values) => {
+        dispatch({
+          type: 'User/login',
+          payload: values,
+        }).then((res) => {
+          if (res) {
+            const search = window.location.search ? window.location.search.replace('?', '') : '';
+            const { redirect } = parse(search);
+            if (redirect) {
+              window.top.postMessage(res.access_token, redirect);
+              window.location.replace(`${redirect}#${res.access_token}`);
+            } else {
+              history.replace('/selectLeague');
+            }
           }
-        }
+        });
       })
-    }).catch(info => {
-      console.log('校验失败:', info);
-    });
+      .catch((info) => {
+        console.log('校验失败:', info);
+      });
   };
 
   useEffect(() => {
     dispatch({
       type: 'User/common',
-      payload: { loginStatus: '', userAndregister: false }
-    })
+      payload: { loginStatus: '', userAndRegister: false },
+    });
   }, []);
 
   return (
     <div className={styles.main}>
       <h3>登录</h3>
-      {loginStatus === LoginStatus.loginError && !logining && (
-        <LoginMessage content={loginInfo} />
-      )}
+      {loginStatus === LoginStatus.loginError && !loginLoading && <LoginMessage content={loginInfo} />}
       <LoginFrom form={form} onSubmit={handleSubmit}>
         <UserName
           name="email"
@@ -73,7 +72,7 @@ function Login(props) {
             },
           ]}
         />
-        <Submit loading={logining}>登录</Submit>
+        <Submit loading={loginLoading}>登录</Submit>
         <div className={styles.other}>
           暂无账号?
           <Link className={styles.register} to="/user/register">
@@ -83,9 +82,9 @@ function Login(props) {
       </LoginFrom>
     </div>
   );
-};
+}
 
 export default connect(({ User, loading }) => ({
   User,
-  logining: loading.effects['User/login']
+  loginLoading: loading.effects['User/login'],
 }))(Login);

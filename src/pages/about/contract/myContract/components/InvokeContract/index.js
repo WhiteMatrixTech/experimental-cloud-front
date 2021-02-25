@@ -145,5 +145,5 @@ function InvokeContract(props) {
 export default connect(({ Contract, User, loading }) => ({
   Contract,
   User,
-  invokeLoading: loading.effects['Contract/invokeChainCodeMethod'],
+  invokeLoading: loading.effects['Contract/invokeChainCodeMethod'] || loading.effects['Contract/queryChainCodeMethod'],
 }))(InvokeContract);

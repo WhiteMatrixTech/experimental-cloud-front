@@ -7,7 +7,7 @@ import { Roles } from 'utils/roles';
 import { StatisticsCard, Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { NetworkStatus, NetworkInfo } from 'utils/networkStatus';
-import CreateNetwork from './components/CreateNetwork';
+import CreateNetworkModal from './components/CreateNetworkModal';
 import config from 'utils/config';
 import style from './index.less';
 
@@ -18,7 +18,7 @@ function LeagueDashboard(props) {
   const { leagueName, networkName, userRole } = User;
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
-  const { networkStatusInfo, transactionList, blockList, unionTotal } = Dashboard;
+  const { networkStatusInfo, transactionList, blockList, channelTotal } = Dashboard;
   const [showCreateNetworkBtn, setShowCreateNetworkBtn] = useState(false);
   const [showCreateChannelBtn, setShowCreateChannelBtn] = useState(false);
   const [createVisible, setCreateVisible] = useState(false);
@@ -28,7 +28,7 @@ function LeagueDashboard(props) {
       label: `${userRole === Roles.NetworkMember ? '已入联盟' : '成员'}`,
       num: Dashboard.memberTotal,
     },
-    { label: '通道', num: Dashboard.unionTotal },
+    { label: '通道', num: Dashboard.channelTotal },
     { label: '合约', num: Dashboard.myContractTotal },
     { label: '区块', num: Dashboard.blockTotal },
     { label: '交易', num: Dashboard.transactionTotal },
@@ -69,14 +69,14 @@ function LeagueDashboard(props) {
   };
 
   // 点击去创建通道
-  const linkToUnion = (e) => {
+  const linkToCreateChannel = (e) => {
     e.preventDefault();
     dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/unionList' },
+      payload: { selectedMenu: '/about/channelList' },
     });
     history.push({
-      pathname: '/about/unionList',
+      pathname: '/about/channelList',
       state: { openModal: true },
     });
   };
@@ -248,12 +248,12 @@ function LeagueDashboard(props) {
     } else {
       setShowCreateNetworkBtn(false);
     }
-    if (userRole === Roles.NetworkAdmin && Dashboard.unionTotal === 0 && networkStatusInfo.networkStatus === NetworkStatus.Running) {
+    if (userRole === Roles.NetworkAdmin && Dashboard.channelTotal === 0 && networkStatusInfo.networkStatus === NetworkStatus.Running) {
       setShowCreateChannelBtn(true);
     } else {
       setShowCreateChannelBtn(false);
     }
-  }, [unionTotal, userRole, networkStatusInfo]);
+  }, [channelTotal, userRole, networkStatusInfo]);
 
   return (
     <div className="page-wrapper">
@@ -276,7 +276,7 @@ function LeagueDashboard(props) {
                 {showCreateChannelBtn && (
                   <>
                     <span>，网络中暂无通道，</span>
-                    <a onClick={linkToUnion}>去创建</a>
+                    <a onClick={linkToCreateChannel}>去创建</a>
                   </>
                 )}
               </Col>
@@ -301,7 +301,7 @@ function LeagueDashboard(props) {
           pagination={false}
         />
       </div>
-      {createVisible && <CreateNetwork visible={createVisible} onCancel={onClickCancel} />}
+      {createVisible && <CreateNetworkModal visible={createVisible} onCancel={onClickCancel} />}
     </div>
   );
 }
