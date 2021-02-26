@@ -120,9 +120,11 @@ export default {
           type: 'common',
           payload: {
             roleToken: result.role_token,
+            accessToken: result.access_token,
           },
         });
         localStorage.setItem('roleToken', result.role_token);
+        localStorage.setItem('accessToken', result.access_token);
         return true;
       } else {
         notification.error({ message: result.message || '无法进入联盟', top: 64, duration: 1 });

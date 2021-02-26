@@ -70,7 +70,7 @@ export const request = (url, options) => {
   // token校验
   const accessToken = localStorage.getItem('accessToken');
   const roleToken = localStorage.getItem('roleToken');
-  const needsToken = window.location.href.indexOf('/userForexternal/login') === -1;
+  const needsToken = window.location.href.indexOf('/userForExternal/login') === -1;
   if (accessToken && needsToken) {
     headers.Authorization = `Bearer ${accessToken}`;
   }
@@ -113,7 +113,7 @@ export const fetchRequest = (url, options) => {
   // token校验
   const accessToken = localStorage.getItem('accessToken');
   const roleToken = localStorage.getItem('roleToken');
-  const needsToken = window.location.href.indexOf('/userForexternal/login') === -1;
+  const needsToken = window.location.href.indexOf('/userForExternal/login') === -1;
   if (accessToken && needsToken) {
     defaultOptions.headers.Authorization = `Bearer ${accessToken}`;
   }
