@@ -11,6 +11,7 @@
     "@umijs/fabric": "^2.2.2",
     "@umijs/preset-react": "^1",
     "babel-eslint": "^9.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^5.4.0",
     "eslint-config-umi": "^0.1.5",
     "eslint-plugin-flowtype": "^2.50.0",

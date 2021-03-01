@@ -51,7 +51,7 @@ export default {
 
   // 用于提供给代码中可用的变量
   define: {
-    'process.env.CHAIN_IDE_LINK': 'https://fabric.test.chainide.cn/project/welcome', // ChainIDE地址
-    'process.env.BAAS_BACKEND_LINK': 'https://yzjszjr-chainbaas-api.test.chainide.cn', // BaaS Backend地址
+    'process.env.CHAIN_IDE_LINK': process.env.CHAIN_IDE_LINK || 'https://fabric.test.chainide.cn/project/welcome', // ChainIDE地址
+    'process.env.BAAS_BACKEND_LINK': process.env.BAAS_BACKEND_LINK || 'https://yzjszjr-chainbaas-api.test.chainide.cn', // BaaS Backend地址
   },
 };
