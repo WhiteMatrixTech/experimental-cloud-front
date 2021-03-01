@@ -43,7 +43,7 @@ export default {
 
   proxy: {
     '/api': {
-      target: 'http://yzjszjr-chainbaas-api.test.chainide.cn',
+      target: process.env.API_ENDPOINT || 'http://yzjszjr-chainbaas-api.test.chainide.cn',
       changeOrigin: false,
       pathRewrite: { '^/api': '' },
     },
