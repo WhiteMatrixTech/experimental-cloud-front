@@ -186,18 +186,14 @@ const StepTwo = (props) => {
       >
         <FormItem
           name="password"
-          className={
-            form.getFieldValue('password') &&
-            form.getFieldValue('password').length > 0 &&
-            styles.password
-          }
+          className={form.getFieldValue('password') && form.getFieldValue('password').length > 0 && styles.password}
           rules={[
             {
               validator: checkPassword,
             },
           ]}
         >
-          <Input size="large" type="pass" placeholder="至少6位密码，区分大小写" />
+          <Input size="large" type="password" placeholder="至少6位密码，区分大小写" />
         </FormItem>
       </Popover>
       <FormItem
