@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { history } from 'umi';
 import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import cs from 'classnames';
 import moment from 'moment';
 import { Roles } from 'utils/roles';
 import isEmpty from 'lodash/isEmpty';
@@ -289,8 +290,8 @@ function EnterpriseMember(props) {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className="page-content page-content-shadow">
-        <div className={styles['search-wrapper']}>
+      <div className="page-content">
+        <div className={cs(styles['search-wrapper'], 'page-content-shadow')}>
           <Form {...formItemLayout} colon={false} form={form}>
             <Row gutter={24}>
               <Col span={8}>
@@ -300,12 +301,7 @@ function EnterpriseMember(props) {
               </Col>
               <Col span={8}>
                 <Item label="申请时间" name="createTime" initialValue={[]}>
-                  <RangePicker
-                    getCalendarContainer={(triggerNode) => triggerNode.parentNode}
-                    style={{ width: '100%' }}
-                    // format="YYYY-MM-DD HH:mm:ss"
-                    showTime
-                  />
+                  <RangePicker getCalendarContainer={(triggerNode) => triggerNode.parentNode} style={{ width: '100%' }} showTime />
                 </Item>
               </Col>
               <Col span={8}>
@@ -320,29 +316,31 @@ function EnterpriseMember(props) {
                 </Item>
               </Col>
               <Col span={8} offset={16} style={{ textAlign: 'right' }}>
-                <Button type="primary" onClick={onSearch}>
-                  查询
-                </Button>
-                <Button style={{ marginLeft: '10px' }} onClick={resetForm}>
-                  重置
-                </Button>
+                <Space size="middle">
+                  <Button onClick={resetForm}>重置</Button>
+                  <Button type="primary" onClick={onSearch}>
+                    查询
+                  </Button>
+                </Space>
               </Col>
             </Row>
           </Form>
         </div>
-        <Table
-          rowKey="_id"
-          columns={columns}
-          loading={qryLoading}
-          dataSource={memberList}
-          onChange={onPageChange}
-          pagination={{
-            pageSize,
-            total: memberTotal,
-            current: pageNum,
-            position: ['bottomCenter'],
-          }}
-        />
+        <div className="table-wrapper page-content-shadow">
+          <Table
+            rowKey="_id"
+            columns={columns}
+            loading={qryLoading}
+            dataSource={memberList}
+            onChange={onPageChange}
+            pagination={{
+              pageSize,
+              total: memberTotal,
+              current: pageNum,
+              position: ['bottomCenter'],
+            }}
+          />
+        </div>
       </div>
     </div>
   );

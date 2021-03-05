@@ -190,10 +190,10 @@ class PrivacyStrategy extends Component {
     return (
       <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
-        <div className="page-content page-content-shadow">
+        <div className="page-content page-content-shadow table-wrapper">
           <div className={style['table-header-btn-wrapper']}>
             <Button type="primary" onClick={this.onClickAdd}>
-              新建策略
+              新增策略
             </Button>
           </div>
           <Table

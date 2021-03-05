@@ -186,7 +186,7 @@ function ChannelManagement(props) {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className="page-content">
+      <div className="page-content page-content-shadow table-wrapper">
         {userRole === Roles.NetworkAdmin && (
           <div className="table-header-btn-wrapper">
             <Button type="primary" onClick={onClickCreateChannel}>
@@ -198,7 +198,6 @@ function ChannelManagement(props) {
           rowKey="_id"
           loading={qryLoading}
           columns={columns}
-          className="page-content-shadow"
           dataSource={channelList}
           onChange={onPageChange}
           pagination={{ pageSize, total: channelTotal, current: pageNum, showSizeChanger: false, position: ['bottomCenter'] }}

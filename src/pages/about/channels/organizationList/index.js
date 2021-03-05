@@ -149,7 +149,7 @@ class OrganizationList extends Component {
             rowKey="_id"
             loading={qryLoading}
             columns={this.columns}
-            className="page-content-shadow"
+            className="page-content-shadow table-wrapper"
             dataSource={orgListOfChannel}
             onChange={this.onPageChange}
             pagination={{ pageSize, total: orgTotalOfChannel, current: pageNum, position: ['bottomCenter'] }}
