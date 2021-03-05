@@ -1,17 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { history, connect } from 'umi';
-import { PlusOutlined, RocketTwoTone } from '@ant-design/icons';
-import { Row, Col, Button, Spin, Empty, Divider } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Spin, Empty, Divider, Pagination } from 'antd';
 import CreateLeague from './components/CreateLeague';
+import { LeagueCard } from './components/LeagueCard';
 import { Roles } from 'utils/roles.js';
 import { getDifferenceSet } from 'utils';
-import moment from 'moment';
 import styles from './index.less';
 
 function SelectLeague(props) {
   const { joinLoading = false, dispatch, User } = props;
   const { userInfo, networkList, myNetworkList } = User;
   const [visible, setVisible] = useState(false);
+  const [myLeaguePageNum, setMyLeaguePageNum] = useState(1);
+  const [optionLeaguePageNum, setOptionLeaguePageNum] = useState(1);
+
+  // 分页
+  const getMyLeagueListFromPage = useMemo(() => {
+    return myNetworkList.slice((myLeaguePageNum - 1) * 7, myLeaguePageNum * 7);
+  }, [myNetworkList, myLeaguePageNum]);
+
+  const onMyLeaguePageChange = (page) => {
+    setMyLeaguePageNum(page);
+  };
+
+  const getOptionalNetwork = useMemo(() => {
+    return getDifferenceSet(networkList, myNetworkList, 'networkName');
+  }, [networkList, myNetworkList]);
+
+  // 分页
+  const getOptionLeagueListFromPage = useMemo(() => {
+    return getOptionalNetwork.slice((optionLeaguePageNum - 1) * 8, optionLeaguePageNum * 8);
+  }, [getOptionalNetwork, optionLeaguePageNum]);
+
+  const onOptionLeaguePageChange = (page) => {
+    setOptionLeaguePageNum(page);
+  };
 
   const onCancel = (label) => {
     setVisible(false);
@@ -25,10 +49,6 @@ function SelectLeague(props) {
 
   const onClickNew = () => {
     setVisible(true);
-  };
-
-  const getOptionalNetwork = () => {
-    return getDifferenceSet(networkList, myNetworkList, 'networkName');
   };
 
   // 点击加入联盟
@@ -93,25 +113,23 @@ function SelectLeague(props) {
         <h3>加入联盟</h3>
         <Spin spinning={joinLoading}>
           <Row gutter={16} className={styles['league-wrapper']}>
-            {getOptionalNetwork().map((league, i) => (
+            {getOptionLeagueListFromPage.map((league, i) => (
               <Col span={6} key={`${league.leagueName}_${i}`}>
-                <div className={styles['league-card']} onClick={() => onJoinLeague(league)}>
-                  <div className={styles['card-header']}>
-                    <span className={styles.icon}>
-                      <RocketTwoTone />
-                    </span>
-                    <span className={styles['league-name']}>{league.leagueName}</span>
-                  </div>
-                  <div className={styles['card-content']}>{league.description}</div>
-                  <div className={styles['card-footer']}>
-                    <div className={styles.allies}>Create Time</div>
-                    <div className={styles.createTime}>{league.createdTime ? moment(league.createdTime).format('YYYY-MM-DD HH:mm:ss') : ''}</div>
-                  </div>
-                </div>
+                <LeagueCard showTime="Create Time" onClickCard={onJoinLeague} leagueInfo={league} />
               </Col>
             ))}
           </Row>
-          {getOptionalNetwork().length === 0 && <Empty description="暂无联盟可加入" />}
+          {getOptionalNetwork.length === 0 && <Empty description="暂无联盟可加入" />}
+          {getOptionalNetwork.length > 8 && (
+            <Pagination
+              pageNum={optionLeaguePageNum}
+              pageSize={8}
+              total={getOptionalNetwork.length}
+              onChange={onOptionLeaguePageChange}
+              showTotal={(total) => `共 ${total} 条`}
+              style={{ textAlign: 'center' }}
+            />
+          )}
         </Spin>
       </div>
       <Divider />
@@ -133,24 +151,22 @@ function SelectLeague(props) {
               </Button>
             </Col>
           )}
-          {myNetworkList.map((league, i) => (
+          {getMyLeagueListFromPage.map((league, i) => (
             <Col span={6} key={`${league.leagueName}_${i}`}>
-              <div className={styles['league-card']} onClick={() => onClickLeague(league)}>
-                <div className={styles['card-header']}>
-                  <span className={styles.icon}>
-                    <RocketTwoTone />
-                  </span>
-                  <span className={styles['league-name']}>{league.leagueName}</span>
-                </div>
-                <div className={styles['card-content']}>{league.description}</div>
-                <div className={styles['card-footer']}>
-                  <div className={styles.allies}>Join Time</div>
-                  <div className={styles.createTime}>{league.timeAdded ? moment(league.timeAdded).format('YYYY-MM-DD HH:mm:ss') : ''}</div>
-                </div>
-              </div>
+              <LeagueCard onClickCard={onClickLeague} leagueInfo={league} />
             </Col>
           ))}
         </Row>
+        {myNetworkList.length > 7 && (
+          <Pagination
+            pageNum={myLeaguePageNum}
+            pageSize={7}
+            total={myNetworkList.length}
+            onChange={onMyLeaguePageChange}
+            showTotal={(total) => `共 ${total} 条`}
+            style={{ textAlign: 'center' }}
+          />
+        )}
       </div>
       {visible && <CreateLeague visible={visible} onCancel={onCancel} />}
     </div>
