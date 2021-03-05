@@ -149,16 +149,17 @@ class ChaincodeList extends Component {
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className="page-content">
           <DetailCard cardTitle="基本信息" detailList={channelInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
-          <SearchBar placeholder="输入合约名称" onSearch={this.onSearch} />
-          <Table
-            rowKey="_id"
-            loading={qryLoading}
-            columns={this.columns}
-            className="page-content-shadow"
-            dataSource={contractListOfChannel}
-            onChange={this.onPageChange}
-            pagination={{ pageSize, total: contractTotalOfChannel, current: pageNum, position: ['bottomCenter'] }}
-          />
+          <div className="table-wrapper page-content-shadow">
+            <SearchBar placeholder="输入合约名称" onSearch={this.onSearch} />
+            <Table
+              rowKey="_id"
+              loading={qryLoading}
+              columns={this.columns}
+              dataSource={contractListOfChannel}
+              onChange={this.onPageChange}
+              pagination={{ pageSize, total: contractTotalOfChannel, current: pageNum, position: ['bottomCenter'] }}
+            />
+          </div>
         </div>
       </div>
     );

@@ -135,7 +135,7 @@ function EvidenceDataList(props) {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className="page-content page-content-shadow">
+      <div className="page-content page-content-shadow table-wrapper">
         <SearchBar placeholder="输入存证哈希" onSearch={onSearch} btnName="存证上链" onClickBtn={onClickUpload} />
         <Table
           rowKey="_id"

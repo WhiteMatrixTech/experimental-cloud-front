@@ -142,7 +142,7 @@ class NodeList extends Component {
             rowKey="_id"
             loading={qryLoading}
             columns={this.columns}
-            className="page-content-shadow"
+            className="page-content-shadow table-wrapper"
             dataSource={nodeListOfChannel}
             onChange={this.onPageChange}
             pagination={{ pageSize, total: nodeTotalOfChannel, current: pageNum, position: ['bottomCenter'] }}

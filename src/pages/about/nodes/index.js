@@ -149,7 +149,7 @@ function NodeManagement(props) {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className="page-content">
+      <div className="page-content page-content-shadow table-wrapper">
         <div className="table-header-btn-wrapper">
           <Button type="primary" onClick={onClickCreateNode}>
             创建节点
@@ -159,7 +159,6 @@ function NodeManagement(props) {
           rowKey="_id"
           loading={qryLoading}
           columns={columns}
-          className="page-content-shadow"
           dataSource={nodeList}
           onChange={onPageChange}
           pagination={{ pageSize, total: nodeTotal, current: pageNum, showSizeChanger: false, position: ['bottomCenter'] }}

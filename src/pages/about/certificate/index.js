@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { Table, Row, Col, Form, Select, Input, Button, Space } from 'antd';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
@@ -13,19 +13,19 @@ const { Item } = Form;
 const { Option } = Select;
 
 const formItemLayout = {
-  labelCol: { span: 8, },
-  wrapperCol: { span: 16 }
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
 };
 const initSearchObj = {
   certificateName: '',
-  certificateSecretType: ''
-}
+  certificateSecretType: '',
+};
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/certificate')
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/certificate');
 
 function Certificate(props) {
-  const { Certificate, qryLoading, dispatch,User } = props;
-  const {networkName} = User;
+  const { Certificate, qryLoading, dispatch, User } = props;
+  const { networkName } = User;
   const { certificateList = [], certificateTotal = 0 } = Certificate;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
@@ -43,13 +43,13 @@ function Certificate(props) {
       title: '密钥类型',
       dataIndex: 'certificateSecretType',
       key: 'certificateSecretType',
-      render: text => text || SecretType[text]
+      render: (text) => text || SecretType[text],
     },
     {
       title: '上传时间',
       dataIndex: 'createTime',
       key: 'createTime',
-      render: text => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '',
+      render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
     },
     {
       title: '操作',
@@ -60,7 +60,7 @@ function Certificate(props) {
         </Space>
       ),
     },
-  ]
+  ];
 
   // 查询列表
   const getCertificateList = () => {
@@ -71,49 +71,52 @@ function Certificate(props) {
       offset,
       ascend: false,
       limit: pageSize,
-      from: Number(moment(new Date()).format('x'))
-    }
+      from: Number(moment(new Date()).format('x')),
+    };
     dispatch({
       type: 'Certificate/getCertificateList',
-      payload: params
-    })
-  }
+      payload: params,
+    });
+  };
 
   // 搜索
   const onSearch = useCallback(() => {
-    form.validateFields().then(values => {
-      const params = {
-        networkName,
-        certificateName: values.certificateName,
-        certificateSecretType: values.certificateSecretType
-      }
-      setQueryParams(params)
-    }).catch(info => {
-      console.log('校验失败:', info);
-    })
-  }, [])
+    form
+      .validateFields()
+      .then((values) => {
+        const params = {
+          networkName,
+          certificateName: values.certificateName,
+          certificateSecretType: values.certificateSecretType,
+        };
+        setQueryParams(params);
+      })
+      .catch((info) => {
+        console.log('校验失败:', info);
+      });
+  }, []);
 
   // 点击证书上传
   const onClickUpload = () => {
-    setUploadVisible(true)
-  }
+    setUploadVisible(true);
+  };
 
   // 取消证书上传
   const onCloseUpload = () => {
-    setUploadVisible(false)
-  }
+    setUploadVisible(false);
+  };
 
   // 重置
   const resetForm = () => {
-    form.resetFields()
-    setPageNum(1)
-    setQueryParams(initSearchObj)
-  }
+    form.resetFields();
+    setPageNum(1);
+    setQueryParams(initSearchObj);
+  };
 
   // 翻页
-  const onPageChange = pageInfo => {
-    setPageNum(pageInfo.current)
-  }
+  const onPageChange = (pageInfo) => {
+    setPageNum(pageInfo.current);
+  };
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
@@ -121,53 +124,59 @@ function Certificate(props) {
   }, [pageNum, queryParams]);
 
   return (
-    <div className='page-wrapper'>
+    <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content page-content-shadow'>
+      <div className="page-content">
         <div className={styles['search-wrapper']}>
           <Form {...formItemLayout} colon={false} form={form}>
             <Row gutter={24}>
               <Col span={8}>
-                <Item label='密钥类型' name='certificateSecretType' initialValue={null}>
-                  <Select
-                    getCalendarContainer={triggerNode => triggerNode.parentNode}
-                    style={{ width: '100%' }}
-                    placeholder='请选择密钥类型'
-                  >
-                    {Object.keys(SecretType).map(item =>
-                      <Option key={item} value={item}>{SecretType[item]}</Option>
-                    )}
+                <Item label="密钥类型" name="certificateSecretType" initialValue={null}>
+                  <Select getCalendarContainer={(triggerNode) => triggerNode.parentNode} style={{ width: '100%' }} placeholder="请选择密钥类型">
+                    {Object.keys(SecretType).map((item) => (
+                      <Option key={item} value={item}>
+                        {SecretType[item]}
+                      </Option>
+                    ))}
                   </Select>
                 </Item>
               </Col>
               <Col span={8}>
-                <Item label='证书名称' name='certificateName' initialValue=''>
-                  <Input placeholder='请输入证书名称' />
+                <Item label="证书名称" name="certificateName" initialValue="">
+                  <Input placeholder="请输入证书名称" />
                 </Item>
               </Col>
               <Col span={8} style={{ textAlign: 'right' }}>
-                <Button type='primary' onClick={onClickUpload} >证书上传</Button>
-                <Button type='primary' style={{ marginLeft: '10px' }} onClick={onSearch} >查询</Button>
-                <Button style={{ marginLeft: '10px' }} onClick={resetForm}>重置</Button>
+                <Button type="primary" onClick={onClickUpload}>
+                  证书上传
+                </Button>
+                <Button type="primary" style={{ marginLeft: '10px' }} onClick={onSearch}>
+                  查询
+                </Button>
+                <Button style={{ marginLeft: '10px' }} onClick={resetForm}>
+                  重置
+                </Button>
               </Col>
             </Row>
           </Form>
         </div>
-        <Table
-          rowKey='id'
-          columns={columns}
-          loading={qryLoading}
-          onChange={onPageChange}
-          dataSource={certificateList}
-          pagination={{ pageSize, total: certificateTotal, current: pageNum, position: ['bottomCenter'] }}
-        />
+        <div className="table-wrapper page-content-shadow">
+          <Table
+            rowKey="id"
+            columns={columns}
+            loading={qryLoading}
+            onChange={onPageChange}
+            dataSource={certificateList}
+            pagination={{ pageSize, total: certificateTotal, current: pageNum, position: ['bottomCenter'] }}
+          />
+        </div>
       </div>
       {uploadVisible && <CertificateUpload visible={uploadVisible} onCancel={onCloseUpload} />}
     </div>
-  )
+  );
 }
 
-export default connect(({User, Certificate, loading }) => ({
+export default connect(({ User, Certificate, loading }) => ({
   User,
   Certificate,
   qryLoading: loading.effects['Certificate/getCertificateList'],

@@ -14,7 +14,7 @@ const MenuList = [
     id: 35,
     menuPid: 2,
     menuHref: '/about/leagueDashboard',
-    menuIcon: 'KBassyibiaopan',
+    menuIcon: 'KBasslianmengguanli1',
     menuName: '联盟总览',
     isFeature: 0,
     menuVos: [],
@@ -76,6 +76,15 @@ const MenuList = [
   {
     id: 43,
     menuPid: 2,
+    menuHref: '/about/fabricUsers',
+    menuIcon: 'KBasslianmengguanli',
+    menuName: '用户管理',
+    isFeature: 0,
+    menuVos: [],
+  },
+  {
+    id: 44,
+    menuPid: 2,
     menuHref: '/about/contract',
     menuIcon: 'KBassheyueguanli',
     menuName: '合约管理',
@@ -120,16 +129,16 @@ const MenuList = [
     ],
   },
   {
-    id: 46,
+    id: 45,
     menuPid: 2,
     menuHref: '/about/evidence',
-    menuIcon: 'KBassqiyeguanli',
+    menuIcon: 'KBasszhengshuguanli',
     menuName: '存证上链',
     isFeature: 0,
     menuVos: [],
   },
   // {
-  //   id: 47,
+  //   id: 46,
   //   menuPid: 2,
   //   menuHref: "/about/certificate",
   //   menuIcon: "KBasszhengshuguanli",
@@ -138,7 +147,7 @@ const MenuList = [
   //   menuVos: []
   // },
   // {
-  //   id: 48,
+  //   id: 47,
   //   menuPid: 2,
   //   menuHref: "/about/logsList",
   //   menuIcon: "KBassdakaixinfeng",
@@ -147,10 +156,10 @@ const MenuList = [
   //   menuVos: []
   // },
   {
-    id: 49,
+    id: 48,
     menuPid: 2,
     menuHref: '/about/enterpriseMember',
-    menuIcon: 'KBassqiyeguanli',
+    menuIcon: 'KBasschengyuanguanli',
     menuName: '成员管理',
     isFeature: 1, // 是否只有盟主才显示
     menuVos: [],
@@ -168,7 +177,7 @@ const MenuList = [
     id: 52,
     menuPid: 2,
     menuHref: '/about/myinfo',
-    menuIcon: 'KBasschengyuanguanli',
+    menuIcon: 'KBasswodexinxi',
     menuName: '我的信息',
     isFeature: 0,
     menuVos: [

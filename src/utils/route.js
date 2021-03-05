@@ -120,6 +120,10 @@ export function getRoutes() {
           exact: true,
         },
         {
+          path: '/about/fabricUsers',
+          exact: true,
+        },
+        {
           path: '/about/transactions',
           exact: true,
         },

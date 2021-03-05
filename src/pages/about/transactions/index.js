@@ -5,7 +5,6 @@ import { Table, Space } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, SearchBar } from 'components';
 import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles.js';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
@@ -134,7 +133,7 @@ function Transactions(props) {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className="page-content page-content-shadow">
+      <div className="page-content page-content-shadow table-wrapper">
         <SearchBar placeholder="交易ID" onSearch={onSearch} />
         <Table
           rowKey="_id"

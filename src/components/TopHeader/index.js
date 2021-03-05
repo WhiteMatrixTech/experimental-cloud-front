@@ -15,9 +15,10 @@ class TopHeader extends PureComponent {
   }
 
   getUserMenu = () => {
+    const showChangeLeague = window.location.pathname.indexOf('about') > -1;
     return (
       <Menu theme="dark" onClick={this.handleUserMenuClick}>
-        <Menu.Item key="changeLeague">切换联盟</Menu.Item>
+        {showChangeLeague && <Menu.Item key="changeLeague">切换联盟</Menu.Item>}
         <Menu.Item key="loginOut">退出账号</Menu.Item>
       </Menu>
     );
