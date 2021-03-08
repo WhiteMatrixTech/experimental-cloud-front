@@ -122,6 +122,7 @@ function SelectLeague(props) {
           {getOptionalNetwork.length === 0 && <Empty description="暂无联盟可加入" />}
           {getOptionalNetwork.length > 8 && (
             <Pagination
+              showSizeChanger={false}
               pageNum={optionLeaguePageNum}
               pageSize={8}
               total={getOptionalNetwork.length}
@@ -159,6 +160,7 @@ function SelectLeague(props) {
         </Row>
         {myNetworkList.length > 7 && (
           <Pagination
+            showSizeChanger={false}
             pageNum={myLeaguePageNum}
             pageSize={7}
             total={myNetworkList.length}
