@@ -291,15 +291,12 @@ function LeagueDashboard(props) {
           </div>
         </Spin>
         <StatisticsCard statisticsList={statisticsList} />
-        <Table rowKey="_id" columns={blockColumns} loading={qryBlockLoading} dataSource={blockList} className="page-content-shadow" pagination={false} />
-        <Table
-          rowKey="_id"
-          columns={transactionColumns}
-          loading={qryTransactionLoading}
-          dataSource={transactionList}
-          className="page-content-shadow"
-          pagination={false}
-        />
+        <div className="page-content page-content-shadow table-wrapper">
+          <Table rowKey="_id" columns={blockColumns} loading={qryBlockLoading} dataSource={blockList} pagination={false} />
+        </div>
+        <div className="page-content page-content-shadow table-wrapper">
+          <Table rowKey="_id" columns={transactionColumns} loading={qryTransactionLoading} dataSource={transactionList} pagination={false} />
+        </div>
       </div>
       {createVisible && <CreateNetworkModal visible={createVisible} onCancel={onClickCancel} />}
     </div>
