@@ -14,23 +14,11 @@ import style from './index.less';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/leagueDashboard');
 
 function LeagueDashboard(props) {
-  const {
-    Dashboard,
-    User,
-    dispatch,
-    qryBlockLoading,
-    qryNetworkLoading = false,
-    qryTransactionLoading,
-  } = props;
+  const { Dashboard, User, dispatch, qryBlockLoading, qryNetworkLoading = false, qryTransactionLoading } = props;
   const { leagueName, networkName, userRole } = User;
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
-  const {
-    networkStatusInfo,
-    transactionList,
-    blockList,
-    channelTotal,
-  } = Dashboard;
+  const { networkStatusInfo, transactionList, blockList, channelTotal } = Dashboard;
   const [showCreateNetworkBtn, setShowCreateNetworkBtn] = useState(false);
   const [showCreateChannelBtn, setShowCreateChannelBtn] = useState(false);
   const [createVisible, setCreateVisible] = useState(false);
@@ -52,11 +40,7 @@ function LeagueDashboard(props) {
       networkName,
     };
     dispatch({
-      type: `Dashboard/${
-        userRole === Roles.NetworkMember
-          ? 'getStaticInfoForMember'
-          : 'getStaticInfoForAdmin'
-      }`,
+      type: `Dashboard/${userRole === Roles.NetworkMember ? 'getStaticInfoForMember' : 'getStaticInfoForAdmin'}`,
       payload: params,
     });
   };
@@ -221,8 +205,7 @@ function LeagueDashboard(props) {
         title: '生成时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (text) =>
-          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******',
+        render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******'),
       },
       {
         title: '操作',
@@ -238,15 +221,6 @@ function LeagueDashboard(props) {
         ),
       },
     ];
-    if (userRole === Roles.NetworkMember) {
-      const insertColumn = {
-        title: '所属联盟',
-        dataIndex: 'leagueName',
-        key: 'leagueName',
-      };
-      block.splice(1, 0, insertColumn);
-      transaction.splice(1, 0, insertColumn);
-    }
     setBlockColumns(block);
     setTransactionColumns(transaction);
   }, [userRole]);
@@ -267,10 +241,7 @@ function LeagueDashboard(props) {
   }, []);
 
   useEffect(() => {
-    if (
-      userRole === Roles.NetworkAdmin &&
-      networkStatusInfo.networkStatus === NetworkStatus.NotExist
-    ) {
+    if (userRole === Roles.NetworkAdmin && networkStatusInfo.networkStatus === NetworkStatus.NotExist) {
       setShowCreateNetworkBtn(true);
     } else {
       setShowCreateNetworkBtn(false);
@@ -299,11 +270,7 @@ function LeagueDashboard(props) {
               </Col>
               <Col span={8}>
                 <label>创建时间：</label>
-                <span>
-                  {moment(networkStatusInfo.createdAt).format(
-                    'YYYY-MM-DD HH:mm:ss',
-                  )}
-                </span>
+                <span>{moment(networkStatusInfo.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
               </Col>
               <Col span={8}>
                 <label>网络状态: </label>
@@ -328,7 +295,7 @@ function LeagueDashboard(props) {
         <StatisticsCard statisticsList={statisticsList} />
         <div className="page-content page-content-shadow table-wrapper">
           <Table
-            rowKey="_id"
+            rowKey="blockHash"
             columns={blockColumns}
             loading={qryBlockLoading}
             dataSource={blockList}
@@ -337,7 +304,7 @@ function LeagueDashboard(props) {
         </div>
         <div className="page-content page-content-shadow table-wrapper">
           <Table
-            rowKey="_id"
+            rowKey="txId"
             columns={transactionColumns}
             loading={qryTransactionLoading}
             dataSource={transactionList}
@@ -345,9 +312,7 @@ function LeagueDashboard(props) {
           />
         </div>
       </div>
-      {createVisible && (
-        <CreateNetworkModal visible={createVisible} onCancel={onClickCancel} />
-      )}
+      {createVisible && <CreateNetworkModal visible={createVisible} onCancel={onClickCancel} />}
     </div>
   );
 }

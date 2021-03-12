@@ -139,7 +139,13 @@ function Block(props) {
           loading={qryLoading}
           dataSource={blockList}
           onChange={onPageChange}
-          pagination={{ pageSize, total: blockTotal, current: pageNum, showSizeChanger: false, position: ['bottomCenter'] }}
+          pagination={{
+            pageSize,
+            total: blockTotal,
+            current: pageNum,
+            showSizeChanger: false,
+            position: ['bottomCenter'],
+          }}
         />
       </div>
     </div>

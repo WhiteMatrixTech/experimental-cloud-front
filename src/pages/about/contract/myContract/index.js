@@ -193,22 +193,9 @@ class MyContract extends Component {
 
   render() {
     const { qryLoading = false } = this.props;
-    const {
-      pageSize,
-      pageNum,
-      editModalVisible,
-      invokeVisible,
-      operateType,
-      editParams,
-    } = this.state;
+    const { pageSize, pageNum, editModalVisible, invokeVisible, operateType, editParams } = this.state;
     const { myContractList, myContractTotal } = this.props.Contract;
     const columns = [
-      {
-        title: '合约ID',
-        dataIndex: '_id',
-        key: '_id',
-        ellipsis: true,
-      },
       {
         title: '合约名称',
         dataIndex: 'chainCodeName',
@@ -231,8 +218,7 @@ class MyContract extends Component {
         title: '创建时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (text) =>
-          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******',
+        render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******'),
       },
       {
         title: '状态',
@@ -256,22 +242,17 @@ class MyContract extends Component {
         render: (_, record) => (
           // 非当前合约组织成员不可操作
           <Space size="small">
-            {record.chainCodeStatus === ChainCodeStatus.Installed &&
-              record.channelId && (
-                <a onClick={() => this.onClickToConfirm(record, 'approve')}>
-                  发布
-                </a>
-              )}
-            {record.chainCodeStatus === ChainCodeStatus.Approved &&
-              record.channelId && (
-                <a onClick={() => this.onClickUpgrade(record)}>升级</a>
-              )}
-            {record.chainCodeStatus === ChainCodeStatus.Approved &&
-              record.channelId && (
-                <a onClick={() => this.onClickInvoke(record)}>调用</a>
-              )}
-            {record.channelId || record.createOrgName ? (
-              <a onClick={() => onClickDetail(record)}>详情</a>
+            {record.chainCodeStatus === ChainCodeStatus.Installed && record.createdAt && (
+              <a onClick={() => this.onClickToConfirm(record, 'approve')}>发布</a>
+            )}
+            {record.chainCodeStatus === ChainCodeStatus.Approved && record.createdAt && (
+              <a onClick={() => this.onClickUpgrade(record)}>升级</a>
+            )}
+            {record.chainCodeStatus === ChainCodeStatus.Approved && record.createdAt && (
+              <a onClick={() => this.onClickInvoke(record)}>调用</a>
+            )}
+            {record.createdAt || record.createOrgName ? (
+              <a onClick={() => this.onClickDetail(record)}>详情</a>
             ) : (
               <a className="a-forbidden-style">详情</a>
             )}
@@ -290,7 +271,7 @@ class MyContract extends Component {
             </Button>
           </div>
           <Table
-            rowKey="_id"
+            rowKey="chainCodeName"
             columns={columns}
             loading={qryLoading}
             dataSource={myContractList}
@@ -313,11 +294,7 @@ class MyContract extends Component {
           />
         )}
         {invokeVisible && (
-          <InvokeContract
-            visible={invokeVisible}
-            onCancel={this.onCloseModal}
-            editParams={editParams}
-          />
+          <InvokeContract visible={invokeVisible} onCancel={this.onCloseModal} editParams={editParams} />
         )}
       </div>
     );

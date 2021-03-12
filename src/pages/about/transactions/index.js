@@ -113,7 +113,11 @@ function Transactions(props) {
         key: 'action',
         render: (_, record) => (
           <Space size="small">
-            {record.channelId || record.txMsp ? <a onClick={() => onClickDetail(record)}>详情</a> : <a className="a-forbidden-style">详情</a>}
+            {record.channelId || record.txMsp ? (
+              <a onClick={() => onClickDetail(record)}>详情</a>
+            ) : (
+              <a className="a-forbidden-style">详情</a>
+            )}
           </Space>
         ),
       },
@@ -137,7 +141,7 @@ function Transactions(props) {
       <div className="page-content page-content-shadow table-wrapper">
         <SearchBar placeholder="交易ID" onSearch={onSearch} />
         <Table
-          rowKey="_id"
+          rowKey="txId"
           columns={columns}
           loading={qryLoading}
           dataSource={transactionList}
