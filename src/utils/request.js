@@ -63,6 +63,11 @@ const errorHandler = (error) => {
   });
 };
 
+/**
+ * Requests a URL, returning a promise.
+ * @param  {string} url       The URL we want to request
+ * @param  {object} [options] The options we want to pass to "fetch"
+ */
 export const request = (url, options) => {
   let headers = {
     'Content-Type': 'application/json',
@@ -98,58 +103,4 @@ export const request = (url, options) => {
     };
     return data;
   });
-};
-
-/**
- * Requests a URL, returning a promise.
- * @param  {string} url       The URL we want to request
- * @param  {object} [options] The options we want to pass to "fetch"
- */
-export const fetchRequest = (url, options) => {
-  const defaultOptions = {
-    headers: {},
-    mode: 'cors',
-  };
-  // token校验
-  const accessToken = localStorage.getItem('accessToken');
-  const roleToken = localStorage.getItem('roleToken');
-  const needsToken = window.location.href.indexOf('/userForExternal/login') === -1;
-  if (accessToken && needsToken) {
-    defaultOptions.headers.Authorization = `Bearer ${accessToken}`;
-  }
-  if (roleToken && needsToken) {
-    defaultOptions.headers.RoleAuth = roleToken;
-  }
-  const newOptions = { ...defaultOptions, ...options };
-  if (newOptions.method) {
-    if (!(newOptions.body instanceof FormData)) {
-      newOptions.headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json; charset=utf-8',
-        ...newOptions.headers,
-      };
-      newOptions.body = JSON.stringify(newOptions.body);
-    } else {
-      // newOptions.body is FormData
-      newOptions.headers = {
-        Accept: 'application/json',
-        ...newOptions.headers,
-      };
-    }
-  }
-  const requestUrl = process.env.BAAS_BACKEND_LINK + url;
-  return fetch(requestUrl, newOptions)
-    .then((res) => checkStatus(res, true))
-    .then(getResponseData)
-    .then((data) => authorization(data))
-    .catch((e) => {
-      const response = e.response;
-      if (response) {
-        return response.json();
-      } else {
-        const error = new Error(response.message);
-        error.response = response;
-        return error;
-      }
-    });
 };
