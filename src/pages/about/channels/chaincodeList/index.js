@@ -32,16 +32,19 @@ class ChaincodeList extends Component {
         title: '合约名称',
         dataIndex: 'chainCodeName',
         key: 'chainCodeName',
+        render: (text) => text || '******',
       },
       {
         title: '创建组织',
         dataIndex: 'createOrgName',
         key: 'createOrgName',
+        render: (text) => text || '******',
       },
       {
         title: '合约版本',
         dataIndex: 'chainCodeVersion',
         key: 'chainCodeVersion',
+        render: (text) => text || '******',
       },
       {
         title: '状态',
@@ -49,16 +52,21 @@ class ChaincodeList extends Component {
         key: 'chainCodeStatus',
         render: (text) =>
           text ? (
-            <Badge color={chainCodeStatusInfo[text].color} text={chainCodeStatusInfo[text].text} style={{ color: chainCodeStatusInfo[text].color }} />
+            <Badge
+              color={chainCodeStatusInfo[text].color}
+              text={chainCodeStatusInfo[text].text}
+              style={{ color: chainCodeStatusInfo[text].color }}
+            />
           ) : (
-            ''
+            '******'
           ),
       },
       {
         title: '创建时间',
-        dataIndex: 'createTime',
-        key: 'createTime',
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (text) =>
+          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******',
       },
     ];
   }
@@ -125,7 +133,12 @@ class ChaincodeList extends Component {
   render() {
     const { qryLoading = false, location } = this.props;
     const { pageSize, pageNum } = this.state;
-    const { contractListOfChannel, contractTotalOfChannel, orgTotalOfChannel, nodeTotalOfChannel } = this.props.Channel;
+    const {
+      contractListOfChannel,
+      contractTotalOfChannel,
+      orgTotalOfChannel,
+      nodeTotalOfChannel,
+    } = this.props.Channel;
     const channelInfoList = [
       {
         label: '通道名称',
@@ -148,7 +161,11 @@ class ChaincodeList extends Component {
       <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className="page-content">
-          <DetailCard cardTitle="基本信息" detailList={channelInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
+          <DetailCard
+            cardTitle="基本信息"
+            detailList={channelInfoList}
+            boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"
+          />
           <div className="table-wrapper page-content-shadow">
             <SearchBar placeholder="输入合约名称" onSearch={this.onSearch} />
             <Table
@@ -157,7 +174,12 @@ class ChaincodeList extends Component {
               columns={this.columns}
               dataSource={contractListOfChannel}
               onChange={this.onPageChange}
-              pagination={{ pageSize, total: contractTotalOfChannel, current: pageNum, position: ['bottomCenter'] }}
+              pagination={{
+                pageSize,
+                total: contractTotalOfChannel,
+                current: pageNum,
+                position: ['bottomCenter'],
+              }}
             />
           </div>
         </div>

@@ -24,7 +24,7 @@ function BlockDetail({
   qryLoading = false,
   dispatch,
 }) {
-  const { networkName, userRole } = User;
+  const { networkName } = User;
   const { blockDetail, transactionList, transactionTotal } = Block;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
@@ -39,27 +39,40 @@ function BlockDetail({
       width: '20%',
     },
     {
+      title: '所属通道',
+      dataIndex: 'channelId',
+      key: 'channelId',
+      render: (text) => text || '******',
+    },
+    {
       title: '交易组织',
       dataIndex: 'txMsp',
       key: 'txMsp',
+      render: (text) => text || '******',
     },
     {
       title: '合约名称',
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
+      render: (text) => text || '******',
     },
     {
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+      render: (text) =>
+        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******',
     },
     {
       title: '操作',
       key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          <a onClick={() => onClickDetail(record)}>详情</a>
+      render: (_, record) => (
+        <Space size="small">
+          {record.channelId || record.txMsp ? (
+            <a onClick={() => onClickDetail(record)}>详情</a>
+          ) : (
+            <a className="a-forbidden-style">详情</a>
+          )}
         </Space>
       ),
     },
@@ -199,6 +212,8 @@ export default connect(({ User, Layout, Block, loading }) => ({
   User,
   Layout,
   Block,
-  qryLoading: loading.effects['Block/getBlockDetail'] || loading.effects['Block/getTransactionList'],
+  qryLoading:
+    loading.effects['Block/getBlockDetail'] ||
+    loading.effects['Block/getTransactionList'],
   qryListLoading: loading.effects['Block/getTransactionList'],
 }))(BlockDetail);

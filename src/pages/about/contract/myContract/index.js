@@ -14,7 +14,7 @@ import { chainCodeStatusInfo, ChainCodeStatus } from './_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 breadCrumbItem.push({
-  menuName: '我的合约',
+  menuName: '合约列表',
   menuHref: `/`,
 });
 
@@ -135,7 +135,11 @@ class MyContract extends Component {
 
   // 升级合约
   onClickUpgrade = (record) => {
-    this.setState({ operateType: 'upgrade', editModalVisible: true, editParams: record });
+    this.setState({
+      operateType: 'upgrade',
+      editModalVisible: true,
+      editParams: record,
+    });
   };
 
   // 发布合约
@@ -189,7 +193,14 @@ class MyContract extends Component {
 
   render() {
     const { qryLoading = false } = this.props;
-    const { pageSize, pageNum, editModalVisible, invokeVisible, operateType, editParams } = this.state;
+    const {
+      pageSize,
+      pageNum,
+      editModalVisible,
+      invokeVisible,
+      operateType,
+      editParams,
+    } = this.state;
     const { myContractList, myContractTotal } = this.props.Contract;
     const columns = [
       {
@@ -202,22 +213,26 @@ class MyContract extends Component {
         title: '合约名称',
         dataIndex: 'chainCodeName',
         key: 'chainCodeName',
+        render: (text) => text || '******',
       },
       {
         title: '所属通道',
         dataIndex: 'channelId',
         key: 'channelId',
+        render: (text) => text || '******',
       },
       {
         title: '所属组织',
         dataIndex: 'createOrgName',
         key: 'createOrgName',
+        render: (text) => text || '******',
       },
       {
         title: '创建时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+        render: (text) =>
+          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******',
       },
       {
         title: '状态',
@@ -225,32 +240,41 @@ class MyContract extends Component {
         key: 'chainCodeStatus',
         render: (text) =>
           text ? (
-            <Badge color={chainCodeStatusInfo[text].color} text={chainCodeStatusInfo[text].text} style={{ color: chainCodeStatusInfo[text].color }} />
+            <Badge
+              color={chainCodeStatusInfo[text].color}
+              text={chainCodeStatusInfo[text].text}
+              style={{ color: chainCodeStatusInfo[text].color }}
+            />
           ) : (
-            ''
+            '******'
           ),
       },
       {
         title: '操作',
         key: 'action',
         width: '18%',
-        render: (text, record) => (
+        render: (_, record) => (
+          // 非当前合约组织成员不可操作
           <Space size="small">
-            {/* <a onClick={() => this.onDownloadContract(record)}>下载</a> */}
-            {/* {record.chainCodeStatus === 2 && <a onClick={() => this.onClickModify(record)}>修改</a>} */}
-            {record.chainCodeStatus === ChainCodeStatus.Installed && (
-              // (userRole === Roles.NetworkAdmin) &&
-              <a onClick={() => this.onClickToConfirm(record, 'approve')}>发布</a>
+            {record.chainCodeStatus === ChainCodeStatus.Installed &&
+              record.channelId && (
+                <a onClick={() => this.onClickToConfirm(record, 'approve')}>
+                  发布
+                </a>
+              )}
+            {record.chainCodeStatus === ChainCodeStatus.Approved &&
+              record.channelId && (
+                <a onClick={() => this.onClickUpgrade(record)}>升级</a>
+              )}
+            {record.chainCodeStatus === ChainCodeStatus.Approved &&
+              record.channelId && (
+                <a onClick={() => this.onClickInvoke(record)}>调用</a>
+              )}
+            {record.channelId || record.createOrgName ? (
+              <a onClick={() => onClickDetail(record)}>详情</a>
+            ) : (
+              <a className="a-forbidden-style">详情</a>
             )}
-            {record.chainCodeStatus === ChainCodeStatus.Approved && <a onClick={() => this.onClickUpgrade(record)}>升级</a>}
-            {record.chainCodeStatus === ChainCodeStatus.Approved && <a onClick={() => this.onClickInvoke(record)}>调用</a>}
-            {/* {(record.chainCodeStatus === 1 || record.chainCodeStatus === 3) &&
-              <>
-                <a onClick={() => this.onClickToConfirm(record, 'agree')}>通过</a>
-                <a onClick={() => this.onClickToConfirm(record, 'reject')}>驳回</a>
-              </>
-            } */}
-            <a onClick={() => this.onClickDetail(record)}>详情</a>
           </Space>
         ),
       },
@@ -271,11 +295,30 @@ class MyContract extends Component {
             loading={qryLoading}
             dataSource={myContractList}
             onChange={this.onPageChange}
-            pagination={{ pageSize, total: myContractTotal, current: pageNum, showSizeChanger: false, position: ['bottomCenter'] }}
+            pagination={{
+              pageSize,
+              total: myContractTotal,
+              current: pageNum,
+              showSizeChanger: false,
+              position: ['bottomCenter'],
+            }}
           />
         </div>
-        {editModalVisible && <EditContract visible={editModalVisible} operateType={operateType} onCancel={this.onCloseModal} editParams={editParams} />}
-        {invokeVisible && <InvokeContract visible={invokeVisible} onCancel={this.onCloseModal} editParams={editParams} />}
+        {editModalVisible && (
+          <EditContract
+            visible={editModalVisible}
+            operateType={operateType}
+            onCancel={this.onCloseModal}
+            editParams={editParams}
+          />
+        )}
+        {invokeVisible && (
+          <InvokeContract
+            visible={invokeVisible}
+            onCancel={this.onCloseModal}
+            editParams={editParams}
+          />
+        )}
       </div>
     );
   }

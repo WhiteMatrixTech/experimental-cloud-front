@@ -71,29 +71,37 @@ class ChannelDetail extends Component {
         title: '所属通道',
         dataIndex: 'channelId',
         key: 'channelId',
+        render: (text) => text || '******',
       },
       {
         title: '交易组织',
         dataIndex: 'txEndorseMsp',
         key: 'txEndorseMsp',
+        render: (text) => text || '******',
       },
       {
         title: '合约名称',
         dataIndex: 'chainCodeName',
         key: 'chainCodeName',
+        render: (text) => text || '******',
       },
       {
         title: '生成时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+        render: (text) =>
+          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******',
       },
       {
         title: '操作',
         key: 'action',
         render: (text, record) => (
           <Space size="small">
-            <a onClick={() => this.onClickTransactionDetail(record)}>详情</a>
+            {record.channelId || record.txEndorseMsp ? (
+              <a onClick={() => this.onClickTransactionDetail(record)}>详情</a>
+            ) : (
+              <a className="a-forbidden-style">详情</a>
+            )}
           </Space>
         ),
       },
@@ -220,11 +228,21 @@ class ChannelDetail extends Component {
               </Col>
               <Col span={8}>
                 <label>创建时间：</label>
-                <span>{location?.state?.createdAt ? moment(location?.state?.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}</span>
+                <span>
+                  {location?.state?.createdAt
+                    ? moment(location?.state?.createdAt).format(
+                        'YYYY-MM-DD HH:mm:ss',
+                      )
+                    : ''}
+                </span>
               </Col>
               <Col span={8}>
                 <label>状态：</label>
-                <span>{location?.state?.channelStatus ? ChannelStatus[location?.state?.channelStatus].text : ''}</span>
+                <span>
+                  {location?.state?.channelStatus
+                    ? ChannelStatus[location?.state?.channelStatus].text
+                    : ''}
+                </span>
               </Col>
             </Row>
           </div>
