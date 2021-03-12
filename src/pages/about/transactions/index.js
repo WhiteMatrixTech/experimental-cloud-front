@@ -14,7 +14,6 @@ function Transactions(props) {
   const { transactionList, transactionTotal } = Transactions;
   const { networkName, userRole } = User;
   const [columns, setColumns] = useState([]);
-  const [current, setCurrent] = useState(1);
   const [pageNum, setPageNum] = useState(1);
   const [txId, setTxId] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
@@ -62,7 +61,6 @@ function Transactions(props) {
   };
   // 翻页
   const onPageChange = (pageInfo) => {
-    setCurrent(pageNum); //
     setPageNum(pageInfo.current);
   };
 
@@ -90,29 +88,32 @@ function Transactions(props) {
         title: '所属通道',
         dataIndex: 'channelId',
         key: 'channelId',
+        render: (text) => text || '******',
       },
       {
         title: '交易组织',
         dataIndex: 'txMsp',
         key: 'txMsp',
+        render: (text) => text || '******',
       },
       {
         title: '合约名称',
         dataIndex: 'chainCodeName',
         key: 'chainCodeName',
+        render: (text) => text || '******',
       },
       {
         title: '生成时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+        render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******'),
       },
       {
         title: '操作',
         key: 'action',
-        render: (text, record) => (
+        render: (_, record) => (
           <Space size="small">
-            <a onClick={() => onClickDetail(record)}>详情</a>
+            {record.channelId || record.txMsp ? <a onClick={() => onClickDetail(record)}>详情</a> : <a className="a-forbidden-style">详情</a>}
           </Space>
         ),
       },

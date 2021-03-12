@@ -95,7 +95,7 @@ const MenuList = [
         menuPid: 43,
         menuHref: '/about/contract/myContract',
         menuIcon: null,
-        menuName: '我的合约',
+        menuName: '合约列表',
         isFeature: 0,
         menuVos: [],
       },

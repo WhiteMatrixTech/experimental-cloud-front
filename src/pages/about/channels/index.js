@@ -155,15 +155,12 @@ function ChannelManagement(props) {
       {
         title: '操作',
         key: 'action',
-        width: '20%',
+        width: '22%',
         render: (text, record) => (
           <Space size="small">
-            {(record.channelStatus === 4 || record.channelStatus === 12) && userRole === Roles.NetworkAdmin && <a>开启通道</a>}
             <a onClick={() => onViewOrg(record)}>查看组织</a>
             <a onClick={() => onViewPeer(record)}>查看节点</a>
             <a onClick={() => onViewContract(record)}>查看合约</a>
-            {record.channelStatus === 1 && userRole === Roles.NetworkAdmin && <a onClick={() => onClickToConfirm(record, 'stop')}>停用通道</a>}
-            {record.channelStatus === 7 && userRole === Roles.NetworkAdmin && <a onClick={() => onClickToConfirm(record, 'enable')}>启用通道</a>}
             <a onClick={() => onViewDetail(record)}>详情</a>
           </Space>
         ),

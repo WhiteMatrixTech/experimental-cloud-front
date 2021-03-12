@@ -14,11 +14,23 @@ import style from './index.less';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/leagueDashboard');
 
 function LeagueDashboard(props) {
-  const { Dashboard, User, dispatch, qryBlockLoading, qryNetworkLoading = false, qryTransactionLoading } = props;
+  const {
+    Dashboard,
+    User,
+    dispatch,
+    qryBlockLoading,
+    qryNetworkLoading = false,
+    qryTransactionLoading,
+  } = props;
   const { leagueName, networkName, userRole } = User;
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
-  const { networkStatusInfo, transactionList, blockList, channelTotal } = Dashboard;
+  const {
+    networkStatusInfo,
+    transactionList,
+    blockList,
+    channelTotal,
+  } = Dashboard;
   const [showCreateNetworkBtn, setShowCreateNetworkBtn] = useState(false);
   const [showCreateChannelBtn, setShowCreateChannelBtn] = useState(false);
   const [createVisible, setCreateVisible] = useState(false);
@@ -40,7 +52,11 @@ function LeagueDashboard(props) {
       networkName,
     };
     dispatch({
-      type: `Dashboard/${userRole === Roles.NetworkMember ? 'getStaticInfoForMember' : 'getStaticInfoForAdmin'}`,
+      type: `Dashboard/${
+        userRole === Roles.NetworkMember
+          ? 'getStaticInfoForMember'
+          : 'getStaticInfoForAdmin'
+      }`,
       payload: params,
     });
   };
@@ -187,29 +203,37 @@ function LeagueDashboard(props) {
         title: '所属通道',
         dataIndex: 'channelId',
         key: 'channelId',
+        render: (text) => text || '******',
       },
       {
         title: '交易组织',
         dataIndex: 'txEndorseMsp',
         key: 'txEndorseMsp',
+        render: (text) => text || '******',
       },
       {
         title: '合约名称',
         dataIndex: 'chainCodeName',
         key: 'chainCodeName',
+        render: (text) => text || '******',
       },
       {
         title: '生成时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+        render: (text) =>
+          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******',
       },
       {
         title: '操作',
         key: 'action',
         render: (text, record) => (
           <Space size="small">
-            <a onClick={() => onClickTransactionDetail(record)}>详情</a>
+            {record.channelId || record.txEndorseMsp ? (
+              <a onClick={() => onClickTransactionDetail(record)}>详情</a>
+            ) : (
+              <a className="a-forbidden-style">详情</a>
+            )}
           </Space>
         ),
       },
@@ -243,12 +267,19 @@ function LeagueDashboard(props) {
   }, []);
 
   useEffect(() => {
-    if (userRole === Roles.NetworkAdmin && networkStatusInfo.networkStatus === NetworkStatus.NotExist) {
+    if (
+      userRole === Roles.NetworkAdmin &&
+      networkStatusInfo.networkStatus === NetworkStatus.NotExist
+    ) {
       setShowCreateNetworkBtn(true);
     } else {
       setShowCreateNetworkBtn(false);
     }
-    if (userRole === Roles.NetworkAdmin && Dashboard.channelTotal === 0 && networkStatusInfo.networkStatus === NetworkStatus.Running) {
+    if (
+      userRole === Roles.NetworkAdmin &&
+      Dashboard.channelTotal === 0 &&
+      networkStatusInfo.networkStatus === NetworkStatus.Running
+    ) {
       setShowCreateChannelBtn(true);
     } else {
       setShowCreateChannelBtn(false);
@@ -268,7 +299,11 @@ function LeagueDashboard(props) {
               </Col>
               <Col span={8}>
                 <label>创建时间：</label>
-                <span>{moment(networkStatusInfo.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+                <span>
+                  {moment(networkStatusInfo.createdAt).format(
+                    'YYYY-MM-DD HH:mm:ss',
+                  )}
+                </span>
               </Col>
               <Col span={8}>
                 <label>网络状态: </label>
@@ -292,13 +327,27 @@ function LeagueDashboard(props) {
         </Spin>
         <StatisticsCard statisticsList={statisticsList} />
         <div className="page-content page-content-shadow table-wrapper">
-          <Table rowKey="_id" columns={blockColumns} loading={qryBlockLoading} dataSource={blockList} pagination={false} />
+          <Table
+            rowKey="_id"
+            columns={blockColumns}
+            loading={qryBlockLoading}
+            dataSource={blockList}
+            pagination={false}
+          />
         </div>
         <div className="page-content page-content-shadow table-wrapper">
-          <Table rowKey="_id" columns={transactionColumns} loading={qryTransactionLoading} dataSource={transactionList} pagination={false} />
+          <Table
+            rowKey="_id"
+            columns={transactionColumns}
+            loading={qryTransactionLoading}
+            dataSource={transactionList}
+            pagination={false}
+          />
         </div>
       </div>
-      {createVisible && <CreateNetworkModal visible={createVisible} onCancel={onClickCancel} />}
+      {createVisible && (
+        <CreateNetworkModal visible={createVisible} onCancel={onClickCancel} />
+      )}
     </div>
   );
 }
