@@ -1,4 +1,5 @@
 import * as API from '../services/contract.js';
+import { getAllUserId } from '../services/fabric-role';
 import { notification } from 'antd';
 
 export default {
@@ -16,6 +17,8 @@ export default {
     curVersionApprovalTotal: 0,
 
     invokeResult: null,
+
+    allUserId: [], // fabric角色用户列表
   },
 
   subscriptions: {
@@ -171,6 +174,19 @@ export default {
         return true;
       } else {
         notification.error({ message: result.message || '发布合约失败', top: 64, duration: 1 });
+      }
+    },
+
+    *getAllUserId({ payload }, { call, put }) {
+      const res = yield call(getAllUserId, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            allUserId: result,
+          },
+        });
       }
     },
 

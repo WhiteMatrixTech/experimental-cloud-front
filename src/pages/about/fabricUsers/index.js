@@ -34,9 +34,18 @@ function FabricRoleManagement(props) {
   const [createModalVisible, setCreateModalVisible] = useState(false);
 
   const getFabricRoleList = () => {
+    const { orgName } = searchParams;
     const params = {
       networkName,
     };
+    if (orgName) {
+      params.orgName = orgName;
+      dispatch({
+        type: 'FabricRole/getFabricRoleListWithOrg',
+        payload: params,
+      });
+      return;
+    }
     dispatch({
       type: 'FabricRole/getFabricRoleList',
       payload: params,
@@ -65,14 +74,17 @@ function FabricRoleManagement(props) {
       RoleAuth: roleToken,
     };
 
-    request(`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`, {
-      headers,
-      mode: 'cors',
-      method: 'GET',
-      responseType: 'blob',
-    }).then((res) => {
+    request(
+      `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRole/${record.orgName}/${record.userId}/getUserCcp`,
+      {
+        headers,
+        mode: 'cors',
+        method: 'GET',
+        responseType: 'blob',
+      },
+    ).then((res) => {
       const blob = new Blob([res]);
-      saveAs(blob, `${networkName}.pem`);
+      saveAs(blob, `${record.userId}.json`);
     });
   };
 
@@ -110,25 +122,25 @@ function FabricRoleManagement(props) {
     const data = [
       {
         title: '用户名',
-        dataIndex: 'nodeName',
-        key: 'nodeName',
+        dataIndex: 'userId',
+        key: 'userId',
         ellipsis: true,
       },
       {
         title: '账户类型',
-        dataIndex: 'fabricRole',
-        key: 'fabricRole',
+        dataIndex: 'explorerRole',
+        key: 'explorerRole',
       },
       {
         title: '所属组织',
-        dataIndex: 'nodeAliasName',
-        key: 'nodeAliasName',
+        dataIndex: 'orgName',
+        key: 'orgName',
         ellipsis: true,
       },
       {
         title: '属性集',
-        dataIndex: 'nodeFullName',
-        key: 'nodeFullName',
+        dataIndex: 'attrs',
+        key: 'attrs',
         ellipsis: true,
       },
       {
@@ -140,7 +152,11 @@ function FabricRoleManagement(props) {
       {
         title: '操作',
         key: 'action',
-        render: (_, record) => <Space size="small">{userRole === Roles.NetworkAdmin && <a onClick={() => onDownLoadSDK(record)}>下载SDK配置</a>}</Space>,
+        render: (_, record) => (
+          <Space size="small">
+            {userRole === Roles.NetworkAdmin && <a onClick={() => onDownLoadSDK(record)}>下载SDK配置</a>}
+          </Space>
+        ),
       },
     ];
     setColumns(data);
@@ -187,7 +203,7 @@ function FabricRoleManagement(props) {
             </Button>
           </div>
           <Table
-            rowKey="_id"
+            rowKey="userId"
             loading={qryLoading}
             columns={columns}
             dataSource={fabricRoleList}
@@ -202,7 +218,13 @@ function FabricRoleManagement(props) {
           />
         </div>
       </div>
-      {createModalVisible && <CreateFabricUserModal visible={createModalVisible} onCancel={onCloseCreateModal} getFabricRoleList={getFabricRoleList} />}
+      {createModalVisible && (
+        <CreateFabricUserModal
+          visible={createModalVisible}
+          onCancel={onCloseCreateModal}
+          getFabricRoleList={getFabricRoleList}
+        />
+      )}
     </div>
   );
 }

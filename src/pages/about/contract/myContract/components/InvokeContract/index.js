@@ -18,7 +18,7 @@ const formItemLayout = {
 function InvokeContract(props) {
   const [form] = Form.useForm();
   const { visible, editParams, onCancel, dispatch, Contract, User, invokeLoading = false } = props;
-  const { channelList, invokeResult } = Contract;
+  const { channelList, allUserId, invokeResult } = Contract;
   const { networkName } = User;
 
   const handleSubmit = () => {
@@ -35,6 +35,10 @@ function InvokeContract(props) {
   useEffect(() => {
     dispatch({
       type: 'Contract/getChannelList',
+      payload: { networkName },
+    });
+    dispatch({
+      type: 'Contract/getAllUserId',
       payload: { networkName },
     });
   }, []);
@@ -94,7 +98,11 @@ function InvokeContract(props) {
           <Input placeholder="请输入方法名" />
         </Item>
         <Item label="参数列表" name="params" initialValue={[]}>
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请输入参数" mode="tags"></Select>
+          <Select
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder="请输入参数"
+            mode="tags"
+          ></Select>
         </Item>
         <Item
           label="调用类型"
@@ -111,6 +119,25 @@ function InvokeContract(props) {
             <Radio value="invokeChainCodeMethod">invoke</Radio>
             <Radio value="queryChainCodeMethod">query</Radio>
           </Radio.Group>
+        </Item>
+        <Item
+          label="Fabric角色"
+          name="userId"
+          initialValue={editParams.userId}
+          rules={[
+            {
+              required: true,
+              message: '请选择fabric角色',
+            },
+          ]}
+        >
+          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择fabric角色">
+            {allUserId.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
+          </Select>
         </Item>
         <Item
           label="是否初始化"

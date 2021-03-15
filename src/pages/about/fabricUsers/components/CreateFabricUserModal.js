@@ -36,12 +36,8 @@ function CreateFabricUserModal(props) {
       .then((values) => {
         form.resetFields();
         let params = {
+          ...values,
           networkName,
-          userName: values.userName,
-          password: values.password,
-          fabricRole: values.fabricRole,
-          orgName: values.orgName,
-          propertyList: values.propertyList,
         };
         dispatch({
           type: 'FabricRole/createFabricRole',
@@ -62,7 +58,7 @@ function CreateFabricUserModal(props) {
   const checkConfirm = (_, value) => {
     const promise = Promise;
 
-    if (value && value !== form.getFieldValue('password')) {
+    if (value && value !== form.getFieldValue('pass')) {
       return promise.reject('两次输入的密码不匹配');
     }
 
@@ -90,12 +86,16 @@ function CreateFabricUserModal(props) {
       <Form {...formItemLayout} form={form}>
         <Item
           label="用户名"
-          name="userName"
+          name="userId"
           initialValue=""
           rules={[
             {
               required: true,
               message: '请输入用户名',
+            },
+            {
+              pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
+              message: '用户名由4-20位字母、数字、下划线组成，字母开头',
             },
           ]}
         >
@@ -103,19 +103,24 @@ function CreateFabricUserModal(props) {
         </Item>
         <Item
           label="密码"
-          name="password"
+          name="pass"
           initialValue=""
           rules={[
             {
               required: true,
               message: '请输入密码',
             },
+            {
+              min: 6,
+              max: 18,
+              message: '密码长度为6-18位',
+            },
           ]}
         >
           <Input type="password" placeholder="请输入密码" />
         </Item>
         <Item
-          name="confirm"
+          name="re_pass"
           label="确认密码"
           initialValue=""
           rules={[
@@ -166,17 +171,7 @@ function CreateFabricUserModal(props) {
             ))}
           </Select>
         </Item>
-        <Item
-          label="属性集"
-          name="propertyList"
-          initialValue=""
-          rules={[
-            {
-              required: true,
-              message: '请输入属性集',
-            },
-          ]}
-        >
+        <Item label="属性集" name="attrs" initialValue="">
           <TextArea placeholder="请输入属性集" />
         </Item>
       </Form>

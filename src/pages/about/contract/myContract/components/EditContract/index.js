@@ -107,7 +107,11 @@ function EditContract(props) {
         notification.success({ message: `Succeed in uploading contract ${info.file.name}`, top: 64, duration: 1 });
         setFileJson(info.file.response);
       } else if (info.file.status === 'error') {
-        notification.error({ message: info.file.response.message, top: 64, duration: 1 });
+        notification.error({
+          message: info.file.response ? info.file.response.message : '合约上传出错',
+          top: 64,
+          duration: 1,
+        });
         setFileJson(null);
       }
     },

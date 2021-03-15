@@ -28,6 +28,20 @@ export default {
       }
     },
 
+    *getFabricRoleListWithOrg({ payload }, { call, put }) {
+      const res = yield call(API.getFabricRoleListWithOrg, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            fabricRoleList: result,
+            fabricRoleTotal: result.length,
+          },
+        });
+      }
+    },
+
     *createFabricRole({ payload }, { call, put }) {
       const res = yield call(API.createFabricUser, payload);
       const { statusCode, result } = res;

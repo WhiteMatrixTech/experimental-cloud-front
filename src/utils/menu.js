@@ -78,8 +78,8 @@ const MenuList = [
     menuPid: 2,
     menuHref: '/about/fabricUsers',
     menuIcon: 'KBasslianmengguanli',
-    menuName: '用户管理',
-    isFeature: 0,
+    menuName: 'Fabric角色管理',
+    isFeature: 1,
     menuVos: [],
   },
   {
