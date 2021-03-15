@@ -13,7 +13,7 @@ const { SubMenu } = Menu;
 
 function LeftMenu(props) {
   const { pathname, dispatch, User, Dashboard, Layout } = props;
-  const { userRole, networkName } = User;
+  const { userRole, userInfo, networkName } = User;
   const { selectedMenu } = Layout;
   const { networkStatusInfo } = Dashboard;
   const [openKeys, setOpenKeys] = useState([]);
@@ -39,7 +39,10 @@ function LeftMenu(props) {
   };
 
   const getMenuItem = (item) => {
-    if (item.isFeature && userRole === Roles.NetworkMember) {
+    if (item.isFeature === 1 && userRole === Roles.NetworkMember) {
+      return '';
+    }
+    if (item.isFeature === 2 && userInfo.role !== Roles.Admin) {
       return '';
     }
     if (isEmpty(item.menuVos)) {

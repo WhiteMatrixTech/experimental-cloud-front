@@ -6,7 +6,7 @@ import { tree2Arr } from '../utils';
  * menuHref: 菜单路由
  * menuIcon: 菜单图标
  * menuName： 菜单名称
- * isFeature： 是否只有盟主才显示
+ * isFeature： 是否只有盟主才显示  0--成员；1--盟主；2--Admin
  * menuVos： 子菜单
  */
 const MenuList = [
@@ -74,15 +74,6 @@ const MenuList = [
     menuVos: [],
   },
   {
-    id: 43,
-    menuPid: 2,
-    menuHref: '/about/fabricUsers',
-    menuIcon: 'KBasslianmengguanli',
-    menuName: 'Fabric角色管理',
-    isFeature: 1,
-    menuVos: [],
-  },
-  {
     id: 44,
     menuPid: 2,
     menuHref: '/about/contract',
@@ -117,15 +108,15 @@ const MenuList = [
         isFeature: 1, // 是否只有盟主才显示
         menuVos: [],
       },
-      {
-        id: 448,
-        menuPid: 43,
-        menuHref: '/about/contract/contractStore',
-        menuIcon: null,
-        menuName: '合约仓库',
-        isFeature: 0,
-        menuVos: [],
-      },
+      // {
+      //   id: 448,
+      //   menuPid: 43,
+      //   menuHref: '/about/contract/contractStore',
+      //   menuIcon: null,
+      //   menuName: '合约仓库',
+      //   isFeature: 0,
+      //   menuVos: [],
+      // },
     ],
   },
   {
@@ -209,6 +200,24 @@ const MenuList = [
         menuVos: [],
       },
     ],
+  },
+  {
+    id: 43,
+    menuPid: 2,
+    menuHref: '/about/fabricUsers',
+    menuIcon: 'KBasslianmengguanli',
+    menuName: 'Fabric用户管理',
+    isFeature: 0,
+    menuVos: [],
+  },
+  {
+    id: 53,
+    menuPid: 2,
+    menuHref: '/about/elastic-cloud-server',
+    menuIcon: 'KBasszhengshuguanli',
+    menuName: '弹性云服务器管理',
+    isFeature: 1, // 是否只有盟主才显示
+    menuVos: [],
   },
 ];
 
