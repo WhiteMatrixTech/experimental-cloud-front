@@ -7,3 +7,10 @@ export const FabricRole = {
   FabricClient: 'client',
   FabricOrderer: 'orderer',
 };
+
+export const CreateFabricRole = {
+  FabricAdmin: 'admin',
+  FabricPeer: 'peer',
+  FabricClient: 'client',
+  FabricOrderer: 'orderer',
+};

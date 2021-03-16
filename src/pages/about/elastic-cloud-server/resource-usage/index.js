@@ -1,0 +1,139 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import { connect } from 'dva';
+import { Table, Badge } from 'antd';
+import moment from 'moment';
+import { Breadcrumb, DetailCard } from 'components';
+import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { peerStatus } from '../../nodes/_config';
+import baseConfig from 'utils/config';
+import { serverPurpose } from '../_config';
+
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/elastic-cloud-server');
+breadCrumbItem.push({
+  menuName: '资源使用情况',
+  menuHref: `/`,
+});
+
+const columns = [
+  {
+    title: '节点名称',
+    dataIndex: 'nodeName',
+    key: 'peerName',
+  },
+  {
+    title: '节点别名',
+    dataIndex: 'nodeAliasName',
+    key: 'peerAliasName',
+  },
+  {
+    title: '节点全名',
+    dataIndex: 'nodeFullName',
+    key: 'nodeFullName',
+  },
+  {
+    title: '所属组织',
+    dataIndex: 'orgName',
+    key: 'orgName',
+  },
+  {
+    title: '状态',
+    dataIndex: 'nodeStatus',
+    key: 'nodeStatus',
+    render: (text) =>
+      text ? (
+        <Badge color={peerStatus[text].color} text={peerStatus[text].text} style={{ color: peerStatus[text].color }} />
+      ) : (
+        ''
+      ),
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createdAt',
+    key: 'createdAt',
+    render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+  },
+];
+
+function ResourceUsage(props) {
+  const { qryLoading = false, location, dispatch, ElasticServer } = props;
+  const { nodeList, nodeTotal } = ElasticServer;
+  const [pageNum, setPageNum] = useState(1);
+
+  const getNodeList = () => {
+    const offset = (pageNum - 1) * baseConfig.pageSize;
+
+    const params = {
+      limit: baseConfig.pageSize,
+      offset: offset,
+      ascend: false,
+      serverName: location?.state?.serverName,
+    };
+    dispatch({
+      type: 'ElasticServer/getNodeList',
+      payload: params,
+    });
+    dispatch({
+      type: 'ElasticServer/getNodeTotal',
+      payload: { serverName: location?.state?.serverName },
+    });
+  };
+
+  const onPageChange = (pageInfo) => {
+    setPageNum(pageInfo.current);
+  };
+  const serverInfoList = useMemo(
+    () => [
+      {
+        label: '服务器名称',
+        value: location?.state?.serverName,
+      },
+      {
+        label: '用户名称',
+        value: location?.state?.username,
+      },
+      {
+        label: '用途类型',
+        value: serverPurpose[location?.state?.serverPurpose],
+      },
+      {
+        label: '节点总数',
+        value: nodeTotal,
+      },
+    ],
+    [location?.state],
+  );
+
+  useEffect(() => {
+    getNodeList();
+  }, [pageNum]);
+
+  return (
+    <div className="page-wrapper">
+      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <div className="page-content">
+        <DetailCard cardTitle="服务器信息" detailList={serverInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
+        <Table
+          rowKey="_id"
+          loading={qryLoading}
+          columns={columns}
+          className="page-content-shadow table-wrapper"
+          dataSource={nodeList}
+          onChange={onPageChange}
+          pagination={{
+            pageSize: baseConfig.pageSize,
+            total: nodeTotal,
+            current: pageNum,
+            position: ['bottomCenter'],
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default connect(({ ElasticServer, Layout, User, loading }) => ({
+  ElasticServer,
+  Layout,
+  User,
+  qryLoading: loading.effects['ElasticServer/getNodeList'],
+}))(ResourceUsage);

@@ -203,6 +203,7 @@ export default {
             },
           },
         });
+        notification.success({ message: '调用合约成功', top: 64, duration: 1 });
         return true;
       } else {
         yield put({
@@ -214,6 +215,7 @@ export default {
             },
           },
         });
+        notification.error({ message: result.message || '调用合约失败', top: 64, duration: 1 });
       }
     },
 
@@ -221,9 +223,27 @@ export default {
       const res = yield call(API.queryChainCodeMethod, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            invokeResult: {
+              status: 'Success',
+              message: result || {},
+            },
+          },
+        });
         notification.success({ message: '调用合约成功', top: 64, duration: 1 });
         return true;
       } else {
+        yield put({
+          type: 'common',
+          payload: {
+            invokeResult: {
+              status: 'Failed',
+              message: { error: result.message },
+            },
+          },
+        });
         notification.error({ message: result.message || '调用合约失败', top: 64, duration: 1 });
       }
     },

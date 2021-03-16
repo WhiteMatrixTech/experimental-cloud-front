@@ -1,7 +1,7 @@
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import React, { useEffect } from 'react';
-import { FabricRole } from '../_config';
+import { CreateFabricRole } from '../_config';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -146,9 +146,9 @@ function CreateFabricUserModal(props) {
           ]}
         >
           <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择账户类型">
-            {Object.keys(FabricRole).map((role) => (
-              <Option key={role} value={FabricRole[role]}>
-                {FabricRole[role]}
+            {Object.keys(CreateFabricRole).map((role) => (
+              <Option key={role} value={CreateFabricRole[role]}>
+                {CreateFabricRole[role]}
               </Option>
             ))}
           </Select>
