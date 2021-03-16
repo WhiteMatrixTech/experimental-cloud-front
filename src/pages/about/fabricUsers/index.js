@@ -214,7 +214,7 @@ function FabricRoleManagement(props) {
             </Button>
           </div>
           <Table
-            rowKey="userId"
+            rowKey={(record) => `${record.orgName}-${record.userId}`}
             loading={qryLoading}
             columns={columns}
             dataSource={fabricRoleList}
