@@ -1,6 +1,7 @@
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import React, { useEffect } from 'react';
+import { Roles } from 'utils/roles.js';
 import { CreateFabricRole } from '../_config';
 
 const { Item } = Form;
@@ -17,15 +18,20 @@ const formItemLayout = {
 };
 
 function CreateFabricUserModal(props) {
-  const { FabricRole, visible, onCancel, addLoading = false, User, dispatch } = props;
-  const { networkName } = User;
+  const { FabricRole, Organization, visible, onCancel, addLoading = false, User, dispatch } = props;
+  const { networkName, userRole } = User;
   const { myOrgInfo } = FabricRole;
+  const { orgList } = Organization;
 
   const [form] = Form.useForm();
 
   useEffect(() => {
     dispatch({
       type: 'FabricRole/getMyOrgInfo',
+      payload: { networkName },
+    });
+    dispatch({
+      type: 'Organization/getOrgList',
       payload: { networkName },
     });
   }, []);
@@ -156,7 +162,7 @@ function CreateFabricUserModal(props) {
         <Item
           label="所属组织"
           name="orgName"
-          initialValue={myOrgInfo.orgName}
+          initialValue={userRole === Roles.NetworkAdmin ? null : myOrgInfo.orgName}
           rules={[
             {
               required: true,
@@ -164,10 +170,22 @@ function CreateFabricUserModal(props) {
             },
           ]}
         >
-          <Select disabled getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择所属组织">
-            <Option key={myOrgInfo.orgName} value={myOrgInfo.orgName}>
-              {myOrgInfo.orgName}
-            </Option>
+          <Select
+            placeholder="请选择所属组织"
+            disabled={userRole === Roles.NetworkMember}
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+          >
+            {userRole === Roles.NetworkAdmin ? (
+              orgList.map((item) => (
+                <Option key={item.orgName} value={item.orgName}>
+                  {item.orgName}
+                </Option>
+              ))
+            ) : (
+              <Option key={myOrgInfo.orgName} value={myOrgInfo.orgName}>
+                {myOrgInfo.orgName}
+              </Option>
+            )}
           </Select>
         </Item>
         <Item label="属性集" name="attrs" initialValue="">
@@ -178,8 +196,9 @@ function CreateFabricUserModal(props) {
   );
 }
 
-export default connect(({ User, FabricRole, loading }) => ({
+export default connect(({ User, FabricRole, Organization, loading }) => ({
   User,
   FabricRole,
+  Organization,
   addLoading: loading.effects['FabricRole/createFabricRole'],
 }))(CreateFabricUserModal);

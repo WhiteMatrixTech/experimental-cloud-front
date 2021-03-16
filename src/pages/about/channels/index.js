@@ -133,7 +133,15 @@ function ChannelManagement(props) {
         dataIndex: 'channelStatus',
         key: 'channelStatus',
         render: (text) =>
-          text ? <Badge color={ChannelStatus[text].color} text={ChannelStatus[text].text} style={{ color: ChannelStatus[text].color }} /> : '',
+          text ? (
+            <Badge
+              color={ChannelStatus[text].color}
+              text={ChannelStatus[text].text}
+              style={{ color: ChannelStatus[text].color }}
+            />
+          ) : (
+            ''
+          ),
       },
       {
         title: '通道描述',
@@ -197,7 +205,13 @@ function ChannelManagement(props) {
           columns={columns}
           dataSource={channelList}
           onChange={onPageChange}
-          pagination={{ pageSize, total: channelTotal, current: pageNum, showSizeChanger: false, position: ['bottomCenter'] }}
+          pagination={{
+            pageSize,
+            total: channelTotal,
+            current: pageNum,
+            showSizeChanger: false,
+            position: ['bottomCenter'],
+          }}
         />
       </div>
       {createChannelVisible && <CreateChannelModal visible={createChannelVisible} onCancel={onCloseCreateChannel} />}

@@ -73,10 +73,10 @@ function LeagueDashboard(props) {
     e.preventDefault();
     dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/channelList' },
+      payload: { selectedMenu: '/about/channels' },
     });
     history.push({
-      pathname: '/about/channelList',
+      pathname: '/about/channels',
       state: { openModal: true },
     });
   };
