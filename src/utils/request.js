@@ -1,7 +1,8 @@
 import { notification } from 'antd';
-import { fetch } from 'dva';
 import { history } from 'umi';
 import { extend } from 'umi-request';
+
+let isSendNotification = false;
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -21,20 +22,13 @@ const codeMessage = {
   504: '网关超时。',
 };
 
-const checkStatus = (response, check_500) => {
-  if ((response.status >= 200 && response.status < 300) || response.status === 500) {
-    return response;
-  }
-  const errortext = codeMessage[response.status] || response.message;
-  const error = new Error(errortext);
-  error.response = response;
-  throw error;
-};
-
 const authorization = (response) => {
   if (response.statusCode === 401 && response.message === 'Unauthorized') {
-    // 登录已过期
-    notification.error({ message: '登录已过期', top: 64, duration: 1 });
+    if (!isSendNotification) {
+      // 登录已过期
+      notification.error({ message: '登录已过期', top: 64, duration: 1 });
+      isSendNotification = true;
+    }
     // 清空缓存
     window.localStorage.clear();
     // 强制刷新页面
@@ -44,15 +38,8 @@ const authorization = (response) => {
     }, 1000);
     return;
   }
+  isSendNotification = false;
   return response;
-};
-
-const getResponseData = (response) => {
-  // 登出时会重定向
-  if (response.redirected) {
-    return response.text();
-  }
-  return response.json();
 };
 
 /** 异常处理程序 */

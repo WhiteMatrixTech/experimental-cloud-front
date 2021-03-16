@@ -5,7 +5,6 @@ import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button 
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import cs from 'classnames';
 import moment from 'moment';
-import { Roles } from 'utils/roles';
 import isEmpty from 'lodash/isEmpty';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
@@ -32,7 +31,7 @@ const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember');
 
 function EnterpriseMember(props) {
   const { Member, qryLoading, dispatch, User } = props;
-  const { networkName, userRole } = User;
+  const { networkName } = User;
   const { memberList, memberTotal } = Member;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
@@ -125,8 +124,12 @@ function EnterpriseMember(props) {
               <a onClick={() => onClickToConfirm(record, 'reject')}>驳回</a>
             </>
           )}
-          {record.isValid === 'valid' && record.approvalStatus === 'approved' && <a onClick={() => onClickToConfirm(record, 'invalidate')}>停用</a>}
-          {record.isValid === 'invalid' && record.approvalStatus === 'approved' && <a onClick={() => onClickToConfirm(record, 'validate')}>启用</a>}
+          {record.isValid === 'valid' && record.approvalStatus === 'approved' && (
+            <a onClick={() => onClickToConfirm(record, 'invalidate')}>停用</a>
+          )}
+          {record.isValid === 'invalid' && record.approvalStatus === 'approved' && (
+            <a onClick={() => onClickToConfirm(record, 'validate')}>启用</a>
+          )}
           <a onClick={() => onClickDetail(record)}>详情</a>
         </Space>
       ),
@@ -281,12 +284,6 @@ function EnterpriseMember(props) {
     getMemberTotalDocs();
   }, [queryParams, pageNum]);
 
-  useEffect(() => {
-    if (userRole !== Roles.NetworkAdmin) {
-      history.push('/403');
-    }
-  }, [userRole]);
-
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -301,7 +298,11 @@ function EnterpriseMember(props) {
               </Col>
               <Col span={8}>
                 <Item label="申请时间" name="createTime" initialValue={[]}>
-                  <RangePicker getCalendarContainer={(triggerNode) => triggerNode.parentNode} style={{ width: '100%' }} showTime />
+                  <RangePicker
+                    getCalendarContainer={(triggerNode) => triggerNode.parentNode}
+                    style={{ width: '100%' }}
+                    showTime
+                  />
                 </Item>
               </Col>
               <Col span={8}>

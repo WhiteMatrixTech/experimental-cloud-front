@@ -1,4 +1,5 @@
 import * as API from '../services/fabric-role';
+import { getMyOrgInfo } from '../services/my-info';
 import { notification } from 'antd';
 
 export default {
@@ -7,6 +8,8 @@ export default {
   state: {
     fabricRoleList: [],
     fabricRoleTotal: 0,
+
+    myOrgInfo: {}, // 我的组织信息
   },
 
   subscriptions: {
@@ -37,6 +40,19 @@ export default {
           payload: {
             fabricRoleList: result,
             fabricRoleTotal: result.length,
+          },
+        });
+      }
+    },
+
+    *getMyOrgInfo({ payload }, { call, put }) {
+      const res = yield call(getMyOrgInfo, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            myOrgInfo: result,
           },
         });
       }

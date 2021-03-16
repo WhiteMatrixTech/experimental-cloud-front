@@ -4,11 +4,11 @@ import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Breadcrumb } from 'components';
-import { Table, Button, Space, Form, Row, Col, Select } from 'antd';
+import { Table, Button, Space, Form, Row, Col, Select, message } from 'antd';
 import CreateFabricUserModal from './components/CreateFabricUserModal';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { orgStatusEnum } from '../organizations/_config';
 import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles.js';
 import styles from './index.less';
 
 const { Item } = Form;
@@ -24,7 +24,7 @@ function FabricRoleManagement(props) {
   const { dispatch, qryLoading = false } = props;
   const { orgList } = props.Organization;
   const { networkName, userRole } = props.User;
-  const { fabricRoleList, fabricRoleTotal } = props.FabricRole;
+  const { fabricRoleList, fabricRoleTotal, myOrgInfo } = props.FabricRole;
 
   const [form] = Form.useForm();
   const [columns, setColumns] = useState([]);
@@ -57,7 +57,11 @@ function FabricRoleManagement(props) {
   };
 
   const onClickCreate = () => {
-    setCreateModalVisible(true);
+    if (myOrgInfo.orgStatus && myOrgInfo.orgStatus === orgStatusEnum.InUse) {
+      setCreateModalVisible(true);
+    } else {
+      message.warn('请先在【组织管理】中添加您的组织，并确保您的组织在使用中');
+    }
   };
 
   const onCloseCreateModal = () => {
@@ -154,7 +158,7 @@ function FabricRoleManagement(props) {
         key: 'action',
         render: (_, record) => (
           <Space size="small">
-            {userRole === Roles.NetworkAdmin && <a onClick={() => onDownLoadSDK(record)}>下载SDK配置</a>}
+            <a onClick={() => onDownLoadSDK(record)}>下载SDK配置</a>
           </Space>
         ),
       },
@@ -166,6 +170,13 @@ function FabricRoleManagement(props) {
   useEffect(() => {
     getFabricRoleList();
   }, [pageNum, searchParams]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'FabricRole/getMyOrgInfo',
+      payload: { networkName },
+    });
+  }, []);
 
   return (
     <div className="page-wrapper">

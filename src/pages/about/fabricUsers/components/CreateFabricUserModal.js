@@ -17,15 +17,15 @@ const formItemLayout = {
 };
 
 function CreateFabricUserModal(props) {
-  const { Organization, visible, onCancel, addLoading = false, User, dispatch } = props;
+  const { FabricRole, visible, onCancel, addLoading = false, User, dispatch } = props;
   const { networkName } = User;
-  const { orgList } = Organization;
+  const { myOrgInfo } = FabricRole;
 
   const [form] = Form.useForm();
 
   useEffect(() => {
     dispatch({
-      type: 'Organization/getOrgList',
+      type: 'FabricRole/getMyOrgInfo',
       payload: { networkName },
     });
   }, []);
@@ -156,6 +156,7 @@ function CreateFabricUserModal(props) {
         <Item
           label="所属组织"
           name="orgName"
+          initialValue={myOrgInfo.orgName}
           rules={[
             {
               required: true,
@@ -163,12 +164,10 @@ function CreateFabricUserModal(props) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择所属组织">
-            {orgList.map((item) => (
-              <Option key={item.orgName} value={item.orgName}>
-                {item.orgName}
-              </Option>
-            ))}
+          <Select disabled getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择所属组织">
+            <Option key={myOrgInfo.orgName} value={myOrgInfo.orgName}>
+              {myOrgInfo.orgName}
+            </Option>
           </Select>
         </Item>
         <Item label="属性集" name="attrs" initialValue="">
@@ -179,9 +178,8 @@ function CreateFabricUserModal(props) {
   );
 }
 
-export default connect(({ User, FabricRole, Organization, loading }) => ({
+export default connect(({ User, FabricRole, loading }) => ({
   User,
   FabricRole,
-  Organization,
   addLoading: loading.effects['FabricRole/createFabricRole'],
 }))(CreateFabricUserModal);

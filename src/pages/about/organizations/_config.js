@@ -8,4 +8,16 @@ export const orgStatus = {
   Deleting: { color: 'orange', text: '删除中' },
   DeletionFailed: { color: 'red', text: '删除失败' },
   Deleted: { color: 'volcano', text: '已删除' },
-}
+};
+
+export const orgStatusEnum = {
+  InUse: 'InUse',
+  Creating: 'Creating',
+  CreationFailed: 'CreationFailed',
+  Stopping: 'Stopping',
+  StopFailed: 'StopFailed',
+  Stopped: 'Stopped',
+  Deleting: 'Deleting',
+  DeletionFailed: 'DeletionFailed',
+  Deleted: 'Deleted',
+};
