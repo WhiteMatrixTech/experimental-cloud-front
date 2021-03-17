@@ -179,7 +179,7 @@ function ServersManagement(props) {
             current: pageNum,
             showSizeChanger: false,
             position: ['bottomCenter'],
-            pageSize: baseConfig.pageSize,
+            pageSize: 10,
           }}
         />
       </div>
