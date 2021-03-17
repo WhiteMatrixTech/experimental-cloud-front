@@ -8,7 +8,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import CreateServerModal from './components/CreateServerModal';
 import baseConfig from 'utils/config';
-import { serverPurpose } from './_config';
+import { transCiphertext } from './_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/elastic-cloud-server');
 
@@ -113,7 +113,6 @@ function ServersManagement(props) {
         dataIndex: 'serverPurpose',
         key: 'serverPurpose',
         ellipsis: true,
-        render: (text) => serverPurpose[text],
       },
       {
         title: '外网IP',
@@ -132,11 +131,19 @@ function ServersManagement(props) {
         dataIndex: 'publicKey',
         key: 'publicKey',
         ellipsis: true,
+        render: (text) => transCiphertext(text),
       },
       {
         title: 'SSH私钥',
         dataIndex: 'privateKey',
         key: 'privateKey',
+        ellipsis: true,
+        render: (text) => transCiphertext(text),
+      },
+      {
+        title: '实例数量',
+        dataIndex: 'instanceCount',
+        key: 'instanceCount',
         ellipsis: true,
       },
       {

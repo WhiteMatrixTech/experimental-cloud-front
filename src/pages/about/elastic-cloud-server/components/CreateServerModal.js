@@ -165,7 +165,7 @@ function CreateServerModal(props) {
             },
           ]}
         >
-          <Input placeholder="请输入SSH私钥" />
+          <Input.TextArea placeholder="请输入SSH私钥" />
         </Item>
       </Form>
     </Modal>
