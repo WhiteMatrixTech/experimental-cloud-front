@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Table, Space, Col, Row, Button } from 'antd';
+import { Spin, Table, Space, Col, Row, Button, message } from 'antd';
 import { connect } from 'dva';
 import { history } from 'umi';
 import moment from 'moment';
@@ -16,6 +16,7 @@ const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/leagueDashboard');
 function LeagueDashboard(props) {
   const { Dashboard, User, dispatch, qryBlockLoading, qryNetworkLoading = false, qryTransactionLoading } = props;
   const { leagueName, networkName, userRole } = User;
+  const { serverTotal } = props.ElasticServer;
   const [blockColumns, setBlockColumns] = useState([]);
   const [transactionColumns, setTransactionColumns] = useState([]);
   const { networkStatusInfo, transactionList, blockList, channelTotal } = Dashboard;
@@ -65,6 +66,10 @@ function LeagueDashboard(props) {
 
   // 点击创建网络
   const onCreateNetwork = () => {
+    if (serverTotal === 0) {
+      message.warn('请先在【弹性云服务器管理中创建服务器】');
+      return;
+    }
     setCreateVisible(true);
   };
 
@@ -257,6 +262,13 @@ function LeagueDashboard(props) {
     }
   }, [channelTotal, userRole, networkStatusInfo]);
 
+  useEffect(() => {
+    dispatch({
+      type: 'ElasticServer/getServerTotal',
+      payload: {},
+    });
+  }, []);
+
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -317,10 +329,11 @@ function LeagueDashboard(props) {
   );
 }
 
-export default connect(({ Layout, Dashboard, User, loading }) => ({
+export default connect(({ Layout, Dashboard, ElasticServer, User, loading }) => ({
   User,
   Layout,
   Dashboard,
+  ElasticServer,
   deleteLoading: loading.effects['Dashboard/deleteNetwork'],
   qryBlockLoading: loading.effects['Dashboard/getBlockList'],
   qryNetworkLoading: loading.effects['Dashboard/getNetworkInfo'],

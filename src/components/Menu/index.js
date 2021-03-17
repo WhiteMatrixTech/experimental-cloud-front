@@ -20,7 +20,8 @@ function LeftMenu(props) {
 
   const hashChange = (menu) => {
     const unavailableNetworkStatus = [NetworkStatus.NotExist, NetworkStatus.UnknownError];
-    if (unavailableNetworkStatus.includes(networkStatusInfo.networkStatus)) {
+    const availableMenu = ['/about/leagueDashboard', '/about/elastic-cloud-server'];
+    if (unavailableNetworkStatus.includes(networkStatusInfo.networkStatus) && !availableMenu.includes(menu.menuHref)) {
       const warnMes = userRole === Roles.NetworkAdmin ? '请先创建网络' : '请等待盟主创建网络';
       message.warn(warnMes);
       return;
