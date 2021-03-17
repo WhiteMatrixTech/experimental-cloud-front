@@ -22,6 +22,7 @@ function Login(props) {
           payload: values,
         }).then((res) => {
           if (res) {
+            localStorage.setItem('accessToken', res.access_token);
             const redirect = localStorage.getItem('redirect');
             if (redirect) {
               window.location.replace(`${redirect}#${res.access_token}`);
