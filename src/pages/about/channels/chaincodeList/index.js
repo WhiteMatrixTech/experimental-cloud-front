@@ -32,19 +32,19 @@ class ChaincodeList extends Component {
         title: '合约名称',
         dataIndex: 'chainCodeName',
         key: 'chainCodeName',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '创建组织',
         dataIndex: 'createOrgName',
         key: 'createOrgName',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '合约版本',
         dataIndex: 'chainCodeVersion',
         key: 'chainCodeVersion',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '状态',
@@ -58,7 +58,7 @@ class ChaincodeList extends Component {
               style={{ color: chainCodeStatusInfo[text].color }}
             />
           ) : (
-            '******'
+            <span className="a-forbidden-style">信息访问受限</span>
           ),
       },
       {
@@ -66,7 +66,7 @@ class ChaincodeList extends Component {
         dataIndex: 'createdAt',
         key: 'createdAt',
         render: (text) =>
-          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******',
+          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
       },
     ];
   }
@@ -133,12 +133,7 @@ class ChaincodeList extends Component {
   render() {
     const { qryLoading = false, location } = this.props;
     const { pageSize, pageNum } = this.state;
-    const {
-      contractListOfChannel,
-      contractTotalOfChannel,
-      orgTotalOfChannel,
-      nodeTotalOfChannel,
-    } = this.props.Channel;
+    const { contractListOfChannel, contractTotalOfChannel, orgTotalOfChannel, nodeTotalOfChannel } = this.props.Channel;
     const channelInfoList = [
       {
         label: '通道名称',
@@ -161,11 +156,7 @@ class ChaincodeList extends Component {
       <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className="page-content">
-          <DetailCard
-            cardTitle="基本信息"
-            detailList={channelInfoList}
-            boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"
-          />
+          <DetailCard cardTitle="基本信息" detailList={channelInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
           <div className="table-wrapper page-content-shadow">
             <SearchBar placeholder="输入合约名称" onSearch={this.onSearch} />
             <Table

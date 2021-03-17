@@ -71,26 +71,26 @@ class ChannelDetail extends Component {
         title: '所属通道',
         dataIndex: 'channelId',
         key: 'channelId',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '交易组织',
         dataIndex: 'txEndorseMsp',
         key: 'txEndorseMsp',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '合约名称',
         dataIndex: 'chainCodeName',
         key: 'chainCodeName',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '生成时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
         render: (text) =>
-          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******',
+          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '操作',
@@ -229,20 +229,12 @@ class ChannelDetail extends Component {
               <Col span={8}>
                 <label>创建时间：</label>
                 <span>
-                  {location?.state?.createdAt
-                    ? moment(location?.state?.createdAt).format(
-                        'YYYY-MM-DD HH:mm:ss',
-                      )
-                    : ''}
+                  {location?.state?.createdAt ? moment(location?.state?.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
                 </span>
               </Col>
               <Col span={8}>
                 <label>状态：</label>
-                <span>
-                  {location?.state?.channelStatus
-                    ? ChannelStatus[location?.state?.channelStatus].text
-                    : ''}
-                </span>
+                <span>{location?.state?.channelStatus ? ChannelStatus[location?.state?.channelStatus].text : ''}</span>
               </Col>
             </Row>
           </div>

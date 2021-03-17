@@ -200,25 +200,26 @@ class MyContract extends Component {
         title: '合约名称',
         dataIndex: 'chainCodeName',
         key: 'chainCodeName',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '所属通道',
         dataIndex: 'channelId',
         key: 'channelId',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '所属组织',
         dataIndex: 'createOrgName',
         key: 'createOrgName',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '创建时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******'),
+        render: (text) =>
+          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '状态',
@@ -232,7 +233,7 @@ class MyContract extends Component {
               style={{ color: chainCodeStatusInfo[text].color }}
             />
           ) : (
-            '******'
+            <span className="a-forbidden-style">信息访问受限</span>
           ),
       },
       {

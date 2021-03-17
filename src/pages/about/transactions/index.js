@@ -88,25 +88,26 @@ function Transactions(props) {
         title: '所属通道',
         dataIndex: 'channelId',
         key: 'channelId',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '交易组织',
         dataIndex: 'txMsp',
         key: 'txMsp',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '合约名称',
         dataIndex: 'chainCodeName',
         key: 'chainCodeName',
-        render: (text) => text || '******',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '生成时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '******'),
+        render: (text) =>
+          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '操作',
