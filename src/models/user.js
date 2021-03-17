@@ -65,7 +65,6 @@ export default {
             accessToken: result.access_token,
           },
         });
-        localStorage.setItem('accessToken', result.access_token);
         return result;
       } else {
         yield put({
