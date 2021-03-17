@@ -59,10 +59,10 @@ export default {
       const succMessage = `${isValid === 'invalid' ? '停用' : '启用'}企业成员成功`;
       const failMessage = `${isValid === 'invalid' ? '停用' : '启用'}企业成员失败`;
       if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: succMessage, top: 64, duration: 1 });
+        notification.success({ message: succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
       }
     },
     *setCompanyApprove({ payload }, { call, put }) {
@@ -72,10 +72,10 @@ export default {
       const succMessage = `${approvalStatus === 'approved' ? '通过' : '驳回'}企业成员成功`;
       const failMessage = `${approvalStatus === 'approved' ? '通过' : '驳回'}企业成员失败`;
       if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: succMessage, top: 64, duration: 1 });
+        notification.success({ message: succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
       }
     },
   },

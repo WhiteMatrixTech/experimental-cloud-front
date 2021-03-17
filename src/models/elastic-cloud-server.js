@@ -51,10 +51,10 @@ export default {
       const succMessage = `创建服务器成功`;
       const failMessage = `创建服务器失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: result.message || succMessage, top: 64, duration: 1 });
+        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
       }
     },
 
@@ -64,10 +64,10 @@ export default {
       const succMessage = `修改服务器成功`;
       const failMessage = `修改服务器失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: result.message || succMessage, top: 64, duration: 1 });
+        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
       }
     },
 
@@ -77,10 +77,10 @@ export default {
       const succMessage = `删除服务器成功`;
       const failMessage = `删除服务器失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: result.message || succMessage, top: 64, duration: 1 });
+        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
       }
     },
 

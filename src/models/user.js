@@ -50,7 +50,7 @@ export default {
           },
         });
       } else {
-        notification.error({ message: result.message || '用户注册失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '用户注册失败', top: 64, duration: 3 });
         return false;
       }
     },
@@ -125,7 +125,7 @@ export default {
         localStorage.setItem('roleToken', result.role_token);
         return true;
       } else {
-        notification.error({ message: result.message || '无法进入联盟', top: 64, duration: 1 });
+        notification.error({ message: result.message || '无法进入联盟', top: 64, duration: 3 });
         return false;
       }
     },
@@ -133,20 +133,20 @@ export default {
       const res = yield call(API.enrollInLeague, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '已成功申请加入联盟，请等待盟主审批', top: 64, duration: 1 });
+        notification.success({ message: '已成功申请加入联盟，请等待盟主审批', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '申请加入联盟失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '申请加入联盟失败', top: 64, duration: 3 });
       }
     },
     *createLeague({ payload }, { call, put }) {
       const res = yield call(API.createLeague, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '联盟创建成功', top: 64, duration: 1 });
+        notification.success({ message: '联盟创建成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '联盟创建失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '联盟创建失败', top: 64, duration: 3 });
         return false;
       }
     },

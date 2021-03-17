@@ -124,10 +124,10 @@ export default {
       const succMessage = `${chainCodeStatus === 4 ? '通过' : '驳回'}合约成功`;
       const failMessage = `${chainCodeStatus === 4 ? '通过' : '驳回'}合约失败`;
       if (statusCode === 'ok') {
-        notification.success({ message: succMessage, top: 64, duration: 1 });
+        notification.success({ message: succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
       }
     },
 
@@ -148,10 +148,10 @@ export default {
       const res = yield call(API.addContract, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '新增合约成功', top: 64, duration: 1 });
+        notification.success({ message: '新增合约成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '新增合约失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '新增合约失败', top: 64, duration: 3 });
       }
     },
 
@@ -159,10 +159,10 @@ export default {
       const res = yield call(API.upgradeContract, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '合约升级成功', top: 64, duration: 1 });
+        notification.success({ message: '合约升级成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '合约升级失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '合约升级失败', top: 64, duration: 3 });
       }
     },
 
@@ -170,10 +170,10 @@ export default {
       const res = yield call(API.releaseContract, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '发布合约成功', top: 64, duration: 1 });
+        notification.success({ message: '发布合约成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '发布合约失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '发布合约失败', top: 64, duration: 3 });
       }
     },
 
@@ -203,7 +203,7 @@ export default {
             },
           },
         });
-        notification.success({ message: '调用合约成功', top: 64, duration: 1 });
+        notification.success({ message: '调用合约成功', top: 64, duration: 3 });
         return true;
       } else {
         yield put({
@@ -215,7 +215,7 @@ export default {
             },
           },
         });
-        notification.error({ message: result.message || '调用合约失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '调用合约失败', top: 64, duration: 3 });
       }
     },
 
@@ -232,7 +232,7 @@ export default {
             },
           },
         });
-        notification.success({ message: '调用合约成功', top: 64, duration: 1 });
+        notification.success({ message: '调用合约成功', top: 64, duration: 3 });
         return true;
       } else {
         yield put({
@@ -244,7 +244,7 @@ export default {
             },
           },
         });
-        notification.error({ message: result.message || '调用合约失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '调用合约失败', top: 64, duration: 3 });
       }
     },
   },

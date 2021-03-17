@@ -26,7 +26,7 @@ const authorization = (response) => {
   if (response.statusCode === 401 && response.message === 'Unauthorized') {
     if (!isSendNotification) {
       // 登录已过期
-      notification.error({ message: '登录已过期', top: 64, duration: 1 });
+      notification.error({ message: '登录已过期', top: 64, duration: 3 });
       isSendNotification = true;
     }
     // 清空缓存

@@ -61,7 +61,7 @@ export default {
             transactionDetail: '',
           },
         });
-        notification.error({ message: result.message, top: 64, duration: 1 });
+        notification.error({ message: result.message, top: 64, duration: 3 });
       }
     },
 

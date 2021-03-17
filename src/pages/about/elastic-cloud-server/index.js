@@ -8,7 +8,6 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import CreateServerModal from './components/CreateServerModal';
 import baseConfig from 'utils/config';
-import { transCiphertext } from './_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/elastic-cloud-server');
 
@@ -125,20 +124,6 @@ function ServersManagement(props) {
         dataIndex: 'privateIp',
         key: 'privateIp',
         ellipsis: true,
-      },
-      {
-        title: 'SSH公钥',
-        dataIndex: 'publicKey',
-        key: 'publicKey',
-        ellipsis: true,
-        render: (text) => transCiphertext(text),
-      },
-      {
-        title: 'SSH私钥',
-        dataIndex: 'privateKey',
-        key: 'privateKey',
-        ellipsis: true,
-        render: (text) => transCiphertext(text),
       },
       {
         title: '实例数量',

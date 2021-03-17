@@ -42,23 +42,23 @@ export default {
       const res = yield call(API.createNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' || result.status === 'Starting') {
-        notification.success({ message: '创建网络请求发起成功', top: 64, duration: 1 });
+        notification.success({ message: '创建网络请求发起成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '创建网络请求发起成功', top: 64, duration: 1 });
+        notification.error({ message: result.message || '创建网络请求发起成功', top: 64, duration: 3 });
       }
     },
     *deleteNetwork({ payload }, { call, put }) {
       const res = yield call(API.deleteNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '网络删除成功', top: 64, duration: 1 });
+        notification.success({ message: '网络删除成功', top: 64, duration: 3 });
         yield put({
           type: 'getNetworkInfo',
           payload: {},
         });
       } else {
-        notification.error({ message: result.message || '网络删除失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '网络删除失败', top: 64, duration: 3 });
       }
     },
     *getBlockList({ payload }, { call, put }) {

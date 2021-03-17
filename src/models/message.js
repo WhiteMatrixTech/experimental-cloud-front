@@ -71,30 +71,30 @@ export default {
       const res = yield call(API.bacthReadMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: '消息标记已读成功', top: 64, duration: 1 });
+        notification.success({ message: '消息标记已读成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '消息标记已读失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '消息标记已读失败', top: 64, duration: 3 });
       }
     },
     *batchDeleteMes({ payload }, { call, put }) {
       const res = yield call(API.batchDeleteMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: '批量删除消息成功', top: 64, duration: 1 });
+        notification.success({ message: '批量删除消息成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '批量删除消息失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '批量删除消息失败', top: 64, duration: 3 });
       }
     },
     *deleteMes({ payload }, { call, put }) {
       const res = yield call(API.deleteMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: '删除消息成功', top: 64, duration: 1 });
+        notification.success({ message: '删除消息成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '删除消息失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '删除消息失败', top: 64, duration: 3 });
       }
     },
   },

@@ -1,7 +1,6 @@
 import * as API from '../services/organization.js';
 import { notification } from 'antd';
 
-
 export default {
   namespace: 'Organization',
 
@@ -11,7 +10,7 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) { },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
@@ -19,10 +18,10 @@ export default {
       const res = yield call(API.createOrg, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '组织创建成功', top: 64, duration: 1 });
-        return true
+        notification.success({ message: result.message || '组织创建成功', top: 64, duration: 3 });
+        return true;
       } else {
-        notification.error({ message: result.message || '组织创建失败', top: 64, duration: 1 })
+        notification.error({ message: result.message || '组织创建失败', top: 64, duration: 3 });
       }
     },
 
@@ -34,7 +33,7 @@ export default {
           type: 'common',
           payload: {
             orgList: result,
-            orgTotal: result.length
+            orgTotal: result.length,
           },
         });
       }

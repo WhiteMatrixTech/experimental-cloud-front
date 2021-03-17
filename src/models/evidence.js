@@ -68,10 +68,10 @@ export default {
       const res = yield call(API.evidenceOnChain, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: '存证上链成功', top: 64, duration: 1 });
+        notification.success({ message: '存证上链成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '存证上链失败', top: 64, duration: 1 });
+        notification.error({ message: result.message || '存证上链失败', top: 64, duration: 3 });
       }
     },
   },

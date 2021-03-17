@@ -65,7 +65,7 @@ export default {
             blockDetail: '',
           },
         });
-        notification.error({ message: result.message, top: 64, duration: 1 });
+        notification.error({ message: result.message, top: 64, duration: 3 });
       }
     },
     *getBlockDetail({ payload }, { call, put }) {

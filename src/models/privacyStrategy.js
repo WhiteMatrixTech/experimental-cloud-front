@@ -51,10 +51,10 @@ export default {
       const succMessage = `新增隐私保护策略成功`;
       const failMessage = `新增隐私保护策略失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: succMessage, top: 64, duration: 1 });
+        notification.success({ message: succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
       }
     },
 
@@ -64,10 +64,10 @@ export default {
       const succMessage = `修改隐私保护策略成功`;
       const failMessage = `修改隐私保护策略失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: succMessage, top: 64, duration: 1 });
+        notification.success({ message: succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
       }
     },
     *updateStrategyStatus({ payload }, { call, put }) {
@@ -77,10 +77,10 @@ export default {
       const succMessage = `${strategyStatus === 0 ? '停用' : '启用'}隐私保护策略成功`;
       const failMessage = `${strategyStatus === 0 ? '停用' : '启用'}隐私保护策略失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: succMessage, top: 64, duration: 1 });
+        notification.success({ message: succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 1 });
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
       }
     },
     *getPageListOfRoleMember({ payload }, { call, put }) {
@@ -100,7 +100,7 @@ export default {
       const res = yield call(API.updateStrategyMember, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: '配置隐私保护策略成功', top: 64, duration: 1 });
+        notification.success({ message: '配置隐私保护策略成功', top: 64, duration: 3 });
         yield put({
           type: 'common',
           payload: {},
@@ -110,7 +110,7 @@ export default {
         notification.error({
           message: result.message || '配置隐私保护策略失败',
           top: 64,
-          duration: 1,
+          duration: 3,
         });
       }
     },
