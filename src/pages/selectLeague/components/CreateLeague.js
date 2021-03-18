@@ -82,7 +82,7 @@ function CreateLeague(props) {
               min: 6,
               max: 15,
               type: 'string',
-              pattern: /^[a-zA-Z0-9]\w{6,15}$/,
+              pattern: /^[a-zA-Z0-9]+$/,
               message: '网络名称由6~15位英文字母或数字组成',
             },
           ]}
