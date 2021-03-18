@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'dva';
-import { Table, Badge } from 'antd';
+import { Table } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
-import { peerStatus } from '../../nodes/_config';
 import baseConfig from 'utils/config';
 import { serverPurpose } from '../_config';
 
@@ -16,35 +15,31 @@ breadCrumbItem.push({
 
 const columns = [
   {
-    title: '节点名称',
-    dataIndex: 'nodeName',
-    key: 'peerName',
+    title: '实例ID',
+    dataIndex: 'instanceId',
+    key: 'instanceId',
+    ellipsis: true,
   },
   {
-    title: '节点别名',
-    dataIndex: 'nodeAliasName',
-    key: 'peerAliasName',
+    title: '实例名称',
+    dataIndex: 'instanceName',
+    key: 'instanceName',
   },
   {
-    title: '节点全名',
-    dataIndex: 'nodeFullName',
-    key: 'nodeFullName',
+    title: '实例类型',
+    dataIndex: 'instanceType',
+    key: 'instanceType',
   },
   {
-    title: '所属组织',
-    dataIndex: 'orgName',
-    key: 'orgName',
+    title: '外网IP',
+    dataIndex: 'publicIpAddress',
+    key: 'publicIpAddress',
+    ellipsis: true,
   },
   {
     title: '状态',
-    dataIndex: 'nodeStatus',
-    key: 'nodeStatus',
-    render: (text) =>
-      text ? (
-        <Badge color={peerStatus[text].color} text={peerStatus[text].text} style={{ color: peerStatus[text].color }} />
-      ) : (
-        ''
-      ),
+    dataIndex: 'state',
+    key: 'state',
   },
   {
     title: '创建时间',
@@ -96,7 +91,7 @@ function ResourceUsage(props) {
         value: serverPurpose[location?.state?.serverPurpose],
       },
       {
-        label: '节点总数',
+        label: '实例总数',
         value: nodeTotal,
       },
     ],
@@ -113,7 +108,7 @@ function ResourceUsage(props) {
       <div className="page-content">
         <DetailCard cardTitle="服务器信息" detailList={serverInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
         <Table
-          rowKey="_id"
+          rowKey="instanceId"
           loading={qryLoading}
           columns={columns}
           className="page-content-shadow table-wrapper"
