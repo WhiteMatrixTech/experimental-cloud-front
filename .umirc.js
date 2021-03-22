@@ -105,7 +105,7 @@ export default {
   publicPath: '/',
   chainWebpack,
   title: 'BaaS',
-  favicon: 'https://fabric-baas-front.oss-cn-shanghai.aliyuncs.com/favicon.png',
+  favicon: '/favicon.png',
 
   alias: {
     components: resolve(__dirname, './src/components'),
