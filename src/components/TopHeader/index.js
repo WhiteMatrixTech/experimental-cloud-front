@@ -62,7 +62,7 @@ class TopHeader extends PureComponent {
     const { userInfo } = this.props.User;
     return (
       <Header className={styles.header}>
-        <div className={styles['logo-sub']}>欢迎使用纯白矩阵ChainBaaS区块链管理平台</div>
+        <div className={styles['logo-sub']}>欢迎使用扬子江数字金融Baas区块链管理平台</div>
         <div className={styles['header-right-info']}>
           <a className={styles['header-menu-item']} onClick={this.onClickIDE}>
             ChainIDE
