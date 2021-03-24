@@ -1,14 +1,13 @@
 .main-container {
-  height: auto;
-  min-height: 100vh;
   position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
-  background: url("../../../assets/images/loginBg.jpg");
+  height: auto;
+  min-height: 100vh;
   .section-container {
-    flex: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
     justify-content: center;
     .section-common-wrapper {
@@ -19,16 +18,17 @@
         flex: 1;
         flex-wrap: wrap;
         margin: auto;
-        .login-dec-01, .login-dec-02 {
+        .login-dec-01,
+        .login-dec-02 {
           color: #fff;
           text-align: center;
         }
         .login-dec-01 {
           span {
-            font-size: 40px;
-            padding-bottom: 24px;
             display: inline-block;
-            border-bottom: 1px solid hsla(0,0%,100%,.3);
+            padding-bottom: 24px;
+            font-size: 40px;
+            border-bottom: 1px solid hsla(0, 0%, 100%, 0.3);
           }
         }
         .login-dec-02 {
@@ -38,8 +38,8 @@
     }
     .user-mode {
       width: 420px;
-      background: #fff;
       padding: 40px 40px;
+      background: #fff;
       border-radius: 20px;
     }
   }

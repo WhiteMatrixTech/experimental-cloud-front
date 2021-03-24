@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { Layout } from 'antd';
 import LoginHeader from './LoginHeader';
 import LoginFooter from './LoginFooter';
@@ -9,14 +9,17 @@ const { Content } = Layout;
 
 class LoginLayout extends PureComponent {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
     const { children } = this.props;
     return (
-      <Layout className={styles['main-container']}>
+      <Layout
+        className={styles['main-container']}
+        style={{ backgroundImage: `url("${require('@/assets/images/loginBg.jpg')}")` }}
+      >
         <LoginHeader />
         <Content className={styles['section-container']}>
           <div className={styles['section-common-wrapper']}>
