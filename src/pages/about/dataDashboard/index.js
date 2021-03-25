@@ -5,7 +5,14 @@ import { connect } from 'dva';
 import styles from './index.less';
 import { Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
-import { FabricMetrics, GoMetrics, LedgerMetrics, OrdererMetrics, ChaincodeMetrics } from './components';
+import {
+  BalanceTransfer,
+  FabricMetrics,
+  GoMetrics,
+  LedgerMetrics,
+  OrdererMetrics,
+  ChaincodeMetrics,
+} from './components';
 
 const { TabPane } = Tabs;
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/dataDashboard');
@@ -15,7 +22,10 @@ function DataDashboard(props) {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className={cs(styles['data-dashboard'], 'page-content', 'page-content-shadow')}>
-        <Tabs defaultActiveKey="FabricMetrics">
+        <Tabs defaultActiveKey="BalanceTransfer">
+          <TabPane tab="Balance Transfer" key="BalanceTransfer">
+            <BalanceTransfer />
+          </TabPane>
           <TabPane tab="Hyperledger Fabric Metrics" key="FabricMetrics">
             <FabricMetrics />
           </TabPane>
