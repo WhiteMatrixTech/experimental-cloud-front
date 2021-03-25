@@ -15,13 +15,23 @@ const formItemLayout = {
 };
 
 function CreateNodeModal(props) {
-  const { Organization, visible, onCancel, addLoading = false, User, dispatch } = props;
+  const { Organization, ElasticServer, visible, onCancel, addLoading = false, User, dispatch } = props;
   const { networkName } = User;
   const { orgList } = Organization;
+  const { serverList } = ElasticServer;
 
   const [form] = Form.useForm();
 
   useEffect(() => {
+    const params = {
+      limit: 100,
+      offset: 0,
+      ascend: false,
+    };
+    dispatch({
+      type: 'ElasticServer/getServerList',
+      payload: params,
+    });
     dispatch({
       type: 'Organization/getOrgList',
       payload: { networkName },
@@ -39,6 +49,9 @@ function CreateNodeModal(props) {
           peerName: values.peerName,
           peerNameAlias: values.peerNameAlias,
         };
+        if (values.serverName) {
+          params.serverName = values.serverName;
+        }
         dispatch({
           type: 'Peer/createNode',
           payload: params,
@@ -84,7 +97,7 @@ function CreateNodeModal(props) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择所属组织">
+          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择所属组织">
             {orgList.map((item) => (
               <Option key={item.orgName} value={item.orgName}>
                 {item.orgName}
@@ -110,7 +123,7 @@ function CreateNodeModal(props) {
             },
           ]}
         >
-          <Input placeholder="请输入节点名称" />
+          <Input placeholder="输入节点名称" />
         </Item>
         <Item
           label="节点别名"
@@ -130,16 +143,26 @@ function CreateNodeModal(props) {
             },
           ]}
         >
-          <Input placeholder="请输入节点别名" />
+          <Input placeholder="输入节点别名" />
+        </Item>
+        <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
+          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择服务器">
+            {serverList.map((item) => (
+              <Option key={item.serverName} value={item.serverName}>
+                {item.serverName}
+              </Option>
+            ))}
+          </Select>
         </Item>
       </Form>
     </Modal>
   );
 }
 
-export default connect(({ User, Peer, Organization, loading }) => ({
+export default connect(({ User, Peer, Organization, ElasticServer, loading }) => ({
   User,
   Peer,
   Organization,
+  ElasticServer,
   addLoading: loading.effects['Peer/createNode'],
 }))(CreateNodeModal);

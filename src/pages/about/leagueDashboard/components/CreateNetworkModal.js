@@ -1,8 +1,9 @@
-import { Button, Form, Input, Modal } from 'antd';
+import React, { useEffect } from 'react';
+import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
-import React from 'react';
 
 const { Item } = Form;
+const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
@@ -14,16 +15,20 @@ const formItemLayout = {
 };
 
 function CreateNetworkModal(props) {
-  const { dispatch, visible, onCancel, createLoading = false, User } = props;
+  const { dispatch, visible, onCancel, createLoading = false, User, ElasticServer } = props;
+  const { serverList } = ElasticServer;
+
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
     form
       .validateFields()
       .then(async (values) => {
-        let params = {
-          ...values,
-        };
+        const { serverName, ...rest } = values;
+        let params = { ...rest };
+        if (values.serverName) {
+          params.serverName = values.serverName;
+        }
         const res = await dispatch({
           type: 'Dashboard/createNetwork',
           payload: params,
@@ -36,6 +41,18 @@ function CreateNetworkModal(props) {
         console.log('校验失败:', info);
       });
   };
+
+  useEffect(() => {
+    const params = {
+      limit: 100,
+      offset: 0,
+      ascend: false,
+    };
+    dispatch({
+      type: 'ElasticServer/getServerList',
+      payload: params,
+    });
+  }, []);
 
   const drawerProps = {
     visible: visible,
@@ -142,13 +159,23 @@ function CreateNetworkModal(props) {
         >
           <Input placeholder="请输入节点别名" />
         </Item>
+        <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
+          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择服务器">
+            {serverList.map((item) => (
+              <Option key={item.serverName} value={item.serverName}>
+                {item.serverName}
+              </Option>
+            ))}
+          </Select>
+        </Item>
       </Form>
     </Modal>
   );
 }
 
-export default connect(({ User, Dashboard, loading }) => ({
+export default connect(({ User, Dashboard, ElasticServer, loading }) => ({
   User,
   Dashboard,
+  ElasticServer,
   createLoading: loading.effects['Dashboard/createNetwork'],
 }))(CreateNetworkModal);
