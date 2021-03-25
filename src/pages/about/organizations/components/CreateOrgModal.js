@@ -15,12 +15,23 @@ const formItemLayout = {
 };
 
 function CreateOrgModal(props) {
-  const { dispatch, visible, onCancel, addLoading = false, User, Contract } = props;
+  const { dispatch, visible, onCancel, addLoading = false, User, Contract, ElasticServer } = props;
   const { networkName } = User;
   const { channelList } = Contract;
+  const { serverList } = ElasticServer;
+
   const [form] = Form.useForm();
 
   useEffect(() => {
+    const params = {
+      limit: 100,
+      offset: 0,
+      ascend: false,
+    };
+    dispatch({
+      type: 'ElasticServer/getServerList',
+      payload: params,
+    });
     dispatch({
       type: 'Contract/getChannelList',
       payload: { networkName },
@@ -31,10 +42,14 @@ function CreateOrgModal(props) {
     form
       .validateFields()
       .then(async (values) => {
+        const { serverName, ...rest } = values;
         let params = {
-          ...values,
+          ...rest,
           networkName,
         };
+        if (values.serverName) {
+          params.serverName = values.serverName;
+        }
         const res = await dispatch({
           type: 'Organization/createOrg',
           payload: params,
@@ -77,7 +92,7 @@ function CreateOrgModal(props) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择通道">
+          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择通道">
             {channelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
@@ -102,7 +117,7 @@ function CreateOrgModal(props) {
             },
           ]}
         >
-          <Input placeholder="请输入组织名称" />
+          <Input placeholder="输入组织名称" />
         </Item>
         <Item
           label="组织别名"
@@ -114,7 +129,7 @@ function CreateOrgModal(props) {
             },
           ]}
         >
-          <Input placeholder="请输入组织别名" />
+          <Input placeholder="输入组织别名" />
         </Item>
         <Item
           label="初始化节点名"
@@ -134,7 +149,7 @@ function CreateOrgModal(props) {
             },
           ]}
         >
-          <Input placeholder="请输入初始化节点名" />
+          <Input placeholder="输入初始化节点名" />
         </Item>
         <Item
           label="初始化节点别名"
@@ -146,16 +161,26 @@ function CreateOrgModal(props) {
             },
           ]}
         >
-          <Input placeholder="请输入初始化节点别名" />
+          <Input placeholder="输入初始化节点别名" />
+        </Item>
+        <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
+          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择服务器">
+            {serverList.map((item) => (
+              <Option key={item.serverName} value={item.serverName}>
+                {item.serverName}
+              </Option>
+            ))}
+          </Select>
         </Item>
       </Form>
     </Modal>
   );
 }
 
-export default connect(({ User, Organization, Contract, loading }) => ({
+export default connect(({ User, Organization, ElasticServer, Contract, loading }) => ({
   User,
-  Organization,
   Contract,
+  Organization,
+  ElasticServer,
   addLoading: loading.effects['Organization/createOrg'],
 }))(CreateOrgModal);

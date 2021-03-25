@@ -44,6 +44,14 @@ function LeagueDashboard(props) {
       type: `Dashboard/${userRole === Roles.NetworkMember ? 'getStaticInfoForMember' : 'getStaticInfoForAdmin'}`,
       payload: params,
     });
+    dispatch({
+      type: 'ElasticServer/getServerList',
+      payload: {
+        limit: 100,
+        offset: 0,
+        ascend: false,
+      },
+    });
   };
 
   // 获取网络信息

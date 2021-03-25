@@ -7,7 +7,6 @@ import { Table, Button, Space, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import CreateServerModal from './components/CreateServerModal';
-import baseConfig from 'utils/config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/elastic-cloud-server');
 
@@ -21,10 +20,10 @@ function ServersManagement(props) {
 
   // 获取服务器列表
   const getServerList = () => {
-    const offset = (pageNum - 1) * baseConfig.pageSize;
+    const offset = (pageNum - 1) * 10;
 
     const params = {
-      limit: baseConfig.pageSize,
+      limit: 10,
       offset: offset,
       ascend: false,
     };

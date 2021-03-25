@@ -103,7 +103,16 @@ function NodeManagement(props) {
         title: '状态',
         dataIndex: 'nodeStatus',
         key: 'nodeStatus',
-        render: (text) => (text ? <Badge color={peerStatus[text].color} text={peerStatus[text].text} style={{ color: peerStatus[text].color }} /> : ''),
+        render: (text) =>
+          text ? (
+            <Badge
+              color={peerStatus[text].color}
+              text={peerStatus[text].text}
+              style={{ color: peerStatus[text].color }}
+            />
+          ) : (
+            ''
+          ),
       },
       {
         title: '更新时间',
@@ -117,7 +126,9 @@ function NodeManagement(props) {
         render: (_, record) => (
           <Space size="small">
             {userRole === Roles.NetworkAdmin && <a onClick={() => onDownLoadCertificate(record)}>下载证书</a>}
-            {availableNodeStatus.includes(record.nodeStatus) && <a onClick={() => onClickGetSSH(record)}>获取ssh命令</a>}
+            {availableNodeStatus.includes(record.nodeStatus) && (
+              <a onClick={() => onClickGetSSH(record)}>获取ssh命令</a>
+            )}
           </Space>
         ),
       },
@@ -139,13 +150,6 @@ function NodeManagement(props) {
     getNodeList();
   }, [pageNum]);
 
-  useEffect(() => {
-    const interval = setInterval(getNodeList, 30000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -161,10 +165,18 @@ function NodeManagement(props) {
           columns={columns}
           dataSource={nodeList}
           onChange={onPageChange}
-          pagination={{ pageSize, total: nodeTotal, current: pageNum, showSizeChanger: false, position: ['bottomCenter'] }}
+          pagination={{
+            pageSize,
+            total: nodeTotal,
+            current: pageNum,
+            showSizeChanger: false,
+            position: ['bottomCenter'],
+          }}
         />
       </div>
-      {createNodeVisible && <CreateNodeModal getNodeList={getNodeList} visible={createNodeVisible} onCancel={onCloseModal} />}
+      {createNodeVisible && (
+        <CreateNodeModal getNodeList={getNodeList} visible={createNodeVisible} onCancel={onCloseModal} />
+      )}
       {sshModalVisible && <SSHCommand nodeRecord={nodeRecord} visible={sshModalVisible} onCancel={onCloseModal} />}
     </div>
   );
