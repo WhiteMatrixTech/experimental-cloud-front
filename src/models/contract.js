@@ -6,6 +6,7 @@ export default {
   namespace: 'Contract',
 
   state: {
+    userOrgInuse: false, // 用户是否有组织 且组织在使用中
     channelList: [], // 创建合约通道下拉框列表
     myContractList: [], // 我的合约列表
     myContractTotal: 0,
@@ -139,6 +140,19 @@ export default {
           type: 'common',
           payload: {
             channelList: result,
+          },
+        });
+      }
+    },
+
+    *checkOrgExist({ payload }, { call, put }) {
+      const res = yield call(API.checkOrgExist, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            userOrgInuse: result,
           },
         });
       }
