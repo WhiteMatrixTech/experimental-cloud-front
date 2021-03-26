@@ -54,14 +54,6 @@ export default function FabricMetrics() {
             frameBorder="0"
           ></iframe>
         </Col>
-        <Col span={24}>
-          <iframe
-            src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=32`}
-            id="Couch DB Processing Time"
-            title="Couch DB Processing Time"
-            frameBorder="0"
-          ></iframe>
-        </Col>
       </Row>
     </div>
   );
