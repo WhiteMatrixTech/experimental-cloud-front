@@ -6,23 +6,7 @@ export default function BalanceTransfer() {
   return (
     <div className={styles['tabs-body']}>
       <Row gutter={[16, 16]}>
-        <Col span={3}>
-          <iframe
-            src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=22`}
-            title="Transactions per second"
-            id="Transactions per second"
-            frameBorder="0"
-          ></iframe>
-        </Col>
-        <Col span={3}>
-          <iframe
-            src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=33`}
-            title="Failures per second"
-            id="Failures per second"
-            frameBorder="0"
-          ></iframe>
-        </Col>
-        <Col span={9}>
+        <Col span={12}>
           <iframe
             src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=40`}
             title="Ledger Height Per Channel"
@@ -30,7 +14,7 @@ export default function BalanceTransfer() {
             frameBorder="0"
           ></iframe>
         </Col>
-        <Col span={9}>
+        <Col span={12}>
           <iframe
             src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=12`}
             title="Live Monitored Nodes"

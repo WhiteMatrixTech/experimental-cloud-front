@@ -23,22 +23,22 @@ function DataDashboard(props) {
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className={cs(styles['data-dashboard'], 'page-content', 'page-content-shadow')}>
         <Tabs defaultActiveKey="BalanceTransfer">
-          <TabPane tab="Balance Transfer" key="BalanceTransfer">
+          <TabPane tab="余额转移" key="BalanceTransfer">
             <BalanceTransfer />
           </TabPane>
-          <TabPane tab="Hyperledger Fabric Metrics" key="FabricMetrics">
+          <TabPane tab="Hyperledger Fabric 指标" key="FabricMetrics">
             <FabricMetrics />
           </TabPane>
-          <TabPane tab="Go Metrics" key="GoMetrics">
+          <TabPane tab="Go 指标" key="GoMetrics">
             <GoMetrics />
           </TabPane>
-          <TabPane tab="Ledger Metrics" key="LedgerMetrics">
+          <TabPane tab="账本指标" key="LedgerMetrics">
             <LedgerMetrics />
           </TabPane>
-          <TabPane tab="Orderer Metrics" key="OrdererMetrics">
+          <TabPane tab="订购指标" key="OrdererMetrics">
             <OrdererMetrics />
           </TabPane>
-          <TabPane tab="Chaincode Metrics" key="ChaincodeMetrics">
+          <TabPane tab="合约指标" key="ChaincodeMetrics">
             <ChaincodeMetrics />
           </TabPane>
         </Tabs>
