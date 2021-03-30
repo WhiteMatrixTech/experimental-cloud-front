@@ -18,7 +18,9 @@ export async function getEvidenceDataByHash(params) {
 
 // 点击查看详情
 export async function getEvidenceDetail(params) {
-  return request(`/network/${params.networkName}/evidence/${params.channelId}/${params.evidenceHash}?${stringify(params)}`);
+  return request(
+    `/network/${params.networkName}/evidence/channel/${params.channelId}/${params.evidenceHash}?${stringify(params)}`,
+  );
 }
 
 /**
