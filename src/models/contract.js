@@ -145,8 +145,8 @@ export default {
       }
     },
 
-    *checkOrgExist({ payload }, { call, put }) {
-      const res = yield call(API.checkOrgExist, payload);
+    *checkOrgInUse({ payload }, { call, put }) {
+      const res = yield call(API.checkOrgInUse, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({

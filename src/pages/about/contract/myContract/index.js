@@ -35,7 +35,7 @@ class MyContract extends Component {
   componentDidMount() {
     const { networkName } = this.props.User;
     this.props.dispatch({
-      type: 'Contract/checkOrgExist',
+      type: 'Contract/checkOrgInUse',
       payload: { networkName },
     });
     this.getChainCodeList();
