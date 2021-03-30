@@ -47,7 +47,7 @@ export async function getChannelList(params) {
  * 检查是否有组织 且组织在使用中
  */
 export async function checkOrgInUse(params) {
-  return request(`/network/${params.networkName}/orgs/checkOrgInUse`);
+  return request(`/network/${params.networkName}/orgs/checkOrgInUse`, { method: 'POST' });
 }
 
 /**
