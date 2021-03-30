@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
-import { Table, Space, Badge, Modal, Button } from 'antd';
+import { Table, Space, Badge, Modal, Button, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
@@ -33,6 +33,11 @@ class MyContract extends Component {
   }
 
   componentDidMount() {
+    const { networkName } = this.props.User;
+    this.props.dispatch({
+      type: 'Contract/checkOrgExist',
+      payload: { networkName },
+    });
     this.getChainCodeList();
   }
 
@@ -120,6 +125,11 @@ class MyContract extends Component {
 
   // 点击新增合约
   onClickAdd = () => {
+    const { userOrgInuse } = this.props.Contract;
+    if (!userOrgInuse) {
+      message.warn('请先在【组织管理】中添加您的组织，并确保您的组织在使用中');
+      return;
+    }
     this.setState({ operateType: 'new', editModalVisible: true });
   };
 

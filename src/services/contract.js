@@ -40,7 +40,14 @@ export async function queryChainCodeMethod(params) {
  * 创建合约 通道下拉框列表
  */
 export async function getChannelList(params) {
-  return request(`/network/${params.networkName}/channels/listChannels`);
+  return request(`/network/${params.networkName}/channels/listChannelsInUse`);
+}
+
+/**
+ * 检查是否有组织 且组织在使用中
+ */
+export async function checkOrgExist(params) {
+  return request(`/network/${params.networkName}/orgs/checkOrgExist`);
 }
 
 /**
