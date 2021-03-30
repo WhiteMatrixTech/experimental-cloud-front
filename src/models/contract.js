@@ -152,7 +152,7 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            userOrgInuse: result,
+            userOrgInuse: result.result,
           },
         });
       }
