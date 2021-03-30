@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
+import request from 'umi-request';
+import { saveAs } from 'file-saver';
 import { Table, Space, Badge, Modal, Button, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -138,6 +140,31 @@ class MyContract extends Component {
     this.setState({ operateType: 'modify', editModalVisible: true });
   };
 
+  onDownLoadContract = (record) => {
+    const { networkName } = this.props.User;
+    // token校验
+    const accessToken = localStorage.getItem('accessToken');
+    const roleToken = localStorage.getItem('roleToken');
+    let headers = {
+      'Content-Type': 'text/plain',
+      Authorization: `Bearer ${accessToken}`,
+      RoleAuth: roleToken,
+    };
+
+    request(
+      `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`,
+      {
+        headers,
+        mode: 'cors',
+        method: 'GET',
+        responseType: 'blob',
+      },
+    ).then((res) => {
+      const file = new File([res], `${record.chainCodeName}.tar.gz`, { type: 'application/tar+gzip' });
+      saveAs(file);
+    });
+  };
+
   // 点击调用合约
   onClickInvoke = (record) => {
     this.setState({ invokeVisible: true, editParams: record });
@@ -253,6 +280,7 @@ class MyContract extends Component {
         render: (_, record) => (
           // 非当前合约组织成员不可操作
           <Space size="small">
+            <a onClick={() => this.onDownLoadContract(record)}>下载证书</a>
             {record.chainCodeStatus === ChainCodeStatus.Installed && record.createdAt && (
               <a onClick={() => this.onClickToConfirm(record, 'approve')}>发布</a>
             )}
