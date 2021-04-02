@@ -73,7 +73,12 @@ function InvokeContract(props) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择通道" disabled>
+          <Select
+            allowClear
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder="请选择通道"
+            disabled
+          >
             {channelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
@@ -102,6 +107,7 @@ function InvokeContract(props) {
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
             placeholder="请输入参数"
             mode="tags"
+            allowClear
           ></Select>
         </Item>
         <Item
@@ -131,7 +137,7 @@ function InvokeContract(props) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择fabric角色">
+          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择fabric角色">
             {allUserId.map((item) => (
               <Option key={item} value={item}>
                 {item}

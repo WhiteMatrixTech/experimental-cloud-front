@@ -15,12 +15,6 @@ breadCrumbItem.push({
 
 const columns = [
   {
-    title: '实例ID',
-    dataIndex: 'instanceId',
-    key: 'instanceId',
-    ellipsis: true,
-  },
-  {
     title: '实例名称',
     dataIndex: 'instanceName',
     key: 'instanceName',
@@ -35,11 +29,6 @@ const columns = [
     dataIndex: 'publicIpAddress',
     key: 'publicIpAddress',
     ellipsis: true,
-  },
-  {
-    title: '状态',
-    dataIndex: 'state',
-    key: 'state',
   },
   {
     title: '创建时间',
@@ -95,7 +84,7 @@ function ResourceUsage(props) {
         value: nodeTotal,
       },
     ],
-    [location?.state],
+    [location?.state, nodeTotal],
   );
 
   useEffect(() => {

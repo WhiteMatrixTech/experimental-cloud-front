@@ -151,7 +151,7 @@ function CreateFabricUserModal(props) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择账户类型">
+          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择账户类型">
             {Object.keys(CreateFabricRole).map((role) => (
               <Option key={role} value={CreateFabricRole[role]}>
                 {CreateFabricRole[role]}
@@ -171,6 +171,7 @@ function CreateFabricUserModal(props) {
           ]}
         >
           <Select
+            allowClear
             placeholder="请选择所属组织"
             disabled={userRole === Roles.NetworkMember}
             getPopupContainer={(triggerNode) => triggerNode.parentNode}

@@ -187,7 +187,7 @@ function FabricRoleManagement(props) {
             <Row gutter={24}>
               <Col span={8}>
                 <Item label="组织名称" name="orgName" initialValue={null}>
-                  <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择组织">
+                  <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择组织">
                     {orgList.map((item) => (
                       <Option key={item.orgName} value={item.orgName}>
                         {item.orgName}

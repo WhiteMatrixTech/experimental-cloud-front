@@ -114,7 +114,7 @@ function CertificateUpload({ visible, onCancel, dispatch }) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择密钥类型">
+          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择密钥类型">
             <Option value="aaa">aaa</Option>
           </Select>
         </Item>

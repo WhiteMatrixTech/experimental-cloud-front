@@ -111,7 +111,11 @@ function EditStrategy(props) {
             },
           ]}
         >
-          {operateType === 'new' ? <Input placeholder="请输入隐私保护策略名称" /> : <Input disabled={true} placeholder="请输入隐私保护策略名称" />}
+          {operateType === 'new' ? (
+            <Input placeholder="请输入隐私保护策略名称" />
+          ) : (
+            <Input disabled={true} placeholder="请输入隐私保护策略名称" />
+          )}
         </Item>
         <Item
           label="状态"
@@ -124,7 +128,11 @@ function EditStrategy(props) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择隐私保护策略状态">
+          <Select
+            allowClear
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder="请选择隐私保护策略状态"
+          >
             <Option value={0}>停用</Option>
             <Option value={1}>启用</Option>
           </Select>
@@ -155,5 +163,7 @@ function EditStrategy(props) {
 export default connect(({ User, PrivacyStrategy, loading }) => ({
   User,
   PrivacyStrategy,
-  addLoading: loading.effects['PrivacyStrategy/createAndUpdateStrategy'] || loading.effects['PrivacyStrategy/modifyAndUpdateStrategy'],
+  addLoading:
+    loading.effects['PrivacyStrategy/createAndUpdateStrategy'] ||
+    loading.effects['PrivacyStrategy/modifyAndUpdateStrategy'],
 }))(EditStrategy);

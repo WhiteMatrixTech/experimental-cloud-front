@@ -117,7 +117,12 @@ function CreateChannelModal({ visible, User, onCancel, dispatch, addLoading, Org
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择组织" mode="multiple">
+          <Select
+            allowClear
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder="请选择组织"
+            mode="multiple"
+          >
             {orgList.map((item) => (
               <Option key={item.orgName} value={item.orgName}>
                 {item.orgName}

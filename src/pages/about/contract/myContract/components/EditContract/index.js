@@ -166,6 +166,7 @@ function EditContract(props) {
           ]}
         >
           <Select
+            allowClear
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
             disabled={operateType !== 'new'}
             onChange={onChangeChannel}

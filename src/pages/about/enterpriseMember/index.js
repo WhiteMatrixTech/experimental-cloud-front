@@ -307,7 +307,11 @@ function EnterpriseMember(props) {
               </Col>
               <Col span={8}>
                 <Item label="审批状态" name="approvalStatus" initialValue={null}>
-                  <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择审批状态">
+                  <Select
+                    allowClear
+                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                    placeholder="请选择审批状态"
+                  >
                     {Object.keys(statusList).map((item) => (
                       <Option key={item} value={item}>
                         {statusList[item]}

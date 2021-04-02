@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { history } from 'umi';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
-import { Table, Space, Badge, Modal, Button, message } from 'antd';
+import { Table, Space, Badge, Modal, Button, message, Spin } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
@@ -31,6 +31,7 @@ class MyContract extends Component {
       invokeVisible: false, // 合约调用弹窗 是否可见
       operateType: 'new', // 打开弹窗类型--新增、修改、升级
       editParams: {}, // 修改、升级合约的信息
+      downloading: false,
     };
   }
 
@@ -151,6 +152,8 @@ class MyContract extends Component {
       RoleAuth: roleToken,
     };
 
+    this.setState({ downloading: true });
+
     request(
       `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`,
       {
@@ -159,10 +162,15 @@ class MyContract extends Component {
         method: 'GET',
         responseType: 'blob',
       },
-    ).then((res) => {
-      const file = new File([res], `${record.chainCodeName}.tar.gz`, { type: 'application/tar+gzip' });
-      saveAs(file);
-    });
+    )
+      .then((res) => {
+        this.setState({ downloading: false });
+        const file = new File([res], `${record.chainCodeName}.tar.gz`, { type: 'application/tar+gzip' });
+        saveAs(file);
+      })
+      .catch((error) => {
+        this.setState({ downloading: false });
+      });
   };
 
   // 点击调用合约
@@ -230,7 +238,7 @@ class MyContract extends Component {
 
   render() {
     const { qryLoading = false } = this.props;
-    const { pageSize, pageNum, editModalVisible, invokeVisible, operateType, editParams } = this.state;
+    const { pageSize, pageNum, editModalVisible, invokeVisible, operateType, editParams, downloading } = this.state;
     const { myContractList, myContractTotal } = this.props.Contract;
     const columns = [
       {
@@ -302,6 +310,7 @@ class MyContract extends Component {
 
     return (
       <div className="page-wrapper">
+        <Spin spinning={downloading} tip="下载中..."></Spin>
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className="page-content page-content-shadow table-wrapper">
           <div className="table-header-btn-wrapper">

@@ -97,7 +97,7 @@ function CreateNodeModal(props) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择所属组织">
+          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择所属组织">
             {orgList.map((item) => (
               <Option key={item.orgName} value={item.orgName}>
                 {item.orgName}
@@ -146,7 +146,7 @@ function CreateNodeModal(props) {
           <Input placeholder="输入节点别名" />
         </Item>
         <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择服务器">
+          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择服务器">
             {serverList.map((item) => (
               <Option key={item.serverName} value={item.serverName}>
                 {item.serverName}

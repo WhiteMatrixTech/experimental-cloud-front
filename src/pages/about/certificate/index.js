@@ -132,7 +132,12 @@ function Certificate(props) {
             <Row gutter={24}>
               <Col span={8}>
                 <Item label="密钥类型" name="certificateSecretType" initialValue={null}>
-                  <Select getCalendarContainer={(triggerNode) => triggerNode.parentNode} style={{ width: '100%' }} placeholder="请选择密钥类型">
+                  <Select
+                    allowClear
+                    getCalendarContainer={(triggerNode) => triggerNode.parentNode}
+                    style={{ width: '100%' }}
+                    placeholder="请选择密钥类型"
+                  >
                     {Object.keys(SecretType).map((item) => (
                       <Option key={item} value={item}>
                         {SecretType[item]}

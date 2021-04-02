@@ -89,7 +89,7 @@ function EvidenceOnChain(props) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择通道">
+          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择通道">
             {Channel.channelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}

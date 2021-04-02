@@ -107,7 +107,7 @@ function CreateServerModal(props) {
             },
           ]}
         >
-          <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择用途类型">
+          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择用途类型">
             {Object.keys(serverPurpose).map((type) => (
               <Option key={serverPurpose[type]} value={serverPurpose[type]}>
                 {serverPurpose[type]}

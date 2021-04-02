@@ -90,7 +90,12 @@ function CallTransfer(props) {
                   },
                 ]}
               >
-                <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择通道" onChange={onChannelChange}>
+                <Select
+                  allowClear
+                  getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                  placeholder="请选择通道"
+                  onChange={onChannelChange}
+                >
                   {channelList.map((item) => (
                     <Option key={item.channelId} value={item.channelId}>
                       {item.channelId}
@@ -109,7 +114,7 @@ function CallTransfer(props) {
                   },
                 ]}
               >
-                <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择合约">
+                <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择合约">
                   <Option value="aaa">aaa</Option>
                 </Select>
               </Item>
@@ -127,7 +132,12 @@ function CallTransfer(props) {
                 <Input placeholder="请输入方法名" />
               </Item>
               <Item label="参数列表" name="params" initialValue={[]}>
-                <Select getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请输入参数" mode="tags"></Select>
+                <Select
+                  getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                  placeholder="请输入参数"
+                  mode="tags"
+                  allowClear
+                ></Select>
               </Item>
               <Item
                 label="是否初始化"
