@@ -2,9 +2,23 @@ import { request } from '../utils/request';
 import { stringify } from 'qs';
 
 /**
- * 创建合约 (后台自动创建--安装)
+ * 创建合约
  */
 export async function addContract(params) {
+  return request(`/network/${params.networkName}/chainCodes/create`, { method: 'POST', body: params });
+}
+
+/**
+ * 审核合约
+ */
+export async function verifyContract(params) {
+  return request(`/network/${params.networkName}/chainCodes/verifyChainCode`, { method: 'POST', body: params });
+}
+
+/**
+ * 安装合约
+ */
+export async function installContract(params) {
   return request(`/network/${params.networkName}/chainCodes/install`, { method: 'POST', body: params });
 }
 
@@ -62,13 +76,6 @@ export async function getChainCodeList(params) {
  */
 export async function getChainCodeTotal(params) {
   return request(`/network/${params.networkName}/chainCodes/totalCount`);
-}
-
-/**
- * 我的合约 -- 通过 / 驳回
- */
-export async function setChainCodeApproveReject(params) {
-  return request(`/network/${params.networkName}/chainCodes/updateStatus`, { method: 'POST', body: params });
 }
 
 /**

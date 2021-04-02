@@ -11,8 +11,16 @@ import { Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import EditContract from './components/EditContract';
 import InvokeContract from './components/InvokeContract';
+import ApproveContract from './components/ApproveContract';
 import baseConfig from 'utils/config';
-import { chainCodeStatusInfo, ChainCodeStatus } from './_config';
+import { Roles } from 'utils/roles.js';
+import {
+  chainCodeStatusInfo,
+  ChainCodeStatus,
+  VerifyChainCodeStatus,
+  VerifyStatusList,
+  UpdateStatusList,
+} from './_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 breadCrumbItem.push({
@@ -29,6 +37,7 @@ class MyContract extends Component {
       chainCodeName: '', // 合约名称搜索关键字
       editModalVisible: false, // 新增、修改、升级合约弹窗是否可见
       invokeVisible: false, // 合约调用弹窗 是否可见
+      approveVisible: false, // 合约审批弹窗 是否可见
       operateType: 'new', // 打开弹窗类型--新增、修改、升级
       editParams: {}, // 修改、升级合约的信息
       downloading: false,
@@ -89,13 +98,9 @@ class MyContract extends Component {
     let tipTitle = '';
     let callback = null;
     switch (type) {
-      case 'agree':
-        tipTitle = '通过';
-        callback = () => this.approvalContract(record, 4);
-        break;
-      case 'reject':
-        tipTitle = '驳回';
-        callback = () => this.approvalContract(record, 2);
+      case 'install':
+        tipTitle = '安装';
+        callback = () => this.installContract(record);
         break;
       case 'approve':
         tipTitle = '发布';
@@ -116,7 +121,7 @@ class MyContract extends Component {
 
   // 关闭 新增&修改&升级合约 弹窗
   onCloseModal = (callback) => {
-    this.setState({ editModalVisible: false, invokeVisible: false });
+    this.setState({ editModalVisible: false, invokeVisible: false, approveVisible: false });
     this.props.dispatch({
       type: 'Contract/common',
       payload: { invokeResult: null },
@@ -173,6 +178,10 @@ class MyContract extends Component {
       });
   };
 
+  onClickApprove = (record) => {
+    this.setState({ approveVisible: true, editParams: record });
+  };
+
   // 点击调用合约
   onClickInvoke = (record) => {
     this.setState({ invokeVisible: true, editParams: record });
@@ -205,22 +214,19 @@ class MyContract extends Component {
     }
   };
 
-  // 通过 & 驳回 合约
-  approvalContract = (record, chainCodeStatus) => {
-    this.props
-      .dispatch({
-        type: 'Contract/setChainCodeApproveReject',
-        payload: {
-          networkName: this.props.User.networkName,
-          chainCodeStatus,
-          chainCodeId: record._id,
-        },
-      })
-      .then((res) => {
-        if (res) {
-          this.getChainCodeList();
-        }
-      });
+  // 安装合约
+  installContract = async (record) => {
+    const res = await this.props.dispatch({
+      type: 'Contract/installContract',
+      payload: {
+        channelId: record.channelId,
+        chainCodeName: record.chainCodeName,
+        networkName: this.props.User.networkName,
+      },
+    });
+    if (res) {
+      this.getChainCodeList();
+    }
   };
 
   // 查看合约详情
@@ -238,7 +244,17 @@ class MyContract extends Component {
 
   render() {
     const { qryLoading = false } = this.props;
-    const { pageSize, pageNum, editModalVisible, invokeVisible, operateType, editParams, downloading } = this.state;
+    const {
+      pageSize,
+      pageNum,
+      editModalVisible,
+      invokeVisible,
+      approveVisible,
+      operateType,
+      editParams,
+      downloading,
+    } = this.state;
+    const { userRole } = this.props.User;
     const { myContractList, myContractTotal } = this.props.Contract;
     const columns = [
       {
@@ -284,15 +300,21 @@ class MyContract extends Component {
       {
         title: '操作',
         key: 'action',
-        width: '18%',
+        width: '20%',
         render: (_, record) => (
           // 非当前合约组织成员不可操作
           <Space size="small">
             <a onClick={() => this.onDownLoadContract(record)}>下载证书</a>
+            {VerifyStatusList.includes(record.chainCodeStatus) && userRole === Roles.NetworkAdmin && (
+              <a onClick={() => this.onClickApprove(record)}>审核</a>
+            )}
+            {record.chainCodeStatus === ChainCodeStatus.Verified && record.createdAt && (
+              <a onClick={() => this.onClickToConfirm(record, 'install')}>安装</a>
+            )}
             {record.chainCodeStatus === ChainCodeStatus.Installed && record.createdAt && (
               <a onClick={() => this.onClickToConfirm(record, 'approve')}>发布</a>
             )}
-            {record.chainCodeStatus === ChainCodeStatus.Approved && record.createdAt && (
+            {UpdateStatusList.includes(record.chainCodeStatus) && record.createdAt && (
               <a onClick={() => this.onClickUpgrade(record)}>升级</a>
             )}
             {record.chainCodeStatus === ChainCodeStatus.Approved && record.createdAt && (
@@ -310,40 +332,44 @@ class MyContract extends Component {
 
     return (
       <div className="page-wrapper">
-        <Spin spinning={downloading} tip="下载中..."></Spin>
-        <Breadcrumb breadCrumbItem={breadCrumbItem} />
-        <div className="page-content page-content-shadow table-wrapper">
-          <div className="table-header-btn-wrapper">
-            <Button type="primary" onClick={this.onClickAdd}>
-              创建合约
-            </Button>
+        <Spin spinning={downloading} tip="下载中...">
+          <Breadcrumb breadCrumbItem={breadCrumbItem} />
+          <div className="page-content page-content-shadow table-wrapper">
+            <div className="table-header-btn-wrapper">
+              <Button type="primary" onClick={this.onClickAdd}>
+                创建合约
+              </Button>
+            </div>
+            <Table
+              rowKey="chainCodeName"
+              columns={columns}
+              loading={qryLoading}
+              dataSource={myContractList}
+              onChange={this.onPageChange}
+              pagination={{
+                pageSize,
+                total: myContractTotal,
+                current: pageNum,
+                showSizeChanger: false,
+                position: ['bottomCenter'],
+              }}
+            />
           </div>
-          <Table
-            rowKey="chainCodeName"
-            columns={columns}
-            loading={qryLoading}
-            dataSource={myContractList}
-            onChange={this.onPageChange}
-            pagination={{
-              pageSize,
-              total: myContractTotal,
-              current: pageNum,
-              showSizeChanger: false,
-              position: ['bottomCenter'],
-            }}
-          />
-        </div>
-        {editModalVisible && (
-          <EditContract
-            visible={editModalVisible}
-            operateType={operateType}
-            onCancel={this.onCloseModal}
-            editParams={editParams}
-          />
-        )}
-        {invokeVisible && (
-          <InvokeContract visible={invokeVisible} onCancel={this.onCloseModal} editParams={editParams} />
-        )}
+          {editModalVisible && (
+            <EditContract
+              visible={editModalVisible}
+              operateType={operateType}
+              onCancel={this.onCloseModal}
+              editParams={editParams}
+            />
+          )}
+          {invokeVisible && (
+            <InvokeContract visible={invokeVisible} onCancel={this.onCloseModal} editParams={editParams} />
+          )}
+          {approveVisible && (
+            <ApproveContract visible={approveVisible} onCancel={this.onCloseModal} editParams={editParams} />
+          )}
+        </Spin>
       </div>
     );
   }
