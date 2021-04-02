@@ -118,20 +118,6 @@ export default {
       }
     },
 
-    *setChainCodeApproveReject({ payload }, { call, put }) {
-      const res = yield call(API.setChainCodeApproveReject, payload);
-      const { statusCode, result } = res;
-      const { chainCodeStatus } = payload;
-      const succMessage = `${chainCodeStatus === 4 ? '通过' : '驳回'}合约成功`;
-      const failMessage = `${chainCodeStatus === 4 ? '通过' : '驳回'}合约失败`;
-      if (statusCode === 'ok') {
-        notification.success({ message: succMessage, top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
-      }
-    },
-
     *getChannelList({ payload }, { call, put }) {
       const res = yield call(API.getChannelList, payload);
       const { statusCode, result } = res;
@@ -166,6 +152,28 @@ export default {
         return true;
       } else {
         notification.error({ message: result.message || '新增合约失败', top: 64, duration: 3 });
+      }
+    },
+
+    *verifyContract({ payload }, { call, put }) {
+      const res = yield call(API.verifyContract, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: '修改合约审核状态成功', top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || '修改合约审核状态失败', top: 64, duration: 3 });
+      }
+    },
+
+    *installContract({ payload }, { call, put }) {
+      const res = yield call(API.installContract, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: '合约安装api调用成功', top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || '合约安装api调用失败', top: 64, duration: 3 });
       }
     },
 
