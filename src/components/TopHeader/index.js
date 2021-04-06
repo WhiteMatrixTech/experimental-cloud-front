@@ -4,6 +4,7 @@ import { history } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { MenuList } from 'utils/menu.js';
+import { Roles } from 'utils/roles.js';
 import styles from './index.less';
 
 const { Header } = Layout;
@@ -58,12 +59,23 @@ class TopHeader extends PureComponent {
     window.open(link);
   };
 
+  onClickIpfs = (e) => {
+    e.preventDefault();
+    const link = 'http://49.72.212.42:8060/ipfs/QmXc9raDM1M5G5fpBnVyQ71vR4gbnskwnB9iMEzBuLgvoZ/#/';
+    window.open(link);
+  };
+
   render() {
-    const { userInfo } = this.props.User;
+    const { userInfo, userRole } = this.props.User;
     return (
       <Header className={styles.header}>
         <div className={styles['logo-sub']}>欢迎使用扬子江数字金融Baas区块链管理平台</div>
         <div className={styles['header-right-info']}>
+          {userRole === Roles.NetworkAdmin && (
+            <a className={styles['header-menu-item']} onClick={this.onClickIpfs}>
+              IPFS
+            </a>
+          )}
           <a className={styles['header-menu-item']} onClick={this.onClickIDE}>
             ChainIDE
           </a>
