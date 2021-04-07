@@ -12,7 +12,7 @@ import baseConfig from 'utils/config';
 import { Roles } from 'utils/roles.js';
 import { peerStatus, availableNodeStatus } from './_config';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/nodeList');
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/nodes');
 
 function NodeManagement(props) {
   const { dispatch, qryLoading = false, User } = props;

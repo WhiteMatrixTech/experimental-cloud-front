@@ -8,7 +8,7 @@ import baseConfig from 'utils/config';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import EvidenceOnChain from './components/EvidenceOnChain';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/certificateChain');
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 
 function EvidenceDataList(props) {
   const { User, Evidence, qryLoading, dispatch } = props;

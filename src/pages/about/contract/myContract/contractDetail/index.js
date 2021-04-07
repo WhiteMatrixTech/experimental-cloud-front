@@ -11,7 +11,7 @@ import baseConfig from 'utils/config';
 let breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 breadCrumbItem = breadCrumbItem.concat([
   {
-    menuName: '我的合约',
+    menuName: '合约列表',
     menuHref: `/about/contract/myContract`,
     isLeftMenu: true,
   },
@@ -168,7 +168,12 @@ class ContractDetail extends Component {
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <Spin spinning={qryLoading}>
           <div className="page-content">
-            <DetailCard cardTitle="合约信息" detailList={contractInfoList} columnsNum={3} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
+            <DetailCard
+              cardTitle="合约信息"
+              detailList={contractInfoList}
+              columnsNum={3}
+              boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"
+            />
             <Table
               rowKey="id"
               columns={this.columns}
