@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
-import { Table, Button, Space, Form, Row, Col, Select, Input } from 'antd';
+import { Table, Button, Space, Form, Row, Col, Select, Input, Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import CreateDIDModal from './components/CreateDIDModal';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import baseConfig from 'utils/config';
@@ -25,40 +26,62 @@ function DidManagement(props) {
   const { dispatch, qryLoading = false } = props;
   const { orgList } = props.Organization;
   const { networkName, userRole } = props.User;
-  const { fabricRoleList, fabricRoleTotal } = props.FabricRole;
+  const { didList, didTotal } = props.DID;
 
   const [form] = Form.useForm();
-  const [columns, setColumns] = useState([]);
   const [pageNum, setPageNum] = useState(1);
-  const [searchParams, setSearchParams] = useState({ orgName: '' });
+  const [record, setRecord] = useState(null);
+  const [searchParams, setSearchParams] = useState({ did: '' });
 
   const [createModalVisible, setCreateModalVisible] = useState(false);
 
   const getDidList = () => {
-    const { orgName } = searchParams;
+    const { did } = searchParams;
     const params = {
       networkName,
     };
-    if (orgName) {
-      params.orgName = orgName;
+    if (did) {
+      params.did = did;
       dispatch({
-        type: 'FabricRole/getFabricRoleListWithOrg',
+        type: 'DID/getDetailByDid',
         payload: params,
       });
       return;
     }
     dispatch({
-      type: 'FabricRole/getFabricRoleList',
+      type: 'DID/getDidList',
       payload: params,
     });
   };
 
-  const onPageChange = (pageInfo) => {
-    setPageNum(pageInfo.current);
+  const onClickCreate = () => {
+    setRecord(null);
+    setCreateModalVisible(true);
   };
 
-  const onClickCreate = () => {
+  const onClickModify = (record) => {
+    setRecord(record);
     setCreateModalVisible(true);
+  };
+
+  const onClickDelete = (record) => {
+    const callback = async () => {
+      const res = await dispatch({
+        type: 'DID/deleteDID',
+        payload: { did: record.did },
+      });
+      if (res) {
+        getDidList();
+      }
+    };
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: `确认要删除DID 【${record.didName}】 吗?`,
+      okText: '确认',
+      cancelText: '取消',
+      onOk: callback,
+    });
   };
 
   const onCloseCreateModal = () => {
@@ -71,7 +94,7 @@ function DidManagement(props) {
       .validateFields()
       .then((values) => {
         const params = {
-          orgName: values.orgName,
+          did: values.did,
         };
         setSearchParams(params);
       })
@@ -84,19 +107,15 @@ function DidManagement(props) {
   const resetForm = () => {
     form.resetFields();
     setPageNum(1);
-    setSearchParams({ orgName: '' });
+    setSearchParams({ did: '' });
   };
 
-  useEffect(() => {
-    dispatch({
-      type: 'Organization/getOrgList',
-      payload: { networkName },
-    });
-  }, []);
+  const onPageChange = (pageInfo) => {
+    setPageNum(pageInfo.current);
+  };
 
-  // 用户身份改变时，表格展示改变
-  useEffect(() => {
-    const data = [
+  const columns = useMemo(() => {
+    return [
       {
         title: 'DID名称',
         dataIndex: 'userId',
@@ -131,25 +150,26 @@ function DidManagement(props) {
         key: 'action',
         render: (_, record) => (
           <Space size="small">
+            <a onClick={() => onClickModify(record)}>修改</a>
+            <a onClick={() => onClickDelete(record)}>删除</a>
             <a>详情</a>
           </Space>
         ),
       },
     ];
-    setColumns(data);
   }, [userRole]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'Organization/getOrgList',
+      payload: { networkName },
+    });
+  }, []);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getDidList();
   }, [pageNum, searchParams]);
-
-  useEffect(() => {
-    dispatch({
-      type: 'FabricRole/getMyOrgInfo',
-      payload: { networkName },
-    });
-  }, []);
 
   return (
     <div className="page-wrapper">
@@ -159,7 +179,7 @@ function DidManagement(props) {
           <Form {...formItemLayout} colon={false} form={form}>
             <Row gutter={24}>
               <Col span={8}>
-                <Item label="DID" name="dis" initialValue="">
+                <Item label="DID" name="did" initialValue="">
                   <Input placeholder="输入DID" />
                 </Item>
               </Col>
@@ -195,11 +215,11 @@ function DidManagement(props) {
             rowKey={(record) => `${record.orgName}-${record.userId}`}
             loading={qryLoading}
             columns={columns}
-            dataSource={fabricRoleList}
+            dataSource={didList}
             onChange={onPageChange}
             pagination={{
               pageSize: baseConfig.pageSize,
-              total: fabricRoleTotal,
+              total: didTotal,
               current: pageNum,
               showSizeChanger: false,
               position: ['bottomCenter'],
@@ -208,16 +228,21 @@ function DidManagement(props) {
         </div>
       </div>
       {createModalVisible && (
-        <CreateDIDModal visible={createModalVisible} onCancel={onCloseCreateModal} getFabricRoleList={getDidList} />
+        <CreateDIDModal
+          visible={createModalVisible}
+          onCancel={onCloseCreateModal}
+          getDidList={getDidList}
+          record={record}
+        />
       )}
     </div>
   );
 }
 
-export default connect(({ User, Organization, Layout, FabricRole, loading }) => ({
+export default connect(({ User, Organization, Layout, DID, loading }) => ({
   User,
   Organization,
   Layout,
-  FabricRole,
-  qryLoading: loading.effects['FabricRole/getFabricRoleList'],
+  DID,
+  qryLoading: loading.effects['DID/getDidList'],
 }))(DidManagement);

@@ -2,6 +2,7 @@ import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import React, { useEffect } from 'react';
 import { Roles } from 'utils/roles.js';
+import { CreateFabricRole } from '../_config';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -17,42 +18,36 @@ const formItemLayout = {
 };
 
 function CreateDIDModal(props) {
-  const { FabricRole, visible, onCancel, addLoading = false, User, dispatch } = props;
+  const { visible, onCancel, record, addLoading = false, User, dispatch } = props;
   const { networkName, userRole } = User;
-  const { myOrgInfo } = FabricRole;
 
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    dispatch({
-      type: 'FabricRole/getMyOrgInfo',
-      payload: { networkName },
-    });
-    dispatch({
-      type: 'Organization/getOrgList',
-      payload: { networkName },
-    });
-  }, []);
 
   const handleSubmit = () => {
     form
       .validateFields()
-      .then((values) => {
+      .then(async (values) => {
         form.resetFields();
         let params = {
           ...values,
           networkName,
         };
-        dispatch({
-          type: 'FabricRole/createFabricRole',
-          payload: params,
-        }).then((res) => {
-          if (res) {
-            onCancel();
-            props.getFabricRoleList();
-          }
-        });
-        form.setFieldsValue(values);
+        let res = null;
+        if (record) {
+          res = await dispatch({
+            type: 'DID/createDID',
+            payload: params,
+          });
+        } else {
+          res = await dispatch({
+            type: 'DID/modifyDID',
+            payload: params,
+          });
+        }
+        if (res) {
+          onCancel();
+          props.getDidList();
+        }
       })
       .catch((info) => {
         console.log('校验失败:', info);
@@ -63,7 +58,7 @@ function CreateDIDModal(props) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '新增DID用户',
+    title: record ? '修改DID用户' : '新增DID用户',
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
@@ -80,7 +75,7 @@ function CreateDIDModal(props) {
       <Form {...formItemLayout} form={form}>
         <Item
           label="DID名称"
-          name="userId"
+          name="didName"
           initialValue=""
           rules={[
             {
@@ -97,8 +92,8 @@ function CreateDIDModal(props) {
         </Item>
         <Item
           label="DID类型"
-          name="orgName"
-          initialValue={userRole === Roles.NetworkAdmin ? null : myOrgInfo.orgName}
+          name="didType"
+          initialValue={null}
           rules={[
             {
               required: true,
@@ -106,28 +101,45 @@ function CreateDIDModal(props) {
             },
           ]}
         >
-          <Select
-            allowClear
-            placeholder="请选择DID类型"
-            disabled={userRole === Roles.NetworkMember}
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-          >
-            <Option key={myOrgInfo.orgName} value={myOrgInfo.orgName}>
-              {myOrgInfo.orgName}
-            </Option>
+          <Select allowClear placeholder="请选择DID类型" getPopupContainer={(triggerNode) => triggerNode.parentNode}>
+            {Object.keys(CreateFabricRole).map((key) => (
+              <Option key={key} value={CreateFabricRole[key]}>
+                {CreateFabricRole[key]}
+              </Option>
+            ))}
           </Select>
         </Item>
-        <Item label="角色" name="role" initialValue="">
-          <TextArea placeholder="请输入属性集" />
+        <Item
+          label="角色"
+          name="role"
+          initialValue={null}
+          rules={[
+            {
+              required: true,
+              message: '请选择DID用户角色',
+            },
+          ]}
+        >
+          <Select
+            allowClear
+            placeholder="请选择DID用户角色"
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+          >
+            {Object.keys(CreateFabricRole).map((key) => (
+              <Option key={key} value={CreateFabricRole[key]}>
+                {CreateFabricRole[key]}
+              </Option>
+            ))}
+          </Select>
         </Item>
       </Form>
     </Modal>
   );
 }
 
-export default connect(({ User, FabricRole, Organization, loading }) => ({
+export default connect(({ User, DID, Organization, loading }) => ({
   User,
-  FabricRole,
+  DID,
   Organization,
-  addLoading: loading.effects['FabricRole/createFabricRole'],
+  addLoading: loading.effects['DID/createDID'] || loading.effects['DID/modifyDID'],
 }))(CreateDIDModal);
