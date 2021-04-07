@@ -7,6 +7,8 @@ export default {
   state: {
     orgList: [], // 成员企业列表
     orgTotal: 0,
+
+    orgInUseList: [],
   },
 
   subscriptions: {
@@ -34,6 +36,18 @@ export default {
           payload: {
             orgList: result,
             orgTotal: result.length,
+          },
+        });
+      }
+    },
+    *getOrgInUseList({ payload }, { call, put }) {
+      const res = yield call(API.getOrgInUseList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            orgInUseList: result,
           },
         });
       }

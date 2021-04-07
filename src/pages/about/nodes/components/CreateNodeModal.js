@@ -17,7 +17,7 @@ const formItemLayout = {
 function CreateNodeModal(props) {
   const { Organization, ElasticServer, visible, onCancel, addLoading = false, User, dispatch } = props;
   const { networkName } = User;
-  const { orgList } = Organization;
+  const { orgInUseList } = Organization;
   const { serverList } = ElasticServer;
 
   const [form] = Form.useForm();
@@ -33,7 +33,7 @@ function CreateNodeModal(props) {
       payload: params,
     });
     dispatch({
-      type: 'Organization/getOrgList',
+      type: 'Organization/getOrgInUseList',
       payload: { networkName },
     });
   }, []);
@@ -98,7 +98,7 @@ function CreateNodeModal(props) {
           ]}
         >
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择所属组织">
-            {orgList.map((item) => (
+            {orgInUseList.map((item) => (
               <Option key={item.orgName} value={item.orgName}>
                 {item.orgName}
               </Option>

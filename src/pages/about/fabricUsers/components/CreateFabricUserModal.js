@@ -21,7 +21,7 @@ function CreateFabricUserModal(props) {
   const { FabricRole, Organization, visible, onCancel, addLoading = false, User, dispatch } = props;
   const { networkName, userRole } = User;
   const { myOrgInfo } = FabricRole;
-  const { orgList } = Organization;
+  const { orgInUseList } = Organization;
 
   const [form] = Form.useForm();
 
@@ -31,7 +31,7 @@ function CreateFabricUserModal(props) {
       payload: { networkName },
     });
     dispatch({
-      type: 'Organization/getOrgList',
+      type: 'Organization/getOrgInUseList',
       payload: { networkName },
     });
   }, []);
@@ -177,7 +177,7 @@ function CreateFabricUserModal(props) {
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
           >
             {userRole === Roles.NetworkAdmin ? (
-              orgList.map((item) => (
+              orgInUseList.map((item) => (
                 <Option key={item.orgName} value={item.orgName}>
                   {item.orgName}
                 </Option>

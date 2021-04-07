@@ -16,7 +16,7 @@ const formItemLayout = {
 };
 
 function CreateChannelModal({ visible, User, onCancel, dispatch, addLoading, Organization }) {
-  const { orgList } = Organization;
+  const { orgInUseList } = Organization;
   const { networkName } = User;
   const [form] = Form.useForm();
 
@@ -43,7 +43,7 @@ function CreateChannelModal({ visible, User, onCancel, dispatch, addLoading, Org
 
   useEffect(() => {
     dispatch({
-      type: 'Organization/getOrgList',
+      type: 'Organization/getOrgInUseList',
       payload: { networkName },
     });
   }, []);
@@ -123,7 +123,7 @@ function CreateChannelModal({ visible, User, onCancel, dispatch, addLoading, Org
             placeholder="请选择组织"
             mode="multiple"
           >
-            {orgList.map((item) => (
+            {orgInUseList.map((item) => (
               <Option key={item.orgName} value={item.orgName}>
                 {item.orgName}
               </Option>

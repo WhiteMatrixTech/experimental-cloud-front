@@ -9,7 +9,7 @@ const editorOptions = {
 };
 
 function EvidenceOnChain(props) {
-  const { visible, onCancel, dispatch, Channel, User, addLoading = false } = props;
+  const { visible, onCancel, dispatch, Contract, User, addLoading = false } = props;
   const { networkName } = User;
 
   const [form] = Form.useForm();
@@ -17,7 +17,7 @@ function EvidenceOnChain(props) {
 
   useEffect(() => {
     dispatch({
-      type: 'Channel/getChannelList',
+      type: 'Contract/getChannelList',
       payload: { networkName },
     });
   }, []);
@@ -90,7 +90,7 @@ function EvidenceOnChain(props) {
           ]}
         >
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择通道">
-            {Channel.channelList.map((item) => (
+            {Contract.channelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
               </Option>
@@ -125,8 +125,8 @@ function EvidenceOnChain(props) {
   );
 }
 
-export default connect(({ Channel, User, Evidence, loading }) => ({
-  Channel,
+export default connect(({ Contract, User, Evidence, loading }) => ({
+  Contract,
   User,
   Evidence,
   addLoading: loading.effects['Evidence/evidenceOnChain'],
