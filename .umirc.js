@@ -46,6 +46,7 @@ export default {
   define: {
     'process.env.FABRIC_BAAS_DASHBOARD': process.env.FABRIC_BAAS_DASHBOARD,
     'process.env.CHAIN_IDE_LINK': process.env.CHAIN_IDE_LINK || 'https://fabric.test.chainide.cn/project/welcome', // ChainIDE地址
-    'process.env.BAAS_BACKEND_LINK': process.env.BAAS_BACKEND_LINK || 'https://yzjszjr-chainbaas-api.test.chainide.cn', // BaaS Backend地址
+    'process.env.BAAS_BACKEND_LINK':
+      process.env.BAAS_BACKEND_LINK || 'https://yzjszjr-chainbaas-aliyun-api.test.chainide.cn', // BaaS Backend地址
   },
 };

@@ -1,6 +1,6 @@
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Roles } from 'utils/roles.js';
 import { CreateFabricRole } from '../_config';
 
@@ -35,6 +35,13 @@ function CreateFabricUserModal(props) {
       payload: { networkName },
     });
   }, []);
+
+  const orgList = useMemo(() => {
+    if (userRole === Roles.NetworkAdmin) {
+      return orgInUseList;
+    }
+    return [myOrgInfo];
+  }, [userRole, myOrgInfo, orgInUseList]);
 
   const handleSubmit = () => {
     form
@@ -162,7 +169,7 @@ function CreateFabricUserModal(props) {
         <Item
           label="所属组织"
           name="orgName"
-          initialValue={userRole === Roles.NetworkAdmin ? null : myOrgInfo.orgName}
+          initialValue={userRole === Roles.NetworkMember ? myOrgInfo.orgName : null}
           rules={[
             {
               required: true,
@@ -176,17 +183,11 @@ function CreateFabricUserModal(props) {
             disabled={userRole === Roles.NetworkMember}
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
           >
-            {userRole === Roles.NetworkAdmin ? (
-              orgInUseList.map((item) => (
-                <Option key={item.orgName} value={item.orgName}>
-                  {item.orgName}
-                </Option>
-              ))
-            ) : (
-              <Option key={myOrgInfo.orgName} value={myOrgInfo.orgName}>
-                {myOrgInfo.orgName}
+            {orgList.map((item) => (
+              <Option key={item.orgName} value={item.orgName}>
+                {item.orgName}
               </Option>
-            )}
+            ))}
           </Select>
         </Item>
         <Item label="属性集" name="attrs" initialValue="">

@@ -98,7 +98,7 @@ function FabricRoleManagement(props) {
       .validateFields()
       .then((values) => {
         const params = {
-          orgName: values.orgName,
+          orgName: values.orgNameSearch,
         };
         setSearchParams(params);
       })
@@ -186,7 +186,7 @@ function FabricRoleManagement(props) {
           <Form {...formItemLayout} colon={false} form={form}>
             <Row gutter={24}>
               <Col span={8}>
-                <Item label="组织名称" name="orgName" initialValue={null}>
+                <Item label="组织名称" name="orgNameSearch" initialValue={null}>
                   <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择组织">
                     {orgList.map((item) => (
                       <Option key={item.orgName} value={item.orgName}>

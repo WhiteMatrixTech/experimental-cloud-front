@@ -92,24 +92,31 @@ function Block(props) {
         title: '所属通道',
         dataIndex: 'channelId',
         key: 'channelId',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '交易数量',
         dataIndex: 'txCount',
         key: 'txCount',
+        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '生成时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+        render: (text) =>
+          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '操作',
         key: 'action',
         render: (text, record) => (
           <Space size="small">
-            <a onClick={() => onClickDetail(record)}>详情</a>
+            {record.channelId || record.txCount ? (
+              <a onClick={() => onClickDetail(record)}>详情</a>
+            ) : (
+              <a className="a-forbidden-style">详情</a>
+            )}{' '}
           </Space>
         ),
       },

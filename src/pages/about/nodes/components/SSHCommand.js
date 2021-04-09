@@ -22,9 +22,9 @@ function SSHCommand(props) {
     closable: true,
     destroyOnClose: true,
     title: 'SSH命令',
-    onCancel: () => onCancel(),
+    onCancel: onCancel,
     footer: [
-      <CopyToClipboard text={realNodeSSH} onCopy={() => message.success('节点ssh命令复制成功!')}>
+      <CopyToClipboard key={realNodeSSH} text={realNodeSSH} onCopy={() => message.success('节点ssh命令复制成功!')}>
         <Button key="submit" type="primary">
           复制
         </Button>
