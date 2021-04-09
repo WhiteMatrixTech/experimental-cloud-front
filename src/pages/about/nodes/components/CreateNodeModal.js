@@ -1,6 +1,7 @@
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { serverPurpose } from '../../elastic-cloud-server/_config';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -21,6 +22,11 @@ function CreateNodeModal(props) {
   const { serverList } = ElasticServer;
 
   const [form] = Form.useForm();
+
+  const filteredServerList = useMemo(
+    () => serverList.filter((server) => server.serverPurpose !== serverPurpose.SwarmManager),
+    [serverList],
+  );
 
   useEffect(() => {
     const params = {
@@ -147,7 +153,7 @@ function CreateNodeModal(props) {
         </Item>
         <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择服务器">
-            {serverList.map((item) => (
+            {filteredServerList.map((item) => (
               <Option key={item.serverName} value={item.serverName}>
                 {item.serverName}
               </Option>
