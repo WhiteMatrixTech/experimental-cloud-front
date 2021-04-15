@@ -5,7 +5,20 @@ export default {
   namespace: 'DID',
 
   state: {
-    didList: [], // DID列表
+    didList: [
+      {
+        did: 'did:36486efsac65487scsdfc',
+        didName: 'demoDid',
+        didType: 'admin',
+        role: 'admin',
+      },
+      {
+        did: 'did:36486efsac65487scssjvho',
+        didName: 'demoDid1',
+        didType: 'admin',
+        role: 'admin',
+      },
+    ], // DID列表
     didTotal: 0,
   },
 

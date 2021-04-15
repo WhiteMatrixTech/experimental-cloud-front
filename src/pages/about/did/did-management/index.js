@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
+import { history } from 'umi';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
 import { Table, Button, Space, Form, Row, Col, Select, Input, Modal } from 'antd';
@@ -84,6 +85,13 @@ function DidManagement(props) {
     });
   };
 
+  const onClickDetail = (record) => {
+    history.push({
+      pathname: `/about/did/did-management/did-detail`,
+      state: record,
+    });
+  };
+
   const onCloseCreateModal = () => {
     setCreateModalVisible(false);
   };
@@ -118,31 +126,25 @@ function DidManagement(props) {
     return [
       {
         title: 'DID名称',
-        dataIndex: 'userId',
-        key: 'userId',
+        dataIndex: 'didName',
+        key: 'didName',
         ellipsis: true,
       },
       {
         title: 'DID类型',
-        dataIndex: 'explorerRole',
-        key: 'explorerRole',
-      },
-      {
-        title: '所属组织',
-        dataIndex: 'orgName',
-        key: 'orgName',
-        ellipsis: true,
+        dataIndex: 'didType',
+        key: 'didType',
       },
       {
         title: '角色',
-        dataIndex: 'attrs',
-        key: 'attrs',
+        dataIndex: 'role',
+        key: 'role',
         ellipsis: true,
       },
       {
         title: '创建时间',
-        dataIndex: 'updatedAt',
-        key: 'updatedAt',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
         render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
       },
       {
@@ -152,7 +154,7 @@ function DidManagement(props) {
           <Space size="small">
             <a onClick={() => onClickModify(record)}>修改</a>
             <a onClick={() => onClickDelete(record)}>删除</a>
-            <a>详情</a>
+            <a onClick={() => onClickDetail(record)}>详情</a>
           </Space>
         ),
       },
@@ -212,7 +214,7 @@ function DidManagement(props) {
             </Button>
           </div>
           <Table
-            rowKey={(record) => `${record.orgName}-${record.userId}`}
+            rowKey={(record) => `${record.did}-${record.didName}`}
             loading={qryLoading}
             columns={columns}
             dataSource={didList}

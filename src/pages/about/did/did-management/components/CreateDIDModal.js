@@ -35,12 +35,12 @@ function CreateDIDModal(props) {
         let res = null;
         if (record) {
           res = await dispatch({
-            type: 'DID/createDID',
+            type: 'DID/modifyDID',
             payload: params,
           });
         } else {
           res = await dispatch({
-            type: 'DID/modifyDID',
+            type: 'DID/createDID',
             payload: params,
           });
         }
@@ -76,7 +76,7 @@ function CreateDIDModal(props) {
         <Item
           label="DID名称"
           name="didName"
-          initialValue=""
+          initialValue={record ? record.didName : ''}
           rules={[
             {
               required: true,
@@ -93,7 +93,7 @@ function CreateDIDModal(props) {
         <Item
           label="DID类型"
           name="didType"
-          initialValue={null}
+          initialValue={record ? record.didType : null}
           rules={[
             {
               required: true,
@@ -112,7 +112,7 @@ function CreateDIDModal(props) {
         <Item
           label="角色"
           name="role"
-          initialValue={null}
+          initialValue={record ? record.didType : null}
           rules={[
             {
               required: true,
