@@ -154,6 +154,10 @@ export function getRoutes() {
           exact: true,
         },
         {
+          path: '/about/rbac-config',
+          exact: true,
+        },
+        {
           path: '/about/transactions',
           exact: true,
           routes: [

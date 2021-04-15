@@ -1,0 +1,65 @@
+.rbac-config-wrapper {
+  height: 100%;
+  overflow: hidden;
+  .rbac-config-content {
+    position: relative;
+    height: calc(~'100vh - 186px');
+    padding: 4px 0;
+    overflow: hidden;
+    .company-selector {
+      height: fit-content;
+      margin-bottom: 24px;
+      padding-left: 104px;
+      label {
+        margin-right: 16px;
+      }
+    }
+    .config-wrapper {
+      height: 100%;
+      overflow: hidden;
+    }
+    .config-list {
+      height: calc(~'100vh - 346px');
+      overflow-y: auto;
+      .inline-form-item {
+        margin-bottom: 8px;
+      }
+      .inline-select {
+        max-width: 40%;
+        margin-left: 40px;
+      }
+      .dynamic-form-item {
+        :global {
+          .ant-form-item-explain-error {
+            margin-left: 40px;
+          }
+        }
+      }
+    }
+    .form-label {
+      padding-left: 12px;
+    }
+    .radio {
+      display: block;
+      height: 30px;
+      line-height: 30px;
+    }
+    .button-area {
+      position: absolute;
+      bottom: 0;
+      z-index: 999;
+      width: 100%;
+      padding-top: 20px;
+      background: #fff;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    :global {
+      .ant-radio-group {
+        padding-left: 32px;
+      }
+      .ant-space {
+        padding-left: 176px;
+      }
+    }
+  }
+}
