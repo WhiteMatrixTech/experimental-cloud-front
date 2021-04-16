@@ -17,40 +17,38 @@ breadCrumbItem.push({
 });
 
 function DidDetail(props) {
-  const { User, dispatch, qryLoading = false, location } = props;
+  const { dispatch, qryLoading = false, location, DID, User } = props;
+  const { didDetail } = DID;
   const { networkName } = User;
 
   const didDetailInfo = [
     {
+      label: 'DID',
+      value: didDetail.did || location?.state?.did,
+    },
+    {
       label: 'DID名称',
-      value: location?.state?.didName,
+      value: didDetail.idName || location?.state?.idName,
     },
     {
       label: 'DID类型',
-      value: location?.state?.didType,
+      value: didDetail.idType || location?.state?.idType,
     },
     {
       label: 'DID角色',
-      value: location?.state?.role,
+      value: didDetail.role || location?.state?.role,
     },
     {
-      label: '创建时间',
-      value: location?.state?.createdAt ? moment(location?.state?.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -',
-    },
-    {
-      label: '公司地址',
-      value: location?.state?.companyAddress,
-    },
-    {
-      label: '联系人',
-      value: location?.state?.contactor,
+      label: '附加信息',
+      value: didDetail.additionalAttributes || location?.state?.additionalAttributes,
+      fullRow: true,
     },
   ];
 
   useEffect(() => {
     dispatch({
-      type: 'DID/getDidDetail',
-      payload: { networkName },
+      type: 'DID/getDetailByDid',
+      payload: { networkName, did: location?.state?.did },
     });
   }, []);
 
@@ -69,5 +67,5 @@ function DidDetail(props) {
 export default connect(({ User, DID, loading }) => ({
   User,
   DID,
-  qryLoading: loading.effects['DID/getDidDetail'],
+  qryLoading: loading.effects['DID/getDetailByDid'],
 }))(DidDetail);

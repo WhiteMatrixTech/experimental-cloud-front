@@ -29,7 +29,9 @@ function CreateDIDModal(props) {
       .then(async (values) => {
         form.resetFields();
         let params = {
-          ...values,
+          companyName: values.companyName,
+          additionalAttr: values.additionalAttr,
+          role: values.role,
           networkName,
         };
         let res = null;
@@ -52,6 +54,21 @@ function CreateDIDModal(props) {
       .catch((info) => {
         console.log('校验失败:', info);
       });
+  };
+
+  const checkJSON = (_, value) => {
+    const promise = Promise; // 没有值的情况
+
+    // if (!value) {
+    //   return promise.reject('请输入附加信息');
+    // } // 有值的情况
+
+    try {
+      const json = JSON.parse(value);
+    } catch (e) {
+      return promise.reject('请输入json');
+    }
+    return promise.resolve();
   };
 
   const drawerProps = {
@@ -82,55 +99,36 @@ function CreateDIDModal(props) {
               required: true,
               message: '请输入DID名称',
             },
-            {
-              pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
-              message: 'DID名称由4-20位字母、数字、下划线组成，字母开头',
-            },
           ]}
         >
           <Input placeholder="请输入DID名称" />
         </Item>
         <Item
-          label="DID类型"
-          name="didType"
-          initialValue={record ? record.didType : null}
-          rules={[
-            {
-              required: true,
-              message: '请选择DID类型',
-            },
-          ]}
-        >
-          <Select allowClear placeholder="请选择DID类型" getPopupContainer={(triggerNode) => triggerNode.parentNode}>
-            {Object.keys(CreateFabricRole).map((key) => (
-              <Option key={key} value={CreateFabricRole[key]}>
-                {CreateFabricRole[key]}
-              </Option>
-            ))}
-          </Select>
-        </Item>
-        <Item
           label="角色"
           name="role"
-          initialValue={record ? record.didType : null}
+          initialValue={record ? record.role : null}
           rules={[
             {
               required: true,
-              message: '请选择DID用户角色',
+              message: '请输入DID用户角色',
             },
           ]}
         >
-          <Select
-            allowClear
-            placeholder="请选择DID用户角色"
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-          >
-            {Object.keys(CreateFabricRole).map((key) => (
-              <Option key={key} value={CreateFabricRole[key]}>
-                {CreateFabricRole[key]}
-              </Option>
-            ))}
-          </Select>
+          <Input placeholder="请输入DID用户角色" />
+        </Item>
+        <Item
+          label="附加信息"
+          name="additionalAttr"
+          initialValue={record ? record.additionalAttributes : ''}
+          tooltip="其他详细信息，例如公司的地址、联系人等; 以JSON格式录入"
+          rules={[
+            {
+              validateTrigger: 'submit',
+              validator: checkJSON,
+            },
+          ]}
+        >
+          <TextArea placeholder="请输入JSON格式的附加信息" />
         </Item>
       </Form>
     </Modal>

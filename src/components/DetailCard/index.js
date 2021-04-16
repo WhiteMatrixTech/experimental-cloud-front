@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Button } from 'antd';
 import styles from './index.less';
 
 /**
@@ -9,8 +9,13 @@ import styles from './index.less';
  * @param {Number} columnsNum 每一行栏目数
  * @param {String} boxShadow 卡片阴影
  */
-export default function DetailCard({ cardTitle, detailList, columnsNum = 2, boxShadow = '0 4px 12px 0 rgba(0,0,0,.05)' }) {
-
+export default function DetailCard({
+  cardTitle,
+  detailList,
+  columnsNum = 2,
+  boxShadow = '0 4px 12px 0 rgba(0,0,0,.05)',
+  textAlign = 'center',
+}) {
   return (
     <Fragment>
       <div className={styles['detail-card-wrapper']} style={{ boxShadow }}>
@@ -19,27 +24,35 @@ export default function DetailCard({ cardTitle, detailList, columnsNum = 2, boxS
           <span className={styles['detail-title-content']}>{cardTitle}</span>
         </div>
         <div className={styles['detail-info-wrapper']}>
-          {columnsNum === 2 ?
+          {columnsNum === 2 ? (
             <Row>
-              {detailList.map(item =>
+              {detailList.map((item) => (
                 <Col key={item.label} span={item.fullRow ? 24 : 12} className={styles['detail-info-item']}>
                   <label style={{ width: item.fullRow ? '15%' : '30%' }}>{item.label}</label>
-                  <div style={{ width: item.fullRow ? '85%' : '70%' }}>{item.value}</div>
+                  <div style={{ width: item.fullRow ? '85%' : '70%' }}>
+                    {item.value === 'NeedButton' ? (
+                      <Button type="primary" onClick={item.onClick}>
+                        {item.buttonName}
+                      </Button>
+                    ) : (
+                      item.value
+                    )}
+                  </div>
                 </Col>
-              )}
+              ))}
             </Row>
-            :
+          ) : (
             <Row>
-              {detailList.map(item =>
+              {detailList.map((item) => (
                 <Col key={item.label} span={item.fullRow ? 24 : 8} className={styles['detail-info-item']}>
                   <label style={{ width: item.fullRow ? '10%' : '30%' }}>{item.label}</label>
-                  <div style={{ width: item.fullRow ? '90%' : '70%' }}>{item.value}</div>
+                  <div style={{ textAlign, width: item.fullRow ? '90%' : '70%' }}>{item.value}</div>
                 </Col>
-              )}
+              ))}
             </Row>
-          }
+          )}
         </div>
       </div>
     </Fragment>
-  )
+  );
 }

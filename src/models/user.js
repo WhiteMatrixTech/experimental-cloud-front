@@ -50,7 +50,7 @@ export default {
           },
         });
       } else {
-        notification.error({ message: result.message || '用户注册失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.error || '用户注册失败', top: 64, duration: 3 });
         return false;
       }
     },

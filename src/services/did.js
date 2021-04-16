@@ -1,4 +1,5 @@
 import { request } from '../utils/request';
+import { stringify } from 'qs';
 
 /**
  * 创建DID
@@ -25,12 +26,12 @@ export async function deleteDID(params) {
  * 查询DID列表
  */
 export async function getDidList(params) {
-  return request(`/network/${params.networkName}/did/getAll`);
+  return request(`/network/${params.networkName}/did?${stringify(params)}`);
 }
 
 /**
  * 查询DID
  */
 export async function getDetailByDid(params) {
-  return request(`/network/${params.networkName}/did/getDid`);
+  return request(`/network/${params.networkName}/did/${params.did}`);
 }

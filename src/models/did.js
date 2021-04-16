@@ -5,21 +5,10 @@ export default {
   namespace: 'DID',
 
   state: {
-    didList: [
-      {
-        did: 'did:36486efsac65487scsdfc',
-        didName: 'demoDid',
-        didType: 'admin',
-        role: 'admin',
-      },
-      {
-        did: 'did:36486efsac65487scssjvho',
-        didName: 'demoDid1',
-        didType: 'admin',
-        role: 'admin',
-      },
-    ], // DID列表
+    didList: [], // DID列表
     didTotal: 0,
+
+    didDetail: {},
   },
 
   subscriptions: {
@@ -44,12 +33,13 @@ export default {
     *getDetailByDid({ payload }, { call, put }) {
       const res = yield call(API.getDetailByDid, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok') {
+      if (statusCode === 'ok' && result) {
         yield put({
           type: 'common',
           payload: {
-            didList: result,
-            didTotal: result.length,
+            didDetail: result,
+            didList: [result],
+            didTotal: 1,
           },
         });
       }

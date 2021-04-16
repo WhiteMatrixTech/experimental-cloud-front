@@ -25,7 +25,6 @@ breadCrumbItem.push({
 
 function DidManagement(props) {
   const { dispatch, qryLoading = false } = props;
-  const { orgList } = props.Organization;
   const { networkName, userRole } = props.User;
   const { didList, didTotal } = props.DID;
 
@@ -40,12 +39,13 @@ function DidManagement(props) {
     const { did } = searchParams;
     const params = {
       networkName,
+      paginator: pageNum.toString(),
+      pageSize: baseConfig.pageSize.toString(),
     };
     if (did) {
-      params.did = did;
       dispatch({
         type: 'DID/getDetailByDid',
-        payload: params,
+        payload: { did },
       });
       return;
     }
@@ -69,7 +69,7 @@ function DidManagement(props) {
     const callback = async () => {
       const res = await dispatch({
         type: 'DID/deleteDID',
-        payload: { did: record.did },
+        payload: { networkName, did: record.did },
       });
       if (res) {
         getDidList();
@@ -128,6 +128,7 @@ function DidManagement(props) {
         title: 'DID名称',
         dataIndex: 'didName',
         key: 'didName',
+        width: '20%',
         ellipsis: true,
       },
       {
@@ -152,21 +153,14 @@ function DidManagement(props) {
         key: 'action',
         render: (_, record) => (
           <Space size="small">
-            <a onClick={() => onClickModify(record)}>修改</a>
-            <a onClick={() => onClickDelete(record)}>删除</a>
+            {/* <a onClick={() => onClickModify(record)}>修改</a>
+            <a onClick={() => onClickDelete(record)}>删除</a> */}
             <a onClick={() => onClickDetail(record)}>详情</a>
           </Space>
         ),
       },
     ];
   }, [userRole]);
-
-  useEffect(() => {
-    dispatch({
-      type: 'Organization/getOrgList',
-      payload: { networkName },
-    });
-  }, []);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
@@ -185,18 +179,7 @@ function DidManagement(props) {
                   <Input placeholder="输入DID" />
                 </Item>
               </Col>
-              <Col span={8}>
-                <Item label="组织名称" name="orgName" initialValue={null}>
-                  <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择组织">
-                    {orgList.map((item) => (
-                      <Option key={item.orgName} value={item.orgName}>
-                        {item.orgName}
-                      </Option>
-                    ))}
-                  </Select>
-                </Item>
-              </Col>
-              <Col span={8} style={{ textAlign: 'right' }}>
+              <Col span={8} offset={8} style={{ textAlign: 'right' }}>
                 <Space size="middle">
                   <Button onClick={resetForm}>重置</Button>
                   <Button type="primary" onClick={onSearch}>
@@ -241,9 +224,8 @@ function DidManagement(props) {
   );
 }
 
-export default connect(({ User, Organization, Layout, DID, loading }) => ({
+export default connect(({ User, Layout, DID, loading }) => ({
   User,
-  Organization,
   Layout,
   DID,
   qryLoading: loading.effects['DID/getDidList'],

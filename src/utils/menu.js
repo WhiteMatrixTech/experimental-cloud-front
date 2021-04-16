@@ -99,15 +99,15 @@ const MenuList = [
       //   isFeature: 0,
       //   menuVos: [],
       // },
-      {
-        id: 432,
-        menuPid: 43,
-        menuHref: '/about/contract/privacyStrategy',
-        menuIcon: null,
-        menuName: '隐私保护策略',
-        isFeature: 1, // 是否只有盟主才显示
-        menuVos: [],
-      },
+      // {
+      //   id: 432,
+      //   menuPid: 43,
+      //   menuHref: '/about/contract/privacyStrategy',
+      //   menuIcon: null,
+      //   menuName: '隐私保护策略',
+      //   isFeature: 1, // 是否只有盟主才显示
+      //   menuVos: [],
+      // },
       // {
       //   id: 448,
       //   menuPid: 43,
