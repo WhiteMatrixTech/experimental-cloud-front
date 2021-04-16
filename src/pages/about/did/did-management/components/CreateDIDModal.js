@@ -29,7 +29,7 @@ function CreateDIDModal(props) {
       .then(async (values) => {
         form.resetFields();
         let params = {
-          companyName: values.companyName,
+          companyName: values.didName,
           additionalAttr: values.additionalAttr,
           role: values.role,
           networkName,

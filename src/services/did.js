@@ -5,7 +5,7 @@ import { stringify } from 'qs';
  * 创建DID
  */
 export async function createDID(params) {
-  return request(`/network/${params.networkName}/did/create`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/did`, { method: 'POST', body: params });
 }
 
 /**
@@ -26,7 +26,8 @@ export async function deleteDID(params) {
  * 查询DID列表
  */
 export async function getDidList(params) {
-  return request(`/network/${params.networkName}/did?${stringify(params)}`);
+  const { networkName, ...rest } = params;
+  return request(`/network/${networkName}/did?${stringify(rest)}`);
 }
 
 /**
