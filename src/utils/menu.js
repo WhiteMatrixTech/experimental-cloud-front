@@ -247,15 +247,6 @@ const MenuList = [
     isFeature: 1, // 是否只有盟主才显示
     menuVos: [],
   },
-  {
-    id: 54,
-    menuPid: 2,
-    menuHref: '/about/rbac-config',
-    menuIcon: 'KBasszhengshuguanli',
-    menuName: '访问策略配置',
-    isFeature: 1, // 是否只有盟主才显示
-    menuVos: [],
-  },
 ];
 
 const getCurBreadcrumb = (menuList, keyword = '', isLeftMenu = true) => {

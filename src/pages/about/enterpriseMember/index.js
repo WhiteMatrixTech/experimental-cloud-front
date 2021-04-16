@@ -44,7 +44,7 @@ function EnterpriseMember(props) {
       dataIndex: 'companyName',
       key: 'companyName',
       ellipsis: true,
-      width: '11%',
+      width: '10%',
     },
     {
       title: '统一社会信用代码',
@@ -130,6 +130,7 @@ function EnterpriseMember(props) {
           {record.isValid === 'invalid' && record.approvalStatus === 'approved' && (
             <a onClick={() => onClickToConfirm(record, 'validate')}>启用</a>
           )}
+          <a onClick={() => onClickRbacConfig(record)}>访问策略配置</a>
           <a onClick={() => onClickDetail(record)}>详情</a>
         </Space>
       ),
@@ -260,6 +261,15 @@ function EnterpriseMember(props) {
       if (res) {
         getMemberList();
       }
+    });
+  };
+
+  const onClickRbacConfig = (record) => {
+    history.push({
+      pathname: `/about/enterpriseMember/rbac-config`,
+      state: {
+        companyName: record.companyName,
+      },
     });
   };
 

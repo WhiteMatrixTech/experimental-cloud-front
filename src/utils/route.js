@@ -44,6 +44,10 @@ export function getRoutes() {
               path: '/about/enterpriseMember/:memberDetail',
               exact: true,
             },
+            {
+              path: '/about/enterpriseMember/rbac-config',
+              exact: true,
+            },
           ],
         },
         {
@@ -151,10 +155,6 @@ export function getRoutes() {
         },
         {
           path: '/about/fabricUsers',
-          exact: true,
-        },
-        {
-          path: '/about/rbac-config',
           exact: true,
         },
         {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
-import cloneDeep from 'lodash/cloneDeep';
 import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal } from 'antd';
 import { CaretDownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Breadcrumb } from 'components';
@@ -11,10 +10,14 @@ import styles from './index.less';
 const { Item } = Form;
 const { Option } = Select;
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/rbac-config');
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember');
+breadCrumbItem.push({
+  menuName: '访问策略配置',
+  menuHref: `/`,
+});
 
 function RbacConfig(props) {
-  const { dispatch, User, RBAC, configLoading = false, resetLoading = false } = props;
+  const { dispatch, location, User, RBAC, configLoading = false, resetLoading = false } = props;
   const { networkName } = User;
   const { companyList, chaincodeList, rbacPolicy } = RBAC;
 
@@ -143,11 +146,11 @@ function RbacConfig(props) {
   }, []);
 
   useEffect(() => {
-    if (companyList.length > 0) {
-      getConfig(companyList[0].companyName);
-      resetFormValue(companyList[0].role);
+    if (location.state?.companyName) {
+      getConfig(location.state?.companyName);
+      resetFormValue(location.state?.companyName);
     }
-  }, [companyList]);
+  }, [location.state]);
 
   return (
     <div className={styles['rbac-config-wrapper']}>
@@ -159,6 +162,7 @@ function RbacConfig(props) {
               <Col span={18} className={styles['company-selector']}>
                 <label>公司名称</label>
                 <Select
+                  disabled
                   allowClear
                   value={company}
                   placeholder="选择公司"

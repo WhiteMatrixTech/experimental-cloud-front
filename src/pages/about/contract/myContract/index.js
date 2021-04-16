@@ -304,7 +304,7 @@ class MyContract extends Component {
         render: (_, record) => (
           // 非当前合约组织成员不可操作
           <Space size="small">
-            {record.canDownload && <a onClick={() => this.onDownLoadContract(record)}>下载证书</a>}
+            {record.canDownload && <a onClick={() => this.onDownLoadContract(record)}>下载合约</a>}
             {VerifyStatusList.includes(record.chainCodeStatus) && userRole === Roles.NetworkAdmin && (
               <a onClick={() => this.onClickApprove(record)}>审核</a>
             )}
