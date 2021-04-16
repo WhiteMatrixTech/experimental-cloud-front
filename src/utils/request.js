@@ -45,9 +45,7 @@ const authorization = (response) => {
 /** 异常处理程序 */
 const errorHandler = (error) => {
   const { response } = error;
-  return response.json().then((formatResponseData) => {
-    return authorization(formatResponseData);
-  });
+  return response.json();
 };
 
 /**
