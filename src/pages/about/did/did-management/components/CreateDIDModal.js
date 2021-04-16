@@ -1,11 +1,8 @@
-import { Button, Form, Input, Modal, Select } from 'antd';
+import React from 'react';
+import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
-import React, { useEffect } from 'react';
-import { Roles } from 'utils/roles.js';
-import { CreateFabricRole } from '../_config';
 
 const { Item } = Form;
-const { Option } = Select;
 const { TextArea } = Input;
 
 const formItemLayout = {
@@ -19,7 +16,7 @@ const formItemLayout = {
 
 function CreateDIDModal(props) {
   const { visible, onCancel, record, addLoading = false, User, dispatch } = props;
-  const { networkName, userRole } = User;
+  const { networkName } = User;
 
   const [form] = Form.useForm();
 
@@ -27,7 +24,6 @@ function CreateDIDModal(props) {
     form
       .validateFields()
       .then(async (values) => {
-        form.resetFields();
         let params = {
           companyName: values.didName,
           additionalAttr: values.additionalAttr,
@@ -104,7 +100,7 @@ function CreateDIDModal(props) {
           <Input placeholder="请输入DID名称" />
         </Item>
         <Item
-          label="角色"
+          label="DID角色"
           name="role"
           initialValue={record ? record.role : null}
           rules={[

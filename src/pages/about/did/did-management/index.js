@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { history } from 'umi';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
-import { Table, Button, Space, Form, Row, Col, Select, Input, Modal } from 'antd';
+import { Table, Button, Space, Form, Row, Col, Input, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import CreateDIDModal from './components/CreateDIDModal';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
@@ -11,7 +11,6 @@ import baseConfig from 'utils/config';
 import styles from './index.less';
 
 const { Item } = Form;
-const Option = Select.Option;
 const formItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -45,7 +44,7 @@ function DidManagement(props) {
     if (did) {
       dispatch({
         type: 'DID/getDetailByDid',
-        payload: { did },
+        payload: { did, networkName },
       });
       return;
     }
@@ -137,7 +136,7 @@ function DidManagement(props) {
         key: 'didType',
       },
       {
-        title: '角色',
+        title: 'DID角色',
         dataIndex: 'role',
         key: 'role',
         ellipsis: true,

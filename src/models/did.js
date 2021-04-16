@@ -27,13 +27,15 @@ export default {
             didTotal: result.length,
           },
         });
+      } else {
+        notification.error({ message: result.message || 'DID查询失败', top: 64, duration: 3 });
       }
     },
 
     *getDetailByDid({ payload }, { call, put }) {
       const res = yield call(API.getDetailByDid, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result) {
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
@@ -42,6 +44,8 @@ export default {
             didTotal: 1,
           },
         });
+      } else {
+        notification.error({ message: result.message || 'DID查询失败', top: 64, duration: 3 });
       }
     },
 
