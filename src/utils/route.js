@@ -158,6 +158,26 @@ export function getRoutes() {
           exact: true,
         },
         {
+          path: '/about/did',
+          exact: true,
+          routes: [
+            {
+              path: '/about/did/did-management',
+              exact: true,
+              routes: [
+                {
+                  path: '/about/did/did-management/did-detail',
+                  exact: true,
+                },
+              ],
+            },
+            {
+              path: '/about/did/did-query',
+              exact: true,
+            },
+          ],
+        },
+        {
           path: '/about/transactions',
           exact: true,
           routes: [

@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react';
-import { connect } from "dva";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'dva';
 import { Spin } from 'antd';
 import { Breadcrumb, DetailCard } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import { ApprovalStatus } from '../_config';
 import { injectIntl } from 'umi';
+import CreateDIDModal from '../../did/did-management/components/CreateDIDModal';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false)
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
 breadCrumbItem.push({
-  menuName: "企业信息",
+  menuName: '企业信息',
   menuHref: `/`,
-})
+});
 
 function MyCompanyInfo(props) {
   const {
@@ -20,47 +21,60 @@ function MyCompanyInfo(props) {
     MyInfo: { myCompany },
   } = props;
   const { networkName } = User;
+  const [createModalVisible, setCreateModalVisible] = useState(false);
+
+  const getMyDid = () => {};
+
+  const onClickCreate = () => {
+    setCreateModalVisible(true);
+  };
+
+  const onCloseCreateModal = () => {
+    setCreateModalVisible(false);
+  };
 
   const companyBasicInfo = [
     {
       label: '企业名称',
-      value: myCompany.companyName
+      value: myCompany.companyName,
     },
     {
       label: '当前审批状态',
-      value: ApprovalStatus[myCompany.approvalStatus]
+      value: ApprovalStatus[myCompany.approvalStatus],
     },
     {
       label: '统一社会信用代码',
-      value: myCompany.companyCertBusinessNumber
+      value: myCompany.companyCertBusinessNumber,
     },
-    // {
-    //   label: '办公地址',
-    //   value: myCompany.companyAddress
-    // }
+    {
+      label: '我的DID',
+      value: 'NeedButton',
+      buttonName: '立即申请',
+      onClick: onClickCreate,
+    },
   ];
   const companyLegalInfo = [
     {
       label: '法人代表姓名',
-      value: myCompany.legalPersonName
+      value: myCompany.legalPersonName,
     },
     {
       label: '法人代表身份证号',
-      value: myCompany.legalPersonIdCardNumber
+      value: myCompany.legalPersonIdCardNumber,
     },
   ];
   const companyContactsInfo = [
     {
       label: '联系人姓名',
-      value: myCompany.contactName
+      value: myCompany.contactName,
     },
     {
       label: '联系人电话',
-      value: myCompany.contactPhone
+      value: myCompany.contactPhone,
     },
     {
       label: '联系人邮箱',
-      value: myCompany.contactEmail
+      value: myCompany.contactEmail,
     },
     // {
     //   label: '备注',
@@ -72,27 +86,31 @@ function MyCompanyInfo(props) {
   useEffect(() => {
     dispatch({
       type: 'MyInfo/getMyCompanyInfo',
-      payload: { networkName }
-    })
+      payload: { networkName },
+    });
   }, []);
 
-
   return (
-    <div className='page-wrapper'>
+    <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content'>
+      <div className="page-content">
         <Spin spinning={qryLoading}>
-          <DetailCard cardTitle='基本信息' detailList={companyBasicInfo} />
-          <DetailCard cardTitle='法人信息' detailList={companyLegalInfo} />
-          <DetailCard cardTitle='联系人信息' detailList={companyContactsInfo} />
+          <DetailCard cardTitle="基本信息" detailList={companyBasicInfo} />
+          <DetailCard cardTitle="法人信息" detailList={companyLegalInfo} />
+          <DetailCard cardTitle="联系人信息" detailList={companyContactsInfo} />
         </Spin>
       </div>
-    </div >
-  )
+      {createModalVisible && (
+        <CreateDIDModal visible={createModalVisible} onCancel={onCloseCreateModal} getDidList={getMyDid} />
+      )}
+    </div>
+  );
 }
 
-export default injectIntl(connect(({ User, MyInfo, loading }) => ({
-  User,
-  MyInfo,
-  qryLoading: loading.effects['MyInfo/getMyInfoDetail']
-}))(MyCompanyInfo));
+export default injectIntl(
+  connect(({ User, MyInfo, loading }) => ({
+    User,
+    MyInfo,
+    qryLoading: loading.effects['MyInfo/getMyInfoDetail'],
+  }))(MyCompanyInfo),
+);
