@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Breadcrumb, DetailCard } from 'components';
 import { Input, Result, Empty } from 'antd';
 import classnames from 'classnames';
-import moment from 'moment';
+import { isObject } from 'lodash';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import styles from './index.less';
 
@@ -17,62 +17,42 @@ breadCrumbItem.push({
 
 function DidQueryVerify(props) {
   const { dispatch, DID, User } = props;
-  const { didList, didDetail } = DID;
+  const { didDetail } = DID;
   const { networkName } = User;
-
-  const [searchedDid, setSearchedDid] = useState(null);
 
   const onSearch = (value) => {
     dispatch({
       type: 'DID/getDetailByDid',
       payload: { networkName, did: value },
     });
-    const didInfo = didList.find((item) => item.did === value);
-    if (didInfo) {
-      setSearchedDid(didInfo);
-    }
   };
-
-  useEffect(() => {
-    dispatch({
-      type: 'DID/getDidList',
-      payload: { paginator: 1, networkName },
-    });
-  }, []);
 
   const didDetailInfo = useMemo(() => {
     return [
       {
         label: 'DID',
-        value: searchedDid?.did,
+        value: didDetail?.did,
       },
       {
         label: 'DID名称',
-        value: searchedDid?.idName,
+        value: didDetail?.idName,
       },
       {
         label: 'DID类型',
-        value: searchedDid?.idType,
+        value: didDetail?.idType,
       },
       {
         label: 'DID角色',
-        value: searchedDid?.role,
-      },
-      {
-        label: '公司地址',
-        value: searchedDid?.companyAddress,
-      },
-      {
-        label: '联系人',
-        value: searchedDid?.contactor,
+        value: didDetail?.role,
       },
       {
         label: '附加信息',
-        value: searchedDid?.additionalAttributes,
-        fullRow: true,
+        value: isObject(didDetail?.additionalAttributes)
+          ? JSON.stringify(didDetail?.additionalAttributes)
+          : didDetail?.additionalAttributes,
       },
     ];
-  }, [searchedDid]);
+  }, [didDetail]);
 
   return (
     <div className="page-wrapper" style={{ height: '100%' }}>
@@ -80,7 +60,7 @@ function DidQueryVerify(props) {
       <div className={classnames('page-content', 'page-content-shadow', styles['did-query-verify'])}>
         <h3>DID查询验证</h3>
         <Search placeholder="输入DID" allowClear enterButton="查询" size="large" onSearch={onSearch} />
-        {searchedDid ? (
+        {didDetail?.did ? (
           <div className={styles['did-detail']}>
             <DetailCard textAlign="left" columnsNum={3} cardTitle="DID详细信息" detailList={didDetailInfo} />
           </div>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
-import moment from 'moment';
+import { isObject } from 'lodash';
 import { Breadcrumb, DetailCard } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
@@ -40,8 +40,9 @@ function DidDetail(props) {
     },
     {
       label: '附加信息',
-      value: didDetail.additionalAttributes || location?.state?.additionalAttributes,
-      fullRow: true,
+      value: isObject(didDetail?.additionalAttributes)
+        ? JSON.stringify(didDetail?.additionalAttributes)
+        : didDetail?.additionalAttributes,
     },
   ];
 

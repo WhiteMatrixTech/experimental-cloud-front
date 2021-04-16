@@ -38,8 +38,7 @@ function DidManagement(props) {
     const { did } = searchParams;
     const params = {
       networkName,
-      paginator: pageNum.toString(),
-      pageSize: baseConfig.pageSize.toString(),
+      paginator: 'did',
     };
     if (did) {
       dispatch({
@@ -103,6 +102,7 @@ function DidManagement(props) {
         const params = {
           did: values.did,
         };
+        setPageNum(1);
         setSearchParams(params);
       })
       .catch((info) => {
@@ -124,28 +124,28 @@ function DidManagement(props) {
   const columns = useMemo(() => {
     return [
       {
-        title: 'DID名称',
-        dataIndex: 'didName',
-        key: 'didName',
+        title: 'DID',
+        dataIndex: 'did',
+        key: 'did',
         width: '20%',
         ellipsis: true,
       },
       {
+        title: 'DID名称',
+        dataIndex: 'idName',
+        key: 'idName',
+        ellipsis: true,
+      },
+      {
         title: 'DID类型',
-        dataIndex: 'didType',
-        key: 'didType',
+        dataIndex: 'idType',
+        key: 'idType',
       },
       {
         title: 'DID角色',
         dataIndex: 'role',
         key: 'role',
         ellipsis: true,
-      },
-      {
-        title: '创建时间',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
       },
       {
         title: '操作',
@@ -164,7 +164,7 @@ function DidManagement(props) {
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getDidList();
-  }, [pageNum, searchParams]);
+  }, [searchParams]);
 
   return (
     <div className="page-wrapper">

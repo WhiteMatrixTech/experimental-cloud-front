@@ -55,9 +55,9 @@ function CreateDIDModal(props) {
   const checkJSON = (_, value) => {
     const promise = Promise; // 没有值的情况
 
-    // if (!value) {
-    //   return promise.reject('请输入附加信息');
-    // } // 有值的情况
+    if (!value) {
+      return promise.reject('请输入附加信息');
+    } // 有值的情况
 
     try {
       const json = JSON.parse(value);
@@ -89,6 +89,7 @@ function CreateDIDModal(props) {
         <Item
           label="DID名称"
           name="didName"
+          tooltip="公司名称"
           initialValue={record ? record.didName : ''}
           rules={[
             {
@@ -113,6 +114,7 @@ function CreateDIDModal(props) {
           <Input placeholder="请输入DID用户角色" />
         </Item>
         <Item
+          required
           label="附加信息"
           name="additionalAttr"
           initialValue={record ? record.additionalAttributes : ''}

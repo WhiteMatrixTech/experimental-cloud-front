@@ -23,8 +23,8 @@ export default {
         yield put({
           type: 'common',
           payload: {
-            didList: result,
-            didTotal: result.length,
+            didList: result.records || [],
+            didTotal: result.records ? result.records.length : 0,
           },
         });
       } else {
