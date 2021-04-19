@@ -19,6 +19,10 @@ function MemberDetail(props) {
       value: location?.state?.companyName,
     },
     {
+      label: '法人代表姓名',
+      value: location?.state?.legalPersonName,
+    },
+    {
       label: '当前审批状态',
       value: statusList[location?.state?.approvalStatus],
     },
@@ -35,20 +39,17 @@ function MemberDetail(props) {
     },
     {
       label: '联系人手机号',
-      value: location?.state?.contactCell,
+      value: location?.state?.contactPhone,
     },
     {
       label: '联系人邮箱',
       value: location?.state?.contactEmail,
     },
+    {
+      label: '联系地址',
+      value: location?.state?.companyAddress,
+    },
   ];
-
-  /* useEffect(() => {
-    dispatch({
-      type: 'Member/getMemberDetail',
-      payload: { companyCertBusinessNumber, networkName },
-    });
-  }, []); */
 
   return (
     <div className="page-wrapper">

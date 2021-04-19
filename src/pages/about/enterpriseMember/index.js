@@ -277,14 +277,7 @@ function EnterpriseMember(props) {
   const onClickDetail = (record) => {
     history.push({
       pathname: `/about/enterpriseMember/${record.companyCertBusinessNumber}`,
-      state: {
-        companyCertBusinessNumber: record.companyCertBusinessNumber,
-        approvalStatus: record.approvalStatus,
-        companyName: record.companyName,
-        contactName: record.contactName,
-        contactCell: record.contactCell,
-        contactEmail: record.contactEmail,
-      },
+      state: record,
     });
   };
 

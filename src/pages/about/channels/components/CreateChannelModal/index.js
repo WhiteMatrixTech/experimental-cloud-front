@@ -80,8 +80,8 @@ function CreateChannelModal({ visible, User, onCancel, dispatch, addLoading, Org
               min: 4,
               max: 20,
               type: 'string',
-              pattern: /^[a-zA-Z0-9]{4,20}$/,
-              message: '通道名称必须由4-20位的字母或数字组成',
+              pattern: /^[a-z0-9\-]{4,20}$/,
+              message: '通道名称必须由4-20位的小写字母或数字组成, 字母开头',
             },
           ]}
         >
