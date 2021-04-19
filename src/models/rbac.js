@@ -43,6 +43,19 @@ export default {
       }
     },
 
+    *getMyselfChainCodeList({ payload }, { call, put }) {
+      const res = yield call(API.getMyselfChainCodeList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            chaincodeList: result,
+          },
+        });
+      }
+    },
+
     *getRbacConfigWithOrg({ payload }, { call, put }) {
       const res = yield call(API.getRbacConfigWithOrg, payload);
       const { statusCode, result } = res;

@@ -1,3 +1,6 @@
+/**
+ * 访问策略配置(rbac)，相关设计文档 https://www.yuque.com/whitematrix/baas-v1/xpq7pz#6CxuL
+ */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal } from 'antd';
@@ -23,7 +26,8 @@ function RbacConfig(props) {
 
   const [form] = Form.useForm();
   const [company, setCompany] = useState(null);
-  const [invokeChaincodeCustom, setInvokeChaincodeCustom] = useState('InChannel'); // 查询到的配置值
+  const [viewChaincode, setViewChaincode] = useState('InChannel');
+  const [invokeChaincodeCustom, setInvokeChaincodeCustom] = useState('InChannel');
 
   const getConfig = (value) => {
     dispatch({
@@ -34,9 +38,10 @@ function RbacConfig(props) {
   };
 
   const getChaincodeList = () => {
+    const apiName = viewChaincode === 'Own' ? 'RBAC/getMyselfChainCodeList' : 'RBAC/getChainCodeList';
     dispatch({
-      type: 'RBAC/getChainCodeList',
-      payload: { networkName },
+      type: apiName,
+      payload: { networkName, companyName: company },
     });
   };
 
@@ -44,6 +49,17 @@ function RbacConfig(props) {
     const role = companyList.find((item) => item.companyName === value)?.role;
     resetFormValue(role);
     getConfig(value);
+  };
+
+  const onChangeViewChaincode = (e) => {
+    setViewChaincode(e.target.value);
+    if (e.target.value === 'Own') {
+      form.setFields([
+        { name: 'downloadChaincode', value: 'Own' },
+        { name: 'invokeChaincode', value: 'None' },
+      ]);
+      setInvokeChaincodeCustom('None');
+    }
   };
 
   const onChangeInvokeChaincode = (e) => {
@@ -63,6 +79,7 @@ function RbacConfig(props) {
         },
       });
       if (res) {
+        setViewChaincode('InChannel');
         setInvokeChaincodeCustom();
         const role = companyList.find((item) => item.companyName === company)?.role;
         resetFormValue(role);
@@ -102,6 +119,7 @@ function RbacConfig(props) {
   };
 
   const resetFormValue = (role) => {
+    // 默认访问策略配置
     form.setFieldsValue({
       BlockInfo: 'All',
       Transaction: role === Roles.NetworkAdmin ? 'All' : 'Own',
@@ -133,6 +151,7 @@ function RbacConfig(props) {
       configValue.downloadChaincode = downloadChaincode?.field;
       configValue.invokeChaincode = InvokeChainCodeMethod?.field;
 
+      setViewChaincode(viewChaincode?.field);
       form.setFieldsValue(configValue);
     }
   }, [rbacPolicy]);
@@ -236,7 +255,7 @@ function RbacConfig(props) {
                         }
                         name="viewChaincode"
                       >
-                        <Radio.Group>
+                        <Radio.Group onChange={onChangeViewChaincode}>
                           <Radio className={styles.radio} value="All">
                             可查看网络下所有链码（不推荐）
                           </Radio>
@@ -260,9 +279,11 @@ function RbacConfig(props) {
                         name="downloadChaincode"
                       >
                         <Radio.Group>
-                          <Radio className={styles.radio} value="InChannel">
-                            可下载通道下的所有链码
-                          </Radio>
+                          {viewChaincode !== 'Own' && (
+                            <Radio className={styles.radio} value="InChannel">
+                              可下载通道下的所有链码
+                            </Radio>
+                          )}
                           <Radio className={styles.radio} value="Own">
                             只可下载自己创建的链码
                           </Radio>
@@ -281,9 +302,11 @@ function RbacConfig(props) {
                         name="invokeChaincode"
                       >
                         <Radio.Group onChange={onChangeInvokeChaincode}>
-                          <Radio className={styles.radio} value="InChannel">
-                            可调用安装的（通道下的所有）链码
-                          </Radio>
+                          {viewChaincode !== 'Own' && (
+                            <Radio className={styles.radio} value="InChannel">
+                              可调用通道下安装链码
+                            </Radio>
+                          )}
                           <Radio className={styles.radio} value="None">
                             禁止调用链码
                           </Radio>
