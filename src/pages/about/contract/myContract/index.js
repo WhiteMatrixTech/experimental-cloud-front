@@ -138,7 +138,7 @@ class MyContract extends Component {
       message.warn('请先在【组织管理】中添加您的组织，并确保您的组织在使用中');
       return;
     }
-    this.setState({ operateType: 'new', editModalVisible: true });
+    this.setState({ operateType: 'new', editModalVisible: true, editParams: {} });
   };
 
   // 点击修改合约

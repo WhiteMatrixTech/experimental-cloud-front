@@ -11,7 +11,14 @@ export async function getCompanyList(params) {
  * 获取合约列表
  */
 export async function getChaincodeList(params) {
-  return request(`/network/${params.networkName}/chainCodes/queryAll`);
+  return request(`/network/${params.networkName}/chainCodes/queryAll/${params.companyName}`);
+}
+
+/**
+ * 获取自己的合约列表
+ */
+export async function getMyselfChainCodeList(params) {
+  return request(`/network/${params.networkName}/chainCodes/queryOwn/${params.companyName}`);
 }
 
 /**
