@@ -3,25 +3,23 @@ import React, { useEffect } from 'react';
 const FormItem = Form.Item;
 
 const StepOne = (props) => {
-
   const { curOper, operType, basicInfo, afterValidate, failedToValidate } = props;
   const [form] = Form.useForm();
-
 
   const onCheck = async () => {
     try {
       const values = await form.validateFields();
-      afterValidate(values, operType.next)
+      afterValidate(values, operType.next);
     } catch (errorInfo) {
-      failedToValidate(operType.default)
+      failedToValidate(operType.default);
     }
-  }
+  };
 
   useEffect(() => {
     if (curOper === operType.next) {
-      onCheck()
+      onCheck();
     }
-  }, [curOper])
+  }, [curOper]);
 
   return (
     <Form form={form} name="UserRegisterStepOne">
@@ -35,10 +33,7 @@ const StepOne = (props) => {
           },
         ]}
       >
-        <Input
-          size="large"
-          placeholder='企业名称'
-        />
+        <Input size="large" placeholder="企业名称" />
       </FormItem>
       <FormItem
         initialValue={basicInfo.companyCertBusinessNumber ? basicInfo.companyCertBusinessNumber : ''}
@@ -50,10 +45,7 @@ const StepOne = (props) => {
           },
         ]}
       >
-        <Input
-          size="large"
-          placeholder='统一社会信用代码'
-        />
+        <Input size="large" placeholder="统一社会信用代码" />
       </FormItem>
       <FormItem
         initialValue={basicInfo.legalPersonName ? basicInfo.legalPersonName : ''}
@@ -65,10 +57,7 @@ const StepOne = (props) => {
           },
         ]}
       >
-        <Input
-          size="large"
-          placeholder='法人代表姓名'
-        />
+        <Input size="large" placeholder="法人代表姓名" />
       </FormItem>
       <FormItem
         initialValue={basicInfo.contactName ? basicInfo.contactName : ''}
@@ -80,22 +69,25 @@ const StepOne = (props) => {
           },
         ]}
       >
-        <Input
-          size="large"
-          placeholder='联系人姓名'
-        />
+        <Input size="large" placeholder="联系人姓名" />
       </FormItem>
       <FormItem
-        initialValue={basicInfo.invitationCode ? basicInfo.invitationCode : ''}
-        name="invitationCode"
+        initialValue={basicInfo.companyAddress ? basicInfo.companyAddress : ''}
+        name="companyAddress"
+        rules={[
+          {
+            required: true,
+            message: '请输入联系人地址!',
+          },
+        ]}
       >
-        <Input
-          size="large"
-          placeholder='邀请码'
-        />
+        <Input size="large" placeholder="联系地址" />
+      </FormItem>
+      <FormItem initialValue={basicInfo.invitationCode ? basicInfo.invitationCode : ''} name="invitationCode">
+        <Input size="large" placeholder="邀请码" />
       </FormItem>
     </Form>
   );
 };
 
-export default StepOne
+export default StepOne;

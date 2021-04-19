@@ -16,8 +16,8 @@ const passwordProgressMap = {
 
 const StepTwo = (props) => {
   const { curOper, operType, afterValidate, failedToValidate } = props;
-  const [visible, setvisible] = useState(false);
-  const [popover, setpopover] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [popover, setPopover] = useState(false);
   const confirmDirty = false;
 
   const [form] = Form.useForm();
@@ -66,15 +66,15 @@ const StepTwo = (props) => {
     const promise = Promise; // 没有值的情况
 
     if (!value) {
-      setvisible(!!value);
+      setVisible(!!value);
       return promise.reject('请输入密码');
     } // 有值的情况
 
     if (!visible) {
-      setvisible(!!value);
+      setVisible(!!value);
     }
 
-    setpopover(!popover);
+    setPopover(!popover);
 
     if (value.length < 6 || value.length > 18) {
       return promise.reject('');
