@@ -44,6 +44,7 @@ export default {
 
   // 用于提供给代码中可用的变量
   define: {
+    'process.env.IPFS_LINK': process.env.IPFS_LINK,
     'process.env.FABRIC_BAAS_DASHBOARD': 'http://49.72.212.42:9000/d-solo/pUnN6JgWz/fabric-baas-dashboard',
     'process.env.CHAIN_IDE_LINK': 'http://49.72.212.42:3903/project/welcome', // ChainIDE地址
     'process.env.BAAS_BACKEND_LINK': 'http://49.72.212.42:3000', // BaaS Backend地址
