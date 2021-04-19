@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
 import { Breadcrumb, DetailCard } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import { ApprovalStatus } from '../_config';
 import { injectIntl } from 'umi';
-import CreateDIDModal from '../../did/did-management/components/CreateDIDModal';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
 breadCrumbItem.push({
@@ -20,18 +19,25 @@ function MyCompanyInfo(props) {
     qryLoading = false,
     MyInfo: { myCompany },
   } = props;
-  const { networkName } = User;
-  const [createModalVisible, setCreateModalVisible] = useState(false);
+  const { networkName, userInfo } = User;
 
-  const getMyDid = () => {};
-
-  const onClickCreate = () => {
-    setCreateModalVisible(true);
+  const onClickCreate = async () => {
+    // 创建did接口
+    const res = await dispatch({
+      type: 'DID/createDID',
+      payload: { networkName },
+    });
+    if (res) {
+      dispatch({
+        type: 'User/getUserInfo',
+        payload: {},
+      });
+    }
   };
 
-  const onCloseCreateModal = () => {
-    setCreateModalVisible(false);
-  };
+  const getDid = useMemo(() => {
+    return userInfo?.did;
+  }, [userInfo]);
 
   const companyBasicInfo = [
     {
@@ -48,7 +54,7 @@ function MyCompanyInfo(props) {
     },
     {
       label: '我的DID',
-      value: 'NeedButton',
+      value: getDid || 'NeedButton',
       buttonName: '立即申请',
       onClick: onClickCreate,
     },
@@ -76,11 +82,10 @@ function MyCompanyInfo(props) {
       label: '联系人邮箱',
       value: myCompany.contactEmail,
     },
-    // {
-    //   label: '备注',
-    //   fullRow: true,
-    //   value: myCompany.companyDesc
-    // },
+    {
+      label: '联系地址',
+      value: myCompany.companyAddress,
+    },
   ];
 
   useEffect(() => {
@@ -100,16 +105,14 @@ function MyCompanyInfo(props) {
           <DetailCard cardTitle="联系人信息" detailList={companyContactsInfo} />
         </Spin>
       </div>
-      {createModalVisible && (
-        <CreateDIDModal visible={createModalVisible} onCancel={onCloseCreateModal} getDidList={getMyDid} />
-      )}
     </div>
   );
 }
 
 export default injectIntl(
-  connect(({ User, MyInfo, loading }) => ({
+  connect(({ User, MyInfo, DID, loading }) => ({
     User,
+    DID,
     MyInfo,
     qryLoading: loading.effects['MyInfo/getMyInfoDetail'],
   }))(MyCompanyInfo),

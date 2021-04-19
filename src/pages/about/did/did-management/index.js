@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
-import moment from 'moment';
 import { Breadcrumb } from 'components';
 import { Table, Button, Space, Form, Row, Col, Input, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import CreateDIDModal from './components/CreateDIDModal';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import baseConfig from 'utils/config';
-import styles from './index.less';
 
 const { Item } = Form;
 const formItemLayout = {
@@ -29,10 +27,7 @@ function DidManagement(props) {
 
   const [form] = Form.useForm();
   const [pageNum, setPageNum] = useState(1);
-  const [record, setRecord] = useState(null);
   const [searchParams, setSearchParams] = useState({ did: '' });
-
-  const [createModalVisible, setCreateModalVisible] = useState(false);
 
   const getDidList = () => {
     const { did } = searchParams;
@@ -53,45 +48,11 @@ function DidManagement(props) {
     });
   };
 
-  const onClickCreate = () => {
-    setRecord(null);
-    setCreateModalVisible(true);
-  };
-
-  const onClickModify = (record) => {
-    setRecord(record);
-    setCreateModalVisible(true);
-  };
-
-  const onClickDelete = (record) => {
-    const callback = async () => {
-      const res = await dispatch({
-        type: 'DID/deleteDID',
-        payload: { networkName, did: record.did },
-      });
-      if (res) {
-        getDidList();
-      }
-    };
-    Modal.confirm({
-      title: 'Confirm',
-      icon: <ExclamationCircleOutlined />,
-      content: `确认要删除DID 【${record.didName}】 吗?`,
-      okText: '确认',
-      cancelText: '取消',
-      onOk: callback,
-    });
-  };
-
   const onClickDetail = (record) => {
     history.push({
       pathname: `/about/did/did-management/did-detail`,
       state: record,
     });
-  };
-
-  const onCloseCreateModal = () => {
-    setCreateModalVisible(false);
   };
 
   // 搜索
@@ -190,11 +151,6 @@ function DidManagement(props) {
           </Form>
         </div>
         <div className="table-wrapper page-content-shadow">
-          <div className={styles['table-header-btn-wrapper']}>
-            <Button type="primary" onClick={onClickCreate}>
-              新增DID
-            </Button>
-          </div>
           <Table
             rowKey={(record) => `${record.did}-${record.didName}`}
             loading={qryLoading}
@@ -211,14 +167,6 @@ function DidManagement(props) {
           />
         </div>
       </div>
-      {createModalVisible && (
-        <CreateDIDModal
-          visible={createModalVisible}
-          onCancel={onCloseCreateModal}
-          getDidList={getDidList}
-          record={record}
-        />
-      )}
     </div>
   );
 }
