@@ -56,19 +56,10 @@ function TopHeader(props) {
     window.open(link);
   };
 
-  const onClickIpfs = (e) => {
-    e.preventDefault();
-    const link = process.env.IPFS_LINK;
-    window.open(link);
-  };
-
   return (
     <Header className={styles.header}>
       <div className={styles['logo-sub']}>欢迎使用扬子江数字金融Baas区块链管理平台</div>
       <div className={styles['header-right-info']}>
-        <a className={styles['header-menu-item']} onClick={onClickIpfs}>
-          IPFS
-        </a>
         <a className={styles['header-menu-item']} onClick={onClickIDE}>
           ChainIDE
         </a>

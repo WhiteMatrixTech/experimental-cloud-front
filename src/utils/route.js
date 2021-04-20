@@ -158,6 +158,10 @@ export function getRoutes() {
           exact: true,
         },
         {
+          path: '/about/ipfs',
+          exact: true,
+        },
+        {
           path: '/about/did',
           exact: true,
           routes: [
