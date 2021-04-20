@@ -45,8 +45,8 @@ export default {
     *createNode({ payload }, { call, put }) {
       const res = yield call(API.createNode, payload);
       const { statusCode, result } = res;
-      const succMessage = `节点创建成功`;
-      const failMessage = `节点创建失败`;
+      const succMessage = `节点创建请求发起成功`;
+      const failMessage = `节点创建请求发起失败`;
       if (statusCode === 'ok' && result) {
         notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
         return true;
