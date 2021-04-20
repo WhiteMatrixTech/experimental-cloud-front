@@ -8,7 +8,7 @@ function SSHCommand(props) {
   const { networkName } = User;
   const { nodeSSH } = Peer;
 
-  const realNodeSSH = `ssh ec2-user@${nodeSSH} -i ${networkName}.pem`;
+  const realNodeSSH = `ssh root@${nodeSSH} -i ${networkName}.pem`;
 
   useEffect(() => {
     dispatch({
