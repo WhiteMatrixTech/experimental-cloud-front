@@ -22,7 +22,12 @@ export function LeagueCard(props) {
       <div className={styles['card-content']}>{leagueInfo.description}</div>
       <div className={styles['card-footer']}>
         <div className={styles.allies}>{showTime || getShowTime}</div>
-        <div className={styles.createTime}>{leagueInfo.timeAdded ? moment(leagueInfo.timeAdded).format('YYYY-MM-DD HH:mm:ss') : ''}</div>
+        <div
+          className={styles.createTime}
+          title={leagueInfo.timeAdded ? moment(leagueInfo.timeAdded).format('YYYY-MM-DD') : ''}
+        >
+          {leagueInfo.timeAdded ? moment(leagueInfo.timeAdded).format('YYYY-MM-DD') : ''}
+        </div>
       </div>
     </div>
   );
