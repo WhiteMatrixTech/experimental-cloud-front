@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
+import { history } from 'umi';
 import { Breadcrumb, DetailCard } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import { ApprovalStatus } from '../_config';
@@ -28,10 +29,10 @@ function MyCompanyInfo(props) {
       payload: { networkName },
     });
     if (res) {
-      dispatch({
-        type: 'User/getUserInfo',
-        payload: {},
-      });
+      // 清空缓存
+      window.localStorage.clear();
+      // 跳转至登录界面
+      history.replace('/user/login');
     }
   };
 

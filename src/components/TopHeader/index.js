@@ -1,10 +1,9 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { MenuList } from 'utils/menu.js';
-import { Roles } from 'utils/roles.js';
 import styles from './index.less';
 
 const { Header } = Layout;

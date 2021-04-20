@@ -53,7 +53,7 @@ export default {
       const res = yield call(API.createDID, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || 'DID创建成功', top: 64, duration: 3 });
+        notification.success({ message: result.message || 'DID创建成功, 请重新登录以获取DID', top: 64, duration: 3 });
         return true;
       } else {
         notification.error({ message: result.message || 'DID创建失败', top: 64, duration: 3 });
