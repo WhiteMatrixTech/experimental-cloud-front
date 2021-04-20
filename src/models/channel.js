@@ -33,10 +33,10 @@ export default {
       const res = yield call(API.createChannel, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '通道创建成功', top: 64, duration: 3 });
+        notification.success({ message: '通道创建请求发送成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '通道创建失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || '通道创建请求发送失败', top: 64, duration: 3 });
       }
     },
     *getChannelList({ payload }, { call, put }) {

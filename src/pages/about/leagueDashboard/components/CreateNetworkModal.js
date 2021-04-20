@@ -1,20 +1,11 @@
 import React, { useEffect } from 'react';
-import { Button, Form, Input, Modal, Select, Space, Radio, Row, Col } from 'antd';
+import { Button, Form, Input, Modal, Select, Radio, Row, Col } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import styles from './CreateNetworkModal.less';
 
 const { Item } = Form;
 const { Option } = Select;
-
-const formItemLayout = {
-  labelCol: {
-    sm: { span: 6 },
-  },
-  wrapperCol: {
-    sm: { span: 18 },
-  },
-};
 
 const inlineItemLayout = {
   wrapperCol: {
@@ -83,7 +74,7 @@ function CreateNetworkModal(props) {
 
   return (
     <Modal {...drawerProps}>
-      <Form {...formItemLayout} form={form}>
+      <Form layout="vertical" form={form}>
         <Item label="网络模板" initialValue="default" name="networkTemplate">
           <Radio.Group className={styles['radio-group']}>
             <Radio className={styles.radio} value="default">
