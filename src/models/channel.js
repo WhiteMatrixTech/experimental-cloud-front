@@ -39,6 +39,7 @@ export default {
         notification.error({ message: result.message || '通道创建请求发送失败', top: 64, duration: 3 });
       }
     },
+
     *getChannelList({ payload }, { call, put }) {
       const res = yield call(API.getChannelList, payload);
       const { statusCode, result } = res;
@@ -52,6 +53,18 @@ export default {
         });
       }
     },
+
+    *addOrgForChannel({ payload }, { call, put }) {
+      const res = yield call(API.addOrgForChannel, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: '添加组织请求发送成功', top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || '添加组织请求发送失败', top: 64, duration: 3 });
+      }
+    },
+
     *getOrgListOfChannel({ payload }, { call, put }) {
       const res = yield call(API.getOrgListOfChannel, payload);
       const { statusCode, result } = res;
@@ -65,6 +78,7 @@ export default {
         });
       }
     },
+
     *getNodeListOfChannel({ payload }, { call, put }) {
       const res = yield call(API.getNodeListOfChannel, payload);
       const { statusCode, result } = res;
@@ -78,6 +92,7 @@ export default {
         });
       }
     },
+
     *getContractListOfChannel({ payload }, { call, put }) {
       const res = yield call(API.getContractListOfChannel, payload);
       const { statusCode, result } = res;
@@ -90,6 +105,7 @@ export default {
         });
       }
     },
+
     *getContractTotalOfChannel({ payload }, { call, put }) {
       const res = yield call(API.getContractTotalOfChannel, payload);
       const { statusCode, result } = res;
@@ -102,6 +118,7 @@ export default {
         });
       }
     },
+
     *getBlockListOfChannel({ payload }, { call, put }) {
       const res = yield call(API.getBlockListOfChannel, payload);
       const { statusCode, result } = res;
@@ -114,6 +131,7 @@ export default {
         });
       }
     },
+
     *getTransactionsListOfChannel({ payload }, { call, put }) {
       const res = yield call(API.getTransactionsListOfChannel, payload);
       const { statusCode, result } = res;
@@ -126,6 +144,7 @@ export default {
         });
       }
     },
+
     *getStaticInfo({ payload }, { call, put, all }) {
       const [blockRes, transactionRes, orgRes, nodeRes, contractRes] = yield all([
         call(API.getBlockTotalOfChannel, payload),
