@@ -188,6 +188,7 @@ export default {
         return true;
       } else {
         notification.error({ message: result.message || '合约安装请求调用失败', top: 64, duration: 3 });
+        return false;
       }
     },
 
@@ -210,6 +211,7 @@ export default {
         return true;
       } else {
         notification.error({ message: result.message || '发布合约请求调用失败', top: 64, duration: 3 });
+        return false;
       }
     },
 

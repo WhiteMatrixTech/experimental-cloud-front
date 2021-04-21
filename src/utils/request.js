@@ -71,7 +71,7 @@ export const request = (url, options) => {
   const _requestFunc = extend({
     errorHandler, // 默认错误处理
     mode: 'cors',
-    timeout: 10000,
+    timeout: 30000,
     headers: headers,
     // parseResponse: false,
     credentials: 'include', // 默认请求是否带上cookie,
