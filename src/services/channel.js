@@ -29,6 +29,16 @@ export async function getOrgListOfChannel(params) {
 }
 
 /**
+ * 为通道添加组织
+ */
+export async function addOrgForChannel(params) {
+  return request(`/network/${params.networkName}/channels/addOrg`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+/**
  * 获取 通道下的节点列表
  */
 export async function getNodeListOfChannel(params) {

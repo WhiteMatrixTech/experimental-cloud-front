@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Select, Form, Button, Modal } from 'antd';
 
@@ -15,11 +15,21 @@ const formItemLayout = {
 };
 
 function AddOrg(props) {
-  const { visible, onCancel, addLoading = false, dispatch, User, Organization } = props;
+  const { visible, onCancel, channelId, addLoading = false, dispatch, User, Channel, Organization } = props;
   const { networkName } = User;
   const { orgList } = Organization;
+  const { orgListOfChannel } = Channel;
 
   const [form] = Form.useForm();
+
+  const optionalOrgList = useMemo(() => {
+    return orgList.reduce(function (pre, cur) {
+      if (orgListOfChannel.every((item) => item.orgName !== cur.orgName)) {
+        pre.push(cur);
+      }
+      return pre;
+    }, []);
+  }, [orgList, orgListOfChannel]);
 
   useEffect(() => {
     dispatch({
@@ -31,9 +41,14 @@ function AddOrg(props) {
   const handleSubmit = () => {
     form
       .validateFields()
-      .then((values) => {
-        form.resetFields();
-        form.setFieldsValue(values);
+      .then(async (values) => {
+        const res = dispatch({
+          type: 'Channel/addOrgForChannel',
+          payload: { networkName, channelId, orgName: values.peerOrgNames },
+        });
+        if (res) {
+          onCancel();
+        }
       })
       .catch((info) => {
         console.log('校验失败:', info);
@@ -45,7 +60,7 @@ function AddOrg(props) {
     closable: true,
     destroyOnClose: true,
     title: '添加组织',
-    onCancel: () => onCancel(),
+    onCancel: onCancel,
     footer: [
       <Button key="cancel" onClick={onCancel}>
         取消
@@ -62,7 +77,6 @@ function AddOrg(props) {
         <Item
           label="组织名称"
           name="peerOrgNames"
-          initialValue={null}
           rules={[
             {
               required: true,
@@ -70,13 +84,8 @@ function AddOrg(props) {
             },
           ]}
         >
-          <Select
-            allowClear
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-            placeholder="请选择组织"
-            mode="multiple"
-          >
-            {orgList.map((item) => (
+          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择组织">
+            {optionalOrgList.map((item) => (
               <Option key={item.orgName} value={item.orgName}>
                 {item.orgName}
               </Option>
