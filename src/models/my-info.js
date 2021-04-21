@@ -1,4 +1,5 @@
 import * as API from '../services/my-info.js';
+import { checkOrgInUse } from '../services/contract.js';
 
 export default {
   namespace: 'MyInfo',
@@ -26,6 +27,15 @@ export default {
         });
       }
     },
+
+    *checkOrgInUse({ payload }, { call, put }) {
+      const res = yield call(checkOrgInUse, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        return result.result;
+      }
+    },
+
     *getMyCompanyInfo({ payload }, { call, put }) {
       const res = yield call(API.getMyCompanyInfo, payload);
       const { statusCode, result } = res;
@@ -38,6 +48,7 @@ export default {
         });
       }
     },
+
     *getMyOrgInfo({ payload }, { call, put }) {
       const res = yield call(API.getMyOrgInfo, payload);
       const { statusCode, result } = res;

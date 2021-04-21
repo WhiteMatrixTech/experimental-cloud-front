@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
-import { Spin } from 'antd';
+import { Spin, message } from 'antd';
 import { history } from 'umi';
 import { Breadcrumb, DetailCard } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
@@ -23,6 +23,15 @@ function MyCompanyInfo(props) {
   const { networkName, userInfo } = User;
 
   const onClickCreate = async () => {
+    // 申请DID之前，公司在网络下必须拥有自己的组织
+    const orgInUse = await dispatch({
+      type: 'MyInfo/checkOrgInUse',
+      payload: { networkName },
+    });
+    if (!orgInUse) {
+      message.warn('请先在【组织管理】中添加您的组织，并确保您的组织在使用中');
+      return;
+    }
     // 创建did接口
     const res = await dispatch({
       type: 'DID/createDID',
