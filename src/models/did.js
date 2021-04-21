@@ -56,7 +56,11 @@ export default {
         notification.success({ message: result.message || 'DID创建成功, 请重新登录以获取DID', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || 'DID创建失败', top: 64, duration: 3 });
+        if (result.message && result.message.indexOf('didchannel') > -1) {
+          notification.error({ message: '请在【通道管理中】创建一个didchannel', top: 64, duration: 3 });
+        } else {
+          notification.error({ message: result.message || 'DID创建失败', top: 64, duration: 3 });
+        }
       }
     },
 
