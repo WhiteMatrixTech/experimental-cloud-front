@@ -127,7 +127,7 @@ class MyContract extends Component {
       payload: { invokeResult: null },
     });
     if (callback) {
-      this.getChainCodeList();
+      setTimeout(this.getChainCodeList, 500);
     }
   };
 
