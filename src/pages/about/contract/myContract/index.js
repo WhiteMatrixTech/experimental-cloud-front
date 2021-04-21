@@ -341,7 +341,7 @@ class MyContract extends Component {
               </Button>
             </div>
             <Table
-              rowKey="chainCodeName"
+              rowKey={(record) => `${record.chainCodeName}-${record.channelId}`}
               columns={columns}
               loading={qryLoading}
               dataSource={myContractList}
