@@ -184,10 +184,10 @@ export default {
       const res = yield call(API.installContract, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '合约安装api调用成功', top: 64, duration: 3 });
+        notification.success({ message: '合约安装请求调用成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '合约安装api调用失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || '合约安装请求调用失败', top: 64, duration: 3 });
       }
     },
 
@@ -206,10 +206,10 @@ export default {
       const res = yield call(API.releaseContract, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '发布合约成功', top: 64, duration: 3 });
+        notification.success({ message: '发布合约请求调用成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '发布合约失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || '发布合约请求调用失败', top: 64, duration: 3 });
       }
     },
 
