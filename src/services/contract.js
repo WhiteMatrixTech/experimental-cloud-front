@@ -51,10 +51,17 @@ export async function queryChainCodeMethod(params) {
 }
 
 /**
- * 创建合约 通道下拉框列表
+ * 使用中的通道列表
  */
 export async function getChannelList(params) {
   return request(`/network/${params.networkName}/channels/listChannelsInUse`);
+}
+
+/**
+ * 当前用户所在通道列表
+ */
+export async function getChannelListByOrg(params) {
+  return request(`/network/${params.networkName}/channels/listChannelsOfOrg`);
 }
 
 /**

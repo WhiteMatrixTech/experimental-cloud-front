@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Input, Select, Form, Switch, Button, Upload, Modal, notification, message } from 'antd';
+import { Input, Select, Form, Switch, Button, Upload, Modal, notification } from 'antd';
 import { normFile, handleBeforeUpload } from './_func';
 
 const { Item } = Form;
@@ -27,7 +27,7 @@ function EditContract(props) {
   const [fileJson, setFileJson] = useState(null);
   const [initRequired, setInitRequired] = useState(false);
   const { visible, editParams, onCancel, operateType, dispatch, Contract, User, btnLoading = false } = props;
-  const { channelList } = Contract;
+  const { myChannelList } = Contract;
   const { networkName } = User;
 
   const handleSubmit = () => {
@@ -84,7 +84,7 @@ function EditContract(props) {
 
   useEffect(() => {
     dispatch({
-      type: 'Contract/getChannelList',
+      type: 'Contract/getChannelListByOrg',
       payload: { networkName },
     });
   }, []);
@@ -172,7 +172,7 @@ function EditContract(props) {
             onChange={onChangeChannel}
             placeholder="请选择通道"
           >
-            {channelList.map((item) => (
+            {myChannelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
               </Option>

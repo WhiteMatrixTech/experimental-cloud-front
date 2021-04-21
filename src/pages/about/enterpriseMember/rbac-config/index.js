@@ -130,7 +130,7 @@ function RbacConfig(props) {
   };
 
   useEffect(() => {
-    if (rbacPolicy.companyName) {
+    if (rbacPolicy.policy) {
       const configValue = {};
       const policy = rbacPolicy.policy || [];
       const BlockInfo = policy.find((item) => item.subject === 'BlockInfo');
