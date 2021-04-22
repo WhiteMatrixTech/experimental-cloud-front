@@ -3,7 +3,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
-import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal } from 'antd';
+import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal, Input, message } from 'antd';
 import { CaretDownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Breadcrumb } from 'components';
 import { Roles } from 'utils/roles.js';
@@ -26,6 +26,10 @@ function RbacConfig(props) {
 
   const [form] = Form.useForm();
   const [company, setCompany] = useState(null);
+  const [configType, setConfigType] = useState('FormConfig');
+
+  const [jsonPolicy, setJsonPolicy] = useState('');
+
   const [viewChaincode, setViewChaincode] = useState('InChannel');
   const [invokeChaincodeCustom, setInvokeChaincodeCustom] = useState('InChannel');
 
@@ -49,6 +53,14 @@ function RbacConfig(props) {
     const role = companyList.find((item) => item.companyName === value)?.role;
     resetFormValue(role);
     getConfig(value);
+  };
+
+  const onChangeConfigType = (e) => {
+    setConfigType(e.target.value);
+  };
+
+  const onInputJsonConfig = (e) => {
+    setJsonPolicy(e.target.value);
   };
 
   const onChangeViewChaincode = (e) => {
@@ -96,14 +108,36 @@ function RbacConfig(props) {
   };
 
   const setConfig = () => {
-    form
-      .validateFields()
-      .then((values) => {
+    if (configType === 'FormConfig') {
+      form
+        .validateFields()
+        .then((values) => {
+          const callback = () => {
+            const params = setParams(values, company, networkName, chaincodeList);
+            dispatch({
+              type: 'RBAC/setConfig',
+              payload: params,
+            });
+          };
+          Modal.confirm({
+            title: 'Confirm',
+            icon: <ExclamationCircleOutlined />,
+            content: `确认要为公司【${company}】 配置此访问策略吗?`,
+            okText: '确认',
+            cancelText: '取消',
+            onOk: callback,
+          });
+        })
+        .catch((info) => {
+          return;
+        });
+    } else {
+      try {
+        const params = JSON.parse(jsonPolicy);
         const callback = () => {
-          const params = setParams(values, company, networkName, chaincodeList);
           dispatch({
-            type: 'RBAC/setConfig',
-            payload: params,
+            type: 'RBAC/setConfigByJson',
+            payload: { networkName, companyName: company, jsonPolicy: params },
           });
         };
         Modal.confirm({
@@ -114,8 +148,11 @@ function RbacConfig(props) {
           cancelText: '取消',
           onOk: callback,
         });
-      })
-      .catch((info) => {});
+      } catch (e) {
+        message.warn('请输入标准JSON格式数据');
+        return;
+      }
+    }
   };
 
   const resetFormValue = (role) => {
@@ -151,6 +188,7 @@ function RbacConfig(props) {
       configValue.downloadChaincode = downloadChaincode?.field;
       configValue.invokeChaincode = InvokeChainCodeMethod?.field;
 
+      setJsonPolicy(JSON.stringify(policy));
       setViewChaincode(viewChaincode?.field);
       form.setFieldsValue(configValue);
     }
@@ -169,7 +207,7 @@ function RbacConfig(props) {
       getConfig(location.state?.companyName);
       resetFormValue(location.state?.companyName);
     }
-  }, [location.state]);
+  }, [location.state, configType]);
 
   return (
     <div className={styles['rbac-config-wrapper']}>
@@ -197,158 +235,172 @@ function RbacConfig(props) {
                 </Select>
               </Col>
               <Col span={18} className={styles['company-selector']}>
-                <label>配置策略</label>
+                <label>配置方式</label>
+                <Radio.Group defaultValue={configType} onChange={onChangeConfigType}>
+                  <Radio value="FormConfig">表单配置</Radio>
+                  <Radio value="InputJson">输入JSON配置</Radio>
+                </Radio.Group>
               </Col>
-              <div className={styles['config-list']}>
-                <Form layout="vertical" colon={false} form={form}>
-                  <Row justify="center">
-                    <Col span={18}>
-                      <Item
-                        label={
-                          <>
-                            <CaretDownOutlined />
-                            <span className={styles['form-label']}>区块信息</span>
-                          </>
-                        }
-                        name="BlockInfo"
-                      >
-                        <Radio.Group>
-                          <Radio className={styles.radio} value="All">
-                            可查看网络下所有区块
-                          </Radio>
-                          <Radio className={styles.radio} value="None">
-                            不能查看区块信息
-                          </Radio>
-                        </Radio.Group>
-                      </Item>
-                    </Col>
-                    <Col span={18}>
-                      <Item
-                        label={
-                          <>
-                            <CaretDownOutlined />
-                            <span className={styles['form-label']}>交易信息</span>
-                          </>
-                        }
-                        name="Transaction"
-                      >
-                        <Radio.Group>
-                          <Radio className={styles.radio} value="All">
-                            可查看网络下所有交易
-                          </Radio>
-                          <Radio className={styles.radio} value="Own">
-                            只能查看自己创建的交易
-                          </Radio>
-                          <Radio className={styles.radio} value="None">
-                            不能查看网络下的交易（不推荐）
-                          </Radio>
-                        </Radio.Group>
-                      </Item>
-                    </Col>
-                    <Col span={18}>
-                      <Item
-                        label={
-                          <>
-                            <CaretDownOutlined />
-                            <span className={styles['form-label']}>链码（查看）</span>
-                          </>
-                        }
-                        name="viewChaincode"
-                      >
-                        <Radio.Group onChange={onChangeViewChaincode}>
-                          <Radio className={styles.radio} value="All">
-                            可查看网络下所有链码（不推荐）
-                          </Radio>
-                          <Radio className={styles.radio} value="InChannel">
-                            只能查看组织所属通道下的链码
-                          </Radio>
-                          <Radio className={styles.radio} value="Own">
-                            只能查看自己创建的链码
-                          </Radio>
-                        </Radio.Group>
-                      </Item>
-                    </Col>
-                    <Col span={18}>
-                      <Item
-                        label={
-                          <>
-                            <CaretDownOutlined />
-                            <span className={styles['form-label']}>链码（下载）</span>
-                          </>
-                        }
-                        name="downloadChaincode"
-                      >
-                        <Radio.Group>
-                          {viewChaincode !== 'Own' && (
-                            <Radio className={styles.radio} value="InChannel">
-                              可下载通道下的所有链码
-                            </Radio>
-                          )}
-                          <Radio className={styles.radio} value="Own">
-                            只可下载自己创建的链码
-                          </Radio>
-                        </Radio.Group>
-                      </Item>
-                    </Col>
-                    <Col span={18}>
-                      <Item
-                        label={
-                          <>
-                            <CaretDownOutlined />
-                            <span className={styles['form-label']}>链码（调用）</span>
-                          </>
-                        }
-                        className={invokeChaincodeCustom === 'Custom' ? styles['inline-form-item'] : ''}
-                        name="invokeChaincode"
-                      >
-                        <Radio.Group onChange={onChangeInvokeChaincode}>
-                          {viewChaincode !== 'Own' && (
-                            <Radio className={styles.radio} value="InChannel">
-                              可调用通道下安装链码
-                            </Radio>
-                          )}
-                          <Radio className={styles.radio} value="None">
-                            禁止调用链码
-                          </Radio>
-                          <Radio className={styles.radio} value="Custom">
-                            自定义可调用的链码
-                          </Radio>
-                        </Radio.Group>
-                      </Item>
-                    </Col>
-                    {invokeChaincodeCustom === 'Custom' && (
-                      <Col span={18} className={styles['dynamic-form-item']}>
-                        <Item
-                          name="invokeChaincodeSubject"
-                          rules={[
-                            {
-                              required: true,
-                              message: '请选择合约',
-                            },
-                          ]}
-                        >
-                          <Select
-                            allowClear
-                            mode="multiple"
-                            placeholder="请选择合约"
-                            className={styles['inline-select']}
-                            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              <Col span={24} className={styles['company-selector']}>
+                <label className={styles['vertical-top-label']}>配置策略</label>
+                {configType === 'InputJson' && (
+                  <div className={styles['config-json-textarea']}>
+                    <Input.TextArea rows={10} value={jsonPolicy} onChange={onInputJsonConfig} />
+                  </div>
+                )}
+                {configType === 'FormConfig' && (
+                  <div className={styles['config-list']}>
+                    <Form layout="vertical" colon={false} form={form}>
+                      <Row justify="center">
+                        <Col span={24}>
+                          <Item
+                            label={
+                              <>
+                                <CaretDownOutlined />
+                                <span className={styles['form-label']}>区块信息</span>
+                              </>
+                            }
+                            name="BlockInfo"
                           >
-                            {chaincodeList.map((chaincode) => (
-                              <Option
-                                key={`${chaincode.channelId}-${chaincode.chainCodeName}`}
-                                value={chaincode.chainCodeName}
+                            <Radio.Group>
+                              <Radio className={styles.radio} value="All">
+                                可查看网络下所有区块
+                              </Radio>
+                              <Radio className={styles.radio} value="None">
+                                不能查看区块信息
+                              </Radio>
+                            </Radio.Group>
+                          </Item>
+                        </Col>
+                        <Col span={24}>
+                          <Item
+                            label={
+                              <>
+                                <CaretDownOutlined />
+                                <span className={styles['form-label']}>交易信息</span>
+                              </>
+                            }
+                            name="Transaction"
+                          >
+                            <Radio.Group>
+                              <Radio className={styles.radio} value="All">
+                                可查看网络下所有交易
+                              </Radio>
+                              <Radio className={styles.radio} value="Own">
+                                只能查看自己创建的交易
+                              </Radio>
+                              <Radio className={styles.radio} value="None">
+                                不能查看网络下的交易（不推荐）
+                              </Radio>
+                            </Radio.Group>
+                          </Item>
+                        </Col>
+                        <Col span={24}>
+                          <Item
+                            label={
+                              <>
+                                <CaretDownOutlined />
+                                <span className={styles['form-label']}>链码（查看）</span>
+                              </>
+                            }
+                            name="viewChaincode"
+                          >
+                            <Radio.Group onChange={onChangeViewChaincode}>
+                              <Radio className={styles.radio} value="All">
+                                可查看网络下所有链码（不推荐）
+                              </Radio>
+                              <Radio className={styles.radio} value="InChannel">
+                                只能查看组织所属通道下的链码
+                              </Radio>
+                              <Radio className={styles.radio} value="Own">
+                                只能查看自己创建的链码
+                              </Radio>
+                            </Radio.Group>
+                          </Item>
+                        </Col>
+                        <Col span={24}>
+                          <Item
+                            label={
+                              <>
+                                <CaretDownOutlined />
+                                <span className={styles['form-label']}>链码（下载）</span>
+                              </>
+                            }
+                            name="downloadChaincode"
+                          >
+                            <Radio.Group>
+                              {viewChaincode !== 'Own' && (
+                                <Radio className={styles.radio} value="InChannel">
+                                  可下载通道下的所有链码
+                                </Radio>
+                              )}
+                              <Radio className={styles.radio} value="Own">
+                                只可下载自己创建的链码
+                              </Radio>
+                            </Radio.Group>
+                          </Item>
+                        </Col>
+                        <Col span={24}>
+                          <Item
+                            label={
+                              <>
+                                <CaretDownOutlined />
+                                <span className={styles['form-label']}>链码（调用）</span>
+                              </>
+                            }
+                            className={invokeChaincodeCustom === 'Custom' ? styles['inline-form-item'] : ''}
+                            name="invokeChaincode"
+                          >
+                            <Radio.Group onChange={onChangeInvokeChaincode}>
+                              {viewChaincode !== 'Own' && (
+                                <Radio className={styles.radio} value="InChannel">
+                                  可调用通道下安装链码
+                                </Radio>
+                              )}
+                              <Radio className={styles.radio} value="None">
+                                禁止调用链码
+                              </Radio>
+                              <Radio className={styles.radio} value="Custom">
+                                自定义可调用的链码
+                              </Radio>
+                            </Radio.Group>
+                          </Item>
+                        </Col>
+                        {invokeChaincodeCustom === 'Custom' && (
+                          <Col span={24} className={styles['dynamic-form-item']}>
+                            <Item
+                              name="invokeChaincodeSubject"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: '请选择合约',
+                                },
+                              ]}
+                            >
+                              <Select
+                                allowClear
+                                mode="multiple"
+                                placeholder="请选择合约"
+                                className={styles['inline-select']}
+                                getPopupContainer={(triggerNode) => triggerNode.parentNode}
                               >
-                                {`通道: ${chaincode.channelId} - 合约: ${chaincode.chainCodeName}`}
-                              </Option>
-                            ))}
-                          </Select>
-                        </Item>
-                      </Col>
-                    )}
-                  </Row>
-                </Form>
-              </div>
+                                {chaincodeList.map((chaincode) => (
+                                  <Option
+                                    key={`${chaincode.channelId}-${chaincode.chainCodeName}`}
+                                    value={chaincode.chainCodeName}
+                                  >
+                                    {`通道: ${chaincode.channelId} - 合约: ${chaincode.chainCodeName}`}
+                                  </Option>
+                                ))}
+                              </Select>
+                            </Item>
+                          </Col>
+                        )}
+                      </Row>
+                    </Form>
+                  </div>
+                )}
+              </Col>
             </Row>
             <div className={styles['button-area']}>
               <Space size="middle">
