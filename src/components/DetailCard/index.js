@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Row, Col, Button } from 'antd';
+import ReactJson from 'react-json-view';
 import styles from './index.less';
 
 /**
@@ -14,8 +15,21 @@ export default function DetailCard({
   detailList,
   columnsNum = 2,
   boxShadow = '0 4px 12px 0 rgba(0,0,0,.05)',
-  textAlign = 'center',
 }) {
+  const renderValue = (ele) => {
+    if (ele.value === 'NeedButton') {
+      return (
+        <Button type="primary" onClick={ele.onClick}>
+          {ele.buttonName}
+        </Button>
+      );
+    }
+    if (ele.showJson) {
+      return <ReactJson name={null} src={ele.value} />;
+    }
+    return ele.value;
+  };
+
   return (
     <Fragment>
       <div className={styles['detail-card-wrapper']} style={{ boxShadow }}>
@@ -29,14 +43,8 @@ export default function DetailCard({
               {detailList.map((item) => (
                 <Col key={item.label} span={item.fullRow ? 24 : 12} className={styles['detail-info-item']}>
                   <label style={{ width: item.fullRow ? '15%' : '30%' }}>{item.label}</label>
-                  <div style={{ width: item.fullRow ? '85%' : '70%' }}>
-                    {item.value === 'NeedButton' ? (
-                      <Button type="primary" onClick={item.onClick}>
-                        {item.buttonName}
-                      </Button>
-                    ) : (
-                      item.value
-                    )}
+                  <div style={{ width: item.fullRow ? '85%' : '70%' }} className={styles['detail-item-value']}>
+                    {renderValue(item)}
                   </div>
                 </Col>
               ))}
@@ -46,7 +54,9 @@ export default function DetailCard({
               {detailList.map((item) => (
                 <Col key={item.label} span={item.fullRow ? 24 : 8} className={styles['detail-info-item']}>
                   <label style={{ width: item.fullRow ? '10%' : '30%' }}>{item.label}</label>
-                  <div style={{ textAlign, width: item.fullRow ? '90%' : '70%' }}>{item.value}</div>
+                  <div style={{ width: item.fullRow ? '90%' : '70%' }} className={styles['detail-item-value']}>
+                    {renderValue(item)}
+                  </div>
                 </Col>
               ))}
             </Row>

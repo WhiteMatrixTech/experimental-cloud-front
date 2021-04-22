@@ -24,25 +24,24 @@ function DidDetail(props) {
   const didDetailInfo = [
     {
       label: 'DID',
-      value: didDetail.did || location?.state?.did,
+      value: didDetail?.did || location?.state?.did,
     },
     {
       label: 'DID名称',
-      value: didDetail.idName || location?.state?.idName,
+      value: didDetail?.idName || location?.state?.idName,
     },
     {
       label: 'DID类型',
-      value: didDetail.idType || location?.state?.idType,
+      value: didDetail?.idType || location?.state?.idType,
     },
     {
       label: 'DID角色',
-      value: didDetail.role || location?.state?.role,
+      value: didDetail?.role || location?.state?.role,
     },
     {
       label: '附加信息',
-      value: isObject(didDetail?.additionalAttributes)
-        ? JSON.stringify(didDetail?.additionalAttributes)
-        : didDetail?.additionalAttributes,
+      showJson: isObject(didDetail?.additionalAttributes) ? true : false,
+      value: didDetail?.additionalAttributes,
     },
   ];
 
@@ -51,6 +50,12 @@ function DidDetail(props) {
       type: 'DID/getDetailByDid',
       payload: { networkName, did: location?.state?.did },
     });
+    return () => {
+      dispatch({
+        type: 'DID/common',
+        payload: { didDetail: null },
+      });
+    };
   }, []);
 
   return (

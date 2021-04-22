@@ -90,7 +90,7 @@ function evidenceDataDetail({
               <span className={styles['detail-title-content']}>存证信息</span>
             </div>
             <div className={styles['detail-info-wrapper']}>
-              <ReactJson name="evidenceData" src={getEvidenceData()} />
+              <ReactJson name={null} src={getEvidenceData()} />
             </div>
           </div>
         </Spin>

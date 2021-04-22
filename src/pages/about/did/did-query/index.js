@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Breadcrumb, DetailCard } from 'components';
 import { Input, Result, Empty } from 'antd';
@@ -47,9 +47,8 @@ function DidQueryVerify(props) {
       },
       {
         label: '附加信息',
-        value: isObject(didDetail?.additionalAttributes)
-          ? JSON.stringify(didDetail?.additionalAttributes)
-          : didDetail?.additionalAttributes,
+        showJson: isObject(didDetail?.additionalAttributes) ? true : false,
+        value: didDetail?.additionalAttributes,
       },
     ];
   }, [didDetail]);
@@ -62,7 +61,7 @@ function DidQueryVerify(props) {
         <Search placeholder="输入DID" allowClear enterButton="查询" size="large" onSearch={onSearch} />
         {didDetail?.did ? (
           <div className={styles['did-detail']}>
-            <DetailCard textAlign="left" columnsNum={3} cardTitle="DID详细信息" detailList={didDetailInfo} />
+            <DetailCard cardTitle="DID详细信息" detailList={didDetailInfo} />
           </div>
         ) : (
           <Result icon={<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />} subTitle="没有查询到相应的DID记录" />
