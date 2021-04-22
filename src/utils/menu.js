@@ -252,7 +252,7 @@ const MenuList = [
     menuPid: 2,
     menuHref: '/about/ipfs',
     menuIcon: 'KBasszhengshuguanli',
-    menuName: 'IPFS文件存储系统',
+    menuName: 'IPFS分布式文件系统',
     isFeature: 0, // 是否只有盟主才显示
     menuVos: [],
   },
