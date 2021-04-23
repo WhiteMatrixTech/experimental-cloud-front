@@ -188,7 +188,7 @@ function RbacConfig(props) {
       configValue.downloadChaincode = downloadChaincode?.field;
       configValue.invokeChaincode = InvokeChainCodeMethod?.field;
 
-      setJsonPolicy(JSON.stringify(policy));
+      setJsonPolicy(JSON.stringify(policy, null, 2));
       setViewChaincode(viewChaincode?.field);
       form.setFieldsValue(configValue);
     }
@@ -245,7 +245,7 @@ function RbacConfig(props) {
                 <label className={styles['vertical-top-label']}>配置策略</label>
                 {configType === 'InputJson' && (
                   <div className={styles['config-json-textarea']}>
-                    <Input.TextArea rows={10} value={jsonPolicy} onChange={onInputJsonConfig} />
+                    <Input.TextArea rows={12} value={jsonPolicy} onChange={onInputJsonConfig} />
                   </div>
                 )}
                 {configType === 'FormConfig' && (
