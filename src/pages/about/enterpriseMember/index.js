@@ -44,42 +44,43 @@ function EnterpriseMember(props) {
       dataIndex: 'companyName',
       key: 'companyName',
       ellipsis: true,
-      width: '10%',
+      fixed: 'left',
+      width: 160,
     },
     {
       title: '统一社会信用代码',
       dataIndex: 'companyCertBusinessNumber',
       key: 'companyCertBusinessNumber',
       ellipsis: true,
-      width: '11%',
+      width: 150,
     },
     {
       title: '法人代表姓名',
       dataIndex: 'legalPersonName',
       key: 'legalPersonName',
       ellipsis: true,
-      width: '8%',
+      width: 120,
     },
     {
       title: '联系人姓名',
       dataIndex: 'contactName',
       key: 'contactName',
       ellipsis: true,
-      width: '8%',
+      width: 120,
     },
     {
       title: '联系人手机号',
       dataIndex: 'contactPhone',
       key: 'contactPhone',
       ellipsis: true,
-      width: '8%',
+      width: 120,
     },
     {
       title: '联系人邮箱',
       dataIndex: 'contactEmail',
       key: 'contactEmail',
       ellipsis: true,
-      width: '8%',
+      width: 180,
     },
     {
       title: '创建时间',
@@ -87,7 +88,7 @@ function EnterpriseMember(props) {
       key: 'createTimestamp',
       render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
       ellipsis: true,
-      width: '8%',
+      width: 150,
     },
     {
       title: '审批时间',
@@ -95,7 +96,7 @@ function EnterpriseMember(props) {
       key: 'approveTime',
       render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
       ellipsis: true,
-      width: '8%',
+      width: 150,
     },
     {
       title: '审批状态',
@@ -103,7 +104,7 @@ function EnterpriseMember(props) {
       key: 'approvalStatus',
       render: (text) => statusList[text],
       ellipsis: true,
-      width: '8%',
+      width: 120,
     },
     {
       title: '可用状态',
@@ -111,11 +112,13 @@ function EnterpriseMember(props) {
       key: 'isValid',
       render: (text) => validStatus[text],
       ellipsis: true,
-      width: '8%',
+      width: 120,
     },
     {
       title: '操作',
       key: 'action',
+      fixed: 'right',
+      width: 200,
       render: (text, record) => (
         <Space size="small">
           {record.approvalStatus === 'pending' && (
@@ -341,6 +344,7 @@ function EnterpriseMember(props) {
             loading={qryLoading}
             dataSource={memberList}
             onChange={onPageChange}
+            scroll={{ x: 1570, y: 300 }}
             pagination={{
               pageSize,
               total: memberTotal,
