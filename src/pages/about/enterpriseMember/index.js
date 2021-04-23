@@ -118,7 +118,7 @@ function EnterpriseMember(props) {
       title: '操作',
       key: 'action',
       fixed: 'right',
-      width: 200,
+      width: 230,
       render: (text, record) => (
         <Space size="small">
           {record.approvalStatus === 'pending' && (
@@ -344,7 +344,7 @@ function EnterpriseMember(props) {
             loading={qryLoading}
             dataSource={memberList}
             onChange={onPageChange}
-            scroll={{ x: 1570, y: 300 }}
+            scroll={{ x: 1600, y: 300 }}
             pagination={{
               pageSize,
               total: memberTotal,
