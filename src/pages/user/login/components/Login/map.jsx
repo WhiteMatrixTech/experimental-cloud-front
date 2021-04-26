@@ -9,7 +9,7 @@ export default {
       prefix: (
         <UserOutlined
           style={{
-            color: '#1890ff',
+            color: '#177ddc',
           }}
           className={styles.prefixIcon}
         />
@@ -26,7 +26,7 @@ export default {
   Password: {
     props: {
       size: 'large',
-      prefix: <LockTwoTone className={styles.prefixIcon} />,
+      prefix: <LockTwoTone style={{color: '#177ddc'}} className={styles.prefixIcon} />,
       type: 'password',
       id: 'password',
       placeholder: '888888',

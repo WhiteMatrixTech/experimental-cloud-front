@@ -1,13 +1,15 @@
+@import '~themes/variable.less';
+
 .header {
   display: flex;
   justify-content: space-between;
   height: 50px;
   padding: 0 35px 0 14px;
   line-height: 50px;
-  background: #262626;
+  background: @layout-top-background;
   .logo-sub {
     height: 28px;
-    color: #999;
+    color: @first-level-color;
     font-size: 16px;
   }
   .header-right-info {
@@ -15,26 +17,26 @@
     align-items: center;
   }
   .header-menu-item {
-    margin-left: 28px;
     padding-top: 4px;
-    color: #999;
+    padding-left: 12px;
+    color: @second-level-color;
     font-size: 14px;
     cursor: pointer;
     &.active {
-      color: #fff;
+      color: @first-level-color;
     }
   }
   .header-menu-item:hover {
-    color: #fff;
+    color: @first-level-color;
   }
   :global {
     .ant-dropdown-link {
       margin-left: 28px;
-      color: #999;
+      color: @second-level-color;
       line-height: 54px;
     }
     .ant-dropdown-link:hover {
-      color: #fff;
+      color: @first-level-color;
     }
   }
 }

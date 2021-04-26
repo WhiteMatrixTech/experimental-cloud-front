@@ -1,34 +1,35 @@
+@import '~themes/variable.less';
+
 .block-detail-wrapper {
-  background: #fff;
+  margin-bottom: 20px;
+  padding: 20px 24px;
+  background: @content-background;
   border-radius: 4px 4px 0 0;
-  padding: 20px;
   .block-detail-title {
     display: flex;
     align-items: center;
     .title-dot {
       width: 0.5625rem;
       height: 0.5625rem;
-      background: #0091ea;
-      border-radius: 50%;
-      margin-left: 0.28125rem;
       margin-right: 0.5625rem;
+      margin-left: 0.28125rem;
+      background: @default-background;
+      border-radius: 50%;
     }
   }
   .block-detail-content {
-    padding: 20px 20px 36px 44px;
+    padding: 24px 0;
     .blockInfoWrap {
-      font-size: 12px;
-      padding: 50px 20px 80px;
-      border-top: 2px solid #0091ea;
-      margin-top: 10px;
       width: 100%;
+      margin-top: 10px;
+      padding: 50px 20px 0;
       overflow: hidden;
+      font-size: 12px;
+      border-top: 2px solid @default-background;
       border-radius: 0 0 4px 4px;
-      -webkit-box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
-      box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
       .gutter-row-label {
+        color: @second-level-color;
         text-align: right;
-        color: #888888;
       }
       .gutter-row-content {
         line-height: 1.5;

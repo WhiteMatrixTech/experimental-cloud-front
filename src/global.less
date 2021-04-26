@@ -4,11 +4,12 @@ html,
 body,
 :global(#root) {
   min-height: 100%;
+  font-size: 14px;
+  color: @first-level-color;
 }
 
 :global(.ant-layout) {
   min-height: 100%;
-  background-color: @white;
 }
 
 canvas {
@@ -47,20 +48,20 @@ body {
 
 .table-wrapper {
   padding: 20px 24px;
-  background-color: #fff;
+  background-color: @content-background;
 }
 
 .table-top-search-wrapper {
   margin-bottom: 20px;
   padding: 24px 24px 0;
-  background: #fff;
+  background: @content-background;
   border-radius: 4px;
   -webkit-box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
 }
 
 .table-header-btn-wrapper {
-  background: #fff;
+  background: @content-background;
   padding-bottom: 20px;
   display: flex;
   justify-content: flex-start;
@@ -73,23 +74,18 @@ body {
   white-space: nowrap;
 }
 
-.ant-table-wrapper {
-  background-color: #fff;
-}
-
 .ant-badge-count {
   line-height: 16px;
   box-shadow: 0 0 0 1px #262626;
 }
-.ant-table-thead > tr > th {
-  font-weight: bold;
-  background: #f1f1f5;
-  color: rgba(0, 0, 0, 0.7);
-}
 
-.ant-table-tbody > tr > td {
-  color: #4c4c4c;
-}
+// .ant-table-thead > tr > th {
+//   font-weight: bold;
+// }
+
+// .ant-table-tbody > tr > td {
+//   color: #4c4c4c;
+// }
 
 .ant-modal-body {
   max-height: 65vh;
@@ -154,7 +150,7 @@ span > .ant-btn-primary {
 ::-webkit-scrollbar-thumb
 {
     border-radius: 3px;
-    background-color: @default-border-color;
+    background-color: @default-scroll-background;
 }
 IE
 html{

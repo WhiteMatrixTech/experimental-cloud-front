@@ -78,7 +78,6 @@ function Login(props) {
               立即注册
             </Link>
           </div>
-          <Link to="/user/setPassword">修改密码</Link>
         </div>
       </LoginFrom>
     </div>

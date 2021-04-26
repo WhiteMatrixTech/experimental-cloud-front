@@ -1,3 +1,5 @@
+@import '~themes/variable.less';
+
 .main-container {
   position: relative;
   display: flex;
@@ -20,7 +22,7 @@
         margin: auto;
         .login-dec-01,
         .login-dec-02 {
-          color: #fff;
+          color: @default-font-color;
           text-align: center;
         }
         .login-dec-01 {
@@ -39,7 +41,7 @@
     .user-mode {
       width: 420px;
       padding: 40px 40px;
-      background: #fff;
+      background: @menu-background;
       border-radius: 20px;
     }
   }

@@ -1,20 +1,22 @@
+@import '~themes/variable.less';
+
 .transaction-detail-wrapper {
-  background: #fff;
   padding: 20px;
   overflow: hidden;
+  background: @content-background;
   .transaction-detail-title {
-    border-left: 10px solid #0091ea;
     padding-left: 10px;
+    border-left: 10px solid @primary-border-color;
   }
   .transaction-detail-content {
     width: 100%;
     .transactionInfoWrap {
       width: 65%;
-      font-size: 12px;
       padding: 0 30px;
+      font-size: 12px;
       .gutter-row-label {
+        color: @second-level-color;
         text-align: right;
-        color: #888888;
       }
       .gutter-row-content {
         line-height: 1.5;

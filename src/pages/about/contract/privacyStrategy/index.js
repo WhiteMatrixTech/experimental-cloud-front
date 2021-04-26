@@ -9,7 +9,6 @@ import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import EditStrategy from './components/EditStrategy';
 import ConfigStrategy from './components/ConfigStrategy';
 import baseConfig from 'utils/config';
-import style from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 breadCrumbItem.push({
@@ -191,7 +190,7 @@ class PrivacyStrategy extends Component {
       <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className="page-content page-content-shadow table-wrapper">
-          <div className={style['table-header-btn-wrapper']}>
+          <div className="table-header-btn-wrapper">
             <Button type="primary" onClick={this.onClickAdd}>
               新增策略
             </Button>

@@ -1,14 +1,16 @@
+@import '~themes/variable.less';
+
 .main-container {
-  height: auto;
-  min-height: 100vh;
   position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
-  background: url("../../../assets/images/loginBg.jpg");
+  height: auto;
+  min-height: 100vh;
+  background: url('../../../assets/images/loginBg.jpg');
   .section-container {
-    flex: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
     justify-content: center;
     .section-common-wrapper {
@@ -18,8 +20,8 @@
     }
     .user-mode {
       width: 420px;
-      background: #fff;
       padding: 40px 40px;
+      background: @menu-background;
       border-radius: 20px;
     }
   }

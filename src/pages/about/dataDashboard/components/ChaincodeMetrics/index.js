@@ -8,7 +8,7 @@ export default function ChaincodeMetrics() {
       <Row gutter={[16, 12]}>
         <Col span={12}>
           <iframe
-            src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=15`}
+            src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=15`}
             title="Chaincode Shim Requests"
             id="Chaincode Shim Requests"
             frameborder="0"
@@ -16,7 +16,7 @@ export default function ChaincodeMetrics() {
         </Col>
         <Col span={12}>
           <iframe
-            src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=16`}
+            src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=16`}
             title="Broadcast Enqueue"
             id="Broadcast Enqueue"
             frameborder="0"
@@ -25,7 +25,7 @@ export default function ChaincodeMetrics() {
         <Col span={12}>
           <div className={styles['fabric-panel']}>
             <iframe
-              src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=28`}
+              src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=28`}
               title="gRPC Closed Connections"
               id="gRPC Closed Connections"
               frameborder="0"
@@ -35,7 +35,7 @@ export default function ChaincodeMetrics() {
         <Col span={12}>
           <div className={styles['fabric-panel']}>
             <iframe
-              src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=14`}
+              src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=14`}
               title="Chaincode Launch Duration"
               id="Chaincode Launch Duration"
               frameborder="0"

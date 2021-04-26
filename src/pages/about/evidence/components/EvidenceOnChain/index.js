@@ -113,7 +113,7 @@ function EvidenceOnChain(props) {
             width="100%"
             height="200"
             language="json"
-            theme="vs-light"
+            theme="hc-black"
             value={jsonContent}
             options={editorOptions}
             onChange={onChange}

@@ -6,7 +6,6 @@ import { Table, Space, Row, Col, Spin } from 'antd';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
 import styles from './index.less';
-import { Roles } from 'utils/roles.js';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
@@ -162,11 +161,10 @@ function BlockDetail({
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <Spin spinning={qryLoading}>
-        <div className="page-content page-content-shadow">
+        <div className="page-content">
           <div className={styles['block-detail-wrapper']}>
             <div className={styles['block-detail-title']}>
-              <div className={styles['title-dot']}></div>
-              <div>区块</div>
+              <div>区块信息</div>
             </div>
             <div className={styles['block-detail-content']}>
               <div className={styles.blockInfoWrap}>
@@ -190,18 +188,20 @@ function BlockDetail({
               </div>
             </div>
           </div>
-          <Table
-            rowKey="txId"
-            columns={columns}
-            dataSource={transactionList}
-            onChange={onPageChange}
-            pagination={{
-              pageSize,
-              total: transactionTotal,
-              current: pageNum,
-              position: ['bottomCenter'],
-            }}
-          />
+          <div className="table-wrapper page-content-shadow">
+            <Table
+              rowKey="txId"
+              columns={columns}
+              dataSource={transactionList}
+              onChange={onPageChange}
+              pagination={{
+                pageSize,
+                total: transactionTotal,
+                current: pageNum,
+                position: ['bottomCenter'],
+              }}
+            />
+          </div>
         </div>
       </Spin>
     </div>

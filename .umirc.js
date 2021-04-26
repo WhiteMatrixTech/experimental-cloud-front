@@ -10,6 +10,10 @@ export default {
   title: 'BaaS',
   favicon: '/favicon.png',
 
+  antd: {
+    dark: true, // 开启暗色主题
+  },
+
   alias: {
     components: resolve(__dirname, './src/components'),
     models: resolve(__dirname, './src/models'),

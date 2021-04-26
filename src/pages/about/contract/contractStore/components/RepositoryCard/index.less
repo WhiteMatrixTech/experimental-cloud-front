@@ -1,17 +1,19 @@
+@import '~themes/variable.less';
+
 .card-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin: 10px;
   padding: 20px;
-  background-color: #fff;
+  background-color: @card-background;
   .card-title {
     display: flex;
     align-content: center;
     justify-content: space-between;
     width: 100%;
     padding: 0 0 0.5rem 0;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid @default-border-color;
     .card-name {
       height: 100%;
       font-weight: 600;

@@ -1,31 +1,33 @@
+@import '~themes/variable.less';
+
 .detail-card-wrapper {
-  background: #fff;
-  padding: 16px 25px;
-  border-radius: 4px;
   height: calc(~'100% - 40px');
-  box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
-  -webkit-box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
+  padding: 16px 25px;
+  background: @card-background;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
   .detail-card-title {
+    margin-top: 10px;
+    margin-bottom: 20px;
     text-align: left;
     border-bottom: 1px solid gainsboro;
-    margin-bottom: 20px;
-    margin-top: 10px;
     .detail-title-border {
       display: inline-block;
       width: 3px;
       height: 12px;
-      background: #0091ea;
       margin-right: 5px;
+      background: @primary-border-color;
     }
     .detail-title-content {
       display: inline-block;
-      font-weight: 800;
       margin-bottom: 8px;
+      font-weight: 800;
     }
   }
   .detail-info-wrapper {
-    width:100%;
-    overflow: auto;
+    width: 100%;
     max-height: calc(~'100vh - 450px');
+    overflow: auto;
   }
 }

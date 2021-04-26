@@ -1,3 +1,4 @@
+@import '~themes/variable.less';
 .rbac-config-wrapper {
   height: 100%;
   overflow: hidden;
@@ -65,13 +66,16 @@
       z-index: 999;
       width: 100%;
       padding-top: 20px;
-      background: #fff;
-      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      border-top: 1px solid @default-divider-background;
     }
     :global {
       .ant-space {
         padding-left: 178px;
       }
     }
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: @default-background;
+    border-radius: 3px;
   }
 }
