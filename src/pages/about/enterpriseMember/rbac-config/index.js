@@ -134,11 +134,10 @@ function RbacConfig(props) {
     } else {
       try {
         const params = JSON.parse(jsonPolicy);
-        const policy = JSON.stringify(params).replace(/\\/g, '');
         const callback = () => {
           dispatch({
             type: 'RBAC/setConfigByJson',
-            payload: { networkName, companyName: company, policy: policy },
+            payload: { networkName, companyName: company, policy: params },
           });
         };
         Modal.confirm({
