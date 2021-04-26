@@ -300,20 +300,20 @@ function RbacConfig(props) {
                             label={
                               <>
                                 <CaretDownOutlined />
-                                <span className={styles['form-label']}>链码（查看）</span>
+                                <span className={styles['form-label']}>合约（查看）</span>
                               </>
                             }
                             name="viewChaincode"
                           >
                             <Radio.Group onChange={onChangeViewChaincode}>
                               <Radio className={styles.radio} value="All">
-                                可查看网络下所有链码（不推荐）
+                                可查看网络下所有合约（不推荐）
                               </Radio>
                               <Radio className={styles.radio} value="InChannel">
-                                只能查看组织所属通道下的链码
+                                只能查看组织所属通道下的合约
                               </Radio>
                               <Radio className={styles.radio} value="Own">
-                                只能查看自己创建的链码
+                                只能查看自己创建的合约
                               </Radio>
                             </Radio.Group>
                           </Item>
@@ -323,7 +323,7 @@ function RbacConfig(props) {
                             label={
                               <>
                                 <CaretDownOutlined />
-                                <span className={styles['form-label']}>链码（下载）</span>
+                                <span className={styles['form-label']}>合约（下载）</span>
                               </>
                             }
                             name="downloadChaincode"
@@ -331,11 +331,11 @@ function RbacConfig(props) {
                             <Radio.Group>
                               {viewChaincode !== 'Own' && (
                                 <Radio className={styles.radio} value="InChannel">
-                                  可下载通道下的所有链码
+                                  可下载通道下的所有合约
                                 </Radio>
                               )}
                               <Radio className={styles.radio} value="Own">
-                                只可下载自己创建的链码
+                                只可下载自己创建的合约
                               </Radio>
                             </Radio.Group>
                           </Item>
@@ -345,7 +345,7 @@ function RbacConfig(props) {
                             label={
                               <>
                                 <CaretDownOutlined />
-                                <span className={styles['form-label']}>链码（调用）</span>
+                                <span className={styles['form-label']}>合约（调用）</span>
                               </>
                             }
                             className={invokeChaincodeCustom === 'Custom' ? styles['inline-form-item'] : ''}
@@ -354,14 +354,14 @@ function RbacConfig(props) {
                             <Radio.Group onChange={onChangeInvokeChaincode}>
                               {viewChaincode !== 'Own' && (
                                 <Radio className={styles.radio} value="InChannel">
-                                  可调用通道下安装链码
+                                  可调用通道下安装合约
                                 </Radio>
                               )}
                               <Radio className={styles.radio} value="None">
-                                禁止调用链码
+                                禁止调用合约
                               </Radio>
                               <Radio className={styles.radio} value="Custom">
-                                自定义可调用的链码
+                                自定义可调用的合约
                               </Radio>
                             </Radio.Group>
                           </Item>
