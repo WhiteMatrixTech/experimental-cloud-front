@@ -72,10 +72,13 @@ function Login(props) {
         />
         <Submit loading={loginLoading}>登录</Submit>
         <div className={styles.other}>
-          暂无账号?
-          <Link className={styles.register} to="/user/register">
-            立即注册
-          </Link>
+          <div>
+            暂无账号?
+            <Link className={styles.register} to="/user/register">
+              立即注册
+            </Link>
+          </div>
+          <Link to="/user/setPassword">修改密码</Link>
         </div>
       </LoginFrom>
     </div>

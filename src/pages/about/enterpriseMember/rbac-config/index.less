@@ -13,12 +13,22 @@
       label {
         margin-right: 16px;
       }
+      .config-json-textarea {
+        display: inline-block;
+        width: calc(~'100% - 160px');
+      }
+      .vertical-top-label {
+        height: 100%;
+        vertical-align: top;
+      }
     }
     .config-wrapper {
       height: 100%;
       overflow: hidden;
     }
     .config-list {
+      display: inline-block;
+      width: calc(~'100% - 160px');
       height: calc(~'100vh - 346px');
       overflow-y: auto;
       .inline-form-item {
@@ -33,6 +43,11 @@
           .ant-form-item-explain-error {
             margin-left: 40px;
           }
+        }
+      }
+      :global {
+        .ant-radio-group {
+          padding-left: 32px;
         }
       }
     }
@@ -54,11 +69,8 @@
       border-top: 1px solid rgba(0, 0, 0, 0.06);
     }
     :global {
-      .ant-radio-group {
-        padding-left: 32px;
-      }
       .ant-space {
-        padding-left: 176px;
+        padding-left: 178px;
       }
     }
   }

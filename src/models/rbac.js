@@ -80,10 +80,27 @@ export default {
       }
     },
 
+    *setConfigByJson({ payload }, { call, put }) {
+      const res = yield call(API.setConfigByJson, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: result.message || '配置访问策略成功', top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || '配置访问策略失败', top: 64, duration: 3 });
+      }
+    },
+
     *resetConfig({ payload }, { call, put }) {
       const res = yield call(API.resetConfig, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            rbacPolicy: result,
+          },
+        });
         notification.success({ message: result.message || '重置访问策略成功', top: 64, duration: 3 });
         return true;
       } else {

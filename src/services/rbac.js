@@ -36,6 +36,13 @@ export async function setConfig(params) {
 }
 
 /**
+ * 输入JSON配置访问策略
+ */
+export async function setConfigByJson(params) {
+  return request(`/network/${params.networkName}/accessPolicy/createByJson`, { method: 'POST', body: params });
+}
+
+/**
  * 重置
  */
 export async function resetConfig(params) {
