@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { Spin } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from 'components';
+import { NetworkInfo } from 'utils/networkStatus';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false)
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
 breadCrumbItem.push({
-  menuName: "我的联盟",
+  menuName: '我的联盟',
   menuHref: `/`,
-})
+});
 
 function MyLeagueInfo(props) {
   const {
@@ -23,44 +24,51 @@ function MyLeagueInfo(props) {
   const myLeagueInfo = [
     {
       label: '联盟名称',
-      value: myLeague.leagueName
+      value: myLeague.leagueName,
     },
     {
       label: '盟主公司',
-      value: myLeague.leaderCompanyName
+      value: myLeague.leaderCompanyName,
+    },
+    {
+      label: '网络名称',
+      value: myLeague.networkName,
+    },
+    {
+      label: '网络状态',
+      value: myLeague.networkStatus ? NetworkInfo[myLeague.networkStatus] : '',
     },
     {
       label: '创建时间',
-      value: myLeague.createdTime ? moment(myLeague.createdTime).format('YYYY-MM-DD HH:mm:ss') : '- -'
+      value: myLeague.createdTime ? moment(myLeague.createdTime).format('YYYY-MM-DD HH:mm:ss') : '- -',
     },
     {
       label: '联盟描述',
-      value: myLeague.description
+      value: myLeague.description,
     },
   ];
 
   useEffect(() => {
     dispatch({
       type: 'MyInfo/getMyLeagueInfo',
-      payload: { networkName }
-    })
+      payload: { networkName },
+    });
   }, []);
 
-
   return (
-    <div className='page-wrapper'>
+    <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className='page-content'>
+      <div className="page-content">
         <Spin spinning={qryLoading}>
-          <DetailCard cardTitle='联盟信息' detailList={myLeagueInfo} />
+          <DetailCard cardTitle="联盟信息" detailList={myLeagueInfo} />
         </Spin>
       </div>
-    </div >
-  )
+    </div>
+  );
 }
 
 export default connect(({ User, MyInfo, loading }) => ({
   User,
   MyInfo,
-  qryLoading: loading.effects['MyInfo/getMyInfoDetail']
+  qryLoading: loading.effects['MyInfo/getMyInfoDetail'],
 }))(MyLeagueInfo);
