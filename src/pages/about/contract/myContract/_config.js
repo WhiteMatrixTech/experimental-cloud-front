@@ -4,6 +4,7 @@ export const chainCodeStatusInfo = {
   InstallationFailed: { color: 'red', text: '安装失败' },
   Approving: { color: 'gold', text: '发布中' },
   Approved: { color: '#87d068', text: '已发布' },
+  ApproveFailed: { color: 'red', text: '发布失败' },
   Archived: { color: '#d9d9d9', text: '已归档' },
   Pending: { color: 'gold', text: '待审核' },
   Verified: { color: '#87d068', text: '审核通过' },
@@ -16,6 +17,7 @@ export const ChainCodeStatus = {
   InstallationFailed: 'InstallationFailed',
   Approving: 'Approving',
   Approved: 'Approved',
+  ApproveFailed: 'ApproveFailed',
   Archived: 'Archived',
   Pending: 'Pending', // 待审核
   Verified: 'Verified', // 通过
