@@ -9,7 +9,7 @@ import { serverPurpose } from '../_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/elastic-cloud-server');
 breadCrumbItem.push({
-  menuName: '资源使用情况',
+  menuName: '实例数据',
   menuHref: `/`,
 });
 

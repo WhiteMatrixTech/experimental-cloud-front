@@ -1,120 +1,111 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { connect } from 'dva';
-import { Spin, Row, Col, Tooltip, Progress } from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
-import { Breadcrumb, DetailCard, ChartCard, Field } from 'components';
+import { Row, Col } from 'antd';
+import { Breadcrumb } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
-import { serverPurpose } from '../_config';
+import styles from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/elastic-cloud-server');
 breadCrumbItem.push({
-  menuName: '性能详情',
+  menuName: '资源使用情况',
   menuHref: `/`,
 });
 
-const topColResponsiveProps = {
-  xs: 24,
-  sm: 12,
-  md: 12,
-  lg: 12,
-  xl: 8,
-  style: { marginBottom: 24 },
-};
-
 function ServerPerformance(props) {
-  const { qryLoading = false, location, dispatch, ElasticServer } = props;
-  const { serverPerformance } = ElasticServer;
-
-  const serverInfoList = useMemo(
-    () => [
-      {
-        label: '服务器名称',
-        value: location?.state?.serverName,
-      },
-      {
-        label: '用途类型',
-        value: serverPurpose[location?.state?.serverPurpose],
-      },
-      {
-        label: '运行状态',
-        value: serverPerformance.status,
-      },
-      {
-        label: '运行时间',
-        value: serverPerformance.uptime,
-      },
-    ],
-    [location?.state],
-  );
-
   return (
-    <Spin spinning={qryLoading}>
-      <div className="page-wrapper">
-        <Breadcrumb breadCrumbItem={breadCrumbItem} />
-        <div className="page-content">
-          <DetailCard cardTitle="服务器信息" detailList={serverInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
-          <Row gutter={24}>
-            <Col {...topColResponsiveProps}>
-              <ChartCard
-                bordered={false}
-                title="CPU"
-                action={
-                  <Tooltip title="服务器CPU信息">
-                    <InfoCircleOutlined />
-                  </Tooltip>
-                }
-                total={() => <span>Intel(R) Core(TM) i9-9900K CPU @ 3.60GHz</span>}
-                footer={<Field label="当前CPU占用量" value="1.296 GHz" />}
-                contentHeight={46}
-              >
-                <div>CPU使用率</div>
-                <Tooltip title="CPU使用率">
-                  <Progress percent={30} size="small" />
-                </Tooltip>
-              </ChartCard>
+    <div className="page-wrapper">
+      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <div className="page-content table-wrapper page-content-shadow">
+        <div className={styles['tabs-body']}>
+          <Row gutter={[16, 16]}>
+            <Col span={8}>
+              <iframe
+                src={`${process.env.RESOURCE_USAGE_DASHBOARD}&theme=dark&panelId=7`}
+                title="Running Containers"
+                id="Running Containers"
+                frameBorder="0"
+              ></iframe>
             </Col>
-            <Col {...topColResponsiveProps}>
-              <ChartCard
-                bordered={false}
-                title="总内存"
-                action={
-                  <Tooltip title="服务器内存信息">
-                    <InfoCircleOutlined />
-                  </Tooltip>
-                }
-                total={() => <span>{`16 GB`}</span>}
-                footer={<Field label="当前内存使用量" value="1.296 GB" />}
-                contentHeight={46}
-              >
-                <div>内存使用率</div>
-                <Tooltip title="内存使用率">
-                  <Progress percent={5} size="small" />
-                </Tooltip>
-              </ChartCard>
+            <Col span={8}>
+              <iframe
+                src={`${process.env.RESOURCE_USAGE_DASHBOARD}&theme=dark&panelId=5`}
+                title="Total Memory Usage"
+                id="Total Memory Usage"
+                frameBorder="0"
+              ></iframe>
             </Col>
-            <Col {...topColResponsiveProps}>
-              <ChartCard
-                bordered={false}
-                title="磁盘空间"
-                action={
-                  <Tooltip title="服务器磁盘信息">
-                    <InfoCircleOutlined />
-                  </Tooltip>
-                }
-                total={() => <span>{`932 Gi`}</span>}
-                footer={<Field label="可用空间" value="532 Gi" />}
-                contentHeight={46}
-              >
-                <div>磁盘使用率</div>
-                <Tooltip title="磁盘使用率">
-                  <Progress percent={48} size="small" />
-                </Tooltip>
-              </ChartCard>
+            <Col span={8}>
+              <iframe
+                src={`${process.env.RESOURCE_USAGE_DASHBOARD}&theme=dark&panelId=6`}
+                title="Total CPU Usage"
+                id="Total CPU Usage"
+                frameBorder="0"
+              ></iframe>
+            </Col>
+            <Col span={24}>
+              <div className={styles['col-span-24']}>
+                <iframe
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&theme=dark&panelId=2`}
+                  title="CPU Usage"
+                  id="CPU Usage"
+                  frameBorder="0"
+                ></iframe>
+              </div>
+            </Col>
+            <Col span={24}>
+              <div className={styles['col-span-24']}>
+                <iframe
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&theme=dark&panelId=1`}
+                  title="Memory Usage"
+                  id="Memory Usage"
+                  frameBorder="0"
+                ></iframe>
+              </div>
+            </Col>
+            <Col span={12}>
+              <div className={styles['col-span-12']}>
+                <iframe
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&theme=dark&panelId=3`}
+                  title="Network Rx"
+                  id="Network Rx"
+                  frameBorder="0"
+                ></iframe>
+              </div>
+            </Col>
+            <Col span={12}>
+              <div className={styles['col-span-12']}>
+                <iframe
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&theme=dark&panelId=4`}
+                  title="Network Tx"
+                  id="Network Tx"
+                  frameBorder="0"
+                ></iframe>
+              </div>
+            </Col>
+            <Col span={12}>
+              <div className={styles['col-span-12']}>
+                <iframe
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&theme=dark&panelId=8`}
+                  title="I/O Rx"
+                  id="I/O Rx"
+                  frameBorder="0"
+                ></iframe>
+              </div>
+            </Col>
+            <Col span={12}>
+              <div className={styles['col-span-12']}>
+                <iframe
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&theme=dark&panelId=9`}
+                  title="I/O Tx"
+                  id="I/O Tx"
+                  frameBorder="0"
+                ></iframe>
+              </div>
             </Col>
           </Row>
         </div>
       </div>
-    </Spin>
+    </div>
   );
 }
 

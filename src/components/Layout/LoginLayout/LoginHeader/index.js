@@ -15,7 +15,7 @@ export default class LoginHeader extends PureComponent {
 
     return (
       <Header className={styles.header}>
-        <div className={styles['logo-sub']}>欢迎使用扬子江数字金融平台区块链BaaS服务</div>
+        <div className={styles['logo-sub']}>欢迎使用区块链实验云服务平台</div>
       </Header >
     );
   }
