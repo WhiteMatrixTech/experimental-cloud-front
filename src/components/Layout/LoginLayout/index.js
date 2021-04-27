@@ -25,7 +25,7 @@ class LoginLayout extends PureComponent {
           <div className={styles['section-common-wrapper']}>
             <div className={styles['login-mode']}>
               <div className={styles['login-dec-01']}>
-                <span>扬子江数字金融平台</span>
+                <span>实验云服务平台</span>
               </div>
               <div className={styles['login-dec-02']}> 区块链服务 </div>
             </div>

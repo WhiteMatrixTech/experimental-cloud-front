@@ -247,15 +247,15 @@ const MenuList = [
     isFeature: 1, // 是否只有盟主才显示
     menuVos: [],
   },
-  {
-    id: 53,
-    menuPid: 2,
-    menuHref: '/about/ipfs',
-    menuIcon: 'KBasszhengshuguanli',
-    menuName: 'IPFS分布式文件系统',
-    isFeature: 0, // 是否只有盟主才显示
-    menuVos: [],
-  },
+  // {
+  //   id: 53,
+  //   menuPid: 2,
+  //   menuHref: '/about/ipfs',
+  //   menuIcon: 'KBasszhengshuguanli',
+  //   menuName: 'IPFS分布式文件系统',
+  //   isFeature: 0, // 是否只有盟主才显示
+  //   menuVos: [],
+  // },
 ];
 
 const getCurBreadcrumb = (menuList, keyword = '', isLeftMenu = true) => {

@@ -3,8 +3,8 @@ import { connect } from 'dva';
 import moment from 'moment';
 import { history } from 'umi';
 import { Breadcrumb } from 'components';
-import { Table, Button, Space, Modal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Table, Button, Space, Modal, Dropdown, Menu } from 'antd';
+import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import CreateServerModal from './components/CreateServerModal';
 
@@ -91,6 +91,19 @@ function ServersManagement(props) {
     setCreateServerVisible(false);
   };
 
+  const renderMenu = (record) => {
+    return (
+      <Menu>
+        <Menu.Item>
+          <a onClick={() => onViewNode(record)}>实例数据</a>
+        </Menu.Item>
+        <Menu.Item>
+          <a onClick={() => onViewPerformance(record)}>资源使用情况</a>
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
   // 用户身份改变时，表格展示改变
   useEffect(() => {
     const data = [
@@ -140,13 +153,16 @@ function ServersManagement(props) {
       {
         title: '操作',
         key: 'action',
-        width: '18%',
+        width: '12%',
         render: (_, record) => (
           <Space size="small">
             <a onClick={() => onClickModifyServer(record)}>编辑</a>
             <a onClick={() => onClickDelete(record)}>删除</a>
-            {/* <a onClick={() => onViewPerformance(record)}>性能详情</a> */}
-            <a onClick={() => onViewNode(record)}>资源使用情况</a>
+            <Dropdown overlay={renderMenu(record)} trigger={['click']}>
+              <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+                更多 <DownOutlined />
+              </a>
+            </Dropdown>
           </Space>
         ),
       },
