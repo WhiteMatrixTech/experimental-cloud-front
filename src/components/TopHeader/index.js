@@ -4,6 +4,7 @@ import { history } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { MenuList } from 'utils/menu.js';
+import buaaLogo from 'assets/images/buaa-logo.png';
 import styles from './index.less';
 
 const { Header } = Layout;
@@ -58,7 +59,10 @@ function TopHeader(props) {
 
   return (
     <Header className={styles.header}>
-      <div className={styles['logo-sub']}>欢迎使用区块链实验云服务平台</div>
+      <div className={styles['logo-sub']}>
+        <img src={buaaLogo} alt="北京航空大学杭州创新研究院" />
+        <span>欢迎使用区块链科研实验云平台</span>
+      </div>
       <div className={styles['header-right-info']}>
         <a className={styles['header-menu-item']} onClick={onClickIDE}>
           ChainIDE
