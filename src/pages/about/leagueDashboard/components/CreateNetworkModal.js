@@ -34,8 +34,9 @@ function CreateNetworkModal(props) {
           return;
         }
         const params = spliceFormValues(values, values.networkTemplate);
+        const stringedValues = JSON.stringify(params, null, 2);
 
-        setConfirmValues(JSON.stringify(params, null, 2));
+        setConfirmValues(stringedValues);
 
         setCurOper(operType.next);
         setCurrent(current + 1);
@@ -52,8 +53,7 @@ function CreateNetworkModal(props) {
 
   const createNetwork = useCallback(async () => {
     try {
-      const params = JSON.parse(confirmValues);
-      debugger;
+      const params = JSON.parse(`"${confirmValues}"`);
       const res = await dispatch({
         type: 'Dashboard/createNetwork',
         payload: params,
@@ -61,7 +61,8 @@ function CreateNetworkModal(props) {
       if (res) {
         onCancel(true);
       }
-    } catch {
+    } catch (e) {
+      console.log('e', e);
       message.warn('请输入标准JSON数据');
     }
   }, [useCallback, dispatch]);
