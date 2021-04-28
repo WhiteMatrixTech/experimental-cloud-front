@@ -11,6 +11,7 @@ import baseConfig from 'utils/config';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import styles from './index.less';
 import { statusList, validStatus } from './_config';
+import ConfigMemberRole from './components/ConfigMemberRole';
 
 const { Item } = Form;
 const Option = Select.Option;
@@ -38,29 +39,32 @@ function EnterpriseMember(props) {
   const [form] = Form.useForm();
   const [queryParams, setQueryParams] = useState(initSearchObj);
 
+  const [memberRecord, setMemberRecord] = useState(null);
+  const [configVisible, setConfigVisible] = useState(false);
+
   const columns = [
     {
-      title: '企业名称',
+      title: '用户名',
       dataIndex: 'companyName',
       key: 'companyName',
       ellipsis: true,
       fixed: 'left',
       width: 160,
     },
-    {
-      title: '统一社会信用代码',
-      dataIndex: 'companyCertBusinessNumber',
-      key: 'companyCertBusinessNumber',
-      ellipsis: true,
-      width: 150,
-    },
-    {
-      title: '法人代表姓名',
-      dataIndex: 'legalPersonName',
-      key: 'legalPersonName',
-      ellipsis: true,
-      width: 120,
-    },
+    // {
+    //   title: '统一社会信用代码',
+    //   dataIndex: 'companyCertBusinessNumber',
+    //   key: 'companyCertBusinessNumber',
+    //   ellipsis: true,
+    //   width: 150,
+    // },
+    // {
+    //   title: '法人代表姓名',
+    //   dataIndex: 'legalPersonName',
+    //   key: 'legalPersonName',
+    //   ellipsis: true,
+    //   width: 120,
+    // },
     {
       title: '联系人姓名',
       dataIndex: 'contactName',
@@ -133,7 +137,7 @@ function EnterpriseMember(props) {
           {record.isValid === 'invalid' && record.approvalStatus === 'approved' && (
             <a onClick={() => onClickToConfirm(record, 'validate')}>启用</a>
           )}
-          <a onClick={() => onClickRbacConfig(record)}>访问策略配置</a>
+          <a onClick={() => onClickRbacConfig(record)}>配置访问权限</a>
           <a onClick={() => onClickDetail(record)}>详情</a>
         </Space>
       ),
@@ -233,7 +237,7 @@ function EnterpriseMember(props) {
     });
   };
 
-  // 停用 & 启用 企业成员
+  // 停用 & 启用 用户成员
   const invalidateMember = (record, isValid) => {
     const params = {
       networkName,
@@ -241,7 +245,7 @@ function EnterpriseMember(props) {
       companyName: record.companyName,
     };
     dispatch({
-      type: 'Member/setStatusOfLeagueConpany',
+      type: 'Member/setStatusOfLeagueCompany',
       payload: params,
     }).then((res) => {
       if (res) {
@@ -250,7 +254,7 @@ function EnterpriseMember(props) {
     });
   };
 
-  // 通过 & 驳回 企业成员
+  // 通过 & 驳回 用户成员
   const approvalMember = (record, approvalStatus) => {
     const params = {
       networkName,
@@ -268,12 +272,14 @@ function EnterpriseMember(props) {
   };
 
   const onClickRbacConfig = (record) => {
-    history.push({
-      pathname: `/about/enterpriseMember/rbac-config`,
-      state: {
-        companyName: record.companyName,
-      },
-    });
+    setConfigVisible(true);
+    setMemberRecord(record);
+  };
+
+  const onCloseModal = () => {
+    setConfigVisible(false);
+    setMemberRecord(null);
+    getMemberList();
   };
 
   // 点击查看详情
@@ -298,8 +304,8 @@ function EnterpriseMember(props) {
           <Form {...formItemLayout} colon={false} form={form}>
             <Row gutter={24}>
               <Col span={8}>
-                <Item label="企业名称" name="companyName" initialValue="">
-                  <Input placeholder="请输入企业名称" />
+                <Item label="用户名" name="companyName" initialValue="">
+                  <Input placeholder="请输入用户名" />
                 </Item>
               </Col>
               <Col span={8}>
@@ -354,6 +360,7 @@ function EnterpriseMember(props) {
           />
         </div>
       </div>
+      {configVisible && <ConfigMemberRole visible={configVisible} onCancel={onCloseModal} record={memberRecord} />}
     </div>
   );
 }

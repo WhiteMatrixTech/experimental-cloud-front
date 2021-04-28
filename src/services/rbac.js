@@ -1,10 +1,17 @@
 import { request } from '../utils/request';
 
 /**
- * 获取公司列表
+ * 获取角色列表
  */
-export async function getCompanyList(params) {
-  return request(`/network/${params.networkName}/enterprises/listNames`);
+export async function getRoleList(params) {
+  return request(`/network/${params.networkName}/accessPolicy/listRoles`, { method: 'POST', body: params });
+}
+
+/**
+ * 获取角色名列表
+ */
+export async function getRoleNameList(params) {
+  return request(`/network/${params.networkName}/accessPolicy/listRoleNames`, { method: 'POST', body: params });
 }
 
 /**
@@ -22,14 +29,14 @@ export async function getMyselfChainCodeList(params) {
 }
 
 /**
- * 获取公司的访问策略配置
+ * 获取角色的访问策略配置
  */
-export async function getRbacConfigWithOrg(params) {
-  return request(`/network/${params.networkName}/accessPolicy/${params.companyName}`);
+export async function getRbacConfigWithRole(params) {
+  return request(`/network/${params.networkName}/accessPolicy/${params.roleName}`);
 }
 
 /**
- * 配置访问策略
+ * 添加配置 角色
  */
 export async function setConfig(params) {
   return request(`/network/${params.networkName}/accessPolicy/create`, { method: 'POST', body: params });
@@ -40,11 +47,4 @@ export async function setConfig(params) {
  */
 export async function setConfigByJson(params) {
   return request(`/network/${params.networkName}/accessPolicy/createByJson`, { method: 'POST', body: params });
-}
-
-/**
- * 重置
- */
-export async function resetConfig(params) {
-  return request(`/network/${params.networkName}/accessPolicy/reset/${params.companyName}`);
 }

@@ -7,7 +7,7 @@ import { statusList } from '../_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember');
 breadCrumbItem.push({
-  menuName: '成员企业详情',
+  menuName: '用户详情',
   menuHref: `/`,
 });
 
@@ -15,7 +15,7 @@ function MemberDetail(props) {
   const { qryLoading = false, location } = props;
   const basicInfo = [
     {
-      label: '企业名称',
+      label: '用户名称',
       value: location?.state?.companyName,
     },
     {

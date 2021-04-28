@@ -6,28 +6,26 @@ import { connect } from 'dva';
 import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal, Input, message } from 'antd';
 import { CaretDownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Breadcrumb } from 'components';
-import { Roles } from 'utils/roles.js';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { setParams } from '../_config';
 import styles from './index.less';
 
 const { Item } = Form;
 const { Option } = Select;
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember');
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/rbac');
 breadCrumbItem.push({
-  menuName: '访问策略配置',
+  menuName: '访问角色配置',
   menuHref: `/`,
 });
 
 function RbacConfig(props) {
   const { dispatch, location, User, RBAC, configLoading = false, resetLoading = false } = props;
   const { networkName } = User;
-  const { companyList, chaincodeList, rbacPolicy } = RBAC;
+  const { roleNameList, chaincodeList, rbacPolicy } = RBAC;
 
   const [form] = Form.useForm();
-  const [company, setCompany] = useState(null);
   const [configType, setConfigType] = useState('FormConfig');
-
   const [jsonPolicy, setJsonPolicy] = useState('');
 
   const [viewChaincode, setViewChaincode] = useState('InChannel');
@@ -35,24 +33,18 @@ function RbacConfig(props) {
 
   const getConfig = (value) => {
     dispatch({
-      type: 'RBAC/getRbacConfigWithOrg',
-      payload: { networkName, companyName: value },
+      type: 'RBAC/getRbacConfigWithRole',
+      payload: { networkName, roleName: value },
     });
-    setCompany(value);
   };
 
+  //TODO 自定义合约调用
   const getChaincodeList = () => {
     const apiName = viewChaincode === 'Own' ? 'RBAC/getMyselfChainCodeList' : 'RBAC/getChainCodeList';
     dispatch({
       type: apiName,
-      payload: { networkName, companyName: company },
+      payload: { networkName, companyName: 'todo' },
     });
-  };
-
-  const onSelectCompany = (value) => {
-    const role = companyList.find((item) => item.companyName === value)?.role;
-    resetFormValue(role);
-    getConfig(value);
   };
 
   const onChangeConfigType = (e) => {
@@ -81,39 +73,13 @@ function RbacConfig(props) {
     }
   };
 
-  const resetConfig = async () => {
-    const callback = () => {
-      const res = dispatch({
-        type: 'RBAC/resetConfig',
-        payload: {
-          networkName,
-          companyName: company,
-        },
-      });
-      if (res) {
-        setViewChaincode('InChannel');
-        setInvokeChaincodeCustom();
-        const role = companyList.find((item) => item.companyName === company)?.role;
-        resetFormValue(role);
-      }
-    };
-    Modal.confirm({
-      title: 'Confirm',
-      icon: <ExclamationCircleOutlined />,
-      content: `确认要重置此访问策略吗?`,
-      okText: '确认',
-      cancelText: '取消',
-      onOk: callback,
-    });
-  };
-
   const setConfig = () => {
     if (configType === 'FormConfig') {
       form
         .validateFields()
         .then((values) => {
           const callback = () => {
-            const params = setParams(values, company, networkName, chaincodeList);
+            const params = setParams(values, location.state?.roleName, networkName, chaincodeList);
             dispatch({
               type: 'RBAC/setConfig',
               payload: params,
@@ -122,7 +88,7 @@ function RbacConfig(props) {
           Modal.confirm({
             title: 'Confirm',
             icon: <ExclamationCircleOutlined />,
-            content: `确认要为公司【${company}】 配置此访问策略吗?`,
+            content: `确认要配置此访问策略吗?`,
             okText: '确认',
             cancelText: '取消',
             onOk: callback,
@@ -137,13 +103,13 @@ function RbacConfig(props) {
         const callback = () => {
           dispatch({
             type: 'RBAC/setConfigByJson',
-            payload: { networkName, companyName: company, policy: params },
+            payload: { networkName, roleName: location.state?.roleName, policy: params },
           });
         };
         Modal.confirm({
           title: 'Confirm',
           icon: <ExclamationCircleOutlined />,
-          content: `确认要为公司【${company}】 配置此访问策略吗?`,
+          content: `确认要配置此访问策略吗?`,
           okText: '确认',
           cancelText: '取消',
           onOk: callback,
@@ -153,17 +119,6 @@ function RbacConfig(props) {
         return;
       }
     }
-  };
-
-  const resetFormValue = (role) => {
-    // 默认访问策略配置
-    form.setFieldsValue({
-      BlockInfo: 'All',
-      Transaction: role === Roles.NetworkAdmin ? 'All' : 'Own',
-      viewChaincode: 'InChannel',
-      downloadChaincode: role === Roles.NetworkAdmin ? 'InChannel' : 'Own',
-      invokeChaincode: 'InChannel',
-    });
   };
 
   useEffect(() => {
@@ -194,18 +149,17 @@ function RbacConfig(props) {
     }
   }, [rbacPolicy]);
 
-  // 查询公司列表
+  // 查询角色列表
   useEffect(() => {
     dispatch({
-      type: 'RBAC/getCompanyList',
+      type: 'RBAC/getRoleNameList',
       payload: { networkName },
     });
   }, []);
 
   useEffect(() => {
-    if (location.state?.companyName) {
-      getConfig(location.state?.companyName);
-      resetFormValue(location.state?.companyName);
+    if (location.state?.roleName) {
+      getConfig(location.state?.roleName);
     }
   }, [location.state, configType]);
 
@@ -217,19 +171,18 @@ function RbacConfig(props) {
           <div className={styles['rbac-config-content']}>
             <Row>
               <Col span={18} className={styles['company-selector']}>
-                <label>用户名</label>
+                <label>角色名称</label>
                 <Select
                   disabled
                   allowClear
-                  value={company}
-                  placeholder="选择公司"
+                  value={location.state?.roleName}
+                  placeholder="选择角色"
                   style={{ width: '40%' }}
-                  onChange={onSelectCompany}
                   getPopupContainer={(triggerNode) => triggerNode.parentNode}
                 >
-                  {companyList.map((company) => (
-                    <Option key={company.companyName} value={company.companyName}>
-                      {company.companyName}
+                  {roleNameList.map((role) => (
+                    <Option key={role} value={role}>
+                      {role}
                     </Option>
                   ))}
                 </Select>
@@ -360,9 +313,9 @@ function RbacConfig(props) {
                               <Radio className={styles.radio} value="None">
                                 禁止调用合约
                               </Radio>
-                              <Radio className={styles.radio} value="Custom">
+                              {/* <Radio className={styles.radio} value="Custom">
                                 自定义可调用的合约
-                              </Radio>
+                              </Radio> */}
                             </Radio.Group>
                           </Item>
                         </Col>
@@ -407,7 +360,6 @@ function RbacConfig(props) {
                 <Button type="primary" onClick={setConfig}>
                   配置
                 </Button>
-                <Button onClick={resetConfig}>重置</Button>
               </Space>
             </div>
           </div>
@@ -415,62 +367,6 @@ function RbacConfig(props) {
       </div>
     </div>
   );
-}
-
-function setParams(formValue, company, networkName, chaincodeList) {
-  let params = {
-    networkName,
-    companyName: company,
-    policy: [
-      {
-        action: 'Read',
-        subject: 'BlockInfo',
-        field: formValue.BlockInfo,
-      },
-      {
-        action: 'Read',
-        subject: 'Transaction',
-        field: formValue.Transaction,
-      },
-      {
-        action: 'Read',
-        subject: 'ChainCode',
-        field: formValue.viewChaincode,
-      },
-      {
-        action: 'Download',
-        subject: 'ChainCode',
-        field: formValue.downloadChaincode,
-      },
-      {
-        action: 'QueryChainCodeMethod',
-        subject: 'ChainCode',
-        field: formValue.invokeChaincode,
-      },
-      {
-        action: 'InvokeChainCodeMethod',
-        subject: 'ChainCode',
-        field: formValue.invokeChaincode,
-      },
-    ],
-  };
-  if (formValue.invokeChaincode === 'Custom') {
-    const customList = [];
-    formValue.invokeChaincodeSubject.forEach((chainCodeName) => {
-      const chaincode = chaincodeList.find((item) => item.chainCodeName === chainCodeName);
-      if (chaincode) {
-        const chaincodeInfo = {
-          networkName,
-          channelId: chaincode.channelId,
-          chainCodeName: chaincode.chainCodeName,
-        };
-        customList.push(chaincodeInfo);
-      }
-    });
-    params.policy[4].custom = customList;
-    params.policy[5].custom = customList;
-  }
-  return params;
 }
 
 export default connect(({ User, RBAC, loading }) => ({

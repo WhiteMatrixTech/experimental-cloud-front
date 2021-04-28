@@ -89,7 +89,7 @@ function CreateDIDModal(props) {
         <Item
           label="DID名称"
           name="didName"
-          tooltip="公司名称"
+          tooltip="用户名"
           initialValue={record ? record.didName : ''}
           rules={[
             {

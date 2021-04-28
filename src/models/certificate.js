@@ -4,28 +4,25 @@ export default {
   namespace: 'Certificate',
 
   state: {
-    certificateList: [], // 成员企业列表
+    certificateList: [], // 用户列表
     certificateTotal: 0,
-
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {
-
-    },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
     *getCertificateList({ payload }, { call, put }) {
-      const res = yield call(API.getCertificateList, payload)
+      const res = yield call(API.getCertificateList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
             certificateList: result.list,
-            certificateTotal: result.totalDocs
-          }
+            certificateTotal: result.totalDocs,
+          },
         });
       }
     },

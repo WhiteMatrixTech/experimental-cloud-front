@@ -6,7 +6,7 @@ export default {
 
   state: {
     myLeague: {}, // 我的联盟信息
-    myCompany: {}, // 我的企业信息
+    myCompany: {}, // 我的用户信息
     myOrgInfo: {}, // 我的组织信息
   },
 

@@ -35,7 +35,7 @@ function OrganizationManagement(props) {
       key: 'orgMspId',
     },
     {
-      title: '所属企业',
+      title: '所属用户',
       dataIndex: 'companyName',
       key: 'companyName',
     },
@@ -48,7 +48,12 @@ function OrganizationManagement(props) {
       title: '当前状态',
       dataIndex: 'orgStatus',
       key: 'orgStatus',
-      render: (text) => (text ? <Badge color={orgStatus[text].color} text={orgStatus[text].text} style={{ color: orgStatus[text].color }} /> : ''),
+      render: (text) =>
+        text ? (
+          <Badge color={orgStatus[text].color} text={orgStatus[text].text} style={{ color: orgStatus[text].color }} />
+        ) : (
+          ''
+        ),
     },
     {
       title: '创建时间',
@@ -112,7 +117,13 @@ function OrganizationManagement(props) {
           loading={qryLoading}
           dataSource={orgList}
           onChange={onPageChange}
-          pagination={{ pageSize, total: orgTotal, current: pageNum, showSizeChanger: false, position: ['bottomCenter'] }}
+          pagination={{
+            pageSize,
+            total: orgTotal,
+            current: pageNum,
+            showSizeChanger: false,
+            position: ['bottomCenter'],
+          }}
         />
       </div>
       {createOrgVisible && <CreateOrgModal visible={createOrgVisible} onCancel={onCloseCreateOrg} />}

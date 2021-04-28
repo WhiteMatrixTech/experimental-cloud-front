@@ -5,7 +5,7 @@ export default {
   namespace: 'Organization',
 
   state: {
-    orgList: [], // 成员企业列表
+    orgList: [], // 用户列表
     orgTotal: 0,
 
     orgInUseList: [],

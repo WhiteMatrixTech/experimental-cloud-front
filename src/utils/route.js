@@ -44,10 +44,6 @@ export function getRoutes() {
               path: '/about/enterpriseMember/:memberDetail',
               exact: true,
             },
-            {
-              path: '/about/enterpriseMember/rbac-config',
-              exact: true,
-            },
           ],
         },
         {
@@ -110,6 +106,38 @@ export function getRoutes() {
             },
             {
               path: '/about/elastic-cloud-server/resource-usage',
+              exact: true,
+            },
+          ],
+        },
+        {
+          path: '/about/block-compile',
+          exact: true,
+          routes: [
+            {
+              path: '/about/block-compile/package',
+              exact: true,
+            },
+            {
+              path: '/about/block-compile/storage',
+              exact: true,
+            },
+          ],
+        },
+        {
+          path: '/about/rbac',
+          exact: true,
+          routes: [
+            {
+              path: '/about/rbac/config',
+              exact: true,
+            },
+            {
+              path: '/about/rbac/new',
+              exact: true,
+            },
+            {
+              path: '/about/rbac/detail',
               exact: true,
             },
           ],

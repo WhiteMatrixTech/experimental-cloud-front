@@ -4,28 +4,25 @@ export default {
   namespace: 'Logs',
 
   state: {
-    logsList: [], // 成员企业列表
+    logsList: [], // 用户列表
     logsTotal: 0,
-
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {
-
-    },
+    setup({ dispatch, history }) {},
   },
 
   effects: {
     *getLogsList({ payload }, { call, put }) {
-      const res = yield call(API.getLogsList, payload)
+      const res = yield call(API.getLogsList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
             logsList: result.list,
-            logsTotal: result.totalDocs
-          }
+            logsTotal: result.totalDocs,
+          },
         });
       }
     },

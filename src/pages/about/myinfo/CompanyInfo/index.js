@@ -9,7 +9,7 @@ import { injectIntl } from 'umi';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
 breadCrumbItem.push({
-  menuName: '企业信息',
+  menuName: '用户信息',
   menuHref: `/`,
 });
 
@@ -51,7 +51,7 @@ function MyCompanyInfo(props) {
 
   const companyBasicInfo = [
     {
-      label: '企业名称',
+      label: '用户名称',
       value: myCompany.companyName,
     },
     {

@@ -31,7 +31,7 @@ const columns = [
     key: 'orgMspId',
   },
   {
-    title: '所属企业',
+    title: '所属用户',
     dataIndex: 'companyName',
     key: 'companyName',
   },

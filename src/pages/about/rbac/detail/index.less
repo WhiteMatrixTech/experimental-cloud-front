@@ -1,0 +1,81 @@
+@import '~themes/variable.less';
+.rbac-config-wrapper {
+  height: 100%;
+  overflow: hidden;
+  .rbac-config-content {
+    position: relative;
+    height: calc(~'100vh - 186px');
+    padding: 4px 0;
+    overflow: hidden;
+    .company-selector {
+      height: fit-content;
+      margin-bottom: 24px;
+      padding-left: 104px;
+      label {
+        margin-right: 16px;
+      }
+      .config-json-textarea {
+        display: inline-block;
+        width: calc(~'100% - 160px');
+      }
+      .vertical-top-label {
+        height: 100%;
+        vertical-align: top;
+      }
+    }
+    .config-wrapper {
+      height: 100%;
+      overflow: hidden;
+    }
+    .config-list {
+      display: inline-block;
+      width: calc(~'100% - 160px');
+      height: calc(~'100vh - 270px');
+      overflow-y: auto;
+      .inline-form-item {
+        margin-bottom: 8px;
+      }
+      .inline-select {
+        max-width: 40%;
+        margin-left: 40px;
+      }
+      .dynamic-form-item {
+        :global {
+          .ant-form-item-explain-error {
+            margin-left: 40px;
+          }
+        }
+      }
+      :global {
+        .ant-radio-group {
+          padding-left: 32px;
+        }
+      }
+    }
+    .form-label {
+      padding-left: 12px;
+    }
+    .radio {
+      display: block;
+      height: 30px;
+      line-height: 30px;
+    }
+    .button-area {
+      position: absolute;
+      bottom: 0;
+      z-index: 999;
+      width: 100%;
+      padding-top: 20px;
+      border-top: 1px solid @default-divider-background;
+    }
+    :global {
+      .ant-space {
+        padding-left: 178px;
+      }
+    }
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: @default-background;
+    border-radius: 3px;
+  }
+}
