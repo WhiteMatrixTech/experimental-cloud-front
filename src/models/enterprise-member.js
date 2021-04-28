@@ -102,12 +102,6 @@ export default {
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         notification.success({ message: '成员访问权限配置成功', top: 64, duration: 3 });
-        yield put({
-          type: 'common',
-          payload: {
-            memberRole: payload?.roleName,
-          },
-        });
         return true;
       } else {
         notification.error({ message: result.message || '成员访问权限配置失败', top: 64, duration: 3 });

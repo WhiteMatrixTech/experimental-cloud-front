@@ -26,6 +26,10 @@ function ConfigMemberRole(props) {
     });
   }, []);
 
+  useEffect(() => {
+    form.setFieldsValue({ companyName: record?.companyName, roleName: memberRole });
+  }, [memberRole]);
+
   const handleSubmit = () => {
     form
       .validateFields()
@@ -77,7 +81,6 @@ function ConfigMemberRole(props) {
               message: '请选择访问角色',
             },
           ]}
-          initialValue={memberRole}
         >
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择访问角色">
             {RBAC.roleNameList.map((role) => (
