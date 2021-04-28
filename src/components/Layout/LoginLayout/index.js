@@ -18,14 +18,18 @@ class LoginLayout extends PureComponent {
     return (
       <Layout
         className={styles['main-container']}
-        style={{ backgroundImage: `url("${require('@/assets/images/loginBg.jpg')}")` }}
+        style={{ backgroundImage: `url("${require('@/assets/images/loginBg.png')}")` }}
       >
+        <div className={styles['background-mask']}> </div>
         <LoginHeader />
         <Content className={styles['section-container']}>
-          <div className={styles['section-common-wrapper']}>
-            <div className={styles['login-mode']}>
-              <div className={styles['login-dec-02']}> 区块链科研实验云平台 </div>
+          <div className={styles['website-name']}>
+            <div className={styles['login-dec-01']}>
+              <span>区块链</span>
             </div>
+            <div className={styles['login-dec-02']}> 科研实验云平台 </div>
+          </div>
+          <div className={styles['section-common-wrapper']}>
             <div className={styles['user-mode']}>{children}</div>
           </div>
         </Content>

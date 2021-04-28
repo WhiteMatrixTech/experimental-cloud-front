@@ -4,7 +4,7 @@ import { history } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { MenuList } from 'utils/menu.js';
-import buaaLogo from 'assets/images/buaa-logo.png';
+import buaaLogo from 'assets/images/buaa-small.png';
 import styles from './index.less';
 
 const { Header } = Layout;

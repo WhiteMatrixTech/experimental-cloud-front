@@ -5,38 +5,56 @@
   display: flex;
   flex: 1;
   flex-direction: column;
+  width: 100%;
   height: auto;
   min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  .background-mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    background: @content-background;
+    opacity: 0.4;
+  }
+  .website-name {
+    position: absolute;
+    left: 21%;
+    font-size: 64px;
+    .login-dec-01,
+    .login-dec-02 {
+      color: @default-font-color;
+      text-align: center;
+      opacity: 0.9;
+    }
+    .login-dec-01 {
+      span {
+        display: inline-block;
+      }
+    }
+  }
+  @media screen and (min-width: 2400px) {
+    .website-name {
+      left: 24%;
+      font-size: 80px;
+    }
+  }
   .section-container {
+    z-index: 999;
     display: flex;
-    flex: 1;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
+    height: 100%;
     .section-common-wrapper {
       display: flex;
+      flex-direction: column;
       flex-flow: wrap;
+      justify-content: flex-end;
       padding: 0 30px;
-      .login-mode {
-        flex: 1;
-        flex-wrap: wrap;
-        margin: auto;
-        .login-dec-01,
-        .login-dec-02 {
-          color: @default-font-color;
-          text-align: center;
-        }
-        .login-dec-01 {
-          span {
-            display: inline-block;
-            padding-bottom: 24px;
-            font-size: 40px;
-            border-bottom: 1px solid hsla(0, 0%, 100%, 0.3);
-          }
-        }
-        .login-dec-02 {
-          font-size: 78px;
-        }
-      }
     }
     .user-mode {
       width: 420px;

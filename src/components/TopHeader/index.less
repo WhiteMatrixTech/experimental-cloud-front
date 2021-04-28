@@ -3,20 +3,20 @@
 .header {
   display: flex;
   justify-content: space-between;
-  height: 50px;
+  height: 64px;
   padding: 0 35px 0 14px;
-  line-height: 50px;
+  line-height: 64px;
   background: @layout-top-background;
   .logo-sub {
-    height: 28px;
+    display: flex;
+    align-items: center;
+    height: 100%;
     color: @first-level-color;
     font-size: 16px;
     img {
       height: 24px;
-      margin-right: 16px;
-    }
-    span {
-      padding-top: 2px;
+      margin-right: 14px;
+      margin-left: 3px;
     }
   }
   .header-right-info {
@@ -44,6 +44,21 @@
     }
     .ant-dropdown-link:hover {
       color: @first-level-color;
+    }
+  }
+}
+@media screen and (min-width: 2400px) {
+  .header {
+    height: 64px;
+    line-height: 64px;
+    .logo-sub {
+      height: 100%;
+      line-height: 64px;
+      img {
+        height: 30px;
+        margin-right: 8px;
+        margin-left: 0px;
+      }
     }
   }
 }
