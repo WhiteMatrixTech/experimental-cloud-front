@@ -29,11 +29,11 @@ const StepOne = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入企业名称!',
+            message: '请输入用户名称!',
           },
         ]}
       >
-        <Input size="large" placeholder="企业名称" />
+        <Input size="large" placeholder="用户名称" />
       </FormItem>
       <FormItem
         initialValue={basicInfo.companyCertBusinessNumber ? basicInfo.companyCertBusinessNumber : ''}

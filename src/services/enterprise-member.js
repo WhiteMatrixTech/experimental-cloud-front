@@ -21,15 +21,29 @@ export async function getMemberDetail(params) {
 }
 
 /**
- * 审批成员企业
+ * 审批用户
  */
 export async function setCompanyApprove(params) {
   return request(`/network/${params.networkName}/enterprises/approve`, { method: 'POST', body: params });
 }
 
 /**
- * 停用 & 启用 成员企业
+ * 停用 & 启用 用户
  */
-export async function setStatusOfLeagueConpany(params) {
+export async function setStatusOfLeagueCompany(params) {
   return request(`/network/${params.networkName}/enterprises/validate`, { method: 'POST', body: params });
+}
+
+/**
+ * 获取某个成员当前使用的角色
+ */
+export async function getMemberRole(params) {
+  return request(`/network/${params.networkName}/accessPolicy/user/${params.companyName}`);
+}
+
+/**
+ * 配置已有角色的访问策略给用户
+ */
+export async function setRoleToMember(params) {
+  return request(`/network/${params.networkName}/accessPolicy/configure`, { method: 'POST', body: params });
 }

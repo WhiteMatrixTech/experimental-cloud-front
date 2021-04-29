@@ -5,7 +5,10 @@ export default {
   namespace: 'RBAC',
 
   state: {
-    companyList: [], // 成员企业列表
+    roleList: [], // 角色列表
+
+    roleNameList: [], // 角色名列表
+
     chaincodeList: [], // 合约列表
 
     rbacPolicy: {},
@@ -16,14 +19,28 @@ export default {
   },
 
   effects: {
-    *getCompanyList({ payload }, { call, put }) {
-      const res = yield call(API.getCompanyList, payload);
+    *getRoleList({ payload }, { call, put }) {
+      const res = yield call(API.getRoleList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            companyList: result,
+            roleList: result,
+          },
+        });
+        return result;
+      }
+    },
+
+    *getRoleNameList({ payload }, { call, put }) {
+      const res = yield call(API.getRoleNameList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            roleNameList: result,
           },
         });
         return result;
@@ -56,8 +73,8 @@ export default {
       }
     },
 
-    *getRbacConfigWithOrg({ payload }, { call, put }) {
-      const res = yield call(API.getRbacConfigWithOrg, payload);
+    *getRbacConfigWithRole({ payload }, { call, put }) {
+      const res = yield call(API.getRbacConfigWithRole, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result) {
         yield put({
@@ -73,10 +90,10 @@ export default {
       const res = yield call(API.setConfig, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '配置访问策略成功', top: 64, duration: 3 });
+        notification.success({ message: result.message || '配置角色访问策略成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '配置访问策略失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || '配置角色访问策略失败', top: 64, duration: 3 });
       }
     },
 
@@ -84,27 +101,10 @@ export default {
       const res = yield call(API.setConfigByJson, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '配置访问策略成功', top: 64, duration: 3 });
+        notification.success({ message: result.message || '配置角色访问策略成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '配置访问策略失败', top: 64, duration: 3 });
-      }
-    },
-
-    *resetConfig({ payload }, { call, put }) {
-      const res = yield call(API.resetConfig, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            rbacPolicy: result,
-          },
-        });
-        notification.success({ message: result.message || '重置访问策略成功', top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || '重置访问策略失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || '配置角色访问策略失败', top: 64, duration: 3 });
       }
     },
   },

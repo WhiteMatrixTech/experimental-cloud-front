@@ -186,7 +186,7 @@ const MenuList = [
         menuPid: 52,
         menuHref: '/about/myinfo/CompanyInfo',
         menuIcon: null,
-        menuName: '我的企业',
+        menuName: '我的用户',
         isFeature: 0,
         menuVos: [],
       },
@@ -210,8 +210,8 @@ const MenuList = [
     isFeature: 0,
     menuVos: [
       {
-        id: 54,
-        menuPid: 2,
+        id: 55,
+        menuPid: 54,
         menuHref: '/about/did/did-management',
         menuIcon: null,
         menuName: 'DID管理',
@@ -219,11 +219,39 @@ const MenuList = [
         menuVos: [],
       },
       {
-        id: 54,
-        menuPid: 2,
+        id: 56,
+        menuPid: 54,
         menuHref: '/about/did/did-query',
         menuIcon: null,
         menuName: 'DID查询验证',
+        isFeature: 0,
+        menuVos: [],
+      },
+    ],
+  },
+  {
+    id: 74,
+    menuPid: 2,
+    menuHref: '/about/block-compile',
+    menuIcon: 'KBasslianmengguanli',
+    menuName: '区块链编译',
+    isFeature: 0,
+    menuVos: [
+      {
+        id: 75,
+        menuPid: 74,
+        menuHref: '/about/block-compile/package',
+        menuIcon: null,
+        menuName: '源码打包',
+        isFeature: 1,
+        menuVos: [],
+      },
+      {
+        id: 76,
+        menuPid: 74,
+        menuHref: '/about/block-compile/storage',
+        menuIcon: null,
+        menuName: '镜像仓库',
         isFeature: 0,
         menuVos: [],
       },
@@ -247,15 +275,15 @@ const MenuList = [
     isFeature: 1, // 是否只有盟主才显示
     menuVos: [],
   },
-  // {
-  //   id: 53,
-  //   menuPid: 2,
-  //   menuHref: '/about/ipfs',
-  //   menuIcon: 'KBasszhengshuguanli',
-  //   menuName: 'IPFS分布式文件系统',
-  //   isFeature: 0, // 是否只有盟主才显示
-  //   menuVos: [],
-  // },
+  {
+    id: 73,
+    menuPid: 2,
+    menuHref: '/about/rbac',
+    menuIcon: 'KBasszhengshuguanli',
+    menuName: '访问角色管理',
+    isFeature: 1, // 是否只有盟主才显示
+    menuVos: [],
+  },
 ];
 
 const getCurBreadcrumb = (menuList, keyword = '', isLeftMenu = true) => {

@@ -5,10 +5,11 @@ export default {
   namespace: 'Member',
 
   state: {
-    memberList: [], // 成员企业列表
+    memberList: [], // 用户列表
     memberTotal: 0,
 
-    memberDetail: {}, // 当前成员企业详情
+    memberDetail: {}, // 当前用户详情
+    memberRole: '',
   },
 
   subscriptions: {
@@ -28,6 +29,7 @@ export default {
         });
       }
     },
+
     *getPageListOfCompanyMember({ payload }, { call, put }) {
       const res = yield call(API.getPageListOfCompanyMember, payload);
       const { statusCode, result } = res;
@@ -40,6 +42,7 @@ export default {
         });
       }
     },
+
     *getMemberDetail({ payload }, { call, put }) {
       const res = yield call(API.getMemberDetail, payload);
       const { statusCode, result } = res;
@@ -52,12 +55,13 @@ export default {
         });
       }
     },
-    *setStatusOfLeagueConpany({ payload }, { call, put }) {
-      const res = yield call(API.setStatusOfLeagueConpany, payload);
+
+    *setStatusOfLeagueCompany({ payload }, { call, put }) {
+      const res = yield call(API.setStatusOfLeagueCompany, payload);
       const { statusCode, result } = res;
       const { isValid } = payload;
-      const succMessage = `${isValid === 'invalid' ? '停用' : '启用'}企业成员成功`;
-      const failMessage = `${isValid === 'invalid' ? '停用' : '启用'}企业成员失败`;
+      const succMessage = `${isValid === 'invalid' ? '停用' : '启用'}用户成员成功`;
+      const failMessage = `${isValid === 'invalid' ? '停用' : '启用'}用户成员失败`;
       if (statusCode === 'ok' && result === 1) {
         notification.success({ message: succMessage, top: 64, duration: 3 });
         return true;
@@ -65,17 +69,42 @@ export default {
         notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
       }
     },
+
     *setCompanyApprove({ payload }, { call, put }) {
       const res = yield call(API.setCompanyApprove, payload);
       const { statusCode, result } = res;
       const { approvalStatus } = payload;
-      const succMessage = `${approvalStatus === 'approved' ? '通过' : '驳回'}企业成员成功`;
-      const failMessage = `${approvalStatus === 'approved' ? '通过' : '驳回'}企业成员失败`;
+      const succMessage = `${approvalStatus === 'approved' ? '通过' : '驳回'}用户成员成功`;
+      const failMessage = `${approvalStatus === 'approved' ? '通过' : '驳回'}用户成员失败`;
       if (statusCode === 'ok' && result === 1) {
         notification.success({ message: succMessage, top: 64, duration: 3 });
         return true;
       } else {
         notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+      }
+    },
+
+    *getMemberRole({ payload }, { call, put }) {
+      const res = yield call(API.getMemberRole, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            memberRole: result?.roleName || '',
+          },
+        });
+      }
+    },
+
+    *setRoleToMember({ payload }, { call, put }) {
+      const res = yield call(API.setRoleToMember, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: '成员访问权限配置成功', top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || '成员访问权限配置失败', top: 64, duration: 3 });
       }
     },
   },

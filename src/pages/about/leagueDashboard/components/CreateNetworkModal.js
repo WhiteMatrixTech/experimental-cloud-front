@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { Button, Form, Input, Modal, InputNumber, Select, Radio, Row, Col, message } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
@@ -22,7 +22,7 @@ function CreateNetworkModal(props) {
   const [template, setTemplate] = useState('default');
 
   const [curOper, setCurOper] = useState(operType.default);
-  const [confirmValues, setConfirmValues] = useState('');
+  const confirmValues = useRef('');
   const [current, setCurrent] = useState(0);
 
   const next = () => {
@@ -34,8 +34,9 @@ function CreateNetworkModal(props) {
           return;
         }
         const params = spliceFormValues(values, values.networkTemplate);
+        const stringedValues = JSON.stringify(params);
 
-        setConfirmValues(JSON.stringify(params, null, 2));
+        confirmValues.current = stringedValues;
 
         setCurOper(operType.next);
         setCurrent(current + 1);
@@ -52,8 +53,7 @@ function CreateNetworkModal(props) {
 
   const createNetwork = useCallback(async () => {
     try {
-      const params = JSON.parse(confirmValues);
-      debugger;
+      const params = JSON.parse(confirmValues.current);
       const res = await dispatch({
         type: 'Dashboard/createNetwork',
         payload: params,
@@ -61,7 +61,8 @@ function CreateNetworkModal(props) {
       if (res) {
         onCancel(true);
       }
-    } catch {
+    } catch (e) {
+      console.log('e', e);
       message.warn('请输入标准JSON数据');
     }
   }, [useCallback, dispatch]);
@@ -71,7 +72,7 @@ function CreateNetworkModal(props) {
   };
 
   const onChangeConfirmValue = (e) => {
-    setConfirmValues(e.target.value);
+    confirmValues.current = e.target.value;
   };
 
   const btnList = useMemo(() => {
@@ -372,7 +373,7 @@ function CreateNetworkModal(props) {
           )}
         </Form>
       ) : (
-        <Input.TextArea rows={18} value={confirmValues} onChange={onChangeConfirmValue} />
+        <Input.TextArea rows={18} value={confirmValues.current} onChange={onChangeConfirmValue} />
       )}
     </Modal>
   );
@@ -380,7 +381,7 @@ function CreateNetworkModal(props) {
 
 function spliceFormValues(formValue, template) {
   let params = {};
-  let peerList = null;
+  let peerList = [];
   if (template === 'default') {
     const { networkTemplate, initPeerInfo, ...rest } = formValue;
     peerList = initPeerInfo.map((peer) => {
