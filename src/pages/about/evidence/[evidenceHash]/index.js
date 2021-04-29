@@ -14,7 +14,7 @@ breadCrumbItem.push({
   menuHref: `/`,
 });
 
-function evidenceDataDetail({
+function EvidenceDataDetail({
   match: {
     params: { evidenceHash },
   },
@@ -36,7 +36,7 @@ function evidenceDataDetail({
       value: evidenceDataDetail.channelId,
     },
     {
-      label: '创建公司',
+      label: '创建用户',
       value: evidenceDataDetail.companyName,
     },
     {
@@ -104,4 +104,4 @@ export default connect(({ User, Layout, Evidence, loading }) => ({
   Evidence,
   Layout,
   qryLoading: loading.effects['certificateChain/getEvidenceDataDetail'],
-}))(evidenceDataDetail);
+}))(EvidenceDataDetail);

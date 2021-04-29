@@ -27,7 +27,7 @@ function MyLeagueInfo(props) {
       value: myLeague.leagueName,
     },
     {
-      label: '盟主公司',
+      label: '盟主名称',
       value: myLeague.leaderCompanyName,
     },
     {

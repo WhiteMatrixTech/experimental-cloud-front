@@ -82,7 +82,7 @@ function CreateFabricUserModal(props) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '新增Fabric用户',
+    title: '新增Fabric角色',
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
@@ -98,21 +98,21 @@ function CreateFabricUserModal(props) {
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
         <Item
-          label="用户名"
+          label="Fabric角色名"
           name="userId"
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请输入用户名',
+              message: '请输入Fabric角色名',
             },
             {
               pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
-              message: '用户名由4-20位字母、数字、下划线组成，字母开头',
+              message: 'Fabric角色名由4-20位字母、数字、下划线组成，字母开头',
             },
           ]}
         >
-          <Input placeholder="请输入用户名" />
+          <Input placeholder="请输入Fabric角色名" />
         </Item>
         <Item
           label="密码"
@@ -149,16 +149,16 @@ function CreateFabricUserModal(props) {
           <Input type="password" placeholder="请确认密码" />
         </Item>
         <Item
-          label="账户类型"
+          label="角色类型"
           name="fabricRole"
           rules={[
             {
               required: true,
-              message: '请选择账户类型',
+              message: '请选择角色类型',
             },
           ]}
         >
-          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择账户类型">
+          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择角色类型">
             {Object.keys(CreateFabricRole).map((role) => (
               <Option key={role} value={CreateFabricRole[role]}>
                 {CreateFabricRole[role]}

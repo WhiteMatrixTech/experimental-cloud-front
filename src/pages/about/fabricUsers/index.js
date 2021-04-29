@@ -125,13 +125,13 @@ function FabricRoleManagement(props) {
   useEffect(() => {
     const data = [
       {
-        title: '用户名',
+        title: 'Fabric角色名',
         dataIndex: 'userId',
         key: 'userId',
         ellipsis: true,
       },
       {
-        title: '账户类型',
+        title: '角色类型',
         dataIndex: 'explorerRole',
         key: 'explorerRole',
       },
@@ -210,7 +210,7 @@ function FabricRoleManagement(props) {
         <div className="table-wrapper page-content-shadow">
           <div className={styles['table-header-btn-wrapper']}>
             <Button type="primary" onClick={onClickCreate}>
-              新增用户
+              新增Fabric角色
             </Button>
           </div>
           <Table
