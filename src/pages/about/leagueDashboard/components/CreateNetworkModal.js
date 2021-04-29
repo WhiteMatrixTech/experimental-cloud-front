@@ -25,7 +25,7 @@ function CreateNetworkModal(props) {
   const confirmValues = useRef('');
   const [current, setCurrent] = useState(0);
 
-  const next = () => {
+  const next = useCallback(() => {
     form
       .validateFields()
       .then((values) => {
@@ -34,7 +34,7 @@ function CreateNetworkModal(props) {
           return;
         }
         const params = spliceFormValues(values, values.networkTemplate);
-        const stringedValues = JSON.stringify(params);
+        const stringedValues = JSON.stringify(params, null, 2);
 
         confirmValues.current = stringedValues;
 
@@ -44,12 +44,12 @@ function CreateNetworkModal(props) {
       .catch((info) => {
         console.log('校验失败:', info);
       });
-  };
+  }, [current, form]);
 
-  const prev = () => {
+  const prev = useCallback(() => {
     setCurOper(operType.default);
     setCurrent(current - 1);
-  };
+  }, [current]);
 
   const createNetwork = useCallback(async () => {
     try {
@@ -62,10 +62,9 @@ function CreateNetworkModal(props) {
         onCancel(true);
       }
     } catch (e) {
-      console.log('e', e);
       message.warn('请输入标准JSON数据');
     }
-  }, [useCallback, dispatch]);
+  }, [dispatch, onCancel]);
 
   const onChangeTemplate = (e) => {
     setTemplate(e.target.value);
@@ -97,7 +96,7 @@ function CreateNetworkModal(props) {
         下一步
       </Button>,
     ];
-  }, [curOper]);
+  }, [createLoading, createNetwork, curOper, next, onCancel, prev]);
 
   const modalTitle = useMemo(() => {
     if (curOper === operType.next) {
@@ -116,7 +115,7 @@ function CreateNetworkModal(props) {
       type: 'ElasticServer/getServerList',
       payload: params,
     });
-  }, []);
+  }, [dispatch]);
 
   const drawerProps = {
     visible: visible,
@@ -159,7 +158,7 @@ function CreateNetworkModal(props) {
               },
             ]}
           >
-            <Input disabled placeholder="请输入网络名称" />
+            <Input disabled={true} placeholder="请输入网络名称" />
           </Item>
           <Item
             label="组织名称"
@@ -243,7 +242,7 @@ function CreateNetworkModal(props) {
                             fieldKey={[fieldKey, 'serverName']}
                           >
                             <Select
-                              allowClear
+                              allowClear={true}
                               placeholder="选择服务器"
                               style={{ width: '100%' }}
                               getPopupContainer={(triggerNode) => triggerNode.parentNode}
@@ -265,7 +264,7 @@ function CreateNetworkModal(props) {
                             fieldKey={[fieldKey, 'isAnchor']}
                           >
                             <Select
-                              allowClear
+                              allowClear={true}
                               placeholder="是否为anchor节点"
                               style={{ width: '100%' }}
                               getPopupContainer={(triggerNode) => triggerNode.parentNode}
@@ -286,7 +285,7 @@ function CreateNetworkModal(props) {
                     </div>
                   ))}
                   <Item {...inlineItemLayout}>
-                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                    <Button type="dashed" onClick={() => add()} block={true} icon={<PlusOutlined />}>
                       添加节点
                     </Button>
                   </Item>
@@ -338,7 +337,7 @@ function CreateNetworkModal(props) {
                 <Col span={12}>
                   <Item name="serverName">
                     <Select
-                      allowClear
+                      allowClear={true}
                       placeholder="选择服务器"
                       style={{ width: '100%' }}
                       getPopupContainer={(triggerNode) => triggerNode.parentNode}
@@ -354,7 +353,7 @@ function CreateNetworkModal(props) {
                 <Col span={12}>
                   <Item initialValue={true} name="isAnchor">
                     <Select
-                      allowClear
+                      allowClear={true}
                       placeholder="是否为anchor节点"
                       style={{ width: '100%' }}
                       getPopupContainer={(triggerNode) => triggerNode.parentNode}
