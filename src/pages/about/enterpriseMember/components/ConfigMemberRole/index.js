@@ -4,7 +4,7 @@ import { Button, Modal, Form, Select, Input } from 'antd';
 
 const { Option } = Select;
 const formItemLayout = {
-  labelCol: { span: 8 },
+  labelCol: { span: 6 },
   wrapperCol: { span: 16 },
 };
 

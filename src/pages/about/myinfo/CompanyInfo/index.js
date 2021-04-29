@@ -9,7 +9,7 @@ import { injectIntl } from 'umi';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
 breadCrumbItem.push({
-  menuName: '用户信息',
+  menuName: '我的信息',
   menuHref: `/`,
 });
 
@@ -59,26 +59,13 @@ function MyCompanyInfo(props) {
       value: ApprovalStatus[myCompany.approvalStatus],
     },
     {
-      label: '统一社会信用代码',
-      value: myCompany.companyCertBusinessNumber,
-    },
-    {
       label: '我的DID',
       value: getDid || 'NeedButton',
       buttonName: '立即申请',
       onClick: onClickCreate,
     },
   ];
-  const companyLegalInfo = [
-    {
-      label: '法人代表姓名',
-      value: myCompany.legalPersonName,
-    },
-    {
-      label: '法人代表身份证号',
-      value: myCompany.legalPersonIdCardNumber,
-    },
-  ];
+
   const companyContactsInfo = [
     {
       label: '联系人姓名',
@@ -111,7 +98,6 @@ function MyCompanyInfo(props) {
       <div className="page-content">
         <Spin spinning={qryLoading}>
           <DetailCard cardTitle="基本信息" detailList={companyBasicInfo} />
-          <DetailCard cardTitle="法人信息" detailList={companyLegalInfo} />
           <DetailCard cardTitle="联系人信息" detailList={companyContactsInfo} />
         </Spin>
       </div>

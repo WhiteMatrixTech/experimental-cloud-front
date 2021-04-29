@@ -33,7 +33,7 @@ function EvidenceDataList(props) {
       key: 'channelId',
     },
     {
-      title: '创建公司',
+      title: '创建用户',
       dataIndex: 'companyName',
       key: 'companyName',
     },
