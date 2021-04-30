@@ -3,7 +3,7 @@ export default {
 
   state: {
     getUnreadMessage: 0, // 未读消息条数
-    selectedMenu: localStorage.getItem('selectedMenu') || '/about/leagueDashboard', // 当前选中菜单
+    selectedMenu: localStorage.getItem('selectedMenu') || '/about/league-dashboard', // 当前选中菜单
   },
 
   subscriptions: {

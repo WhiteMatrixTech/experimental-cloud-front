@@ -5,7 +5,7 @@ const index = () => {
   const accessToken = localStorage.getItem('accessToken');
   const roleToken = localStorage.getItem('roleToken');
   if (accessToken && roleToken) {
-    return <Redirect to="/about/leagueDashboard" />;
+    return <Redirect to="/about/league-dashboard" />;
   } else if (accessToken && !roleToken) {
     return <Redirect to="/selectLeague" />;
   }

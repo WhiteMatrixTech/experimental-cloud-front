@@ -5,7 +5,7 @@ import { Breadcrumb, DetailCard } from 'components';
 import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
 import { statusList } from '../_config';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember');
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterprise-member');
 breadCrumbItem.push({
   menuName: '用户详情',
   menuHref: `/`,

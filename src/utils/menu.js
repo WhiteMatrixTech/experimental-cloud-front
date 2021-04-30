@@ -13,7 +13,7 @@ const MenuList = [
   {
     id: 35,
     menuPid: 2,
-    menuHref: '/about/leagueDashboard',
+    menuHref: '/about/league-dashboard',
     menuIcon: 'KBasslianmengguanli1',
     menuName: '联盟总览',
     isFeature: 0,
@@ -22,7 +22,7 @@ const MenuList = [
   {
     id: 36,
     menuPid: 2,
-    menuHref: '/about/dataDashboard',
+    menuHref: '/about/data-dashboard',
     menuIcon: 'KBassyibiaopan',
     menuName: '仪表盘',
     isFeature: 1,
@@ -149,7 +149,7 @@ const MenuList = [
   {
     id: 48,
     menuPid: 2,
-    menuHref: '/about/enterpriseMember',
+    menuHref: '/about/enterprise-member',
     menuIcon: 'KBasschengyuanguanli',
     menuName: '成员管理',
     isFeature: 1, // 是否只有盟主才显示

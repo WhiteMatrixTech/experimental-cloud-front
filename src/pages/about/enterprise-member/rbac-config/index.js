@@ -13,7 +13,7 @@ import styles from './index.less';
 const { Item } = Form;
 const { Option } = Select;
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember');
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterprise-member');
 breadCrumbItem.push({
   menuName: '访问策略配置',
   menuHref: `/`,

@@ -15,7 +15,7 @@ import {
 } from './components';
 
 const { TabPane } = Tabs;
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/dataDashboard');
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/data-dashboard');
 
 function DataDashboard(props) {
   return (

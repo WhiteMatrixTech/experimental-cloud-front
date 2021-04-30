@@ -38,10 +38,10 @@ export function getRoutes() {
           exact: true,
         },
         {
-          path: '/about/enterpriseMember',
+          path: '/about/enterprise-member',
           routes: [
             {
-              path: '/about/enterpriseMember/:memberDetail',
+              path: '/about/enterprise-member/:memberDetail',
               exact: true,
             },
           ],
@@ -89,11 +89,11 @@ export function getRoutes() {
           exact: true,
         },
         {
-          path: '/about/leagueDashboard',
+          path: '/about/league-dashboard',
           exact: true,
         },
         {
-          path: '/about/dataDashboard',
+          path: '/about/data-dashboard',
           exact: true,
         },
         {

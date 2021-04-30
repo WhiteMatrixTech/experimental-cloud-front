@@ -11,7 +11,7 @@ import CreateNetworkModal from './components/CreateNetworkModal';
 import config from 'utils/config';
 import style from './index.less';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/leagueDashboard');
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/league-dashboard');
 
 function LeagueDashboard(props) {
   const { Dashboard, User, dispatch, qryBlockLoading, qryNetworkLoading = false, qryTransactionLoading } = props;

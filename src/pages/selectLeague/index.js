@@ -93,12 +93,12 @@ function SelectLeague(props) {
         });
         dispatch({
           type: 'Layout/common',
-          payload: { selectedMenu: '/about/leagueDashboard' },
+          payload: { selectedMenu: '/about/league-dashboard' },
         });
         localStorage.setItem('userRole', league.role);
         localStorage.setItem('leagueName', league.leagueName);
         localStorage.setItem('networkName', league.networkName);
-        history.replace('/about/leagueDashboard');
+        history.replace('/about/league-dashboard');
       }
     });
   };

@@ -28,7 +28,7 @@ const initSearchObj = {
   approvalStatus: 'any',
 };
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterpriseMember');
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterprise-member');
 
 function EnterpriseMember(props) {
   const { Member, qryLoading, dispatch, User } = props;
@@ -285,7 +285,7 @@ function EnterpriseMember(props) {
   // 点击查看详情
   const onClickDetail = (record) => {
     history.push({
-      pathname: `/about/enterpriseMember/${record.companyCertBusinessNumber}`,
+      pathname: `/about/enterprise-member/${record.companyCertBusinessNumber}`,
       state: record,
     });
   };

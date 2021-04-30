@@ -7,7 +7,7 @@ const NoFoundPage = (props) => {
   const onClickBack = () => {
     props.dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/leagueDashboard' }
+      payload: { selectedMenu: '/about/league-dashboard' }
     });
     history.push('/')
   }
