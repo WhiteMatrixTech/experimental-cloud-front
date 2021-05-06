@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Row, Col, Spin } from 'antd';
 import { Breadcrumb } from 'components';
 import styles from './index.less';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 breadCrumbItem.push({

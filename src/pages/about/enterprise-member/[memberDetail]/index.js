@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
 import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { statusList } from '../_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterprise-member');

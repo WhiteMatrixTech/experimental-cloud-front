@@ -4,7 +4,7 @@ import { history } from 'umi';
 import { Table, Space, Button } from 'antd';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { DisabledRole } from './_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/rbac');

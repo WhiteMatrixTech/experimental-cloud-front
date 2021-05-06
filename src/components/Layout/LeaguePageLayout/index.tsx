@@ -1,14 +1,12 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'dva';
 import { Layout } from 'antd';
-import { TopHeader } from 'components';
+import { TopHeader } from '@/components';
+import { ConnectState } from '@/models/connect';
+import { LoginLayoutProps } from '../LoginLayout';
 import styles from './index.less';
 
-class LeaguePageLayout extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+class LeaguePageLayout extends React.PureComponent<LoginLayoutProps> {
 
   render() {
     const { children } = this.props;
@@ -27,6 +25,6 @@ class LeaguePageLayout extends PureComponent {
   }
 }
 
-export default connect(({ Layout }) => ({
+export default connect(({ Layout }: ConnectState) => ({
   Layout,
 }))(LeaguePageLayout);

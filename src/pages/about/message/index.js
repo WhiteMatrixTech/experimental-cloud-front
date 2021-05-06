@@ -4,7 +4,7 @@ import moment from 'moment';
 import { history } from 'umi';
 import { Tabs, Input, Table, Button, Space } from 'antd';
 import { Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { messageType } from './_config';
 import baseConfig from 'utils/config';
 import styles from './index.less';

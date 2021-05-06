@@ -1,5 +1,7 @@
-import { LeaguePageLayout } from 'components';
-function NetworkLayout(props) {
+import { LeaguePageLayout } from '@/components';
+import { BasicLayoutComponentProps } from '@/utils/types';
+
+function NetworkLayout(props: BasicLayoutComponentProps) {
   const { children, location } = props;
   const { pathname } = location;
   return <LeaguePageLayout children={children} pathname={pathname} />;

@@ -1,6 +1,7 @@
+import { BasicLayoutComponentProps } from '@/utils/types';
 import { Redirect } from 'umi';
 
-export default (props) => {
+function Auth(props: BasicLayoutComponentProps): JSX.Element {
   const { location } = props;
   const accessToken = localStorage.getItem('accessToken');
   const roleToken = localStorage.getItem('roleToken');
@@ -14,3 +15,5 @@ export default (props) => {
     return <Redirect to="/user/login" />;
   }
 };
+
+export default Auth;

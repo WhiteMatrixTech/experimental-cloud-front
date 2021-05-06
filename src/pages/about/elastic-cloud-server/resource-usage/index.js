@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Table } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import baseConfig from 'utils/config';
 import { serverPurpose } from '../_config';
 

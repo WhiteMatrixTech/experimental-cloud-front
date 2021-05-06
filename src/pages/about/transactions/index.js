@@ -5,7 +5,7 @@ import { Table, Space } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, SearchBar } from 'components';
 import baseConfig from 'utils/config';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 

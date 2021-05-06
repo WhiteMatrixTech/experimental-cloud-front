@@ -1,4 +1,4 @@
-import * as API from '../services/logs.js';
+import * as API from '../services/logs';
 import type { Reducer, Effect } from 'umi';
 
 export type LogsModelState = {

@@ -1,15 +1,22 @@
 import React from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
+import type { Dispatch } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import { MenuList } from 'utils/menu.js';
+import { MenuList } from '@/utils/menu';
+import { ConnectState } from '@/models/connect';
 import buaaLogo from 'assets/images/buaa-small.png';
 import styles from './index.less';
 
 const { Header } = Layout;
 
-function TopHeader(props) {
+export type TopHeaderProps = {
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+};
+
+function TopHeader(props: TopHeaderProps) {
   const { dispatch, User } = props;
   const { userInfo } = User;
 
@@ -23,7 +30,7 @@ function TopHeader(props) {
     );
   };
 
-  const handleUserMenuClick = ({ key }) => {
+  const handleUserMenuClick = ({ key }: any) => {
     // 登出
     if (key === 'loginOut') {
       // 清空缓存
@@ -50,7 +57,7 @@ function TopHeader(props) {
   };
 
   // 跳转至IDE
-  const onClickIDE = (e) => {
+  const onClickIDE = (e: Event) => {
     e.preventDefault();
     const accessToken = localStorage.getItem('accessToken');
     const link = `${process.env.CHAIN_IDE_LINK}#${accessToken}`;
@@ -80,4 +87,4 @@ function TopHeader(props) {
   );
 }
 
-export default connect(({ Layout, User }) => ({ Layout, User }))(TopHeader);
+export default connect(({ Layout, User }: ConnectState) => ({ Layout, User }))(TopHeader);

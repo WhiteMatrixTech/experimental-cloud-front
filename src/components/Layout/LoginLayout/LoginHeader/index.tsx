@@ -1,15 +1,11 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Layout } from 'antd';
 import buaaLogo from 'assets/images/buaa-logo.png';
 import styles from './index.less';
 
 const { Header } = Layout;
 
-export default class LoginHeader extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+export default class LoginHeader extends React.PureComponent {
 
   render() {
     return (

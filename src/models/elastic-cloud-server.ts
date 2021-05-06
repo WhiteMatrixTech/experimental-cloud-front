@@ -1,4 +1,4 @@
-import * as API from '../services/elastic-cloud-server.js';
+import * as API from '../services/elastic-cloud-server';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 

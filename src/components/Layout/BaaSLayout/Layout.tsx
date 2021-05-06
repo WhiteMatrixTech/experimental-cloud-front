@@ -2,16 +2,22 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Layout, Modal } from 'antd';
 import { history } from 'umi';
-import { LeftMenu, TopHeader } from 'components';
+import { LeftMenu, TopHeader } from '@/components';
+import { ConnectState } from '@/models/connect';
 import styles from './Layout.less';
 
-function BaaSLayout(props) {
+export type BaaSLayoutProps = {
+  children: JSX.Element,
+  pathname: string
+}
+
+function BaaSLayout(props: BaaSLayoutProps) {
   const { children, pathname } = props;
 
-  const receiveMessage = (e) => {
+  const receiveMessage = (e: { key: any; newValue: any; }) => {
     const { key, newValue } = e;
     if (key === 'accessToken' && newValue) {
-      localStorage.setItem('newAccountLogin', true);
+      localStorage.setItem('newAccountLogin', 'true');
       Modal.confirm({
         title: 'Confirm',
         content: '你的账号已被登出',
@@ -33,7 +39,7 @@ function BaaSLayout(props) {
   }, []);
 
   useEffect(() => {
-    let modal = null;
+    let modal;
     if (localStorage.getItem('newAccountLogin')) {
       modal = Modal.confirm({
         title: '你的账号已被登出',
@@ -66,6 +72,6 @@ function BaaSLayout(props) {
   );
 }
 
-export default connect(({ Layout }) => ({
+export default connect(({ Layout }: ConnectState) => ({
   Layout,
 }))(BaaSLayout);

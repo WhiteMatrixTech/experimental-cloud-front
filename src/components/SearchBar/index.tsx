@@ -4,7 +4,14 @@ import styles from './index.less';
 
 const { Search } = Input;
 
-function SearchBar({ placeholder, onSearch, btnName = '', onClickBtn }) {
+type SearchBarProps = {
+  placeholder: string,
+  onSearch: () => void,
+  btnName: string,
+  onClickBtn: () => void
+}
+
+function SearchBar({ placeholder = '', onSearch, btnName = '', onClickBtn }: SearchBarProps) {
 
   return (
     <div className={styles['search-wrapper']} style={{ justifyContent: btnName ? 'space-between' : 'flex-end' }}>
@@ -14,4 +21,4 @@ function SearchBar({ placeholder, onSearch, btnName = '', onClickBtn }) {
   );
 }
 
-export default SearchBar
+export default SearchBar;

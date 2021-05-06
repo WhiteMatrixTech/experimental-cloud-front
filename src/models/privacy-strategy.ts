@@ -1,4 +1,4 @@
-import * as API from '../services/privacy-strategy.js';
+import * as API from '../services/privacy-strategy';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 

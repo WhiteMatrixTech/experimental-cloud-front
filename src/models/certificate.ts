@@ -1,4 +1,4 @@
-import * as API from '../services/certificate.js';
+import * as API from '../services/certificate';
 import type { Reducer, Effect } from 'umi';
 
 export type CertificateModelState = {

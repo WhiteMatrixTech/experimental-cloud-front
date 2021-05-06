@@ -8,6 +8,8 @@ const index = () => {
     return <Redirect to="/about/league-dashboard" />;
   } else if (accessToken && !roleToken) {
     return <Redirect to="/selectLeague" />;
+  } else {
+    return <Redirect to="/user/login" />;
   }
 };
 

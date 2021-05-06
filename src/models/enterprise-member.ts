@@ -1,4 +1,4 @@
-import * as API from '../services/enterprise-member.js';
+import * as API from '../services/enterprise-member';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 

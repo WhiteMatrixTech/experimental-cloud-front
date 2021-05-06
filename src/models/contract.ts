@@ -1,4 +1,4 @@
-import * as API from '../services/contract.js';
+import * as API from '../services/contract';
 import { getAllUserId } from '../services/fabric-role';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';

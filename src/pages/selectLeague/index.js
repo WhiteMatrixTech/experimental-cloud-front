@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Row, Col, Button, Spin, Empty, Divider, Pagination } from 'antd';
 import CreateLeague from './components/CreateLeague';
 import { LeagueCard } from './components/LeagueCard';
-import { Roles } from 'utils/roles.js';
+import { Roles } from 'utils/roles';
 import { getDifferenceSet } from 'utils';
 import styles from './index.less';
 

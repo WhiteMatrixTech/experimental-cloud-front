@@ -1,5 +1,5 @@
-import * as API from '../services/my-info.js';
-import { checkOrgInUse } from '../services/contract.js';
+import * as API from '../services/my-info';
+import { checkOrgInUse } from '../services/contract';
 import type { Reducer, Effect } from 'umi';
 
 export type MyInfoModelState = {

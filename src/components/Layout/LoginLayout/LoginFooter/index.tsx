@@ -1,14 +1,10 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Layout } from 'antd';
 import styles from './index.less';
 
 const { Footer } = Layout;
 
-export default class LoginFooter extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+export default class LoginFooter extends React.PureComponent {
 
   render() {
     return (

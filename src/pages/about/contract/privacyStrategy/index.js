@@ -5,7 +5,7 @@ import { Table, Space, Modal, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import EditStrategy from './components/EditStrategy';
 import ConfigStrategy from './components/ConfigStrategy';
 import baseConfig from 'utils/config';

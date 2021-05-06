@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Spin } from 'antd';
 import { isObject } from 'lodash';
 import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/did', false);
 breadCrumbItem.push({

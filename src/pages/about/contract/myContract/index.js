@@ -8,12 +8,12 @@ import { Table, Space, Badge, Modal, Button, message, Spin } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import EditContract from './components/EditContract';
 import InvokeContract from './components/InvokeContract';
 import ApproveContract from './components/ApproveContract';
 import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles.js';
+import { Roles } from 'utils/roles';
 import {
   chainCodeStatusInfo,
   ChainCodeStatus,

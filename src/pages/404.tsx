@@ -1,9 +1,11 @@
-import { Button, Result } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
+import { Button, Result } from 'antd';
+import { ConnectState } from '@/models/connect';
+import { BasicComponentProps } from '@/utils/types';
 
-const UnAuthorizedPage = (props) => {
+const NoFoundPage = (props: BasicComponentProps) => {
   const onClickBack = () => {
     props.dispatch({
       type: 'Layout/common',
@@ -14,9 +16,9 @@ const UnAuthorizedPage = (props) => {
 
   return (
     <Result
-      status="403"
-      title="403"
-      subTitle="Sorry, you are not authorized to access this page."
+      status="404"
+      title="404"
+      subTitle="Sorry, the page you visited does not exist."
       extra={
         <Button type="primary" onClick={onClickBack}>
           Back Home
@@ -26,4 +28,4 @@ const UnAuthorizedPage = (props) => {
   )
 };
 
-export default connect(({ Layout }) => ({ Layout }))(UnAuthorizedPage);
+export default connect(({ Layout }: ConnectState) => ({ Layout }))(NoFoundPage);

@@ -5,7 +5,7 @@ import { Breadcrumb } from 'components';
 import { Table, Button, Space, Form, Row, Col, Input, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import CreateDIDModal from './components/CreateDIDModal';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import baseConfig from 'utils/config';
 
 const { Item } = Form;

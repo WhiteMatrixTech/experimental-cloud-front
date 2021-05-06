@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Row, Col } from 'antd';
 import { Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import styles from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/elastic-cloud-server');

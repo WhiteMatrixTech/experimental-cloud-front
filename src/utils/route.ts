@@ -1,4 +1,10 @@
-export function getRoutes() {
+export type RouteProps = {
+  path: string,
+  exact?: boolean,
+  routes?: RouteProps[],
+}
+
+export function getRoutes(): RouteProps[] {
   const routes = [
     {
       path: '/404',

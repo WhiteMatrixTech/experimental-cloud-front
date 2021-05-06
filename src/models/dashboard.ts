@@ -1,10 +1,10 @@
-import { getBlockList, getBlockTotalDocs } from '../services/block.js';
-import { getTransactionList, getTransactionTotalDocs } from '../services/transactions.js';
-import { getMemberTotalDocs } from '../services/enterprise-member.js';
-import { getChannelList } from '../services/channel.js';
-import { getChainCodeList } from '../services/contract.js';
-import { getMyNetworkList } from '../services/user.js';
-import * as API from '../services/dashboard.js';
+import { getBlockList, getBlockTotalDocs } from '../services/block';
+import { getTransactionList, getTransactionTotalDocs } from '../services/transactions';
+import { getMemberTotalDocs } from '../services/enterprise-member';
+import { getChannelList } from '../services/channel';
+import { getChainCodeList } from '../services/contract';
+import { getMyNetworkList } from '../services/user';
+import * as API from '../services/dashboard';
 import { notification } from 'antd';
 import moment from 'moment';
 import type { Reducer, Effect } from 'umi';

@@ -4,7 +4,7 @@ import cs from 'classnames';
 import { connect } from 'dva';
 import styles from './index.less';
 import { Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import {
   BalanceTransfer,
   FabricMetrics,

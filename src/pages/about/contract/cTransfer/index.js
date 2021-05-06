@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Radio, Switch, Button } from 'antd';
 import { Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import style from './index.less';
 
 const { Item } = Form;

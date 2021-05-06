@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Spin } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { orgStatus } from '../../organizations/_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);

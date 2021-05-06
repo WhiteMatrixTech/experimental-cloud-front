@@ -42,4 +42,5 @@ export type ConnectState = {
   RBAC: RBACModelState;
   Transactions: TransactionsModelState;
   User: UserModelState;
+  loading: { effects: Record<boolean> }
 };

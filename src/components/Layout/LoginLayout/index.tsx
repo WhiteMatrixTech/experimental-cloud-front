@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import React from 'react';
 import { Layout } from 'antd';
 import LoginHeader from './LoginHeader';
 import LoginFooter from './LoginFooter';
@@ -7,11 +6,12 @@ import styles from './index.less';
 
 const { Content } = Layout;
 
-class LoginLayout extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+export type LoginLayoutProps = {
+  children: JSX.Element,
+  pathname?: string
+}
+
+class LoginLayout extends React.PureComponent<LoginLayoutProps> {
 
   render() {
     const { children } = this.props;
@@ -39,6 +39,4 @@ class LoginLayout extends PureComponent {
   }
 }
 
-export default connect(({ Layout }) => ({
-  Layout,
-}))(LoginLayout);
+export default LoginLayout;

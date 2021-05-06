@@ -1,4 +1,4 @@
-import * as API from '../services/contractStore.js';
+import * as API from '../services/contractStore';
 import type { Reducer, Effect } from 'umi';
 
 export type ContractStoreModelState = {

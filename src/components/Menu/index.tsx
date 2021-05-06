@@ -3,22 +3,32 @@ import { connect } from 'dva';
 import { Menu, message } from 'antd';
 import { history } from 'umi';
 import { isEmpty } from 'lodash';
-import { tree2Arr } from 'utils';
+import type { Dispatch } from 'umi';
+import { tree2Arr } from '@/utils';
+import { MenuList, MenuProps } from '@/utils/menu';
+import { Roles } from '@/utils/roles';
+import { NetworkStatus } from '@/utils/networkStatus';
+import { ConnectState } from '@/models/connect';
 import styles from './index.less';
-import { MenuList } from 'utils/menu.js';
-import { Roles } from 'utils/roles.js';
-import { NetworkStatus } from 'utils/networkStatus';
 
 const { SubMenu } = Menu;
 
-function LeftMenu(props) {
+export type LeftMenuProps = {
+  dispatch: Dispatch,
+  pathname: string,
+  User: ConnectState['User'],
+  Layout: ConnectState['Layout'],
+  Dashboard: ConnectState['Dashboard'],
+}
+
+function LeftMenu(props: LeftMenuProps) {
   const { pathname, dispatch, User, Dashboard, Layout } = props;
   const { userRole, userInfo, networkName } = User;
   const { selectedMenu } = Layout;
   const { networkStatusInfo } = Dashboard;
   const [openKeys, setOpenKeys] = useState([]);
 
-  const hashChange = (menu) => {
+  const hashChange = (menu: MenuProps) => {
     const unavailableNetworkStatus = [NetworkStatus.NotExist, NetworkStatus.UnknownError];
     const availableMenu = ['/about/league-dashboard', '/about/elastic-cloud-server'];
     if (unavailableNetworkStatus.includes(networkStatusInfo.networkStatus) && !availableMenu.includes(menu.menuHref)) {
@@ -35,11 +45,11 @@ function LeftMenu(props) {
     }
   };
 
-  const onOpenChange = (openKeys) => {
+  const onOpenChange = (openKeys: any) => {
     setOpenKeys(openKeys);
   };
 
-  const getMenuItem = (item) => {
+  const getMenuItem = (item: MenuProps) => {
     if (item.isFeature === 1 && userRole === Roles.NetworkMember) {
       return '';
     }
@@ -120,4 +130,4 @@ function LeftMenu(props) {
   );
 }
 
-export default connect(({ Layout, User, Dashboard }) => ({ Layout, User, Dashboard }))(LeftMenu);
+export default connect(({ Layout, User, Dashboard }: ConnectState) => ({ Layout, User, Dashboard }))(LeftMenu);

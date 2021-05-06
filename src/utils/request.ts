@@ -22,7 +22,7 @@ const codeMessage = {
   504: '网关超时。',
 };
 
-const authorization = (response) => {
+const authorization = (response: any) => {
   if (response.statusCode === 401 && response.message === 'Unauthorized') {
     if (!isSendNotification) {
       // 登录已过期
@@ -43,7 +43,7 @@ const authorization = (response) => {
 };
 
 /** 异常处理程序 */
-const errorHandler = (error) => {
+const errorHandler = (error: { response: Response }) => {
   const { response } = error;
   return response.json().then((formatResponseData) => {
     return authorization(formatResponseData);
@@ -55,9 +55,11 @@ const errorHandler = (error) => {
  * @param  {string} url       The URL we want to request
  * @param  {object} [options] The options we want to pass to "fetch"
  */
-export const request = (url, options) => {
+export const request = (url: string, options?: { method: string, body: object }) => {
   let headers = {
     'Content-Type': 'application/json',
+    Authorization: '',
+    RoleAuth: ''
   };
   // token校验
   const accessToken = localStorage.getItem('accessToken');
@@ -79,7 +81,7 @@ export const request = (url, options) => {
     credentials: 'include', // 默认请求是否带上cookie,
     prefix: process.env.BAAS_BACKEND_LINK,
   });
-  let newOptions = { method: options ? options.method : 'GET' };
+  let newOptions = { method: options ? options.method : 'GET', data: {} };
   if (options && options.method) {
     newOptions.data = options.body;
   }

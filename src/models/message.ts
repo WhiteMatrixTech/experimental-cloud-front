@@ -1,4 +1,4 @@
-import * as API from '../services/message.js';
+import * as API from '../services/message';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 

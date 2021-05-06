@@ -3,7 +3,7 @@ import peer from 'assets/images/dashboard/icon-peer.png';
 import msp from 'assets/images/dashboard/icon-msp.png';
 import chaincode from 'assets/images/dashboard/icon-chaincode.png';
 import block from 'assets/images/dashboard/icon-block.png';
-import transcation from 'assets/images/dashboard/icon-transcation.png';
+import transaction from 'assets/images/dashboard/icon-transcation.png';
 import styles from './index.less';
 
 const cardStyle = [
@@ -18,7 +18,7 @@ const cardStyle = [
  * @详细信息卡片
  * @param {Array} statisticsList 统计信息列表 长度为5
  */
-export default function StatisticsCard({ statisticsList = [{}, {}, {}, {}, {}], imgList = [peer, msp, chaincode, block, transcation] }) {
+export default function StatisticsCard({ statisticsList = [{}, {}, {}, {}, {}], imgList = [peer, msp, chaincode, block, transaction] }) {
 
   return (
     <div className={styles['statistics-area']}>

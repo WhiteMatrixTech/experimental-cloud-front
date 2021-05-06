@@ -5,7 +5,7 @@ import { Table, Space } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, SearchBar } from 'components';
 import baseConfig from 'utils/config';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import EvidenceOnChain from './components/EvidenceOnChain';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');

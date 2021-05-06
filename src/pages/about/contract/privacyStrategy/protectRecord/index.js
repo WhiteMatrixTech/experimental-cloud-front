@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { Table } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard, SearchBar } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import ConfigStrategy from '../components/ConfigStrategy';
 import baseConfig from 'utils/config';
 
@@ -152,7 +152,12 @@ class PrivacyStrategyDetail extends Component {
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className="page-content">
           <DetailCard cardTitle="策略详情" detailList={strategyInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
-          <SearchBar placeholder="输入方法名" onSearch={this.onSearch} btnName="配置策略" onClickBtn={this.onClickConfig} />
+          <SearchBar
+            placeholder="输入方法名"
+            onSearch={this.onSearch}
+            btnName="配置策略"
+            onClickBtn={this.onClickConfig}
+          />
           <Table
             rowKey="_id"
             loading={qryLoading}

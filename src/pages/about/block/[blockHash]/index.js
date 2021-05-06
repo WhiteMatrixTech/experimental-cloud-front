@@ -6,7 +6,7 @@ import { Table, Space, Row, Col, Spin } from 'antd';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
 import styles from './index.less';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 breadCrumbItem.push({

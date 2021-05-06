@@ -1,4 +1,4 @@
-import * as API from '../services/rbac.js';
+import * as API from '../services/rbac';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 

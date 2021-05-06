@@ -1,6 +1,6 @@
-import * as API from '../services/user.js';
+import * as API from '../services/user';
 import { notification } from 'antd';
-import { Roles } from '../utils/roles.js';
+import { Roles } from '../utils/roles';
 import LoginStatus from '../utils/loginStatus';
 import type { Reducer, Effect } from 'umi';
 

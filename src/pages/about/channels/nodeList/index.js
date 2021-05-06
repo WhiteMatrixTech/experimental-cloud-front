@@ -3,10 +3,10 @@ import { connect } from 'dva';
 import { Table, Badge } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { peerStatus } from '../../nodes/_config';
 import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles.js';
+import { Roles } from 'utils/roles';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
@@ -48,7 +48,16 @@ class NodeList extends Component {
         title: '状态',
         dataIndex: 'nodeStatus',
         key: 'nodeStatus',
-        render: (text) => (text ? <Badge color={peerStatus[text].color} text={peerStatus[text].text} style={{ color: peerStatus[text].color }} /> : ''),
+        render: (text) =>
+          text ? (
+            <Badge
+              color={peerStatus[text].color}
+              text={peerStatus[text].text}
+              style={{ color: peerStatus[text].color }}
+            />
+          ) : (
+            ''
+          ),
       },
       {
         title: '创建时间',

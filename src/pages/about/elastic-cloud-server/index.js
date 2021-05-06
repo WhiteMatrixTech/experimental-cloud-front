@@ -5,7 +5,7 @@ import { history } from 'umi';
 import { Breadcrumb } from 'components';
 import { Table, Button, Space, Modal, Dropdown, Menu } from 'antd';
 import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import CreateServerModal from './components/CreateServerModal';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/elastic-cloud-server');

@@ -1,4 +1,4 @@
-import * as API from '../services/evidence.js';
+import * as API from '../services/evidence';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
