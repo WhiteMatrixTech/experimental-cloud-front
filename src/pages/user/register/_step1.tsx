@@ -1,9 +1,17 @@
-import { Form, Input } from 'antd';
 import React, { useEffect } from 'react';
+import { Form, Input } from 'antd';
+import { operType } from './index';
 const FormItem = Form.Item;
 
-const StepOne = (props) => {
-  const { curOper, operType, basicInfo, afterValidate, failedToValidate } = props;
+export type StepOneProps = {
+  curOper: operType,
+  basicInfo: any,
+  failedToValidate: (step: operType) => void,
+  afterValidate: (value: any, step: any) => void,
+}
+
+const StepOne: React.FC<StepOneProps> = (props) => {
+  const { curOper, basicInfo, afterValidate, failedToValidate } = props;
   const [form] = Form.useForm();
 
   const onCheck = async () => {

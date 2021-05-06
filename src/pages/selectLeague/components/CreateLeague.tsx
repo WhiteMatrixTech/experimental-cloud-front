@@ -1,6 +1,8 @@
+import React from 'react';
 import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
-import React from 'react';
+import { Dispatch } from 'umi';
+import { ConnectState } from '@/models/connect';
 
 const { Item } = Form;
 const { TextArea } = Input;
@@ -14,7 +16,15 @@ const formItemLayout = {
   },
 };
 
-function CreateLeague(props) {
+export type CreateLeagueProps = {
+  addLoading: boolean,
+  dispatch: Dispatch,
+  visible: boolean,
+  User: ConnectState['User'],
+  onCancel: (callback: boolean) => void
+}
+
+const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
   const { dispatch, visible, onCancel, addLoading = false } = props;
   const [form] = Form.useForm();
 
@@ -44,9 +54,9 @@ function CreateLeague(props) {
     closable: true,
     destroyOnClose: true,
     title: '创建联盟',
-    onCancel: () => onCancel(),
+    onCancel: () => onCancel(false),
     footer: [
-      <Button key="cancel" onClick={onCancel}>
+      <Button key="cancel" onClick={() => onCancel(false)}>
         取消
       </Button>,
       <Button key="submit" onClick={handleSubmit} type="primary" loading={addLoading}>
@@ -113,7 +123,7 @@ function CreateLeague(props) {
   );
 }
 
-export default connect(({ User, loading }) => ({
+export default connect(({ User, loading }: ConnectState) => ({
   User,
   addLoading: loading.effects['User/createLeague'],
 }))(CreateLeague);

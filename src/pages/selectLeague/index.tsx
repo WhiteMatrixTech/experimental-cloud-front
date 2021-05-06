@@ -1,14 +1,21 @@
 import React, { useState, useMemo } from 'react';
-import { history, connect } from 'umi';
+import { history, connect, Dispatch, LeagueSchema } from 'umi';
 import { PlusOutlined } from '@ant-design/icons';
 import { Row, Col, Button, Spin, Empty, Divider, Pagination } from 'antd';
 import CreateLeague from './components/CreateLeague';
 import { LeagueCard } from './components/LeagueCard';
-import { Roles } from 'utils/roles';
-import { getDifferenceSet } from 'utils';
+import { ConnectState } from '@/models/connect';
+import { Roles } from '@/utils/roles';
+import { getDifferenceSet } from '@/utils';
 import styles from './index.less';
 
-function SelectLeague(props) {
+export type SelectLeagueProps = {
+  joinLoading: boolean,
+  dispatch: Dispatch,
+  User: ConnectState['User']
+}
+
+const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   const { joinLoading = false, dispatch, User } = props;
   const { userInfo, networkList, myNetworkList } = User;
   const [visible, setVisible] = useState(false);
@@ -20,7 +27,7 @@ function SelectLeague(props) {
     return myNetworkList.slice((myLeaguePageNum - 1) * 7, myLeaguePageNum * 7);
   }, [myNetworkList, myLeaguePageNum]);
 
-  const onMyLeaguePageChange = (page) => {
+  const onMyLeaguePageChange = (page: number) => {
     setMyLeaguePageNum(page);
   };
 
@@ -29,15 +36,15 @@ function SelectLeague(props) {
   }, [networkList, myNetworkList]);
 
   // 分页
-  const getOptionLeagueListFromPage = useMemo(() => {
+  const getOptionLeagueListFromPage = useMemo((): LeagueSchema[] => {
     return getOptionalNetwork.slice((optionLeaguePageNum - 1) * 8, optionLeaguePageNum * 8);
   }, [getOptionalNetwork, optionLeaguePageNum]);
 
-  const onOptionLeaguePageChange = (page) => {
+  const onOptionLeaguePageChange = (page: number) => {
     setOptionLeaguePageNum(page);
   };
 
-  const onCancel = (label) => {
+  const onCancel = (label: boolean) => {
     setVisible(false);
     if (label) {
       dispatch({
@@ -52,7 +59,7 @@ function SelectLeague(props) {
   };
 
   // 点击加入联盟
-  const onJoinLeague = async (league) => {
+  const onJoinLeague = async (league: LeagueSchema) => {
     const res = await dispatch({
       type: 'User/enrollInLeague',
       payload: {
@@ -73,7 +80,7 @@ function SelectLeague(props) {
   };
 
   // 点击联盟进入系统
-  const onClickLeague = (league) => {
+  const onClickLeague = (league: LeagueSchema) => {
     dispatch({
       type: 'User/enterLeague',
       payload: {
@@ -81,7 +88,7 @@ function SelectLeague(props) {
         email: userInfo.contactEmail,
         networkName: league.networkName,
       },
-    }).then((res) => {
+    }).then((res: any) => {
       if (res) {
         dispatch({
           type: 'User/common',
@@ -95,7 +102,7 @@ function SelectLeague(props) {
           type: 'Layout/common',
           payload: { selectedMenu: '/about/league-dashboard' },
         });
-        localStorage.setItem('userRole', league.role);
+        localStorage.setItem('userRole', league.role as Roles);
         localStorage.setItem('leagueName', league.leagueName);
         localStorage.setItem('networkName', league.networkName);
         history.replace('/about/league-dashboard');
@@ -113,7 +120,7 @@ function SelectLeague(props) {
         <h3>加入联盟</h3>
         <Spin spinning={joinLoading}>
           <Row gutter={16} className={styles['league-wrapper']}>
-            {getOptionLeagueListFromPage.map((league, i) => (
+            {getOptionLeagueListFromPage.map((league, i: number) => (
               <Col span={6} key={`${league.leagueName}_${i}`}>
                 <LeagueCard showTime="Create Time" onClickCard={onJoinLeague} leagueInfo={league} />
               </Col>
@@ -123,7 +130,7 @@ function SelectLeague(props) {
           {getOptionalNetwork.length > 8 && (
             <Pagination
               showSizeChanger={false}
-              pageNum={optionLeaguePageNum}
+              current={optionLeaguePageNum}
               pageSize={8}
               total={getOptionalNetwork.length}
               onChange={onOptionLeaguePageChange}
@@ -161,7 +168,7 @@ function SelectLeague(props) {
         {myNetworkList.length > 7 && (
           <Pagination
             showSizeChanger={false}
-            pageNum={myLeaguePageNum}
+            current={myLeaguePageNum}
             pageSize={7}
             total={myNetworkList.length}
             onChange={onMyLeaguePageChange}
@@ -175,7 +182,7 @@ function SelectLeague(props) {
   );
 }
 
-export default connect(({ User, Layout, loading }) => ({
+export default connect(({ User, Layout, loading }: ConnectState) => ({
   User,
   Layout,
   joinLoading: loading.effects['User/enrollInLeague'],

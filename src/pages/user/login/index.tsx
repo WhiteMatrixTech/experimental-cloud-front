@@ -1,14 +1,22 @@
 import React, { useEffect } from 'react';
-import { Link, connect, history } from 'umi';
+import { Link, connect, history, Dispatch } from 'umi';
 import { Form } from 'antd';
 import LoginFrom from './components/Login';
-import { LoginMessage } from 'components';
-import LoginStatus from 'utils/loginStatus';
+import { LoginMessage } from '@/components';
+import LoginStatus from '@/utils/loginStatus';
+import { ConnectState } from '@/models/connect';
 import styles from './index.less';
 
 const { UserName, Password, Submit } = LoginFrom;
 
-function Login(props) {
+export type LoginProps = {
+  loginLoading: boolean,
+  dispatch: Dispatch,
+  location: any,
+  User: ConnectState['User']
+}
+
+const Login: React.FC<LoginProps> = (props) => {
   const [form] = Form.useForm();
   const { loginLoading, dispatch, location, User } = props;
   const { loginInfo, loginStatus } = User;
@@ -20,7 +28,7 @@ function Login(props) {
         dispatch({
           type: 'User/login',
           payload: values,
-        }).then((res) => {
+        }).then((res: { access_token: string; }) => {
           if (res) {
             localStorage.setItem('accessToken', res.access_token);
             const redirect = localStorage.getItem('redirect');
@@ -70,7 +78,7 @@ function Login(props) {
             },
           ]}
         />
-        <Submit loading={loginLoading}>登录</Submit>
+        <Submit className='' loading={loginLoading}>登录</Submit>
         <div className={styles.other}>
           <div>
             暂无账号?
@@ -84,7 +92,7 @@ function Login(props) {
   );
 }
 
-export default connect(({ User, loading }) => ({
+export default connect(({ User, loading }: ConnectState) => ({
   User,
   loginLoading: loading.effects['User/login'],
 }))(Login);

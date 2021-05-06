@@ -1,6 +1,7 @@
-import { Button, Steps } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { Link, connect, history } from 'umi';
+import { Button, Steps } from 'antd';
+import { Link, connect, history, Dispatch } from 'umi';
+import { ConnectState } from '@/models/connect';
 import StepOne from './_step1';
 import StepTwo from './_step2';
 import styles from './index.less';
@@ -15,12 +16,23 @@ const steps = [
   },
 ];
 
-const operType = { default: 'default', next: 'next', submit: 'submit' };
+export enum operType {
+  default = 'default',
+  next = 'next',
+  submit = 'submit'
+};
 
-const Register = (props) => {
+export type RegisterProps = {
+  submitting: boolean,
+  dispatch: Dispatch,
+  location: any,
+  User: ConnectState['User']
+}
+
+const Register: React.FC<RegisterProps> = (props) => {
   const [curOper, setCurOper] = useState(operType.default);
   const [basicInfo, setBasicInfo] = useState({});
-  const [accountInfo, setAccountInfo] = useState({});
+  const [accountInfo, setAccountInfo] = useState({ contactEmail: '' });
   const [current, setCurrent] = useState(0);
 
   const { submitting, dispatch, User } = props;
@@ -39,11 +51,11 @@ const Register = (props) => {
     setCurOper(operType.submit);
   };
 
-  const cacheBasicInfo = (basicInfo) => {
+  const cacheBasicInfo = (basicInfo: any) => {
     setBasicInfo(basicInfo);
   };
 
-  const afterValidate = (value, step) => {
+  const afterValidate = (value: any, step: operType) => {
     if (step === operType.next) {
       cacheBasicInfo(value);
       setCurrent(current + 1);
@@ -65,7 +77,7 @@ const Register = (props) => {
     }
   };
 
-  const failedToValidate = (step) => {
+  const failedToValidate = (step: operType) => {
     setCurOper(step);
   };
 
@@ -81,9 +93,8 @@ const Register = (props) => {
   const stepsProps = {
     curOper,
     basicInfo,
-    operType,
     failedToValidate,
-    afterValidate: (value, step) => afterValidate(value, step),
+    afterValidate: (value: any, step: any) => afterValidate(value, step),
   };
 
   return (
@@ -119,7 +130,7 @@ const Register = (props) => {
   );
 };
 
-export default connect(({ User, loading }) => ({
+export default connect(({ User, loading }: ConnectState) => ({
   User,
   submitting: loading.effects['User/register'],
 }))(Register);

@@ -3,9 +3,31 @@ import { notification } from 'antd';
 import { Roles } from '../utils/roles';
 import LoginStatus from '../utils/loginStatus';
 import type { Reducer, Effect } from 'umi';
+import { NetworkStatus } from '@/utils/networkStatus';
+
+export type UserInfoSchema = {
+  loginName: string,
+  did: string,
+  exp: number,
+  iat: number,
+  contactEmail: string,
+  companyName: string,
+  role: Roles,
+}
+
+export type LeagueSchema = {
+  leagueName: string,
+  leaderCompanyName: string,
+  networkName: string,
+  description: string,
+  networkStatus: NetworkStatus,
+  createdTime: string,
+  timeAdded?: string,
+  role?: Roles,
+}
 
 export type UserModelState = {
-  userInfo: object,
+  userInfo: UserInfoSchema,
   accessToken: string,
   roleToken: string,
   loginInfo: string,
@@ -13,8 +35,8 @@ export type UserModelState = {
   cacheAccount: object,
   userAndRegister: boolean,
 
-  networkList: Array<object>,
-  myNetworkList: Array<object>,
+  networkList: Array<LeagueSchema>,
+  myNetworkList: Array<LeagueSchema>,
 
   userRole: string,
   networkName: string,

@@ -6,5 +6,5 @@ export type BasicComponentProps = {
 
 export type BasicLayoutComponentProps = {
   children: JSX.Element,
-  location: Location
+  location: any
 }

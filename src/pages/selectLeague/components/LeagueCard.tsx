@@ -1,10 +1,16 @@
 import React, { useMemo } from 'react';
 import { RocketTwoTone } from '@ant-design/icons';
 import moment from 'moment';
-import { Roles } from 'utils/roles';
+import { Roles } from '@/utils/roles';
 import styles from '../index.less';
 
-export function LeagueCard(props) {
+export type LeagueCardProps = {
+  onClickCard: (leagueInfo: any) => void,
+  leagueInfo: any,
+  showTime?: string,
+}
+
+export const LeagueCard: React.FC<LeagueCardProps> = (props) => {
   const { onClickCard, leagueInfo, showTime } = props;
 
   const getShowTime = useMemo(() => {

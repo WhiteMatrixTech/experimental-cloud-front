@@ -1,9 +1,11 @@
+import React, { useEffect } from 'react';
 import { Button, Result } from 'antd';
 import { Link, connect } from 'umi';
-import React, { useEffect } from 'react';
 import styles from './style.less';
+import { BasicComponentProps, BasicLayoutComponentProps } from '@/utils/types';
+import { ConnectState } from '@/models/connect';
 
-const RegisterResult = ({ location, dispatch }) => {
+const RegisterResult: React.FC<BasicComponentProps & BasicLayoutComponentProps> = ({ location, dispatch }) => {
 
   useEffect(() => {
     dispatch({
@@ -44,4 +46,4 @@ const RegisterResult = ({ location, dispatch }) => {
   )
 };
 
-export default connect(({ User }) => ({ User }))(RegisterResult);
+export default connect(({ User }: ConnectState) => ({ User }))(RegisterResult);

@@ -1,5 +1,6 @@
 import { Form, Input, Popover, Progress } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { operType } from './index';
 import styles from './index.less';
 const FormItem = Form.Item;
 
@@ -8,14 +9,24 @@ const passwordStatusMap = {
   pass: <div className={styles.warning}>强度：中</div>,
   poor: <div className={styles.error}>强度：弱</div>,
 };
+
+declare const ProgressStatuses: ["normal", "exception", "active", "success"];
 const passwordProgressMap = {
-  ok: 'success',
-  pass: 'normal',
-  poor: 'exception',
+  ok: ProgressStatuses[3],
+  pass: ProgressStatuses[0],
+  poor: ProgressStatuses[1],
+  active: ProgressStatuses[2]
 };
 
-const StepTwo = (props) => {
-  const { curOper, operType, afterValidate, failedToValidate } = props;
+export type StepTwoProps = {
+  curOper: operType,
+  basicInfo: any,
+  failedToValidate: (step: operType) => void,
+  afterValidate: (value: any, step: any) => void,
+}
+
+const StepTwo: React.FC<StepTwoProps> = (props) => {
+  const { curOper, afterValidate, failedToValidate } = props;
   const [visible, setVisible] = useState(false);
   const [popover, setPopover] = useState(false);
   const confirmDirty = false;
@@ -52,7 +63,7 @@ const StepTwo = (props) => {
     return 'poor';
   };
 
-  const checkConfirm = (_, value) => {
+  const checkConfirm = (_: any, value: string) => {
     const promise = Promise;
 
     if (value && value !== form.getFieldValue('password')) {
@@ -62,7 +73,7 @@ const StepTwo = (props) => {
     return promise.resolve();
   };
 
-  const checkPassword = (_, value) => {
+  const checkPassword = (_: any, value: string) => {
     const promise = Promise; // 没有值的情况
 
     if (!value) {

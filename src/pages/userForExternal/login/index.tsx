@@ -1,23 +1,17 @@
 import React, { useEffect } from 'react';
-import { Link, connect, history, Dispatch } from 'umi';
+import { Link, connect, history } from 'umi';
 import { Form } from 'antd';
 import { parse } from 'qs';
-import LoginFrom from '../../user/login/components/Login';
+import LoginFrom from '@/pages/user/login/components/Login';
 import { LoginMessage } from '@/components';
 import LoginStatus from '@/utils/loginStatus';
 import { ConnectState } from '@/models/connect';
 import styles from './index.less';
+import { LoginProps } from '@/pages/user/login';
 
 const { UserName, Password, Submit } = LoginFrom;
 
-export type LoginProps = {
-  loginLoading: boolean,
-  dispatch: Dispatch,
-  location: any,
-  User: ConnectState['User']
-}
-
-const Login: React.FC<LoginProps> = (props) => {
+const LoginForExternal: React.FC<LoginProps> = (props) => {
   const [form] = Form.useForm();
   const { loginLoading, dispatch, location, User } = props;
   const { loginInfo, loginStatus } = User;
@@ -29,12 +23,12 @@ const Login: React.FC<LoginProps> = (props) => {
         dispatch({
           type: 'User/login',
           payload: values,
-        }).then((res: { access_token: any; }) => {
+        }).then((res: { access_token: string; }) => {
           if (res) {
             const search = window.location.search ? window.location.search.replace('?', '') : '';
             const { redirect } = parse(search);
             if (redirect) {
-              window.top.postMessage(res.access_token, redirect);
+              window.top.postMessage(res.access_token, redirect as string);
               window.location.replace(`${redirect}#${res.access_token}`);
             } else {
               history.replace('/selectLeague');
@@ -95,4 +89,4 @@ const Login: React.FC<LoginProps> = (props) => {
 export default connect(({ User, loading }: ConnectState) => ({
   User,
   loginLoading: loading.effects['User/login'],
-}))(Login);
+}))(LoginForExternal);
