@@ -77,7 +77,7 @@ function TransactionDetail({
         <Spin spinning={qryLoading}>
           <div className={styles['transaction-detail-wrapper']}>
             <div className={styles['transaction-detail-title']}>
-              <h3>交易详情</h3>
+              <div>交易信息</div>
             </div>
             <div className={styles['transaction-detail-content']}>
               <div className={styles.transactionInfoWrap}>

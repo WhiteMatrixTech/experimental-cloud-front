@@ -51,7 +51,7 @@ export default function DetailCard(props: IProps) {
     <Fragment>
       <div className={styles['detail-card-wrapper']} style={{ boxShadow }}>
         <div className={styles['detail-card-title']}>
-          <span className={styles['detail-title-border']}></span>
+          {/* <span className={styles['detail-title-border']}></span> */}
           <span className={styles['detail-title-content']}>{cardTitle}</span>
         </div>
         <div className={styles['detail-info-wrapper']}>

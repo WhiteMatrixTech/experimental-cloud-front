@@ -10,12 +10,10 @@ const passwordStatusMap = {
   poor: <div className={styles.error}>强度：弱</div>,
 };
 
-declare const ProgressStatuses: ["normal", "exception", "active", "success"];
 const passwordProgressMap = {
-  ok: ProgressStatuses[3],
-  pass: ProgressStatuses[0],
-  poor: ProgressStatuses[1],
-  active: ProgressStatuses[2]
+  ok: 'success',
+  pass: 'normal',
+  poor: 'exception',
 };
 
 export type StepTwoProps = {
