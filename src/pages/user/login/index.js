@@ -47,7 +47,7 @@ function Login(props) {
   return (
     <div className={styles.main}>
       <h3>登录</h3>
-      {loginStatus === LoginStatus.loginError && !loginLoading && <LoginMessage content={loginInfo} />}
+      {loginStatus === LoginStatus.LOGIN_ERROR && !loginLoading && <LoginMessage content={loginInfo} />}
       <LoginFrom form={form} onSubmit={handleSubmit}>
         <UserName
           name="email"

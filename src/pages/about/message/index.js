@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import moment from 'moment';
 import { history } from 'umi';
 import { Tabs, Input, Table, Button, Space } from 'antd';
@@ -11,7 +11,7 @@ import styles from './index.less';
 
 const { TabPane } = Tabs;
 const { Search } = Input;
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/message')
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/message');
 const data = [];
 for (let i = 0; i < 46; i++) {
   data.push({
@@ -20,13 +20,13 @@ for (let i = 0; i < 46; i++) {
     messageSendName: `南京第${i}人民医院`,
     createTime: '1604647467072',
     messageStatus: i % 2 === 0 ? 0 : 1,
-    messageType: i % 6 + 1
+    messageType: (i % 6) + 1,
   });
 }
 
 class Message extends PureComponent {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       loading: false,
       searchMesTitle: '',
@@ -48,22 +48,22 @@ class Message extends PureComponent {
           title: '发送时间',
           dataIndex: 'createTime',
           key: 'createTime',
-          render: text => moment(text).format('YYYY-MM-DD HH:mm:ss')
+          render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
         },
         {
           title: '状态',
           dataIndex: 'messageStatus',
           key: 'messageStatus',
-          render: text => <span style={{ color: text === 0 ? '#000' : 'grey' }}>{text === 0 ? '未读' : '已读'}</span>
+          render: (text) => <span style={{ color: text === 0 ? '#000' : 'grey' }}>{text === 0 ? '未读' : '已读'}</span>,
         },
         {
           title: '消息类型',
           dataIndex: 'messageType',
           key: 'messageType',
-          render: text => {
-            const record = messageType.find(item => item.id === text);
-            return record ? record.name : ''
-          }
+          render: (text) => {
+            const record = messageType.find((item) => item.id === text);
+            return record ? record.name : '';
+          },
         },
         {
           title: '操作',
@@ -74,109 +74,113 @@ class Message extends PureComponent {
             </Space>
           ),
         },
-      ]
-    }
+      ],
+    };
   }
 
   componentDidMount() {
     this.props.dispatch({
       type: 'Message/getAllUnreadMessage',
-      payload: {}
+      payload: {},
     });
     this.props.dispatch({
       type: 'Message/getUnreadMesGroup',
-      payload: {}
+      payload: {},
     });
     this.getMesList();
   }
 
   // 获取消息列表
   getMesList = (messageType, messageTitle, isShowViewAll) => {
-    const { selectdMessageTab } = this.props.Message;
+    const { selectedMessageTab } = this.props.Message;
     const params = {
-      messageType: messageType || selectdMessageTab,
+      messageType: messageType || selectedMessageTab,
       messageTitle: messageTitle || this.state.searchMesTitle,
-      isShowViewAll: isShowViewAll || this.state.isShowViewAll
-    }
+      isShowViewAll: isShowViewAll || this.state.isShowViewAll,
+    };
     this.props.dispatch({
       type: 'Message/getMessageList',
-      payload: params
-    })
-  }
+      payload: params,
+    });
+  };
 
   // 点击查看全部消息
   viewAllMess = () => {
-    this.setState({ isShowViewAll: false })
-    this.getMesList('', '', true)
-  }
+    this.setState({ isShowViewAll: false });
+    this.getMesList('', '', true);
+  };
 
   // 点击查看未读消息
   viewUnreadMess = () => {
-    this.setState({ isShowViewAll: true })
-    this.getMesList('', '', false)
-  }
+    this.setState({ isShowViewAll: true });
+    this.getMesList('', '', false);
+  };
 
   // 点击查看消息详情
-  viewMesDetail = record => {
+  viewMesDetail = (record) => {
     history.push({
       pathname: `/about/message/${record.id}`,
       query: {
         messageId: record.id,
       },
-    })
-  }
+    });
+  };
 
   // 改变当前展示的消息类型
-  onChangeMessageType = activeKey => {
+  onChangeMessageType = (activeKey) => {
     this.props.dispatch({
       type: 'Message/common',
-      payload: { selectdMessageTab: activeKey }
+      payload: { selectedMessageTab: activeKey },
     });
     this.getMesList(activeKey, '');
-  }
+  };
 
   // 回车、点击搜索图标 进行搜索
-  onSearch = value => {
+  onSearch = (value) => {
     this.setState({ searchMesTitle: value });
     this.getMesList('', value);
-  }
+  };
 
   // 搜索栏值改变
-  onSearchChange = e => {
-    this.setState({ searchMesTitle: e.target.value })
-  }
+  onSearchChange = (e) => {
+    this.setState({ searchMesTitle: e.target.value });
+  };
 
   // 选中消息
-  onSelectChange = selectedRowKeys => {
+  onSelectChange = (selectedRowKeys) => {
     this.setState({ selectedRowKeys });
   };
 
   // 批量已读
-  bacthReadMes = () => {
-    this.props.dispatch({
-      type: 'Message/bacthReadMes',
-      payload: { messageIds: this.state.selectedRowKeys }
-    }).then(res => {
-      if (res) {
-        this.getMesList()
-      }
-    })
-  }
+  batchReadMes = () => {
+    this.props
+      .dispatch({
+        type: 'Message/batchReadMes',
+        payload: { messageIds: this.state.selectedRowKeys },
+      })
+      .then((res) => {
+        if (res) {
+          this.getMesList();
+        }
+      });
+  };
 
   // 批量删除
   batchDeleteMes = () => {
-    this.props.dispatch({
-      type: 'Message/batchDeleteMes',
-      payload: { messageIds: this.state.selectedRowKeys }
-    }).then(res => {
-      if (res) {
-        this.getMesList()
-      }
-    })
-  }
+    this.props
+      .dispatch({
+        type: 'Message/batchDeleteMes',
+        payload: { messageIds: this.state.selectedRowKeys },
+      })
+      .then((res) => {
+        if (res) {
+          this.getMesList();
+        }
+      });
+  };
 
   render() {
-    const { selectdMessageTab } = this.props.Message;
+    const { selectedMessageTab } = this.props.Message;
     const { columns, loading, searchMesTitle, selectedRowKeys, isShowViewAll } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -184,28 +188,27 @@ class Message extends PureComponent {
     };
     const hasSelected = selectedRowKeys.length > 0;
     return (
-      <div className='page-wrapper'>
+      <div className="page-wrapper">
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
-        <div className='page-content' style={{ position: 'relative' }}>
+        <div className="page-content" style={{ position: 'relative' }}>
           <div className={styles['message-search-wrapper']}>
             <Search
               allowClear
-              placeholder='输入消息标题'
+              placeholder="输入消息标题"
               value={searchMesTitle}
               style={{ width: 300 }}
               onSearch={this.onSearch}
               onChange={this.onSearchChange}
             />
           </div>
-          <Tabs type="card" activeKey={selectdMessageTab} onChange={this.onChangeMessageType}>
-            {messageType.map(item =>
-              <TabPane key={item.key} tab={item.name}>
-              </TabPane>
-            )}
+          <Tabs type="card" activeKey={selectedMessageTab} onChange={this.onChangeMessageType}>
+            {messageType.map((item) => (
+              <TabPane key={item.key} tab={item.name}></TabPane>
+            ))}
           </Tabs>
           <div className={styles['table-btn-wrapper']}>
             <span>
-              <Button type="primary" disabled={!hasSelected} loading={loading} onClick={this.bacthReadMes}>
+              <Button type="primary" disabled={!hasSelected} loading={loading} onClick={this.batchReadMes}>
                 标为已读
               </Button>
               <Button
@@ -217,18 +220,18 @@ class Message extends PureComponent {
                 批量删除
               </Button>
             </span>
-            {isShowViewAll ?
-              <Button className='default-blue-btn' onClick={this.viewAllMess}>
+            {isShowViewAll ? (
+              <Button className="default-blue-btn" onClick={this.viewAllMess}>
                 查看全部消息
               </Button>
-              :
-              <Button className='default-blue-btn' onClick={this.viewUnreadMess}>
+            ) : (
+              <Button className="default-blue-btn" onClick={this.viewUnreadMess}>
                 查看未读消息
-            </Button>
-            }
+              </Button>
+            )}
           </div>
           <Table
-            rowKey='id'
+            rowKey="id"
             columns={columns}
             dataSource={data}
             rowSelection={rowSelection}
@@ -240,4 +243,4 @@ class Message extends PureComponent {
   }
 }
 
-export default connect(({ Message }) => ({ Message }))(Message)
+export default connect(({ Message }) => ({ Message }))(Message);
