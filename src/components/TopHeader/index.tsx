@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
 import type { Dispatch } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { MenuList } from '@/utils/menu';
+import { Roles } from '@/utils/roles';
 import { ConnectState } from '@/models/connect';
 import buaaLogo from 'assets/images/buaa-small.png';
 import styles from './index.less';
@@ -13,15 +14,16 @@ const { Header } = Layout;
 
 export type TopHeaderProps = {
   dispatch: Dispatch;
+  pathname: string;
   User: ConnectState['User'];
 };
 
-function TopHeader(props: TopHeaderProps) {
-  const { dispatch, User } = props;
-  const { userInfo } = User;
+const TopHeader: React.FC<TopHeaderProps> = (props) => {
+  const { dispatch, pathname, User } = props;
+  const { userInfo, userRole } = User;
 
   const getUserMenu = () => {
-    const showChangeLeague = window.location.pathname.indexOf('about') > -1;
+    const showChangeLeague = pathname.indexOf('about') > -1 || pathname.indexOf('userManagement') > -1;
     return (
       <Menu theme="dark" onClick={handleUserMenuClick}>
         {showChangeLeague && <Menu.Item key="changeLeague">切换联盟</Menu.Item>}
@@ -64,6 +66,13 @@ function TopHeader(props: TopHeaderProps) {
     window.open(link);
   };
 
+  const onClickUserManagement = (e: Event) => {
+    e.preventDefault();
+    history.push('/userManagement');
+  };
+
+  const isSuperAdmin = useMemo(() => userRole === Roles.SuperUser, [userRole])
+
   return (
     <Header className={styles.header}>
       <div className={styles['logo-sub']}>
@@ -71,6 +80,9 @@ function TopHeader(props: TopHeaderProps) {
         <span>欢迎使用区块链科研实验云平台</span>
       </div>
       <div className={styles['header-right-info']}>
+        {isSuperAdmin && <a className={styles['header-menu-item']} onClick={onClickUserManagement}>
+          用户角色管理
+        </a>}
         <a className={styles['header-menu-item']} onClick={onClickIDE}>
           ChainIDE
         </a>

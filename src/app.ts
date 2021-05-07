@@ -44,12 +44,17 @@ export function render(oldRender: () => void) {
         isAdminPage = true;
       }
     });
+  if (pathname.indexOf('userManagement') > -1) {
+    isAdminPage = true;
+  }
 
   // 外部登录
   const search = window.location.search ? window.location.search.replace('?', '') : '';
   const { redirect } = parse(search);
 
-  if (userRole === Roles.NetworkMember && isAdminPage) {
+  const noAccessSituation = (userRole === Roles.NetworkMember && isAdminPage) || (userRole !== Roles.SuperUser && isAdminPage);
+
+  if (noAccessSituation) {
     history.push('/403');
     oldRender();
   } else if (redirect) {
