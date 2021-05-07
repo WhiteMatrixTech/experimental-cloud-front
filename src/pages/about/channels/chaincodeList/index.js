@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Table, Badge } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard, SearchBar } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { chainCodeStatusInfo } from '../../contract/myContract/_config';
 import baseConfig from 'utils/config';
 

@@ -4,7 +4,7 @@ import { Breadcrumb, DetailCard } from 'components';
 import { Input, Result, Empty } from 'antd';
 import classnames from 'classnames';
 import { isObject } from 'lodash';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import styles from './index.less';
 
 const { Search } = Input;

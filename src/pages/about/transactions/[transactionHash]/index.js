@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Row, Col, Spin } from 'antd';
 import { Breadcrumb } from 'components';
 import styles from './index.less';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 breadCrumbItem.push({
@@ -77,7 +77,7 @@ function TransactionDetail({
         <Spin spinning={qryLoading}>
           <div className={styles['transaction-detail-wrapper']}>
             <div className={styles['transaction-detail-title']}>
-              <h3>交易详情</h3>
+              <div>交易信息</div>
             </div>
             <div className={styles['transaction-detail-content']}>
               <div className={styles.transactionInfoWrap}>

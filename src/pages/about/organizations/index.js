@@ -6,7 +6,7 @@ import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
 import { orgStatus } from './_config';
 import CreateOrgModal from './components/CreateOrgModal';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/organizations');
 

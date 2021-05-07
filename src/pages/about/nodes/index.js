@@ -5,11 +5,11 @@ import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Breadcrumb } from 'components';
 import { Table, Button, Badge, Space } from 'antd';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import CreateNodeModal from './components/CreateNodeModal';
 import SSHCommand from './components/SSHCommand';
 import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles.js';
+import { Roles } from 'utils/roles';
 import { peerStatus, availableNodeStatus } from './_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/nodes');

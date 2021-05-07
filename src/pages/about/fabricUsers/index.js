@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 import { Breadcrumb } from 'components';
 import { Table, Button, Space, Form, Row, Col, Select, message } from 'antd';
 import CreateFabricUserModal from './components/CreateFabricUserModal';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { orgStatusEnum } from '../organizations/_config';
 import baseConfig from 'utils/config';
 import styles from './index.less';

@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Spin, message } from 'antd';
 import { history } from 'umi';
 import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { ApprovalStatus } from '../_config';
 import { injectIntl } from 'umi';
 

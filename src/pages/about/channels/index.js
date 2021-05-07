@@ -6,9 +6,9 @@ import { Table, Button, Badge, Space, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Breadcrumb } from 'components';
 import CreateChannelModal from './components/CreateChannelModal';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles.js';
+import { Roles } from 'utils/roles';
 import { ChannelStatus } from './_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');

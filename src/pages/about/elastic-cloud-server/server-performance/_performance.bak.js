@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Spin, Row, Col, Tooltip, Progress } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Breadcrumb, DetailCard, ChartCard, Field } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { serverPurpose } from '../_config';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/elastic-cloud-server');

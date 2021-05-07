@@ -1,0 +1,46 @@
+import { BlockModelState } from './block';
+import { CertificateModelState } from './certificate';
+import { ChannelModelState } from './channel';
+import { ContractModelState } from './contract';
+import { ContractStoreModelState } from './contractStore';
+import { DashboardModelState } from './dashboard';
+import { DIDModelState } from './did';
+import { ElasticServerModelState } from './elastic-cloud-server';
+import { MemberModelState } from './enterprise-member';
+import { EvidenceModelState } from './evidence';
+import { FabricRoleModelState } from './fabric-role';
+import { LayoutModelState } from './layout';
+import { LogsModelState } from './logs';
+import { MessageModelState } from './message';
+import { MyInfoModelState } from './my-info';
+import { PeerModelState } from './node';
+import { OrganizationModelState } from './organization';
+import { PrivacyStrategyModelState } from './privacy-strategy';
+import { RBACModelState } from './rbac';
+import { TransactionsModelState } from './transactions';
+import { UserModelState } from './user';
+
+export type ConnectState = {
+  Block: BlockModelState;
+  Certificate: CertificateModelState;
+  Channel: ChannelModelState;
+  Contract: ContractModelState;
+  ContractStore: ContractStoreModelState;
+  Dashboard: DashboardModelState;
+  DID: DIDModelState;
+  ElasticServer: ElasticServerModelState;
+  Member: MemberModelState;
+  Evidence: EvidenceModelState;
+  FabricRole: FabricRoleModelState;
+  Layout: LayoutModelState;
+  Logs: LogsModelState;
+  Message: MessageModelState;
+  MyInfo: MyInfoModelState;
+  Peer: PeerModelState;
+  Organization: OrganizationModelState;
+  PrivacyStrategy: PrivacyStrategyModelState;
+  RBAC: RBACModelState;
+  Transactions: TransactionsModelState;
+  User: UserModelState;
+  loading: { effects: Record<boolean> }
+};

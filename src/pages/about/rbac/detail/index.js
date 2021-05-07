@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import { Row, Col, Form, Radio, Select, Spin, Input } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import styles from './index.less';
 
 const { Item } = Form;

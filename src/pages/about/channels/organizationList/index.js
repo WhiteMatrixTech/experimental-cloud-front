@@ -2,11 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Table, Button } from 'antd';
 import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import AddOrg from '../components/AddOrg';
 import { ChannelStatusMap } from '../_config';
 import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles.js';
+import { Roles } from 'utils/roles';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({

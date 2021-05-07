@@ -8,7 +8,7 @@ import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
 import { Breadcrumb } from 'components';
 import baseConfig from 'utils/config';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import styles from './index.less';
 import { statusList, validStatus } from './_config';
 import ConfigMemberRole from './components/ConfigMemberRole';

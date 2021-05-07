@@ -5,7 +5,7 @@ import { connect } from 'dva';
 import { history } from 'umi';
 import moment from 'moment';
 import { StatisticsCard, Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import { ChannelStatus } from '../_config';
 import style from './index.less';
 import config from 'utils/config';

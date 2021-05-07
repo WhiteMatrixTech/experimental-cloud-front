@@ -6,8 +6,8 @@ import { connect } from 'dva';
 import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal, Input, message } from 'antd';
 import { CaretDownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Breadcrumb } from 'components';
-import { Roles } from 'utils/roles.js';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { Roles } from 'utils/roles';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import styles from './index.less';
 
 const { Item } = Form;

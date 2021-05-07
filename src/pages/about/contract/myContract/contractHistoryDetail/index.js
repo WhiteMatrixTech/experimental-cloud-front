@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { Table, Spin } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import baseConfig from 'utils/config';
 
 class ContractDetail extends Component {
@@ -162,7 +162,12 @@ class ContractDetail extends Component {
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <Spin spinning={qryLoading}>
           <div className="page-content">
-            <DetailCard cardTitle="合约信息" detailList={contractInfoList} columnsNum={3} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
+            <DetailCard
+              cardTitle="合约信息"
+              detailList={contractInfoList}
+              columnsNum={3}
+              boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"
+            />
             <Table
               rowKey="id"
               columns={this.columns}
@@ -181,5 +186,6 @@ class ContractDetail extends Component {
 export default connect(({ User, Contract, loading }) => ({
   User,
   Contract,
-  qryLoading: loading.effects['Contract/getDetailOfChainCode'] || loading.effects['Contract/getChainCodeApprovalHistory'],
+  qryLoading:
+    loading.effects['Contract/getDetailOfChainCode'] || loading.effects['Contract/getChainCodeApprovalHistory'],
 }))(ContractDetail);

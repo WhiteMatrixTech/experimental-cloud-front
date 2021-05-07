@@ -5,7 +5,7 @@ import { history } from 'umi';
 import { Table, Space, Spin } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import baseConfig from 'utils/config';
 
 let breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);

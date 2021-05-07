@@ -5,7 +5,7 @@ import { Spin } from 'antd';
 import { isObject } from 'lodash';
 import { Breadcrumb, DetailCard } from 'components';
 import ReactJson from 'react-json-view';
-import { MenuList, getCurBreadcrumb } from 'utils/menu.js';
+import { MenuList, getCurBreadcrumb } from 'utils/menu';
 import styles from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
