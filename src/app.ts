@@ -52,7 +52,9 @@ export function render(oldRender: () => void) {
   const search = window.location.search ? window.location.search.replace('?', '') : '';
   const { redirect } = parse(search);
 
-  const noAccessSituation = (userRole === Roles.NetworkMember && isAdminPage) || (userRole !== Roles.SuperUser && isAdminPage);
+  // const noAccessSituation = (userRole === Roles.NetworkMember && isAdminPage) || (userRole !== Roles.SuperUser && isAdminPage);
+  const noAccessSituation = (userRole === Roles.NetworkMember && isAdminPage)
+
 
   if (noAccessSituation) {
     history.push('/403');

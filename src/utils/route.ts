@@ -264,6 +264,12 @@ export function getRoutes(): RouteProps[] {
         {
           path: '/userManagement',
           exact: true,
+          routes: [
+            {
+              path: '/userManagement/user-roles',
+              exact: true,
+            },
+          ],
         },
       ],
     },

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo } from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
@@ -59,14 +60,14 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
   };
 
   // 跳转至IDE
-  const onClickIDE = (e: Event) => {
+  const onClickIDE = (e: any) => {
     e.preventDefault();
     const accessToken = localStorage.getItem('accessToken');
     const link = `${process.env.CHAIN_IDE_LINK}#${accessToken}`;
     window.open(link);
   };
 
-  const onClickUserManagement = (e: Event) => {
+  const onClickUserManagement = (e: any) => {
     e.preventDefault();
     history.push('/userManagement');
   };
