@@ -115,7 +115,7 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   // 不同状态展示不同的内容
   const isAdminWithEmpty = userInfo.role && AdminRole.includes(userInfo.role) && myNetworkList.length === 0;
   const isAdminNotEmpty = userInfo.role && AdminRole.includes(userInfo.role) && myNetworkList.length > 0;
-  const notAdminWithEmpty = (!userInfo.role || userInfo.role !== Roles.Admin) && myNetworkList.length === 0;
+  const notAdminWithEmpty = (!userInfo.role || !AdminRole.includes(userInfo.role)) && myNetworkList.length === 0;
   return (
     <div className={styles.main}>
       <div>
