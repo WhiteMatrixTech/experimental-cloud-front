@@ -147,6 +147,7 @@ const UserModel: UserModelType = {
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         localStorage.setItem('userInfo', JSON.stringify(result));
+        localStorage.setItem('role', result.role);
         yield put({
           type: 'common',
           payload: {

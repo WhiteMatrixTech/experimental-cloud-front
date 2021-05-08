@@ -35,6 +35,7 @@ export function render(oldRender: () => void) {
 
   // 403路由控制
   const userRole = localStorage.getItem('userRole');
+  const role = localStorage.getItem('role');
   const allMenu = tree2Arr(MenuList, 'menuVos');
   let isAdminPage = false;
   allMenu
@@ -44,12 +45,17 @@ export function render(oldRender: () => void) {
         isAdminPage = true;
       }
     });
+  if (pathname.indexOf('userManagement') > -1) {
+    isAdminPage = true;
+  }
 
   // 外部登录
   const search = window.location.search ? window.location.search.replace('?', '') : '';
   const { redirect } = parse(search);
+  const noAccessSituation = (userRole === Roles.NetworkMember && isAdminPage) || (role !== Roles.SuperUser && isAdminPage);
 
-  if (userRole === Roles.NetworkMember && isAdminPage) {
+
+  if (noAccessSituation) {
     history.push('/403');
     oldRender();
   } else if (redirect) {

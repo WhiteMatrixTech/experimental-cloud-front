@@ -1,10 +1,12 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useMemo } from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
 import type { Dispatch } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { MenuList } from '@/utils/menu';
+import { Roles } from '@/utils/roles';
 import { ConnectState } from '@/models/connect';
 import buaaLogo from 'assets/images/buaa-small.png';
 import styles from './index.less';
@@ -13,15 +15,16 @@ const { Header } = Layout;
 
 export type TopHeaderProps = {
   dispatch: Dispatch;
+  pathname: string;
   User: ConnectState['User'];
 };
 
-function TopHeader(props: TopHeaderProps) {
-  const { dispatch, User } = props;
+const TopHeader: React.FC<TopHeaderProps> = (props) => {
+  const { dispatch, pathname, User } = props;
   const { userInfo } = User;
 
   const getUserMenu = () => {
-    const showChangeLeague = window.location.pathname.indexOf('about') > -1;
+    const showChangeLeague = pathname.indexOf('about') > -1 || pathname.indexOf('userManagement') > -1;
     return (
       <Menu theme="dark" onClick={handleUserMenuClick}>
         {showChangeLeague && <Menu.Item key="changeLeague">切换联盟</Menu.Item>}
@@ -57,12 +60,19 @@ function TopHeader(props: TopHeaderProps) {
   };
 
   // 跳转至IDE
-  const onClickIDE = (e: Event) => {
+  const onClickIDE = (e: any) => {
     e.preventDefault();
     const accessToken = localStorage.getItem('accessToken');
     const link = `${process.env.CHAIN_IDE_LINK}#${accessToken}`;
     window.open(link);
   };
+
+  const onClickUserManagement = (e: any) => {
+    e.preventDefault();
+    history.push('/userManagement');
+  };
+
+  const isShowUserManagement = useMemo(() => (userInfo.role === Roles.SuperUser) && (pathname.indexOf('userManagement') === -1), [pathname, userInfo.role])
 
   return (
     <Header className={styles.header}>
@@ -71,6 +81,9 @@ function TopHeader(props: TopHeaderProps) {
         <span>欢迎使用区块链科研实验云平台</span>
       </div>
       <div className={styles['header-right-info']}>
+        {isShowUserManagement && <a className={styles['header-menu-item']} onClick={onClickUserManagement}>
+          用户角色管理
+        </a>}
         <a className={styles['header-menu-item']} onClick={onClickIDE}>
           ChainIDE
         </a>

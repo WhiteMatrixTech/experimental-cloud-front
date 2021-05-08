@@ -5,6 +5,7 @@ import { history } from 'umi';
 import { LeftMenu, TopHeader } from '@/components';
 import { ConnectState } from '@/models/connect';
 import styles from './Layout.less';
+import { ModalFuncProps } from 'antd/lib/modal';
 
 export type BaaSLayoutProps = {
   children: JSX.Element,
@@ -39,7 +40,7 @@ function BaaSLayout(props: BaaSLayoutProps) {
   }, []);
 
   useEffect(() => {
-    let modal;
+    let modal: { destroy: any; update?: (configUpdate: ModalFuncProps | ((prevConfig: ModalFuncProps) => ModalFuncProps)) => void; };
     if (localStorage.getItem('newAccountLogin')) {
       modal = Modal.confirm({
         title: '你的账号已被登出',
@@ -57,7 +58,7 @@ function BaaSLayout(props: BaaSLayoutProps) {
 
   return (
     <Layout className="layout-style">
-      <TopHeader />
+      <TopHeader pathname={pathname} />
       <Layout>
         <div className={styles.appLayout}>
           <div className={styles.leftMenu}>

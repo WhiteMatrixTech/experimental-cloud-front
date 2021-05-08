@@ -8,7 +8,7 @@ const { Content } = Layout;
 
 export type LoginLayoutProps = {
   children: JSX.Element,
-  pathname?: string
+  pathname: string
 }
 
 class LoginLayout extends React.PureComponent<LoginLayoutProps> {

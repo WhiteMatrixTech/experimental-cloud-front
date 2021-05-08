@@ -138,6 +138,18 @@ span > .ant-btn-primary {
   border-color: #40a9ff;
 }
 
+// 去除浏览器自动填充改变输入框背景色的影响
+input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.85) !important;
+  background-color:transparent;
+  background-image: none;
+  transition: background-color 50000s ease-in-out 0s; //背景色透明  生效时长  过渡效果  启用时延迟的时间
+}
+
+input {
+  background-color:transparent;
+}
+
 ::-webkit-scrollbar
 {
     width: 6px;

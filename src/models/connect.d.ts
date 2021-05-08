@@ -19,6 +19,7 @@ import { PrivacyStrategyModelState } from './privacy-strategy';
 import { RBACModelState } from './rbac';
 import { TransactionsModelState } from './transactions';
 import { UserModelState } from './user';
+import { UserRoleModelState } from './user-role';
 
 export type ConnectState = {
   Block: BlockModelState;
@@ -42,5 +43,6 @@ export type ConnectState = {
   RBAC: RBACModelState;
   Transactions: TransactionsModelState;
   User: UserModelState;
+  UserRole: UserRoleModelState;
   loading: { effects: Record<boolean> }
 };

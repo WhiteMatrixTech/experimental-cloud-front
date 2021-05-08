@@ -9,6 +9,8 @@ import { Roles } from '@/utils/roles';
 import { getDifferenceSet } from '@/utils';
 import styles from './index.less';
 
+const AdminRole = [Roles.Admin, Roles.SuperUser];
+
 export type SelectLeagueProps = {
   joinLoading: boolean,
   dispatch: Dispatch,
@@ -111,8 +113,8 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   };
 
   // 不同状态展示不同的内容
-  const isAdminWithEmpty = userInfo.role && userInfo.role === Roles.Admin && myNetworkList.length === 0;
-  const isAdminNotEmpty = userInfo.role && userInfo.role === Roles.Admin && myNetworkList.length > 0;
+  const isAdminWithEmpty = userInfo.role && AdminRole.includes(userInfo.role) && myNetworkList.length === 0;
+  const isAdminNotEmpty = userInfo.role && AdminRole.includes(userInfo.role) && myNetworkList.length > 0;
   const notAdminWithEmpty = (!userInfo.role || userInfo.role !== Roles.Admin) && myNetworkList.length === 0;
   return (
     <div className={styles.main}>
