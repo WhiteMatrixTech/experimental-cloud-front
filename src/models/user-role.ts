@@ -7,17 +7,18 @@ export type UserRoleObject = {
   networkName: string,
   roleName: string
 }
-export type User = {
+export type UserInfo = {
   loginName: string,
   companyName: string,
   contactEmail: string,
   contactName: string,
   role: Roles,
+  did?: string;
   createTimeStamp: string
 }
 
 export type UserRoleModelState = {
-  userList: Array<User>,
+  userList: Array<UserInfo>,
   userTotal: number,
   roleNameList: string[],
   userRoles: UserRoleObject[]

@@ -1,14 +1,11 @@
 import { UserRoleObject } from '@/models/user-role';
 import { request } from '@/utils/request';
+import { BasicPaginationParams } from '@/utils/types';
 
 /**
  * 获取用户列表
  */
-export type PaginationParams = {
-  offset: number;
-  limit: number
-}
-export async function getUserList(params: PaginationParams) {
+export async function getUserList(params: BasicPaginationParams) {
   return request('/superuser/listUsers', { method: 'POST', body: params });
 }
 /**
@@ -30,6 +27,7 @@ export async function getRoleNameList() {
  */
 export type UserRoleParams = {
   companyName: string;
+  accessRoles?: UserRoleObject[];
 }
 export async function getUserRoles(params: UserRoleParams) {
   return request(`/superuser/customRole/${params.companyName}`);
@@ -38,6 +36,6 @@ export async function getUserRoles(params: UserRoleParams) {
 /**
  * 配置用户角色
  */
-export async function configUserRoles(params: UserRoleParams & UserRoleObject[]) {
+export async function configUserRoles(params: UserRoleParams) {
   return request(`/superuser/customRole/${params.companyName}`, { method: 'POST', body: params });
 }

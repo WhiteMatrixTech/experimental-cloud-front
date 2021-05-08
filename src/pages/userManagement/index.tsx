@@ -3,7 +3,7 @@ import { Space, Table } from 'antd';
 import { connect, history, Dispatch } from 'umi';
 import { RolesMapNames } from '@/utils/roles';
 import { ConnectState } from '@/models/connect';
-import { User } from '@/models/user-role';
+import { UserInfo } from '@/models/user-role';
 import cs from 'classnames';
 import styles from './index.less';
 
@@ -44,7 +44,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
     {
       title: '操作',
       key: 'action',
-      render: (_: any, record: User) => (
+      render: (_: any, record: UserInfo) => (
         <Space size="small">
           <a onClick={() => onClickConfig(record)}>配置访问角色</a>
         </Space>
@@ -52,7 +52,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
     },
   ];
 
-  const onClickConfig = async (record: User) => {
+  const onClickConfig = async (record: UserInfo) => {
     await dispatch({
       type: 'UserRole/getRoleNameList',
       payload: {},
