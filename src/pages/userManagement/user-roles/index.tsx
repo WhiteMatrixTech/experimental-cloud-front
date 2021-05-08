@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Space, Button, Spin, Form, Row, Col, Input, Select } from 'antd';
 import { connect, history, Dispatch } from 'umi';
 import { ConnectState } from '@/models/connect';
+import { RolesMapNames } from '@/utils/roles';
 import cs from 'classnames';
 import styles from './index.less';
 
@@ -77,7 +78,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
               <Item
                 label="注册角色"
                 name="role"
-                initialValue={location.state?.role}
+                initialValue={RolesMapNames[location.state?.role]}
               >
                 <Input disabled placeholder="注册角色" />
               </Item>
@@ -102,14 +103,14 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
                       <Col span={8}>
                         <Item
                           label="角色名称"
-                          name={[key, 'serverName']}
-                          initialValue={role.roleName}
-                          fieldKey={[key, 'serverName']}
+                          name={[key, 'roleName']}
+                          fieldKey={[key, 'roleName']}
                         >
                           <Select
                             allowClear={true}
                             placeholder="选择角色"
                             style={{ width: '100%' }}
+                            defaultValue={role.roleName}
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                           >
                             {roleNameList.map((item) => (

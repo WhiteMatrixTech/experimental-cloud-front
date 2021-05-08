@@ -72,7 +72,7 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
     history.push('/userManagement');
   };
 
-  const isSuperAdmin = useMemo(() => userRole === Roles.SuperUser, [userRole])
+  const isSuperAdmin = useMemo(() => userInfo.role === Roles.SuperUser, [userInfo.role])
 
   return (
     <Header className={styles.header}>

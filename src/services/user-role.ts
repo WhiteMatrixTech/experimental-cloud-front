@@ -22,7 +22,7 @@ export async function getUserTotal() {
  * 获取角色名列表
  */
 export async function getRoleNameList() {
-  return request('/superuser/customRole/listRoleNames', { method: 'POST', body: {} });
+  return request('/superuser/listRoleNames', { method: 'POST', body: {} });
 }
 
 /**

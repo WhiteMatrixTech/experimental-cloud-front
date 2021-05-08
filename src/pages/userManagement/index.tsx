@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Space, Table } from 'antd';
 import { connect, history, Dispatch } from 'umi';
-import { Roles } from '@/utils/roles';
+import { RolesMapNames } from '@/utils/roles';
 import { ConnectState } from '@/models/connect';
 import { User } from '@/models/user-role';
 import cs from 'classnames';
@@ -39,7 +39,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
       title: '注册角色',
       dataIndex: 'role',
       key: 'role',
-      render: (text: string) => <span>{Roles[text]}</span>
+      render: (text: string) => <span>{RolesMapNames[text]}</span>
     },
     {
       title: '操作',
@@ -93,7 +93,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
     </div>
     <div className="page-content page-content-shadow table-wrapper">
       <Table
-        rowKey="blockHash"
+        rowKey="companyName"
         columns={columns}
         dataSource={userList}
         loading={qryLoading}

@@ -44,17 +44,8 @@ const UserRoleModel: UserRoleModelType = {
   state: {
     userList: [], // 用户列表
     userTotal: 0,
-    roleNameList: ['string1', 'string2', 'string3'],
-    userRoles: [{
-      networkName: 'string1',
-      roleName: 'string1'
-    }, {
-      networkName: 'string2',
-      roleName: 'string2'
-    }, {
-      networkName: 'string3',
-      roleName: 'string3'
-    }]
+    roleNameList: [],
+    userRoles: []
   },
 
   effects: {
