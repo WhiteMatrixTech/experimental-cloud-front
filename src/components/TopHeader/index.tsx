@@ -21,7 +21,7 @@ export type TopHeaderProps = {
 
 const TopHeader: React.FC<TopHeaderProps> = (props) => {
   const { dispatch, pathname, User } = props;
-  const { userInfo, userRole } = User;
+  const { userInfo } = User;
 
   const getUserMenu = () => {
     const showChangeLeague = pathname.indexOf('about') > -1 || pathname.indexOf('userManagement') > -1;
@@ -72,7 +72,7 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
     history.push('/userManagement');
   };
 
-  const isSuperAdmin = useMemo(() => userInfo.role === Roles.SuperUser, [userInfo.role])
+  const isShowUserManagement = useMemo(() => (userInfo.role === Roles.SuperUser) && (pathname.indexOf('userManagement') === -1), [pathname, userInfo.role])
 
   return (
     <Header className={styles.header}>
@@ -81,7 +81,7 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
         <span>欢迎使用区块链科研实验云平台</span>
       </div>
       <div className={styles['header-right-info']}>
-        {isSuperAdmin && <a className={styles['header-menu-item']} onClick={onClickUserManagement}>
+        {isShowUserManagement && <a className={styles['header-menu-item']} onClick={onClickUserManagement}>
           用户角色管理
         </a>}
         <a className={styles['header-menu-item']} onClick={onClickIDE}>

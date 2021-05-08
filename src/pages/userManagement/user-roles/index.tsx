@@ -38,7 +38,6 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
     form
       .validateFields()
       .then((values) => {
-        console.log('values', values);
         dispatch({
           type: 'UserRole/configUserRoles',
           payload: { companyName: location.state?.companyName, accessRoles: values.RoleList },
@@ -50,6 +49,14 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
   }
 
   useEffect(() => {
+    form.setFieldsValue({ RoleList: userRoles });
+  }, [form, userRoles])
+
+  useEffect(() => {
+    dispatch({
+      type: 'UserRole/getRoleNameList',
+      payload: {},
+    });
     dispatch({
       type: 'UserRole/getUserRoles',
       payload: { companyName: location.state?.companyName },
@@ -88,7 +95,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
             {(fields) => (
               <>
                 {userRoles.map((role, key) => (
-                  <div key={key}>
+                  <div key={role.networkName}>
                     <Row justify="center" gutter={[24, 24]}>
                       <Col span={8}>
                         <Item
@@ -110,7 +117,6 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
                             allowClear={true}
                             placeholder="选择角色"
                             style={{ width: '100%' }}
-                            defaultValue={role.roleName}
                             getPopupContainer={(triggerNode) => triggerNode.parentNode}
                           >
                             {roleNameList.map((item) => (

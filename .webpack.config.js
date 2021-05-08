@@ -32,11 +32,11 @@ export const chainWebpack = (config, { webpack }) => {
     .tap((options) => {
       const newOptions = {
         ...options,
-        name: assetDir + '/img/[name].[hash:8].[ext]',
+        name: assetDir + '/img/[name].[ext]',
         fallback: {
           ...options.fallback,
           options: {
-            name: assetDir + '/img/[name].[hash:8].[ext]',
+            name: assetDir + '/img/[name].[ext]',
             esModule: false,
           },
         },
