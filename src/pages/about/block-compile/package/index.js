@@ -1,7 +1,7 @@
 import React from 'react';
-import { Breadcrumb } from 'components';
+import { Breadcrumb } from '@/components';
 import { Empty } from 'antd';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import styles from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block-compile', false);
@@ -10,7 +10,7 @@ breadCrumbItem.push({
   menuHref: `/`,
 });
 
-function MirrorRepository() {
+function SourceCodeCompilation() {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -23,4 +23,4 @@ function MirrorRepository() {
   );
 }
 
-export default MirrorRepository;
+export default SourceCodeCompilation;
