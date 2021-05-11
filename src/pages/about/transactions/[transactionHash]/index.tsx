@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect, useMemo, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Row, Col, Spin } from 'antd';
@@ -20,7 +20,7 @@ export type TransactionDetailProps = {
   transactionHash: string,
   qryLoading: boolean,
   Transactions: ConnectState['Transactions'],
-  match: { params: { transactionHash: string }},
+  match: { params: { transactionHash: string } },
 }
 interface DetailList {
   label: string;
@@ -36,46 +36,49 @@ const TransactionDetail: React.FC<TransactionDetailProps> = (
   const { networkName } = User;
   const { transactionDetail } = Transactions;
 
-  let detailList: Array<DetailList>;
-  //TODO:model中的transactionDetail是一个对象类型
-   detailList = [
-    {
-      label: '交易哈希',
-       value: transactionDetail.txId,
-    },
-    {
-      label: '所属区块',
-      value: transactionDetail.blockHash,
-    },
-    {
-      label: '所属联盟',
-      value: transactionDetail.leagueName,
-    },
-    {
-      label: '交易通道',
-      value: transactionDetail.channelId,
-    },
-    {
-      label: '交易组织',
-      value: transactionDetail.txMsp,
-    },
-    {
-      label: '背书组织',
-      value: JSON.stringify(transactionDetail.txEndorseMsp),
-    },
-    {
-      label: '交易时间',
-      value: moment(transactionDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
-    },
-    {
-      label: '所用合约',
-      value: transactionDetail.chainCodeName,
-    },
-    {
-      label: '交易参数',
-      value: JSON.stringify(transactionDetail.txArgs),
-    },
-  ];
+  const detailList = useMemo(() => {
+    if (transactionDetail) {
+      return [
+        {
+          label: '交易哈希',
+          value: transactionDetail.txId,
+        },
+        {
+          label: '所属区块',
+          value: transactionDetail.blockHash,
+        },
+        {
+          label: '所属联盟',
+          value: transactionDetail.leagueName,
+        },
+        {
+          label: '交易通道',
+          value: transactionDetail.channelId,
+        },
+        {
+          label: '交易组织',
+          value: transactionDetail.txMsp,
+        },
+        {
+          label: '背书组织',
+          value: JSON.stringify(transactionDetail.txEndorseMsp),
+        },
+        {
+          label: '交易时间',
+          value: moment(transactionDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        },
+        {
+          label: '所用合约',
+          value: transactionDetail.chainCodeName,
+        },
+        {
+          label: '交易参数',
+          value: JSON.stringify(transactionDetail.txArgs),
+        },
+      ]
+    }
+    return [];
+  }, [transactionDetail]);
 
   useEffect(() => {
     dispatch({
