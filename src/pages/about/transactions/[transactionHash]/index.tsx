@@ -37,10 +37,11 @@ const TransactionDetail: React.FC<TransactionDetailProps> = (
   const { transactionDetail } = Transactions;
 
   let detailList: Array<DetailList>;
+  //TODO:model中的transactionDetail是一个对象类型
    detailList = [
     {
       label: '交易哈希',
-       value: transactionDetail.txId,//model中的transactionDetail是一个对象类型
+       value: transactionDetail.txId,
     },
     {
       label: '所属区块',

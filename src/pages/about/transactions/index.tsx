@@ -78,6 +78,7 @@ function Transactions(props: TransactionsProps) {
   };
 
   // 点击查看详情
+  //TODO:record使用Models里的数据类型
   const onClickDetail = (record: { channelId?: any; txMsp?: any; txId?: any; }):void => {
     history.push({
       pathname: `/about/transactions/${record.txId}`,
@@ -88,7 +89,7 @@ function Transactions(props: TransactionsProps) {
   };
 
   //用户身份改变时，表格展示改变
-  useEffect(():void=> {
+  useEffect(()=> {
     let data: Array<DataSource>[];
     data = [
       {
@@ -102,19 +103,19 @@ function Transactions(props: TransactionsProps) {
         title: '所属通道',
         dataIndex: 'channelId',
         key: 'channelId',
-        render: (text: any) => text || <span className="a-forbidden-style">信息访问受限</span>,
+        render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '交易组织',
         dataIndex: 'txMsp',
         key: 'txMsp',
-        render: (text: any) => text || <span className="a-forbidden-style">信息访问受限</span>,
+        render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '合约名称',
         dataIndex: 'chainCodeName',
         key: 'chainCodeName',
-        render: (text: any) => text || <span className="a-forbidden-style">信息访问受限</span>,
+        render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '生成时间',
@@ -126,6 +127,7 @@ function Transactions(props: TransactionsProps) {
       {
         title: '操作',
         key: 'action',
+        //TODO:record使用Models里的数据类型
         render: (_: any, record: { channelId: any; txMsp: any; }) => (
           <Space size="small">
             {record.channelId || record.txMsp ? (
