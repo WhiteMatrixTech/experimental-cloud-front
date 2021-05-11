@@ -1,3 +1,16 @@
+export enum MemberApprovalStatus {
+  Pending = 'pending',
+  Approved = 'approved',
+  Rejected = 'rejected',
+  Any = 'any'
+}
+
+export enum MemberValidStatus {
+  Invalid = 'invalid',
+  Valid = 'valid',
+  Pending = 'pending'
+}
+
 export const statusList = {
   // 审批状态
   pending: '未审批',
