@@ -2,10 +2,20 @@ import * as API from '../services/evidence';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
+export type EvidenceSchema = {
+  evidenceHash: string,
+  networkName: string,
+  channelId: string,
+  evidenceData: string,
+  companyName: string,
+  createUser: string,
+  createdAt: string
+}
+
 export type EvidenceModelState = {
-  evidenceDataList: Array<object>,
+  evidenceDataList: Array<EvidenceSchema>,
   evidenceDataTotal: number,
-  evidenceDataDetail: object,
+  evidenceDataDetail: EvidenceSchema | object,
 }
 
 export type EvidenceModelType = {

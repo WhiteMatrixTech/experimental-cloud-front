@@ -2,10 +2,50 @@ import * as API from '../services/elastic-cloud-server';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
+export type ElasticServerSchema = {
+  serverName: string;
+  //TODO: 使用页面处的枚举
+  serverPurpose: string;
+  publicIp: string;
+  privateIp: string;
+  username: string;
+  publicKey: string;
+  privateKey: string;
+  createdAt: Date;
+  instanceCount: number;
+}
+
+export enum InstanceType {
+  OneCpuOneGBMem = 'OneCpuOneGBMem',
+  Other = 'OTHER'
+}
+export class Ports {
+  caPort?: number;
+  nodePort?: number;
+  metricsPort?: number;
+  chainCodePort?: number;
+  gossipPeerPort?: number;
+}
+
+export type ServerInstanceSchema = {
+  serverName: string;
+  instanceName: string;
+  //TODO: 使用页面处的枚举
+  instancePurpose: string;
+  keyName: string;
+  createdAt: Date;
+  networkName: string;
+  instanceId: string;
+  instanceType: InstanceType;
+  state: string;
+  publicIpAddress: string;
+  ports: Ports;
+}
+
 export type ElasticServerModelState = {
-  serverList: Array<object>,
+  serverList: Array<ElasticServerSchema>,
   serverTotal: number,
-  nodeList: Array<object>,
+  nodeList: Array<ServerInstanceSchema>,
   nodeTotal: number,
   serverPerformance: object,
 }

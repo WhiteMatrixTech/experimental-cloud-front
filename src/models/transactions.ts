@@ -2,10 +2,23 @@ import * as API from '../services/transactions';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
+export type TransactionSchema = {
+  blockHash: string, // 区块哈希
+  chainCodeName: string, // 合约名称
+  channelId: string, // 通道ID
+  txArgs: string, // 交易参数
+  txMsp: string, // 交易组织
+  txEndorseMsp: string, // 背书组织
+  createdAt: string, // 创建时间
+  txId: string, // 交易id
+  leagueName: string, // 联盟名
+  networkName: string, // 网络名称
+}
+
 export type TransactionsModelState = {
-  transactionList: Array<object>,
+  transactionList: Array<TransactionSchema>,
   transactionTotal: number,
-  transactionDetail: object,
+  transactionDetail: TransactionSchema | object,
 }
 
 export type TransactionsModelType = {
@@ -20,7 +33,7 @@ export type TransactionsModelType = {
   reducers: {
     common: Reducer<TransactionsModelState>;
   };
-};
+}
 
 const TransactionsModel: TransactionsModelType = {
   namespace: 'Transactions',

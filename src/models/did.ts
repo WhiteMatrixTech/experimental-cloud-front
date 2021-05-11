@@ -2,10 +2,18 @@ import * as API from '../services/did';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
+export type DidSchema = {
+  did: string;
+  idType: string;
+  idName: string;
+  role: string;
+  additionalAttributes: Record<string, unknown>;
+}
+
 export type DIDModelState = {
-  didList: Array<object>,
+  didList: Array<DidSchema>,
   didTotal: number,
-  didDetail: object,
+  didDetail: DidSchema | object,
 }
 
 export type DIDModelType = {

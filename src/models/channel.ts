@@ -1,24 +1,44 @@
 import * as API from '../services/channel';
 import { notification } from 'antd';
-import type { Reducer, Effect } from 'umi';
+import type {
+  Reducer,
+  Effect,
+  BlockSchema,
+  TransactionSchema,
+  OrganizationSchema,
+  PeerSchema,
+  ChainCodeSchema
+} from 'umi';
+
+export type ChannelSchema = {
+  _id: string,
+  networkName: string,        // 网络名称
+  channelAliasName: string,   // 通道别名
+  channelDesc: string,        // 通道描述
+  channelId: string,          // 通道id
+  channelStatus: string,      // 通道状态
+  createUser: string,         // 创建用户
+  updatedAt: Date,            // 更新时间 2021-01-29T02:47:00.959Z
+  createdAt: Date,            // 创建时间 2021-01-27T06:08:08.216Z
+}
 
 export type ChannelModelState = {
-  channelList: Array<object>, // 通道列表
+  channelList: Array<ChannelSchema>, // 通道列表
   channelTotal: number,
 
-  orgListOfChannel: Array<object>, // 当前通道下的组织列表
+  orgListOfChannel: Array<OrganizationSchema>, // 当前通道下的组织列表
   orgTotalOfChannel: number,
 
-  nodeListOfChannel: Array<object>, // 当前通道下的节点列表
+  nodeListOfChannel: Array<PeerSchema>, // 当前通道下的节点列表
   nodeTotalOfChannel: number,
 
-  contractListOfChannel: Array<object>, // 当前通道下的合约列表
+  contractListOfChannel: Array<ChainCodeSchema>, // 当前通道下的合约列表
   contractTotalOfChannel: number,
 
-  blockListOfChannel: Array<object>, // 当前通道下的区块列表
+  blockListOfChannel: Array<BlockSchema>, // 当前通道下的区块列表
   blockTotalOfChannel: number,
 
-  transactionListOfChannel: Array<object>, // 当前通道下的交易列表
+  transactionListOfChannel: Array<TransactionSchema>, // 当前通道下的交易列表
   transactionTotalOfChannel: number,
 }
 

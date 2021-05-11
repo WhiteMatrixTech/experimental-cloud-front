@@ -17,6 +17,8 @@ export async function getTransactionList(params: AllPaginationParams & BasicApiP
 /**
  * 查询交易详情
  */
-export async function getTransactionDetail(params: BasicApiParams & { txId: string }) {
+export type GetTransactionDetailParams = BasicApiParams & { txId: string };
+
+export async function getTransactionDetail(params: GetTransactionDetailParams) {
   return request(`/network/${params.networkName}/transactions/${params.txId}`);
 }

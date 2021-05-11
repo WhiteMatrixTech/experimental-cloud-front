@@ -2,10 +2,25 @@ import * as API from '../services/enterprise-member';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
+export type EnterpriseMemberSchema = {
+  companyName: string;
+  companyCertBusinessNumber: string;
+  companyAddress: string;
+  companyDesc: string;
+  legalPersonName: string;
+  legalPersonIdCardNumber: string;
+  contactName: string;
+  contactPhone: string;
+  contactCell: string;
+  contactEmail: string;
+  createTimestamp: Date;
+  did: string;
+}
+
 export type MemberModelState = {
-  memberList: Array<object>,
+  memberList: Array<EnterpriseMemberSchema>,
   memberTotal: number,
-  memberDetail: object,
+  memberDetail: EnterpriseMemberSchema | object,
   memberRole: string,
 }
 
