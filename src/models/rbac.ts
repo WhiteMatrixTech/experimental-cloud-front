@@ -1,12 +1,18 @@
 import * as API from '../services/rbac';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
+import { ChainCodeIndex, UserAccessPolicy } from '@/pages/about/rbac/_config';
+
+export type RbacRole = {
+  roleName: string;
+  policy: UserAccessPolicy[];
+}
 
 export type RBACModelState = {
-  roleList: Array<object>,
-  roleNameList: Array<object>,
-  chaincodeList: Array<object>,
-  rbacPolicy: object,
+  roleList: Array<RbacRole>,
+  roleNameList: Array<string>,
+  chaincodeList: Array<ChainCodeIndex>,
+  rbacPolicy: RbacRole | object,
 }
 
 export type RBACModelType = {

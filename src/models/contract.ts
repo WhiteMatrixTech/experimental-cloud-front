@@ -1,13 +1,39 @@
 import * as API from '../services/contract';
 import { getAllUserId } from '../services/fabric-role';
 import { notification } from 'antd';
-import type { Reducer, Effect } from 'umi';
+import type { Reducer, Effect, ChannelSchema } from 'umi';
+
+export type ChainCodeSchema = {
+  networkName: string,               // 网络名称
+  channelId: string,                 // 通道名称
+  chainCodeName: string,             // 合约名称
+  chainCodeVersion: string,          // 合约版本
+  //TODO: 使用页面处的枚举
+  chainCodeStatus: string,           // 合约状态
+  initArgs: string,                  // 初始参数
+  chainCodePackageMetaData: {        // 合约包
+    uri: string,                     // 合约包链接
+    label: string,                   // 合约包标签
+    language: string                 // 合约包语言
+  },
+  createOrgName: string,             // 创建组织名称
+  initRequired: boolean,             // 是否必需
+  description: string,               // 合约描述
+  endorsementPolicy: {
+    policyType: 'Default',
+    expression: string,
+    orgsToApprove: string[]
+  },
+  approvedOrgs: string[],
+  chainCodeSequence: number,               // 合约序列
+  updatedAt: Date
+}
 
 export type ContractModelState = {
   userOrgInuse: boolean, // 用户是否有组织 且组织在使用中
-  channelList: Array<object>, // 使用中的通道列表
-  myChannelList: Array<object>, // 当前用户所在通道列表
-  myContractList: Array<object>, // 我的合约列表
+  channelList: Array<ChannelSchema>, // 使用中的通道列表
+  myChannelList: Array<ChannelSchema>, // 当前用户所在通道列表
+  myContractList: Array<ChainCodeSchema>, // 我的合约列表
   myContractTotal: number,
 
   curContractDetail: {}, // 当前合约详情

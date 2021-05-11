@@ -1,11 +1,48 @@
 import * as API from '../services/my-info';
 import { checkOrgInUse } from '../services/contract';
 import type { Reducer, Effect } from 'umi';
+import { NetworkStatus } from '@/utils/networkStatus';
+
+export type MyLeagueSchema = {
+  leagueName: string,
+  leaderCompanyName: string,
+  networkName: string,
+  createdTime: string,
+  description: string,
+  networkStatus: NetworkStatus,
+  startTime: string
+}
+
+export type MyCompanySchema = {
+  companyName: string,
+  //TODO: 使用页面处的枚举
+  approvalStatus: string,
+  companyCertBusinessNumber: string,
+  legalPersonName: string,
+  legalPersonIdCardNumber: string,
+  contactName: string,
+  contactPhone: string,
+  contactEmail: string,
+  companyAddress: string
+}
+
+export type MyOrganizationSchema = {
+  networkName: string,
+  orgName: string,
+  orgAliasName: string,
+  orgMspId: string,
+  orgAddress: string,
+  //TODO: 使用页面处的枚举
+  orgStatus: string,
+  companyName: string,
+  updatedAt: string,
+  orgFullName: string
+}
 
 export type MyInfoModelState = {
-  myLeague: object, // 我的联盟信息
-  myCompany: object, // 我的用户信息
-  myOrgInfo: object, // 我的组织信息
+  myLeague: MyLeagueSchema | object, // 我的联盟信息
+  myCompany: MyCompanySchema | object, // 我的用户信息
+  myOrgInfo: MyOrganizationSchema | object, // 我的组织信息
 }
 
 export type MyInfoModelType = {

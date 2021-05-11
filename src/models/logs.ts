@@ -2,7 +2,7 @@ import * as API from '../services/logs';
 import type { Reducer, Effect } from 'umi';
 
 export type LogsModelState = {
-  logsList: Array<object>, // 区块链列表
+  logsList: Array<object>,
   logsTotal: number,
 }
 

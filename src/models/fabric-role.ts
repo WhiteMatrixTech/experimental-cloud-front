@@ -1,12 +1,26 @@
 import * as API from '../services/fabric-role';
 import { getMyOrgInfo } from '../services/my-info';
 import { notification } from 'antd';
-import type { Reducer, Effect } from 'umi';
+import type { Reducer, Effect, OrganizationSchema } from 'umi';
+import { Roles } from '@/utils/roles';
+
+export type FabricRoleSchema = {
+  networkName: string;       // 网络名称
+  userId: string;            // 用户ID
+  mspId: string;             // MSP ID
+  //TODO: 使用页面处的枚举
+  explorerRole: string;      // fabric网络角色
+  credentials: string;       // 证书凭据
+  type: string;              // 证书类型
+  orgName: string;           // 组织名
+  companyName: string;       // 公司名
+  networkRole: Roles;        // baas网络角色
+}
 
 export type FabricRoleModelState = {
-  fabricRoleList: Array<object>, // 区块链列表
+  fabricRoleList: Array<FabricRoleSchema>,
   fabricRoleTotal: number,
-  myOrgInfo: object, // 当前区块详情
+  myOrgInfo: OrganizationSchema | object,
 }
 
 export type FabricRoleModelType = {

@@ -2,11 +2,21 @@ import * as API from '../services/message';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
+export type MessageSchema = {
+  messageTitle: string;
+  sender: string;
+  messageStatus: number;
+  //TODO: 使用页面处的枚举
+  messageType: string;
+  messageDetail: string;
+  createdAt: Date;
+}
+
 export type MessageModelState = {
   selectedMessageTab: string, // 当前选中的消息类别
-  messageList: Array<object>, // 消息列表
+  messageList: Array<MessageSchema>, // 消息列表
   messageTotal: number, // 当前分类下的消息总数
-  messageDetail: object, // 当前消息详情
+  messageDetail: MessageSchema | object, // 当前消息详情
   unreadMesNum: number, // 总未读消息数
   unreadMesGroup: Array<object>, // 每类消息下的未读数
 }

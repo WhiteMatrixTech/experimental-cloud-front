@@ -1,13 +1,29 @@
 import * as API from '../services/block';
 import { notification } from 'antd';
-import type { Reducer, Effect } from 'umi';
+import type { Reducer, Effect, TransactionSchema } from 'umi';
+
+export type BlockSchema = {
+  networkName: string, // 网络名
+  number: number, // 区块号
+  dataHash: string, // 数据哈希,
+  previousHash: string, // 前序哈希,
+  txCount: number, // 区块的交易数
+  blockHash: string, // 区块哈希,
+  prevBlockHash: string, // 前序区块哈希,
+  blockSize: number, // 区块大小
+  channelGenesisHash: string, // 通道创世区块哈希,
+  channelName: string, // 通道ID,
+  tip: number, // 末端区块标记
+  createdAt: string,
+  updatedAt: string
+}
 
 export type BlockModelState = {
-  blockList: Array<object>, // 区块链列表
+  blockList: Array<BlockSchema>, // 区块链列表
   blockTotal: number,
-  blockDetail: object, // 当前区块详情
+  blockDetail: BlockSchema | object, // 当前区块详情
 
-  transactionList: Array<object>, // 当前区块下的交易列表
+  transactionList: Array<TransactionSchema>, // 当前区块下的交易列表
   transactionTotal: number,
 }
 

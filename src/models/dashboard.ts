@@ -7,10 +7,14 @@ import { getMyNetworkList } from '../services/user';
 import * as API from '../services/dashboard';
 import { notification } from 'antd';
 import moment from 'moment';
-import type { Reducer, Effect } from 'umi';
+import type { Reducer, Effect, BlockSchema, TransactionSchema } from 'umi';
 
 export type DashboardModelState = {
-  networkStatusInfo: object, // 网络状态信息
+  networkStatusInfo: {
+    //TODO: 使用页面处的枚举
+    networkStatus: string,
+    createdAt: Date
+  } | object, // 网络状态信息
 
   // 统计信息
   blockTotal: number,
@@ -19,8 +23,8 @@ export type DashboardModelState = {
   channelTotal: number,
   myContractTotal: number,
 
-  blockList: Array<object>, // 区块链列表
-  transactionList: Array<object>, // 交易列表
+  blockList: Array<BlockSchema>, // 区块链列表
+  transactionList: Array<TransactionSchema>, // 交易列表
 }
 
 export type DashboardModelType = {
