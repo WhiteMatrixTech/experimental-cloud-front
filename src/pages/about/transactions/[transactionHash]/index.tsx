@@ -2,9 +2,11 @@ import React, { useEffect, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Row, Col, Spin } from 'antd';
-import { Breadcrumb } from 'components';
+import { Breadcrumb } from '@/components';
 import styles from './index.less';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { ConnectState } from '@/models/connect';
+import { Dispatch } from 'umi';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 breadCrumbItem.push({
@@ -12,22 +14,33 @@ breadCrumbItem.push({
   menuHref: `/`,
 });
 
-function TransactionDetail({
-  match: {
-    params: { transactionHash },
-  },
-  User,
-  dispatch,
-  qryLoading = false,
-  Transactions,
-}) {
+export type TransactionDetailProps = {
+  User: ConnectState['User'],
+  dispatch: Dispatch,
+  transactionHash: string,
+  qryLoading: boolean,
+  Transactions: ConnectState['Transactions'],
+  match: { params: { transactionHash: string }},
+}
+interface DetailList {
+  label: string;
+  value: any;
+}
+const TransactionDetail: React.FC<TransactionDetailProps> = (
+  { match: { params: { transactionHash }, },
+    User,
+    dispatch,
+    qryLoading = false,
+    Transactions
+  }) => {
   const { networkName } = User;
   const { transactionDetail } = Transactions;
 
-  const detailList = [
+  let detailList: Array<DetailList>;
+   detailList = [
     {
       label: '交易哈希',
-      value: transactionDetail.txId,
+       value: transactionDetail.txId,//model中的transactionDetail是一个对象类型
     },
     {
       label: '所属区块',
@@ -102,7 +115,7 @@ function TransactionDetail({
   );
 }
 
-export default connect(({ User, Transactions, loading }) => ({
+export default connect(({ User, Transactions, loading }: ConnectState) => ({
   User,
   Transactions,
   qryLoading: loading.effects['Transactions/getTransactionDetail'],
