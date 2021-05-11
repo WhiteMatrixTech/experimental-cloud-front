@@ -6,7 +6,7 @@ const { Search } = Input;
 
 type SearchBarProps = {
   placeholder: string,
-  onSearch: () => void,
+  onSearch: (value: string, event: any) => void,
   btnName: string,
   onClickBtn: () => void
 }
