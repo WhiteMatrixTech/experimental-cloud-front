@@ -7,8 +7,8 @@ const { Search } = Input;
 type SearchBarProps = {
   placeholder: string,
   onSearch: (value: string, event: any) => void,
-  btnName: string,
-  onClickBtn: () => void
+  btnName?: string,
+  onClickBtn?: () => void
 }
 
 function SearchBar({ placeholder = '', onSearch, btnName = '', onClickBtn }: SearchBarProps) {
