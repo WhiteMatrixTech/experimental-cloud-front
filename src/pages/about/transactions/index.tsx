@@ -3,9 +3,9 @@ import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
 import { Table, Space } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, SearchBar } from 'components';
-import baseConfig from 'utils/config';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb, SearchBar } from '@/components';
+import baseConfig from '@/utils/config';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import { ConnectState } from '@/models/connect';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
@@ -16,12 +16,7 @@ export interface TransactionsProps {
   dispatch: Dispatch;
   User: ConnectState['User'];
 }
-export interface DataSource {
-  title: string;
-  ellipsis: boolean;
-  width: string;
-  [propName: string]: any;
-}
+
 function Transactions(props: TransactionsProps) {
   const { Transactions, qryLoading, dispatch, User } = props;
   const { transactionList, transactionTotal } = Transactions;
@@ -55,14 +50,14 @@ function Transactions(props: TransactionsProps) {
     });
   };
   // 搜索
-  const onSearch = (value: string, event: { type: string; }) => {
+  const onSearch = (value: string, event: any) => {
     if (event.type && (event.type === 'click' || event.type === 'keydown')) {
       setPageNum(1);
       setTxId(value || '');
     }
   };
   //搜索列表
-  const onSearchList = ():void => {
+  const onSearchList = (): void => {
     const params = {
       networkName,
       txId,
@@ -73,13 +68,13 @@ function Transactions(props: TransactionsProps) {
     });
   };
   // 翻页
-  const onPageChange = (pageInfo: { current: number }):void => {
+  const onPageChange = (pageInfo: any): void => {
     setPageNum(pageInfo.current);
   };
 
   // 点击查看详情
   //TODO:record使用Models里的数据类型
-  const onClickDetail = (record: { channelId?: any; txMsp?: any; txId?: any; }):void => {
+  const onClickDetail = (record: { channelId?: any; txMsp?: any; txId?: any }): void => {
     history.push({
       pathname: `/about/transactions/${record.txId}`,
       query: {
@@ -89,11 +84,11 @@ function Transactions(props: TransactionsProps) {
   };
 
   //用户身份改变时，表格展示改变
-  useEffect(()=> {
-    let data: Array<DataSource>[];
+  useEffect(() => {
+    let data = [];
     data = [
       {
-        title:'交易ID',
+        title: '交易ID',
         dataIndex: 'txId',
         key: 'txId',
         ellipsis: true,
@@ -128,7 +123,7 @@ function Transactions(props: TransactionsProps) {
         title: '操作',
         key: 'action',
         //TODO:record使用Models里的数据类型
-        render: (_: any, record: { channelId: any; txMsp: any; }) => (
+        render: (_: any, record: { channelId: any; txMsp: any }) => (
           <Space size="small">
             {record.channelId || record.txMsp ? (
               <a onClick={() => onClickDetail(record)}>详情</a>

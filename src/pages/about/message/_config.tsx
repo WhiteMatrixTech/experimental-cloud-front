@@ -1,4 +1,10 @@
-export const messageType = [
+export interface MessageType {
+  id: number;
+  key: string;
+  name: string;
+  value: any;
+}
+export const messageType: MessageType[] = [
   { id: 0, key: 'all', name: "全部", value: null },
   { id: 1, key: 'backMes', name: "后台消息", value: null },
   { id: 2, key: 'leagueMes', name: "联盟消息", value: null },

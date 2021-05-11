@@ -20,7 +20,7 @@ export type TransactionDetailProps = {
   transactionHash: string,
   qryLoading: boolean,
   Transactions: ConnectState['Transactions'],
-  match: { params: { transactionHash: string }},
+  match: { params: { transactionHash: string } },
 }
 interface DetailList {
   label: string;
@@ -36,12 +36,12 @@ const TransactionDetail: React.FC<TransactionDetailProps> = (
   const { networkName } = User;
   const { transactionDetail } = Transactions;
 
-  let detailList: Array<DetailList>;
+  let detailList: DetailList[]=[];
   //TODO:model中的transactionDetail是一个对象类型
-   detailList = [
+  detailList = [
     {
       label: '交易哈希',
-       value: transactionDetail.txId,
+      value: transactionDetail.txId,
     },
     {
       label: '所属区块',
