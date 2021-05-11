@@ -18,7 +18,7 @@ export type TransactionSchema = {
 export type TransactionsModelState = {
   transactionList: Array<TransactionSchema>,
   transactionTotal: number,
-  transactionDetail: TransactionSchema | object,
+  transactionDetail: TransactionSchema | null,
 }
 
 export type TransactionsModelType = {
@@ -42,7 +42,7 @@ const TransactionsModel: TransactionsModelType = {
     transactionList: [], // 交易列表
     transactionTotal: 0,
 
-    transactionDetail: {}, // 当前交易详情
+    transactionDetail: null, // 当前交易详情
   },
 
   effects: {
