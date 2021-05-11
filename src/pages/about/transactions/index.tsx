@@ -1,15 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { history } from 'umi';
+import { Dispatch, history } from 'umi';
 import { Table, Space } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, SearchBar } from 'components';
 import baseConfig from 'utils/config';
 import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { ConnectState } from '@/models/connect';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 
-function Transactions(props) {
+export interface TransactionsProps {
+  Transactions: ConnectState['Transactions'];
+  qryLoading: boolean;
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+}
+export interface DataSource {
+  title: string;
+  ellipsis: boolean;
+  width: string;
+  [propName: string]: any;
+}
+function Transactions(props: TransactionsProps) {
   const { Transactions, qryLoading, dispatch, User } = props;
   const { transactionList, transactionTotal } = Transactions;
   const { networkName, userRole } = User;
@@ -42,14 +55,14 @@ function Transactions(props) {
     });
   };
   // 搜索
-  const onSearch = (value, event) => {
+  const onSearch = (value: string, event: { type: string; }) => {
     if (event.type && (event.type === 'click' || event.type === 'keydown')) {
       setPageNum(1);
       setTxId(value || '');
     }
   };
   //搜索列表
-  const onSearchList = () => {
+  const onSearchList = ():void => {
     const params = {
       networkName,
       txId,
@@ -60,12 +73,13 @@ function Transactions(props) {
     });
   };
   // 翻页
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: { current: number }):void => {
     setPageNum(pageInfo.current);
   };
 
   // 点击查看详情
-  const onClickDetail = (record) => {
+  //TODO:record使用Models里的数据类型
+  const onClickDetail = (record: { channelId?: any; txMsp?: any; txId?: any; }):void => {
     history.push({
       pathname: `/about/transactions/${record.txId}`,
       query: {
@@ -75,10 +89,11 @@ function Transactions(props) {
   };
 
   //用户身份改变时，表格展示改变
-  useEffect(() => {
-    const data = [
+  useEffect(()=> {
+    let data: Array<DataSource>[];
+    data = [
       {
-        title: '交易ID',
+        title:'交易ID',
         dataIndex: 'txId',
         key: 'txId',
         ellipsis: true,
@@ -88,31 +103,32 @@ function Transactions(props) {
         title: '所属通道',
         dataIndex: 'channelId',
         key: 'channelId',
-        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+        render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '交易组织',
         dataIndex: 'txMsp',
         key: 'txMsp',
-        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+        render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '合约名称',
         dataIndex: 'chainCodeName',
         key: 'chainCodeName',
-        render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+        render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '生成时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (text) =>
+        render: (text: moment.MomentInput) =>
           text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
       },
       {
         title: '操作',
         key: 'action',
-        render: (_, record) => (
+        //TODO:record使用Models里的数据类型
+        render: (_: any, record: { channelId: any; txMsp: any; }) => (
           <Space size="small">
             {record.channelId || record.txMsp ? (
               <a onClick={() => onClickDetail(record)}>详情</a>
@@ -160,7 +176,7 @@ function Transactions(props) {
   );
 }
 
-export default connect(({ User, Layout, Transactions, loading }) => ({
+export default connect(({ User, Layout, Transactions, loading }: ConnectState) => ({
   User,
   Layout,
   Transactions,
