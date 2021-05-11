@@ -1,23 +1,36 @@
 import { request } from '../utils/request';
 import { stringify } from 'qs';
+import { BasicApiParams } from '@/utils/types';
 
 /**
  * 获取节点的列表
  */
-export async function getNodeList(params) {
+export async function getNodeList(params: BasicApiParams) {
   return request(`/network/${params.networkName}/nodes/listNodes`);
 }
 
 /**
  * 获取节点 ssh命令
  */
-export async function getNodeSSH(params) {
+export type GetNodeSSHApiParams = {
+  networkName: string;
+  orgName: string;
+  nodeName: string;
+}
+export async function getNodeSSH(params: GetNodeSSHApiParams) {
   return request(`/network/${params.networkName}/nodes/getNodeIp?${stringify(params)}`);
 }
 
 /**
  * 创建节点
  */
-export async function createNode(params) {
+export type CreateNodeApiParams = {
+  networkName: string;
+  orgName: string;
+  peerName: string;
+  peerNameAlias: string;
+  serverName?: string;
+}
+export async function createNode(params: CreateNodeApiParams) {
   return request(`/network/${params.networkName}/nodes/createNode`, { method: 'POST', body: params });
 }

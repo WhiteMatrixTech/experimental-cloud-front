@@ -1,22 +1,30 @@
 import { request } from '../utils/request';
 import { stringify } from 'qs';
+import { AllPaginationParams, BasicApiParams } from '@/utils/types';
+import { MemberApprovalStatus } from '@/pages/about/enterprise-member/_config';
 /**
  * 查询成员列表
  */
-export async function getPageListOfCompanyMember(params) {
+export type GetMemberListByConditionalQueryParams = {
+  companyName: string,
+  createTimeStart: number,
+  createTimeEnd: number,
+  approvalStatus: MemberApprovalStatus,
+}
+export async function getPageListOfCompanyMember(params: BasicApiParams & AllPaginationParams & GetMemberListByConditionalQueryParams) {
   return request(`/network/${params.networkName}/enterprises/query`, { method: 'POST', body: params });
 }
 /**
  * 查询成员列表totalCount
  */
-export async function getMemberTotalDocs(params) {
+export async function getMemberTotalDocs(params: BasicApiParams) {
   return request(`/network/${params.networkName}/enterprises/totalCount`, { method: 'POST', body: params });
 }
 
 /**
  * 查询成员详情
  */
-export async function getMemberDetail(params) {
+export async function getMemberDetail(params: any) {
   return request(`/network/${params.networkName}/enterprises/${params.did}?${stringify(params)}`);
 }
 

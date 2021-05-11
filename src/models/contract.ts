@@ -16,17 +16,17 @@ export type ChainCodeSchema = {
     label: string,                   // 合约包标签
     language: string                 // 合约包语言
   },
-  createOrgName: string,             // 创建组织名称
+  createOrgName?: string,             // 创建组织名称
   initRequired: boolean,             // 是否必需
   description: string,               // 合约描述
   endorsementPolicy: {
     policyType: 'Default',
-    expression: string,
+    expression?: string,
     orgsToApprove: string[]
   },
   approvedOrgs: string[],
   chainCodeSequence: number,               // 合约序列
-  updatedAt: Date
+  updatedAt?: Date
 }
 
 export type ContractModelState = {

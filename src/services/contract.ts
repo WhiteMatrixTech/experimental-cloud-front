@@ -1,10 +1,11 @@
 import { request } from '../utils/request';
 import { stringify } from 'qs';
+import { ChainCodeSchema } from 'umi';
 
 /**
  * 创建合约
  */
-export async function addContract(params) {
+export async function addContract(params: ChainCodeSchema) {
   return request(`/network/${params.networkName}/chainCodes/create`, { method: 'POST', body: params });
 }
 
