@@ -15,9 +15,9 @@ interface BreadcrumbProps {
 }
 interface IProps {
   breadCrumbItem: BreadcrumbProps[],
-  className: any,
-  style: object,
-  hideIndex: boolean
+  className?: any,
+  style?: object,
+  hideIndex?: boolean
 }
 
 class Breadcrumb extends React.Component<IProps> {
