@@ -16,12 +16,18 @@ export interface TransactionsProps {
   dispatch: Dispatch;
   User: ConnectState['User'];
 }
-
+export interface DataSource {
+  title: string;
+  dataIndex?: string;
+  key: string;
+  ellipsis?: boolean;
+  width?: string;
+  render?: (text: string ,  record?: { channelId: string; txMsp: string; txId: string; }) => string | JSX.Element
+}
 function Transactions(props: TransactionsProps) {
   const { Transactions, qryLoading, dispatch, User } = props;
   const { transactionList, transactionTotal } = Transactions;
   const { networkName, userRole } = User;
-  const [columns, setColumns] = useState([]);
   const [pageNum, setPageNum] = useState(1);
   const [txId, setTxId] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
@@ -73,8 +79,7 @@ function Transactions(props: TransactionsProps) {
   };
 
   // 点击查看详情
-  //TODO:record使用Models里的数据类型
-  const onClickDetail = (record: { channelId?: any; txMsp?: any; txId?: any }): void => {
+  const onClickDetail = (record: { channelId: string; txMsp: string; txId: string }): void => {
     history.push({
       pathname: `/about/transactions/${record.txId}`,
       query: {
@@ -82,61 +87,54 @@ function Transactions(props: TransactionsProps) {
       },
     });
   };
-
-  //用户身份改变时，表格展示改变
-  useEffect(() => {
-    let data = [];
-    data = [
-      {
-        title: '交易ID',
-        dataIndex: 'txId',
-        key: 'txId',
-        ellipsis: true,
-        width: '20%',
-      },
-      {
-        title: '所属通道',
-        dataIndex: 'channelId',
-        key: 'channelId',
-        render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
-      },
-      {
-        title: '交易组织',
-        dataIndex: 'txMsp',
-        key: 'txMsp',
-        render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
-      },
-      {
-        title: '合约名称',
-        dataIndex: 'chainCodeName',
-        key: 'chainCodeName',
-        render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
-      },
-      {
-        title: '生成时间',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        render: (text: moment.MomentInput) =>
-          text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
-      },
-      {
-        title: '操作',
-        key: 'action',
-        //TODO:record使用Models里的数据类型
-        render: (_: any, record: { channelId: any; txMsp: any }) => (
-          <Space size="small">
-            {record.channelId || record.txMsp ? (
-              <a onClick={() => onClickDetail(record)}>详情</a>
-            ) : (
-              <a className="a-forbidden-style">详情</a>
-            )}
-          </Space>
-        ),
-      },
-    ];
-    setColumns(data);
-  }, [userRole]);
-
+  let columns:DataSource[]=[
+    {
+      title: '交易ID',
+      dataIndex: 'txId',
+      key: 'txId',
+      ellipsis: true,
+      width: '20%',
+    },
+    {
+      title: '所属通道',
+      dataIndex: 'channelId',
+      key: 'channelId',
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+    },
+    {
+      title: '交易组织',
+      dataIndex: 'txMsp',
+      key: 'txMsp',
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+    },
+    {
+      title: '合约名称',
+      dataIndex: 'chainCodeName',
+      key: 'chainCodeName',
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+    },
+    {
+      title: '生成时间',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (text) =>
+        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
+    },
+    {
+      title: '操作',
+      //dataIndex:'action'
+      key: 'action',
+      render: (text, record?: { channelId: string; txMsp: string; txId: string; }) => (
+        <Space size="small">
+          {(record && record.channelId) || (record && record.txMsp) ? (
+            <a onClick={() => onClickDetail(record)}>详情</a>
+          ) : (
+            <a className="a-forbidden-style">详情</a>
+          )}
+        </Space>
+      ),
+    },
+  ];
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     if (txId) {

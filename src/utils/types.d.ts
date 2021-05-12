@@ -25,11 +25,16 @@ type BasicApiParams = {
   networkName: string;
   channelId?: string;
 }
+interface DataSource {
+  label: string;
+  value: any;
+}
 
 export {
   BasicComponentProps,
   BasicLayoutComponentProps,
   BasicPaginationParams,
   AllPaginationParams,
-  BasicApiParams
+  BasicApiParams,
+  DataSource,
 }
