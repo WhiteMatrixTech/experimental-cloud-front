@@ -22,10 +22,6 @@ export type TransactionDetailProps = {
   Transactions: ConnectState['Transactions'],
   match: { params: { transactionHash: string } },
 }
-interface DetailList {
-  label: string;
-  value: any;
-}
 const TransactionDetail: React.FC<TransactionDetailProps> = (
   { match: { params: { transactionHash }, },
     User,
