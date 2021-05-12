@@ -8,13 +8,13 @@ import * as API from '../services/dashboard';
 import { notification } from 'antd';
 import moment from 'moment';
 import type { Reducer, Effect, BlockSchema, TransactionSchema } from 'umi';
+import { NetworkStatus } from '@/utils/networkStatus';
 
 export type DashboardModelState = {
   networkStatusInfo: {
-    //TODO: 使用页面处的枚举
-    networkStatus: string,
+    networkStatus: NetworkStatus,
     createdAt: Date
-  } | object, // 网络状态信息
+  } | null, // 网络状态信息
 
   // 统计信息
   blockTotal: number,
@@ -48,7 +48,7 @@ const DashboardModel: DashboardModelType = {
   namespace: 'Dashboard',
 
   state: {
-    networkStatusInfo: {},
+    networkStatusInfo: null,
 
     blockTotal: 0,
     transactionTotal: 0,

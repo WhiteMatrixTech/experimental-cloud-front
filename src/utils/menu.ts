@@ -1,4 +1,5 @@
 import { tree2Arr } from './index';
+import { Roles } from './roles';
 
 /**
  * id: 菜单id
@@ -6,8 +7,8 @@ import { tree2Arr } from './index';
  * menuHref: 菜单路由
  * menuIcon: 菜单图标
  * menuName： 菜单名称
- * isFeature： 是否只有盟主才显示  0--成员；1--盟主；2--Admin
  * menuVos： 子菜单
+ * accessRole: 可访问角色
  */
 export type MenuProps = {
   id: number,
@@ -15,8 +16,8 @@ export type MenuProps = {
   menuHref: string,
   menuIcon: string | null,
   menuName: string,
-  isFeature: number,
   menuVos: MenuProps[],
+  accessRole: Roles,
 }
 
 const MenuList: MenuProps[] = [
@@ -26,7 +27,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/league-dashboard',
     menuIcon: 'KBasslianmengguanli1',
     menuName: '联盟总览',
-    isFeature: 0,
+    accessRole: Roles.NetworkMember,
     menuVos: [],
   },
   {
@@ -35,7 +36,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/data-dashboard',
     menuIcon: 'KBassyibiaopan',
     menuName: '仪表盘',
-    isFeature: 1,
+    accessRole: Roles.NetworkAdmin,
     menuVos: [],
   },
   {
@@ -44,7 +45,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/block',
     menuIcon: 'KBassqukuailian',
     menuName: '区块链',
-    isFeature: 0,
+    accessRole: Roles.NetworkMember,
     menuVos: [],
   },
   {
@@ -53,7 +54,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/transactions',
     menuIcon: 'KBassjiaoyi',
     menuName: '交易',
-    isFeature: 0,
+    accessRole: Roles.NetworkMember,
     menuVos: [],
   },
   {
@@ -62,7 +63,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/channels',
     menuIcon: 'KBasstongdaoguanli',
     menuName: '通道管理',
-    isFeature: 0,
+    accessRole: Roles.NetworkMember,
     menuVos: [],
   },
   {
@@ -71,7 +72,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/organizations',
     menuIcon: 'KBasszuzhiguanli',
     menuName: '组织管理',
-    isFeature: 0, // 是否只有盟主才显示
+    accessRole: Roles.NetworkMember,
     menuVos: [],
   },
   {
@@ -80,7 +81,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/nodes',
     menuIcon: 'KBassjiedianguanli',
     menuName: '节点管理',
-    isFeature: 0,
+    accessRole: Roles.NetworkMember,
     menuVos: [],
   },
   {
@@ -89,7 +90,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/contract',
     menuIcon: 'KBassheyueguanli',
     menuName: '合约管理',
-    isFeature: 0,
+    accessRole: Roles.NetworkMember,
     menuVos: [
       {
         id: 430,
@@ -97,7 +98,7 @@ const MenuList: MenuProps[] = [
         menuHref: '/about/contract/myContract',
         menuIcon: null,
         menuName: '合约列表',
-        isFeature: 0,
+        accessRole: Roles.NetworkMember,
         menuVos: [],
       },
       // {
@@ -106,7 +107,7 @@ const MenuList: MenuProps[] = [
       //   menuHref: '/about/contract/cTransfer',
       //   menuIcon: null,
       //   menuName: '合约调用',
-      //   isFeature: 0,
+      //   accessRole: Roles.NetworkMember,
       //   menuVos: [],
       // },
       // {
@@ -115,7 +116,7 @@ const MenuList: MenuProps[] = [
       //   menuHref: '/about/contract/privacyStrategy',
       //   menuIcon: null,
       //   menuName: '隐私保护策略',
-      //   isFeature: 1, // 是否只有盟主才显示
+      //   accessRole: Roles.NetworkAdmin,
       //   menuVos: [],
       // },
       // {
@@ -124,7 +125,7 @@ const MenuList: MenuProps[] = [
       //   menuHref: '/about/contract/contractStore',
       //   menuIcon: null,
       //   menuName: '合约仓库',
-      //   isFeature: 0,
+      //   accessRole: Roles.NetworkMember,
       //   menuVos: [],
       // },
     ],
@@ -135,7 +136,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/evidence',
     menuIcon: 'KBasszhengshuguanli',
     menuName: '存证上链',
-    isFeature: 0,
+    accessRole: Roles.NetworkMember,
     menuVos: [],
   },
   // {
@@ -144,7 +145,7 @@ const MenuList: MenuProps[] = [
   //   menuHref: "/about/certificate",
   //   menuIcon: "KBasszhengshuguanli",
   //   menuName: "证书管理",
-  //   isFeature: 0,
+  //   accessRole: Roles.NetworkMember,
   //   menuVos: []
   // },
   // {
@@ -153,7 +154,7 @@ const MenuList: MenuProps[] = [
   //   menuHref: "/about/logsList",
   //   menuIcon: "KBassdakaixinfeng",
   //   menuName: "日志管理",
-  //   isFeature: 0,
+  //   accessRole: Roles.NetworkMember,
   //   menuVos: []
   // },
   {
@@ -162,7 +163,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/enterprise-member',
     menuIcon: 'KBasschengyuanguanli',
     menuName: '成员管理',
-    isFeature: 1, // 是否只有盟主才显示
+    accessRole: Roles.NetworkAdmin,
     menuVos: [],
   },
   // {
@@ -171,7 +172,7 @@ const MenuList: MenuProps[] = [
   //   menuHref: "/about/message",
   //   menuIcon: "KBassxiaoxiguanli",
   //   menuName: "消息管理",
-  //   isFeature: 0,
+  //   accessRole: Roles.NetworkMember,
   //   menuVos: []
   // },
   {
@@ -180,7 +181,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/myinfo',
     menuIcon: 'KBasswodexinxi',
     menuName: '用户信息',
-    isFeature: 0,
+    accessRole: Roles.NetworkMember,
     menuVos: [
       {
         id: 520,
@@ -188,7 +189,7 @@ const MenuList: MenuProps[] = [
         menuHref: '/about/myinfo/MyLeague',
         menuIcon: null,
         menuName: '我的联盟',
-        isFeature: 0,
+        accessRole: Roles.NetworkMember,
         menuVos: [],
       },
       {
@@ -197,7 +198,7 @@ const MenuList: MenuProps[] = [
         menuHref: '/about/myinfo/CompanyInfo',
         menuIcon: null,
         menuName: '我的信息',
-        isFeature: 0,
+        accessRole: Roles.NetworkMember,
         menuVos: [],
       },
       {
@@ -206,7 +207,7 @@ const MenuList: MenuProps[] = [
         menuHref: '/about/myinfo/MyOrgList',
         menuIcon: null,
         menuName: '我的组织',
-        isFeature: 0,
+        accessRole: Roles.NetworkMember,
         menuVos: [],
       },
     ],
@@ -217,7 +218,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/did',
     menuIcon: 'KBasslianmengguanli',
     menuName: 'DID身份链',
-    isFeature: 0,
+    accessRole: Roles.NetworkMember,
     menuVos: [
       {
         id: 55,
@@ -225,7 +226,7 @@ const MenuList: MenuProps[] = [
         menuHref: '/about/did/did-management',
         menuIcon: null,
         menuName: 'DID管理',
-        isFeature: 1,
+        accessRole: Roles.NetworkAdmin,
         menuVos: [],
       },
       {
@@ -234,7 +235,7 @@ const MenuList: MenuProps[] = [
         menuHref: '/about/did/did-query',
         menuIcon: null,
         menuName: 'DID查询验证',
-        isFeature: 0,
+        accessRole: Roles.NetworkMember,
         menuVos: [],
       },
     ],
@@ -245,15 +246,15 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/block-compile',
     menuIcon: 'KBasslianmengguanli',
     menuName: '区块链编译',
-    isFeature: 0,
+    accessRole: Roles.NetworkMember,
     menuVos: [
       {
         id: 75,
         menuPid: 74,
         menuHref: '/about/block-compile/package',
         menuIcon: null,
-        menuName: '源码打包',
-        isFeature: 1,
+        menuName: '任务管理',
+        accessRole: Roles.NetworkAdmin,
         menuVos: [],
       },
       {
@@ -262,7 +263,7 @@ const MenuList: MenuProps[] = [
         menuHref: '/about/block-compile/storage',
         menuIcon: null,
         menuName: '镜像仓库',
-        isFeature: 0,
+        accessRole: Roles.NetworkMember,
         menuVos: [],
       },
     ],
@@ -273,7 +274,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/fabricUsers',
     menuIcon: 'KBasslianmengguanli',
     menuName: 'Fabric用户管理',
-    isFeature: 0,
+    accessRole: Roles.NetworkMember,
     menuVos: [],
   },
   {
@@ -282,7 +283,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/elastic-cloud-server',
     menuIcon: 'KBasszhengshuguanli',
     menuName: '弹性云服务器管理',
-    isFeature: 1, // 是否只有盟主才显示
+    accessRole: Roles.NetworkAdmin,
     menuVos: [],
   },
   {
@@ -291,7 +292,7 @@ const MenuList: MenuProps[] = [
     menuHref: '/about/rbac',
     menuIcon: 'KBasszhengshuguanli',
     menuName: '访问角色管理',
-    isFeature: 1, // 是否只有盟主才显示
+    accessRole: Roles.NetworkAdmin,
     menuVos: [],
   },
 ];

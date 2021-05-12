@@ -10,20 +10,20 @@ import styles from './index.less';
  * @param {Number} columnsNum 每一行栏目数
  * @param {String} boxShadow 卡片阴影
  */
-interface ItemProps {
+interface DetailColumProps {
   label: string,
   value: string | object,
   fullRow?: boolean,
   showJson?: boolean,
   buttonName?: string,
-  onClick: () => void,
+  onClick?: () => void,
 
 }
 interface IProps {
   cardTitle: string,
-  detailList: ItemProps[],
-  columnsNum: number,
-  boxShadow: string,
+  detailList: DetailColumProps[],
+  columnsNum?: number,
+  boxShadow?: string,
 }
 
 export default function DetailCard(props: IProps) {
@@ -33,7 +33,7 @@ export default function DetailCard(props: IProps) {
     columnsNum = 2,
     boxShadow = '0 4px 12px 0 rgba(0,0,0,.05)',
   } = props;
-  const renderValue = (ele: ItemProps) => {
+  const renderValue = (ele: DetailColumProps) => {
     if (ele.value === 'NeedButton') {
       return (
         <Button type="primary" onClick={ele.onClick}>

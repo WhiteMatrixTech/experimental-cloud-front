@@ -38,21 +38,22 @@ export function render(oldRender: () => void) {
   const role = localStorage.getItem('role');
   const allMenu = tree2Arr(MenuList, 'menuVos');
   let isAdminPage = false;
+  let isSuperUserPage = false;
   allMenu
-    .filter((menu: MenuProps) => menu.isFeature !== 0)
+    .filter((menu: MenuProps) => menu.accessRole !== Roles.NetworkMember)
     .forEach((menu: MenuProps) => {
       if (pathname.indexOf(menu.menuHref) > -1) {
         isAdminPage = true;
       }
     });
   if (pathname.indexOf('userManagement') > -1) {
-    isAdminPage = true;
+    isSuperUserPage = true;
   }
 
   // 外部登录
   const search = window.location.search ? window.location.search.replace('?', '') : '';
   const { redirect } = parse(search);
-  const noAccessSituation = (userRole === Roles.NetworkMember && isAdminPage) || (role !== Roles.SuperUser && isAdminPage);
+  const noAccessSituation = (userRole === Roles.NetworkMember && isAdminPage) || (role !== Roles.SuperUser && isSuperUserPage);
 
 
   if (noAccessSituation) {
