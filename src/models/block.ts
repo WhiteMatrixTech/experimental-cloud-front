@@ -12,7 +12,7 @@ export type BlockSchema = {
   prevBlockHash: string, // 前序区块哈希,
   blockSize: number, // 区块大小
   channelGenesisHash: string, // 通道创世区块哈希,
-  channelName: string, // 通道ID,
+  channelId: string, // 通道ID,
   tip: number, // 末端区块标记
   createdAt: string,
   updatedAt: string
@@ -21,7 +21,7 @@ export type BlockSchema = {
 export type BlockModelState = {
   blockList: Array<BlockSchema>, // 区块链列表
   blockTotal: number,
-  blockDetail: BlockSchema | object, // 当前区块详情
+  blockDetail: BlockSchema | null, // 当前区块详情
 
   transactionList: Array<TransactionSchema>, // 当前区块下的交易列表
   transactionTotal: number,
@@ -49,7 +49,7 @@ const BlockModel: BlockModelType = {
   state: {
     blockList: [],
     blockTotal: 0,
-    blockDetail: {},
+    blockDetail: null,
     transactionList: [],
     transactionTotal: 0,
   },

@@ -7,6 +7,7 @@ import { Breadcrumb, SearchBar } from '@/components';
 import baseConfig from '@/utils/config';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import { ConnectState } from '@/models/connect';
+import { TableColumnsAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 
@@ -16,18 +17,11 @@ export interface TransactionsProps {
   dispatch: Dispatch;
   User: ConnectState['User'];
 }
-export interface DataSource {
-  title: string;
-  dataIndex?: string;
-  key: string;
-  ellipsis?: boolean;
-  width?: string;
-  render?: (text: string ,  record?: { channelId: string; txMsp: string; txId: string; }) => string | JSX.Element
-}
-function Transactions(props: TransactionsProps) {
+
+const Transactions: React.FC<TransactionsProps> = (props) => {
   const { Transactions, qryLoading, dispatch, User } = props;
   const { transactionList, transactionTotal } = Transactions;
-  const { networkName, userRole } = User;
+  const { networkName } = User;
   const [pageNum, setPageNum] = useState(1);
   const [txId, setTxId] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
@@ -87,7 +81,7 @@ function Transactions(props: TransactionsProps) {
       },
     });
   };
-  let columns:DataSource[]=[
+  const columns: TableColumnsAttr[] = [
     {
       title: '交易ID',
       dataIndex: 'txId',

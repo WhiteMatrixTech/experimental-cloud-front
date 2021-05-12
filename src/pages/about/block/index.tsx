@@ -7,6 +7,7 @@ import { Breadcrumb, SearchBar } from '@/components';
 import baseConfig from '@/utils/config';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import { ConnectState } from '@/models/connect';
+import { TableColumnsAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 
@@ -17,11 +18,10 @@ export interface BlockProps {
   User: ConnectState['User'];
 }
 
-function Block(props: BlockProps) {
+const Block: React.FC<BlockProps> = (props) => {
   const { Block, qryLoading, dispatch, User } = props;
   const { networkName } = User;
   const { blockList, blockTotal } = Block;
-  const [columns, setColumns] = useState([]);
   const [pageNum, setPageNum] = useState(1);
   const [blockHash, setBlockHash] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
@@ -86,8 +86,7 @@ function Block(props: BlockProps) {
     });
   };
 
-  //TODO:定义了没有使用，Tabel表中的dataSource的值是从Block中获取的blockList
-  const data = [
+  const columns: TableColumnsAttr[] = [
     {
       title: '区块HASH',
       dataIndex: 'blockHash',
@@ -99,25 +98,25 @@ function Block(props: BlockProps) {
       title: '所属通道',
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
     },
     {
       title: '交易数量',
       dataIndex: 'txCount',
       key: 'txCount',
-      render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
     },
     {
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text: string) =>
+      render: (text) =>
         text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
     },
     {
       title: '操作',
       key: 'action',
-      render: (text: string, record: { channelId?: string; txCount?: number; blockHash: string; }) => (
+      render: (text, record: { channelId?: string; txCount?: number; blockHash: string; }) => (
         <Space size="small">
           {record.channelId || record.txCount ? (
             <a onClick={() => onClickDetail(record)}>详情</a>
@@ -129,8 +128,7 @@ function Block(props: BlockProps) {
     },
   ];
 
-  // 页码改变时,或blockHash=''时重新查询列表
-  // 搜索值改变时
+  // 页码改变时,或搜索值blockHash=''时重新查询列表
   useEffect(() => {
     if (blockHash) {
       onSearchList();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, useMemo, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Dispatch, history } from 'umi';
@@ -8,7 +8,7 @@ import baseConfig from '@/utils/config';
 import styles from './index.less';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import { ConnectState } from '@/models/connect';
-import { DataSource} from '@/utils/types';
+import { DetailViewAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 breadCrumbItem.push({
@@ -23,7 +23,8 @@ export interface BlockDetailProps {
   qryLoading: boolean;
   dispatch: Dispatch;
 }
-function BlockDetail({
+
+const BlockDetail: React.FC<BlockDetailProps> = ({
   match: {
     params: { blockHash },
   },
@@ -31,12 +32,11 @@ function BlockDetail({
   Block,
   qryLoading = false,
   dispatch,
-}: BlockDetailProps) {
+}) => {
   const { networkName } = User;
   const { blockDetail, transactionList, transactionTotal } = Block;
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
-  const [detailList, setDetailList] = useState([]);
 
   const columns = [
     {
@@ -139,30 +139,33 @@ function BlockDetail({
     getTransactionList();
   }, [pageNum]);
 
-  //TODO:block模块，data只是定义了还没使用，Tabel表中dataSoruce属性的值是从Block  model中取的transactionList。
-  //TODO:并且blockDetail来源于model,model定义的是object,所以暂时提示的是blockDetail没有blockHash...这些属性
-  const data: DataSource[] = [
-    {
-      label: '当前哈希值',
-      value: blockDetail.blockHash,
-    },
-    {
-      label: '前序哈希值',
-      value: blockDetail.previousHash,
-    },
-    {
-      label: '交易笔数',
-      value: blockDetail.txCount,
-    },
-    {
-      label: '生成时间',
-      value: moment(blockDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
-    },
-    {
-      label: '所属通道',
-      value: blockDetail.channelId,
-    },
-  ];
+  const detailList: DetailViewAttr[] = useMemo(() => {
+    if (blockDetail) {
+      return [
+        {
+          label: '当前哈希值',
+          value: blockDetail.blockHash,
+        },
+        {
+          label: '前序哈希值',
+          value: blockDetail.previousHash,
+        },
+        {
+          label: '交易笔数',
+          value: blockDetail.txCount,
+        },
+        {
+          label: '生成时间',
+          value: moment(blockDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        },
+        {
+          label: '所属通道',
+          value: blockDetail.channelId,
+        },
+      ];
+    };
+    return [];
+  }, [blockDetail]);
 
   return (
     <div className="page-wrapper">
@@ -181,7 +184,7 @@ function BlockDetail({
                     { xs: 8, sm: 16, md: 24, lg: 32 },
                   ]}
                 >
-                  {detailList.map((item: DataSource) => (
+                  {detailList.map((item) => (
                     <Fragment key={item.label}>
                       <Col className={styles['gutter-row-label']} span={3}>
                         {item.label}
