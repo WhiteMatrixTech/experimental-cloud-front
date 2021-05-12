@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Upload, Modal, notification } from 'antd';
-
+import { Dispatch } from 'umi';
+import { ConnectState } from '@/models/connect';
 const { Item } = Form;
 const { Option } = Select;
 
@@ -14,7 +15,12 @@ const formItemLayout = {
   },
 };
 
-function CertificateUpload({ visible, onCancel, dispatch }) {
+export interface CertificateUploadProps {
+  visible: boolean;
+  onCancel: () => void;
+  dispatch: Dispatch;
+}
+function CertificateUpload({ visible, onCancel, dispatch }: CertificateUploadProps) {
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
@@ -45,7 +51,7 @@ function CertificateUpload({ visible, onCancel, dispatch }) {
     ],
   };
 
-  const normFile = (e) => {
+  const normFile = (e: any) => {
     console.log('Upload event:', e);
     if (Array.isArray(e)) {
       return e;
@@ -54,30 +60,14 @@ function CertificateUpload({ visible, onCancel, dispatch }) {
   };
 
   // 上传前校验文件大小
-  const handleBeforeUpload = (file, beforeUploadList) => {
+  const handleBeforeUpload = (file: any, beforeUploadList: any[]): boolean => {
     // let fileName = file.name;
-    const biggerThanMaxSize = beforeUploadList.some((innerItem) => innerItem.size > 1024 * 1024 * 1024 * 1);
+    const biggerThanMaxSize = beforeUploadList.some((innerItem: any) => innerItem.size > 1024 * 1024 * 1024 * 1);
     if (biggerThanMaxSize) {
       notification.error({ message: '证书文件大小不能超过1M', top: 64, duration: 3 });
       return false;
     }
     return true;
-  };
-
-  const uploadProps = {
-    name: 'file',
-    listType: 'text',
-    action: `/upload.do`,
-    accept: '.crt, .pem',
-    multiple: false,
-    beforeUpload: handleBeforeUpload,
-    onChange(info) {
-      if (info.file.status === 'done') {
-        notification.success({ message: `Succeed in uploading certificate ${info.file.name}`, top: 64, duration: 3 });
-      } else if (info.file.status === 'error') {
-        notification.error({ message: info.file.response.message, top: 64, duration: 3 });
-      }
-    },
   };
 
   return (
@@ -129,7 +119,20 @@ function CertificateUpload({ visible, onCancel, dispatch }) {
             },
           ]}
         >
-          <Upload {...uploadProps}>
+          <Upload
+            name="file"
+            listType="text"
+            action=".crt,.pem"
+            multiple={false}
+            beforeUpload={handleBeforeUpload}
+            onChange={(info) => {
+              if (info.file.status === 'done') {
+                notification.success({ message: `Succeed in uploading certificate ${info.file.name}`, top: 64, duration: 3 });
+              } else if (info.file.status === 'error') {
+                notification.error({ message: info.file.response.message, top: 64, duration: 3 });
+              }
+            }}
+          >
             <Button>上传证书</Button>
           </Upload>
           <span style={{ color: 'rgb(255, 138, 0)', paddingTop: '10px' }}>注：只允许上传crt,pem格式文件且小于1MB</span>
@@ -139,7 +142,7 @@ function CertificateUpload({ visible, onCancel, dispatch }) {
   );
 }
 
-export default connect(({ Certificate, loading }) => ({
+export default connect(({ Certificate, loading }: ConnectState) => ({
   Certificate,
   addLoading: loading.effects['Contract/addContract'],
 }))(CertificateUpload);

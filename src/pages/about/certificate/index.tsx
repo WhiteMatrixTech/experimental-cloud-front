@@ -2,12 +2,15 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Table, Row, Col, Form, Select, Input, Button, Space } from 'antd';
 import moment from 'moment';
-import { Breadcrumb } from 'components';
-import baseConfig from 'utils/config';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb } from '@/components';
+import baseConfig from '@/utils/config';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import CertificateUpload from './components/CertificateUpload';
 import { SecretType } from './_config';
 import styles from './index.less';
+import { ConnectState } from '@/models/connect';
+import { Dispatch } from 'umi';
+import { TableColumnsAttr } from '@/utils/types';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -23,7 +26,13 @@ const initSearchObj = {
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/certificate');
 
-function Certificate(props) {
+export interface CertificateProps {
+  Certificate: ConnectState['Certificate'];
+  qryLoading: boolean;
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+}
+function Certificate(props: CertificateProps) {
   const { Certificate, qryLoading, dispatch, User } = props;
   const { networkName } = User;
   const { certificateList = [], certificateTotal = 0 } = Certificate;
@@ -33,7 +42,7 @@ function Certificate(props) {
   const [queryParams, setQueryParams] = useState(initSearchObj);
   const [form] = Form.useForm();
 
-  const columns = [
+  const columns: TableColumnsAttr[] = [
     {
       title: '证书名称',
       dataIndex: 'certificateName',
@@ -63,7 +72,7 @@ function Certificate(props) {
   ];
 
   // 查询列表
-  const getCertificateList = () => {
+  const getCertificateList = (): void => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
       networkName,
@@ -97,24 +106,24 @@ function Certificate(props) {
   }, []);
 
   // 点击证书上传
-  const onClickUpload = () => {
+  const onClickUpload = (): void => {
     setUploadVisible(true);
   };
 
   // 取消证书上传
-  const onCloseUpload = () => {
+  const onCloseUpload = (): void => {
     setUploadVisible(false);
   };
 
   // 重置
-  const resetForm = () => {
+  const resetForm = (): void => {
     form.resetFields();
     setPageNum(1);
     setQueryParams(initSearchObj);
   };
 
   // 翻页
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any): void => {
     setPageNum(pageInfo.current);
   };
 
@@ -134,7 +143,7 @@ function Certificate(props) {
                 <Item label="密钥类型" name="certificateSecretType" initialValue={null}>
                   <Select
                     allowClear
-                    getCalendarContainer={(triggerNode) => triggerNode.parentNode}
+                    getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
                     style={{ width: '100%' }}
                     placeholder="请选择密钥类型"
                   >
@@ -181,7 +190,7 @@ function Certificate(props) {
   );
 }
 
-export default connect(({ User, Certificate, loading }) => ({
+export default connect(({ User, Certificate, loading }: ConnectState) => ({
   User,
   Certificate,
   qryLoading: loading.effects['Certificate/getCertificateList'],
