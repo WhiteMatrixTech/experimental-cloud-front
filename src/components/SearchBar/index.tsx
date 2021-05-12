@@ -12,7 +12,6 @@ type SearchBarProps = {
 }
 
 function SearchBar({ placeholder = '', onSearch, btnName = '', onClickBtn }: SearchBarProps) {
-
   return (
     <div className={styles['search-wrapper']} style={{ justifyContent: btnName ? 'space-between' : 'flex-end' }}>
       {btnName && <Button type='primary' onClick={onClickBtn}>{btnName}</Button>}
