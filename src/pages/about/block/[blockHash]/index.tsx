@@ -8,7 +8,7 @@ import baseConfig from '@/utils/config';
 import styles from './index.less';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import { ConnectState } from '@/models/connect';
-import { DataSource, Item } from '@/utils/types';
+import { DataSource} from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 breadCrumbItem.push({
@@ -181,7 +181,7 @@ function BlockDetail({
                     { xs: 8, sm: 16, md: 24, lg: 32 },
                   ]}
                 >
-                  {detailList.map((item: Item) => (
+                  {detailList.map((item: DataSource) => (
                     <Fragment key={item.label}>
                       <Col className={styles['gutter-row-label']} span={3}>
                         {item.label}

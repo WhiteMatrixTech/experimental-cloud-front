@@ -29,10 +29,7 @@ interface DataSource {
   label: string;
   value: any;
 }
-interface Item{
-  label: string;
-  value: string;
-}
+
 export {
   BasicComponentProps,
   BasicLayoutComponentProps,
@@ -40,5 +37,4 @@ export {
   AllPaginationParams,
   BasicApiParams,
   DataSource,
-  Item
 }
