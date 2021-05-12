@@ -1,19 +1,30 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { history } from 'umi';
+import { Dispatch, history } from 'umi';
 import { Table, Space, Row, Col, Spin } from 'antd';
-import { Breadcrumb } from 'components';
-import baseConfig from 'utils/config';
+import { Breadcrumb } from '@/components';
+import baseConfig from '@/utils/config';
 import styles from './index.less';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { ConnectState } from '@/models/connect';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 breadCrumbItem.push({
   menuName: '区块详情',
   menuHref: `/`,
 });
-
+export interface DataSource{
+  label:string;
+  value:any;
+}
+export interface BlockDetailProps{
+  match: { params: { blockHash:string}},
+  User:ConnectState['User'];
+  Block:ConnectState['Block'];
+  qryLoading:boolean;
+  dispatch:Dispatch;
+}
 function BlockDetail({
   match: {
     params: { blockHash },
@@ -22,7 +33,7 @@ function BlockDetail({
   Block,
   qryLoading = false,
   dispatch,
-}) {
+}:BlockDetailProps) {
   const { networkName } = User;
   const { blockDetail, transactionList, transactionTotal } = Block;
   const [pageNum, setPageNum] = useState(1);
@@ -41,31 +52,31 @@ function BlockDetail({
       title: '所属通道',
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text:string) => text || <span className="a-forbidden-style">信息访问受限</span>,
     },
     {
       title: '交易组织',
       dataIndex: 'txMsp',
       key: 'txMsp',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text:string) => text || <span className="a-forbidden-style">信息访问受限</span>,
     },
     {
       title: '合约名称',
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text:string) => text || <span className="a-forbidden-style">信息访问受限</span>,
     },
     {
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) =>
+      render: (text:string) =>
         text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
     },
     {
       title: '操作',
       key: 'action',
-      render: (_, record) => (
+      render: (text: string, record: { channelId?: string; txMsp?: string; txId?: string; }) => (
         <Space size="small">
           {record.channelId || record.txMsp ? (
             <a onClick={() => onClickDetail(record)}>详情</a>
@@ -78,7 +89,7 @@ function BlockDetail({
   ];
 
   // 查询交易列表
-  const getTransactionList = () => {
+  const getTransactionList = ():void => {
     const params = {
       blockHash,
       networkName,
@@ -94,12 +105,12 @@ function BlockDetail({
   };
 
   // 翻页
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any):void => {
     setPageNum(pageInfo.current);
   };
 
   // 点击查看交易详情
-  const onClickDetail = (record) => {
+  const onClickDetail = (record: { channelId?: string | undefined; txMsp?: string | undefined; txId: string; }) => {
     dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/transactions' },
@@ -130,32 +141,30 @@ function BlockDetail({
     getTransactionList();
   }, [pageNum]);
 
-  // 用户身份改变时，展示内容改变
-  useEffect(() => {
-    const data = [
-      {
-        label: '当前哈希值',
-        value: blockDetail.blockHash,
-      },
-      {
-        label: '前序哈希值',
-        value: blockDetail.previousHash,
-      },
-      {
-        label: '交易笔数',
-        value: blockDetail.txCount,
-      },
-      {
-        label: '生成时间',
-        value: moment(blockDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
-      },
-      {
-        label: '所属通道',
-        value: blockDetail.channelId,
-      },
-    ];
-    setDetailList(data);
-  }, [blockDetail]);
+  //TODO:block模块，data只是定义了还没使用，Tabel表中dataSoruce属性的值是从Block  model中取的transactionList。
+  //TODO:并且blockDetail来源于model,model定义的是object,所以暂时提示的是blockDetail没有blockHash...这些属性
+  const data:DataSource[]= [
+    {
+      label: '当前哈希值',
+      value: blockDetail.blockHash,
+    },
+    {
+      label: '前序哈希值',
+      value: blockDetail.previousHash,
+    },
+    {
+      label: '交易笔数',
+      value: blockDetail.txCount,
+    },
+    {
+      label: '生成时间',
+      value: moment(blockDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+    },
+    {
+      label: '所属通道',
+      value: blockDetail.channelId,
+    },
+  ];
 
   return (
     <div className="page-wrapper">
@@ -174,7 +183,7 @@ function BlockDetail({
                     { xs: 8, sm: 16, md: 24, lg: 32 },
                   ]}
                 >
-                  {detailList.map((item) => (
+                  {detailList.map((item:{label:string,value:string}) => (
                     <Fragment key={item.label}>
                       <Col className={styles['gutter-row-label']} span={3}>
                         {item.label}
@@ -208,7 +217,7 @@ function BlockDetail({
   );
 }
 
-export default connect(({ User, Layout, Block, loading }) => ({
+export default connect(({ User, Layout, Block, loading }:ConnectState) => ({
   User,
   Layout,
   Block,
