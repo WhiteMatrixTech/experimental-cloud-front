@@ -1,10 +1,18 @@
+import { GitBuildRepoSchema } from 'umi';
 import { request } from '../utils/request';
 
 /**
  * 一键编译
  */
-export async function oneKeyCompileApi(params: any) {
-  return request(`/network/${params.networkName}/orgs/createOrg`, { method: 'POST', body: params });
+export async function oneKeyCompileApi(params: GitBuildRepoSchema) {
+  return request(`/build/createBuildRepoTask`, { method: 'POST', body: params });
+}
+
+/**
+ * 获取编译任务列表
+ */
+export async function getCompileJobList() {
+  return request('/build');
 }
 
 /**

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
 import { ConnectState } from '@/models/connect';
 import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
@@ -68,14 +68,28 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
       <Form {...formItemLayout} form={form}>
         <Item
           label="仓库地址"
-          name="repository"
+          name="gitRepoUrl"
           initialValue=""
         >
           <Input placeholder="输入仓库地址" />
         </Item>
         <Item
+          label="分支名"
+          name="branch"
+          initialValue=""
+        >
+          <Input placeholder="输入分支名" />
+        </Item>
+        <Item
+          label="编译镜像名"
+          name="buildEnvImageName"
+          initialValue=""
+        >
+          <Input placeholder="输入编译镜像名" />
+        </Item>
+        <Item
           label="编译参数"
-          name="compileArgs"
+          name="buildScript"
           initialValue=""
         >
           <Input.TextArea placeholder="输入编译参数" />

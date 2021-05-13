@@ -103,6 +103,16 @@ export function getRoutes(): RouteProps[] {
           exact: true,
         },
         {
+          path: '/about/job-management',
+          exact: true,
+          routes: [
+            {
+              path: '/about/job-management/job-logs',
+              exact: true,
+            },
+          ],
+        },
+        {
           path: '/about/elastic-cloud-server',
           exact: true,
           routes: [
@@ -123,12 +133,6 @@ export function getRoutes(): RouteProps[] {
             {
               path: '/about/block-compile/package',
               exact: true,
-              routes: [
-                {
-                  path: '/about/block-compile/package/job-logs',
-                  exact: true,
-                },
-              ],
             },
             {
               path: '/about/block-compile/storage',

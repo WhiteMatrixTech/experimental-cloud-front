@@ -8,12 +8,7 @@ import styles from './index.less';
 import { ConnectState } from '@/models/connect';
 import { Dispatch } from 'umi';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block-compile', false);
-breadCrumbItem.push({
-  isLeftMenu: true,
-  menuName: '任务管理',
-  menuHref: `/about/block-compile/package`,
-});
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/job-management');
 breadCrumbItem.push({
   menuName: '任务日志',
   menuHref: `/`,

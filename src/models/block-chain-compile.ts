@@ -1,16 +1,30 @@
 import * as API from '../services/block-chain-compile';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
-import { JobStatus } from '@/pages/about/block-compile/package/_config';
+import { JobStatus } from '@/pages/about/job-management/_config';
+
+export type GitBuildRepoSchema = {
+  gitRepoUrl: string;
+  branch: string;
+  buildEnvImageName: string;
+  buildScript: string;
+}
+
+export type GitBuildRepoTask = {
+  request: GitBuildRepoSchema;
+  buildingJob: JobSchema;
+}
 
 export type JobSchema = {
   jobId: string;
   jobName: string;
   status: JobStatus;
-  message: string;
+  message: Array<string>;
 }
 
 export type BlockChainCompileModelState = {
+  gitBuildJobList: Array<JobSchema>,
+  gitBuildJobTotal: number,
   jobList: Array<JobSchema>,
   jobTotal: number,
   jobDetail: JobSchema | null,
@@ -22,7 +36,9 @@ export type BlockChainCompileModelType = {
   state: BlockChainCompileModelState;
   effects: {
     oneKeyCompile: Effect;
+    getCompileJobList: Effect;
     getJobList: Effect;
+    getJobById: Effect;
     getJobDetail: Effect;
     getJobLog: Effect;
   };
@@ -35,6 +51,8 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
   namespace: 'BlockChainCompile',
 
   state: {
+    gitBuildJobList: [],
+    gitBuildJobTotal: 0,
     jobList: [],
     jobTotal: 0,
     jobDetail: null,
@@ -42,6 +60,27 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
   },
 
   effects: {
+    *getCompileJobList({ payload }, { call, put }) {
+      const res = yield call(API.getCompileJobList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        const gitBuildJob = result.map((task: GitBuildRepoTask) => {
+          return {
+            ...task,
+            ...task.request,
+            ...task.buildingJob
+          }
+        })
+        yield put({
+          type: 'common',
+          payload: {
+            gitBuildJobList: gitBuildJob,
+            gitBuildJobTotal: gitBuildJob.length,
+          },
+        });
+      }
+    },
+
     *oneKeyCompile({ payload }, { call, put }) {
       const res = yield call(API.oneKeyCompileApi, payload);
       const { statusCode, result } = res;
@@ -63,6 +102,20 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
           payload: {
             jobList: result,
             jobTotal: result.length,
+          },
+        });
+      }
+    },
+
+    *getJobById({ payload }, { call, put }) {
+      const res = yield call(API.getJobDetail, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            jobList: [result],
+            jobTotal: 1,
           },
         });
       }
