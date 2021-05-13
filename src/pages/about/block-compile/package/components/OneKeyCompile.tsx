@@ -70,6 +70,12 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
           label="仓库地址"
           name="gitRepoUrl"
           initialValue=""
+          rules={[
+            {
+              required: true,
+              message: '请输入仓库地址',
+            },
+          ]}
         >
           <Input placeholder="输入仓库地址" />
         </Item>
@@ -77,6 +83,12 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
           label="分支名"
           name="branch"
           initialValue=""
+          rules={[
+            {
+              required: true,
+              message: '请输入分支名',
+            },
+          ]}
         >
           <Input placeholder="输入分支名" />
         </Item>
@@ -84,6 +96,12 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
           label="编译镜像名"
           name="buildEnvImageName"
           initialValue=""
+          rules={[
+            {
+              required: true,
+              message: '请输入编译镜像名',
+            },
+          ]}
         >
           <Input placeholder="输入编译镜像名" />
         </Item>
@@ -91,6 +109,12 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
           label="编译参数"
           name="buildScript"
           initialValue=""
+          rules={[
+            {
+              required: true,
+              message: '请输入编译参数',
+            },
+          ]}
         >
           <Input.TextArea placeholder="输入编译参数" />
         </Item>

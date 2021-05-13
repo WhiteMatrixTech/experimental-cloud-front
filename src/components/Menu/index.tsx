@@ -5,7 +5,7 @@ import { history } from 'umi';
 import { isEmpty } from 'lodash';
 import type { Dispatch } from 'umi';
 import { tree2Arr } from '@/utils';
-import { MenuList, MenuProps } from '@/utils/menu';
+import { MenuList, MenuProps, RootMenuId } from '@/utils/menu';
 import { Roles } from '@/utils/roles';
 import { NetworkStatus } from '@/utils/networkStatus';
 import { ConnectState } from '@/models/connect';
@@ -57,7 +57,7 @@ const LeftMenu: React.FC<LeftMenuProps> = (props) => {
     if (item.accessRole === Roles.Admin && userInfo.role !== Roles.Admin) {
       return '';
     }
-    if (isEmpty(item.menuVos)) {
+    if (isEmpty(item.subMenus)) {
       return (
         <Menu.Item key={item.menuHref} onClick={() => hashChange(item)}>
           <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
@@ -75,7 +75,7 @@ const LeftMenu: React.FC<LeftMenuProps> = (props) => {
             </div>
           }
         >
-          {item.menuVos.map((subItem) => {
+          {item.subMenus.map((subItem) => {
             if (subItem.accessRole !== Roles.NetworkMember && userRole === Roles.NetworkMember) {
               return '';
             }
@@ -91,11 +91,11 @@ const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   };
 
   useEffect(() => {
-    const allMenu = tree2Arr(MenuList, 'menuVos');
+    const allMenu = tree2Arr(MenuList, 'subMenus');
     const menuLen = allMenu.length;
     for (let i = 0; i < menuLen; i++) {
       const menu = allMenu[i];
-      if (menu.menuHref.indexOf(pathname) > -1 && menu.menuPid !== 2) {
+      if (menu.menuHref.indexOf(pathname) > -1 && menu.menuPid !== RootMenuId) {
         const parentMenu = allMenu.find((item) => item.id === menu.menuPid);
         setOpenKeys([parentMenu.menuHref]);
         break;

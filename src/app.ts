@@ -36,7 +36,7 @@ export function render(oldRender: () => void) {
   // 403路由控制
   const userRole = localStorage.getItem('userRole');
   const role = localStorage.getItem('role');
-  const allMenu = tree2Arr(MenuList, 'menuVos');
+  const allMenu = tree2Arr(MenuList, 'subMenus');
   let isAdminPage = false;
   let isSuperUserPage = false;
   allMenu
