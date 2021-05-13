@@ -6,7 +6,7 @@ import ReactJson from 'react-json-view';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import styles from './index.less';
 import { ConnectState } from '@/models/connect';
-import { Dispatch } from 'umi';
+import { Dispatch, JobSchema, Location } from 'umi';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/job-management');
 breadCrumbItem.push({
@@ -16,7 +16,7 @@ breadCrumbItem.push({
 
 export type JobLogsProps = {
   dispatch: Dispatch;
-  location: any;
+  location: Location<JobSchema>;
   qryLoading: boolean;
   BlockChainCompile: ConnectState['BlockChainCompile']
 }

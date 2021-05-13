@@ -22,7 +22,7 @@ import { TransactionsModelState } from './transactions';
 import { UserModelState } from './user';
 import { UserRoleModelState } from './user-role';
 
-export type ConnectState = {
+export declare type ConnectState = {
   Block: BlockModelState;
   BlockChainCompile: BlockChainCompileModelState;
   Certificate: CertificateModelState;

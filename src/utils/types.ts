@@ -6,7 +6,7 @@ type BasicComponentProps = {
 
 type BasicLayoutComponentProps = {
   children: JSX.Element,
-  location: any
+  location: Location
 }
 
 type BasicPaginationParams = {
