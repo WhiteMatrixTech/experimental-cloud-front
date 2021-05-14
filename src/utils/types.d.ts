@@ -37,6 +37,7 @@ type TableColumnsAttr = {
 interface DetailViewAttr {
   label: string;
   value: any;
+  onClick?: () => void,
 }
 
 export {

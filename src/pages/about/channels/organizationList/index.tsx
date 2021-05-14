@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Table, Button } from 'antd';
-import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb, DetailCard } from '@/components';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import AddOrg from '../components/AddOrg';
 import { ChannelStatusMap } from '../_config';
-import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles';
+import baseConfig from '@/utils/config';
+import { Roles } from '@/utils/roles';
+import { TableColumnsAttr } from '@/utils/types';
+import { Dispatch } from 'umi';
+import { ConnectState } from '@/models/connect';
+import { DetailViewAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
@@ -14,7 +18,7 @@ breadCrumbItem.push({
   menuHref: `/`,
 });
 
-const columns = [
+const columns: TableColumnsAttr[] = [
   {
     title: '组织名称',
     dataIndex: 'orgName',
@@ -42,7 +46,14 @@ const columns = [
   },
 ];
 
-function OrganizationList(props) {
+export interface OrganizationListProps {
+  qryLoading: boolean;
+  location: Location;
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+  Channel: ConnectState['Channel'];
+}
+function OrganizationList(props: OrganizationListProps) {
   const { qryLoading = false, location, dispatch } = props;
   const { userRole, networkName } = props.User;
   const { orgListOfChannel, orgTotalOfChannel, nodeTotalOfChannel } = props.Channel;
@@ -51,7 +62,7 @@ function OrganizationList(props) {
   const [addOrgVisible, setAddOrgVisible] = useState(false);
 
   const channelInfoList = useMemo(() => {
-    const list = [
+    const list: DetailViewAttr[] = [
       {
         label: '通道名称',
         value: location?.state?.channelId,
@@ -65,12 +76,6 @@ function OrganizationList(props) {
         value: nodeTotalOfChannel,
       },
     ];
-    if (userRole === Roles.NetworkAdmin) {
-      list.slice(1, 0, {
-        label: '所属联盟',
-        value: location?.state?.leagueName,
-      });
-    }
     return list;
   }, [userRole, location?.state, orgTotalOfChannel, nodeTotalOfChannel]);
 
@@ -87,7 +92,7 @@ function OrganizationList(props) {
   };
 
   // 翻页
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
@@ -116,11 +121,13 @@ function OrganizationList(props) {
     getOrgListOfChannel();
   }, []);
 
+  //TODO:DetailCard这个组件定义了一个columnsNum属性，组件中你给它默认的值是2，这里就传了一个2，
+  //TODO:没看懂columnsNum这是个什么意思，当前列的下标吗？
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
-        <DetailCard cardTitle="基本信息" detailList={channelInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
+        <DetailCard cardTitle="基本信息" detailList={channelInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" columnsNum={2} />
         <div className="page-content page-content-shadow table-wrapper">
           {showAddOrg && (
             <div className="table-header-btn-wrapper">
@@ -151,7 +158,7 @@ function OrganizationList(props) {
   );
 }
 
-export default connect(({ Channel, Layout, User, loading }) => ({
+export default connect(({ Channel, Layout, User, loading }: ConnectState) => ({
   Channel,
   Layout,
   User,

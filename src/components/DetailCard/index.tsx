@@ -16,8 +16,7 @@ interface ItemProps {
   fullRow?: boolean,
   showJson?: boolean,
   buttonName?: string,
-  onClick: () => void,
-
+  onClick?: () => void,
 }
 interface IProps {
   cardTitle: string,
