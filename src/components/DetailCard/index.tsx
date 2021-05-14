@@ -17,7 +17,6 @@ interface DetailColumProps {
   showJson?: boolean,
   buttonName?: string,
   onClick?: () => void,
-
 }
 interface IProps {
   cardTitle: string,

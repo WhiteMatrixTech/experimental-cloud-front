@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Select, Form, Button, Modal } from 'antd';
+import { Dispatch } from 'umi';
+import { ConnectState } from '@/models/connect';
+import { OrganizationSchema } from '@/models/organization';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -13,8 +16,17 @@ const formItemLayout = {
     sm: { span: 18 },
   },
 };
-
-function AddOrg(props) {
+export interface AddOrgProps {
+  visible: boolean;
+  onCancel: () => void;
+  channelId: string;
+  addLoading: boolean;
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+  Channel: ConnectState['Channel'];
+  Organization: ConnectState['Organization'];
+}
+function AddOrg(props: AddOrgProps) {
   const { visible, onCancel, channelId, addLoading = false, dispatch, User, Channel, Organization } = props;
   const { networkName } = User;
   const { orgList } = Organization;
@@ -23,12 +35,13 @@ function AddOrg(props) {
   const [form] = Form.useForm();
 
   const optionalOrgList = useMemo(() => {
+    let orgData: OrganizationSchema[] = [];
     return orgList.reduce(function (pre, cur) {
       if (orgListOfChannel.every((item) => item.orgName !== cur.orgName)) {
         pre.push(cur);
       }
       return pre;
-    }, []);
+    }, orgData);
   }, [orgList, orgListOfChannel]);
 
   useEffect(() => {
@@ -97,7 +110,7 @@ function AddOrg(props) {
   );
 }
 
-export default connect(({ Channel, User, Organization, loading }) => ({
+export default connect(({ Channel, User, Organization, loading }: ConnectState) => ({
   User,
   Channel,
   Organization,
