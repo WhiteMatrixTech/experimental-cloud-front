@@ -86,7 +86,6 @@ function EvidenceDataDetail({
           <DetailCard cardTitle="基本信息" detailList={detailList} />
           <div className={styles['detail-card-wrapper']}>
             <div className={styles['detail-card-title']}>
-              <span className={styles['detail-title-border']}></span>
               <span className={styles['detail-title-content']}>存证信息</span>
             </div>
             <div className={styles['detail-info-wrapper']}>

@@ -5,7 +5,7 @@ import { history } from 'umi';
 import { isEmpty } from 'lodash';
 import type { Dispatch } from 'umi';
 import { tree2Arr } from '@/utils';
-import { MenuList, MenuProps } from '@/utils/menu';
+import { MenuList, MenuProps, RootMenuId } from '@/utils/menu';
 import { Roles } from '@/utils/roles';
 import { NetworkStatus } from '@/utils/networkStatus';
 import { ConnectState } from '@/models/connect';
@@ -21,17 +21,17 @@ export type LeftMenuProps = {
   Dashboard: ConnectState['Dashboard'],
 }
 
-function LeftMenu(props: LeftMenuProps) {
+const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   const { pathname, dispatch, User, Dashboard, Layout } = props;
   const { userRole, userInfo, networkName } = User;
   const { selectedMenu } = Layout;
   const { networkStatusInfo } = Dashboard;
-  const [openKeys, setOpenKeys] = useState([]);
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   const hashChange = (menu: MenuProps) => {
     const unavailableNetworkStatus = [NetworkStatus.NotExist, NetworkStatus.UnknownError];
     const availableMenu = ['/about/league-dashboard', '/about/elastic-cloud-server'];
-    if (unavailableNetworkStatus.includes(networkStatusInfo.networkStatus) && !availableMenu.includes(menu.menuHref)) {
+    if (networkStatusInfo && unavailableNetworkStatus.includes(networkStatusInfo.networkStatus) && !availableMenu.includes(menu.menuHref)) {
       const warnMes = userRole === Roles.NetworkAdmin ? '请先创建网络' : '请等待盟主创建网络';
       message.warn(warnMes);
       return;
@@ -42,6 +42,7 @@ function LeftMenu(props: LeftMenuProps) {
         type: 'Layout/common',
         payload: { selectedMenu: menu.menuHref },
       });
+      localStorage.setItem('selectedMenu', menu.menuHref);
     }
   };
 
@@ -50,13 +51,13 @@ function LeftMenu(props: LeftMenuProps) {
   };
 
   const getMenuItem = (item: MenuProps) => {
-    if (item.isFeature === 1 && userRole === Roles.NetworkMember) {
+    if (item.accessRole === Roles.NetworkMember && userRole === Roles.NetworkMember) {
       return '';
     }
-    if (item.isFeature === 2 && userInfo.role !== Roles.Admin) {
+    if (item.accessRole === Roles.Admin && userInfo.role !== Roles.Admin) {
       return '';
     }
-    if (isEmpty(item.menuVos)) {
+    if (isEmpty(item.subMenus)) {
       return (
         <Menu.Item key={item.menuHref} onClick={() => hashChange(item)}>
           <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
@@ -74,8 +75,8 @@ function LeftMenu(props: LeftMenuProps) {
             </div>
           }
         >
-          {item.menuVos.map((subItem) => {
-            if (subItem.isFeature && userRole === Roles.NetworkMember) {
+          {item.subMenus.map((subItem) => {
+            if (subItem.accessRole !== Roles.NetworkMember && userRole === Roles.NetworkMember) {
               return '';
             }
             return (
@@ -90,26 +91,16 @@ function LeftMenu(props: LeftMenuProps) {
   };
 
   useEffect(() => {
-    const allMenu = tree2Arr(MenuList, 'menuVos');
+    const allMenu = tree2Arr(MenuList, 'subMenus');
     const menuLen = allMenu.length;
     for (let i = 0; i < menuLen; i++) {
       const menu = allMenu[i];
-      if (pathname.indexOf(menu.menuHref) > -1) {
-        if (menu.menuPid !== 2) {
-          const parentMenu = allMenu.find((item) => item.id === menu.menuPid);
-          setOpenKeys([parentMenu.menuHref]);
-        }
-        dispatch({
-          type: 'Layout/common',
-          payload: { selectedMenu: menu.menuHref },
-        });
-        localStorage.setItem('selectedMenu', menu.menuHref);
+      if (menu.menuHref.indexOf(pathname) > -1 && menu.menuPid !== RootMenuId) {
+        const parentMenu = allMenu.find((item) => item.id === menu.menuPid);
+        setOpenKeys([parentMenu.menuHref]);
         break;
       }
     }
-    return () => {
-      localStorage.setItem('selectedMenu', selectedMenu);
-    };
   }, []);
 
   useEffect(() => {
@@ -130,4 +121,8 @@ function LeftMenu(props: LeftMenuProps) {
   );
 }
 
-export default connect(({ Layout, User, Dashboard }: ConnectState) => ({ Layout, User, Dashboard }))(LeftMenu);
+export default connect(({ Layout, User, Dashboard }: ConnectState) => ({
+  Layout,
+  User,
+  Dashboard
+}))(LeftMenu);

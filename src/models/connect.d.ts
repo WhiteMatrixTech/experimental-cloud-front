@@ -1,3 +1,4 @@
+import { BlockChainCompileModelState } from '@/.umi/plugin-dva/connect';
 import { BlockModelState } from './block';
 import { CertificateModelState } from './certificate';
 import { ChannelModelState } from './channel';
@@ -21,8 +22,9 @@ import { TransactionsModelState } from './transactions';
 import { UserModelState } from './user';
 import { UserRoleModelState } from './user-role';
 
-export type ConnectState = {
+export declare type ConnectState = {
   Block: BlockModelState;
+  BlockChainCompile: BlockChainCompileModelState;
   Certificate: CertificateModelState;
   Channel: ChannelModelState;
   Contract: ContractModelState;

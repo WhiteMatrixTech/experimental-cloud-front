@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Space, Button, Spin, Form, Row, Col, Input, Select } from 'antd';
-import { connect, history, Dispatch } from 'umi';
+import { connect, history, Dispatch, Location, UserInfo } from 'umi';
 import { ConnectState } from '@/models/connect';
 import { RolesMapNames } from '@/utils/roles';
 import cs from 'classnames';
@@ -20,7 +20,7 @@ const formItemLayout = {
 export type UserManagementProps = {
   configLoading: boolean,
   dispatch: Dispatch,
-  location: any,
+  location: Location<UserInfo>,
   UserRole: ConnectState['UserRole']
 }
 

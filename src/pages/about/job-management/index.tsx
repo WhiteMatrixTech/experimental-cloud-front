@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Space } from 'antd';
+import { Table, Space } from 'antd';
 import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
 import { ConnectState } from '@/models/connect';
-import { Breadcrumb } from '@/components';
-import OneKeyCompile from './components/OneKeyCompile';
+import { Breadcrumb, SearchBar } from '@/components';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import { TableColumnsAttr } from '@/utils/types';
 import { JobSchema } from '@/models/block-chain-compile';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block-compile', false);
-breadCrumbItem.push({
-  menuName: '一键编译',
-  menuHref: `/`,
-});
+const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/job-management', false);
 
 export type SourceCodeCompilationProps = {
   qryLoading: boolean,
@@ -23,61 +18,44 @@ export type SourceCodeCompilationProps = {
 
 const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   const { dispatch, qryLoading = false, BlockChainCompile } = props;
-  const { gitBuildJobList, gitBuildJobTotal } = BlockChainCompile;
+  const { jobList, jobTotal } = BlockChainCompile;
   const [pageNum, setPageNum] = useState(1);
-  const [compileModalVisible, setCompileModalVisible] = useState(false);
+  const [jobId, setJobId] = useState('');
 
-  const getCompileJobList = () => {
+  const getJobList = () => {
+    if (jobId) {
+      dispatch({
+        type: 'BlockChainCompile/getJobById',
+        payload: { jobId }
+      });
+      return;
+    }
     dispatch({
-      type: 'BlockChainCompile/getCompileJobList',
+      type: 'BlockChainCompile/getJobList',
       payload: {}
-    })
+    });
   }
 
   const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
-  const onClickOneKeyCompile = () => {
-    setCompileModalVisible(true);
-  }
-
-  const onCancel = () => {
-    setCompileModalVisible(false);
-  }
+  // 搜索
+  const onSearch = (value: string, event: any): void => {
+    if (event.type && (event.type === 'click' || event.type === 'keydown')) {
+      setPageNum(1);
+      setJobId(value || '');
+    }
+  };
 
   const onViewJobLog = (record: JobSchema) => {
     history.push({
-      pathname: `/about/job-management/job-logs`,
+      pathname: `/about/block-compile/package/job-logs`,
       state: { ...record },
     });
   }
 
   const columns: TableColumnsAttr[] = [
-    {
-      title: '仓库地址',
-      dataIndex: 'gitRepoUrl',
-      key: 'gitRepoUrl',
-      ellipsis: true,
-    },
-    {
-      title: '分支名',
-      dataIndex: 'branch',
-      key: 'branch',
-      ellipsis: true,
-    },
-    {
-      title: '编译镜像名',
-      dataIndex: 'buildEnvImageName',
-      key: 'buildEnvImageName',
-      ellipsis: true,
-    },
-    {
-      title: '编译参数',
-      dataIndex: 'buildScript',
-      key: 'buildScript',
-      ellipsis: true,
-    },
     {
       title: '任务ID',
       dataIndex: 'jobId',
@@ -85,9 +63,21 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       ellipsis: true,
     },
     {
+      title: '任务名称',
+      dataIndex: 'jobName',
+      key: 'jobName',
+      ellipsis: true,
+    },
+    {
       title: '任务状态',
       dataIndex: 'status',
       key: 'status',
+      ellipsis: true,
+    },
+    {
+      title: '任务信息',
+      dataIndex: 'message',
+      key: 'message',
       ellipsis: true,
     },
     {
@@ -102,36 +92,29 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   ];
 
   useEffect(() => {
-    getCompileJobList();
-  }, []);
+    getJobList();
+  }, [jobId]);
 
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow table-wrapper">
-        <div className="table-header-btn-wrapper">
-          <Button type="primary" onClick={onClickOneKeyCompile}>
-            一键编译
-          </Button>
-        </div>
+        <SearchBar placeholder="任务ID" onSearch={onSearch} />
         <Table
           rowKey="_id"
           loading={qryLoading}
           columns={columns}
-          dataSource={gitBuildJobList}
+          dataSource={jobList}
           onChange={onPageChange}
           pagination={{
             pageSize: 10,
-            total: gitBuildJobTotal,
+            total: jobTotal,
             current: pageNum,
             showSizeChanger: false,
             position: ['bottomCenter'],
           }}
         />
       </div>
-      {compileModalVisible && (
-        <OneKeyCompile visible={compileModalVisible} onCancel={onCancel} />
-      )}
     </div>
   );
 }
@@ -139,5 +122,5 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 export default connect(({ User, BlockChainCompile, loading }: ConnectState) => ({
   User,
   BlockChainCompile,
-  qryLoading: loading.effects['BlockChainCompile/getCompileJobList'],
+  qryLoading: loading.effects['BlockChainCompile/getJobList'] || loading.effects['BlockChainCompile/getJobById'],
 }))(SourceCodeCompilation);

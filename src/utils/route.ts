@@ -103,6 +103,16 @@ export function getRoutes(): RouteProps[] {
           exact: true,
         },
         {
+          path: '/about/job-management',
+          exact: true,
+          routes: [
+            {
+              path: '/about/job-management/job-logs',
+              exact: true,
+            },
+          ],
+        },
+        {
           path: '/about/elastic-cloud-server',
           exact: true,
           routes: [

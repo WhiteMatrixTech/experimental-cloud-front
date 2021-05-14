@@ -255,7 +255,7 @@ function LeagueDashboard(props) {
   }, []);
 
   useEffect(() => {
-    if (userRole === Roles.NetworkAdmin && networkStatusInfo.networkStatus === NetworkStatus.NotExist) {
+    if (userRole === Roles.NetworkAdmin && networkStatusInfo?.networkStatus === NetworkStatus.NotExist) {
       setShowCreateNetworkBtn(true);
     } else {
       setShowCreateNetworkBtn(false);
@@ -263,7 +263,7 @@ function LeagueDashboard(props) {
     if (
       userRole === Roles.NetworkAdmin &&
       Dashboard.channelTotal === 0 &&
-      networkStatusInfo.networkStatus === NetworkStatus.Running
+      networkStatusInfo?.networkStatus === NetworkStatus.Running
     ) {
       setShowCreateChannelBtn(true);
     } else {
@@ -291,11 +291,13 @@ function LeagueDashboard(props) {
               </Col>
               <Col span={8}>
                 <label>创建时间：</label>
-                <span>{moment(networkStatusInfo.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+                <span>
+                  {networkStatusInfo ? moment(networkStatusInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
+                </span>
               </Col>
               <Col span={8}>
                 <label>网络状态: </label>
-                <span>{NetworkInfo[networkStatusInfo.networkStatus]}</span>
+                <span>{networkStatusInfo ? NetworkInfo[networkStatusInfo.networkStatus] : ''}</span>
                 {showCreateChannelBtn && (
                   <>
                     <span>，网络中暂无通道，</span>
