@@ -21,10 +21,8 @@ export const ChannelStatusMap: ChannelStatusMapAttr = {
   DeletionFailed: 'DeletionFailed',
   Deleted: 'Deleted',
 };
-export interface ChannelStatusAttr {
-  [ChannelStatusMap: string]: { color: string, text: string };
-}
-export const ChannelStatus: ChannelStatusAttr = {
+
+export const ChannelStatus = {
   // 通道状态
   [ChannelStatusMap.InUse]: { color: 'green', text: '使用中' },
   [ChannelStatusMap.Creating]: { color: 'orange', text: '创建中' },

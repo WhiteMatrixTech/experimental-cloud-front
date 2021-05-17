@@ -124,9 +124,6 @@ function ChaincodeList(props: ChaincodeListProps) {
       ascend: false,
       channelId: location?.state?.channelId,
     };
-    if (chainCodeName) {
-      params.orgName = chainCodeName;
-    }
     props.dispatch({
       type: 'Channel/getContractListOfChannel',
       payload: params,
@@ -141,14 +138,6 @@ function ChaincodeList(props: ChaincodeListProps) {
     setPageNum(pageInfo.current);
   };
 
-  // 按 合约名 搜索
-  const onSearch = (value: string, event: any) => {
-    if (event.type && (event.type === 'click' || event.type === 'keydown')) {
-      setPageNum(1);
-      setChainCodeName(value || '');
-    }
-  };
-
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -160,7 +149,6 @@ function ChaincodeList(props: ChaincodeListProps) {
           columnsNum={2}
         />
         <div className="table-wrapper page-content-shadow">
-          <SearchBar placeholder="输入合约名称" onSearch={onSearch} />
           <Table
             rowKey="_id"
             loading={qryLoading}
