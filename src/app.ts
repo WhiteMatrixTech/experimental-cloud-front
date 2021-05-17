@@ -2,7 +2,7 @@ import { history } from 'umi';
 import { parse } from 'qs';
 import { InitLocales } from './utils/locales';
 import { getRoutes, RouteProps } from './utils/route';
-import { MenuList, MenuProps } from './utils/menu';
+import { MenuList, NetworkMenuProps } from './utils/menu';
 import { Roles } from './utils/roles';
 import { tree2Arr } from './utils';
 
@@ -34,27 +34,22 @@ export function render(oldRender: () => void) {
   const matchRoute = allRoute.find((item: RouteProps) => item.path.indexOf(pathname) > -1);
 
   // 403路由控制
+  //TODO 只做了网络portal的
   const userRole = localStorage.getItem('userRole');
-  const role = localStorage.getItem('role');
   const allMenu = tree2Arr(MenuList, 'subMenus');
   let isAdminPage = false;
-  let isSuperUserPage = false;
   allMenu
-    .filter((menu: MenuProps) => menu.accessRole !== Roles.NetworkMember)
-    .forEach((menu: MenuProps) => {
+    .filter((menu: NetworkMenuProps) => menu.accessRole !== Roles.NetworkMember)
+    .forEach((menu: NetworkMenuProps) => {
       if (pathname.indexOf(menu.menuHref) > -1) {
         isAdminPage = true;
       }
     });
-  if (pathname.indexOf('userManagement') > -1) {
-    isSuperUserPage = true;
-  }
 
   // 外部登录
   const search = window.location.search ? window.location.search.replace('?', '') : '';
   const { redirect } = parse(search);
-  const noAccessSituation = (userRole === Roles.NetworkMember && isAdminPage) || (role !== Roles.SuperUser && isSuperUserPage);
-
+  const noAccessSituation = userRole === Roles.NetworkMember && isAdminPage;
 
   if (noAccessSituation) {
     history.push('/403');

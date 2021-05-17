@@ -4,11 +4,12 @@ import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
 import { ConnectState } from '@/models/connect';
 import { Breadcrumb } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { CommonMenuList, getCurBreadcrumb } from '@/utils/menu';
 import { TableColumnsAttr } from '@/utils/types';
 import { JobSchema } from '@/models/block-chain-compile';
+import baseConfig from '@/utils/config';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/job-management', false);
+const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/job-management', false);
 
 export type SourceCodeCompilationProps = {
   qryLoading: boolean;
@@ -34,7 +35,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 
   const onViewJobLog = (record: JobSchema) => {
     history.push({
-      pathname: `/about/block-compile/package/job-logs`,
+      pathname: `/common/job-management/job-logs`,
       state: { ...record },
     });
   };
@@ -65,12 +66,6 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       ellipsis: true,
     },
     {
-      title: '任务信息',
-      dataIndex: 'message',
-      key: 'message',
-      ellipsis: true,
-    },
-    {
       title: '操作',
       key: 'action',
       render: (text, record: JobSchema) => (
@@ -90,13 +85,13 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
-          rowKey="_id"
+          rowKey="jobId"
           loading={qryLoading}
           columns={columns}
           dataSource={jobList}
           onChange={onPageChange}
           pagination={{
-            pageSize: 10,
+            pageSize: baseConfig.pageSize,
             total: jobTotal,
             current: pageNum,
             showSizeChanger: false,

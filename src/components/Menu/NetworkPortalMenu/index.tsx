@@ -5,7 +5,7 @@ import { history } from 'umi';
 import { isEmpty } from 'lodash';
 import type { Dispatch } from 'umi';
 import { tree2Arr } from '@/utils';
-import { MenuList, MenuProps, RootMenuId } from '@/utils/menu';
+import { MenuList, NetworkMenuProps, RootMenuId } from '@/utils/menu';
 import { Roles } from '@/utils/roles';
 import { NetworkStatus } from '@/utils/networkStatus';
 import { ConnectState } from '@/models/connect';
@@ -14,24 +14,28 @@ import styles from './index.less';
 const { SubMenu } = Menu;
 
 export type LeftMenuProps = {
-  dispatch: Dispatch,
-  pathname: string,
-  User: ConnectState['User'],
-  Layout: ConnectState['Layout'],
-  Dashboard: ConnectState['Dashboard'],
-}
+  dispatch: Dispatch;
+  pathname: string;
+  User: ConnectState['User'];
+  Layout: ConnectState['Layout'];
+  Dashboard: ConnectState['Dashboard'];
+};
 
-const LeftMenu: React.FC<LeftMenuProps> = (props) => {
+const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
   const { pathname, dispatch, User, Dashboard, Layout } = props;
   const { userRole, userInfo, networkName } = User;
   const { selectedMenu } = Layout;
   const { networkStatusInfo } = Dashboard;
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
-  const hashChange = (menu: MenuProps) => {
+  const hashChange = (menu: NetworkMenuProps) => {
     const unavailableNetworkStatus = [NetworkStatus.NotExist, NetworkStatus.UnknownError];
     const availableMenu = ['/about/league-dashboard', '/about/elastic-cloud-server'];
-    if (networkStatusInfo && unavailableNetworkStatus.includes(networkStatusInfo.networkStatus) && !availableMenu.includes(menu.menuHref)) {
+    if (
+      networkStatusInfo &&
+      unavailableNetworkStatus.includes(networkStatusInfo.networkStatus) &&
+      !availableMenu.includes(menu.menuHref)
+    ) {
       const warnMes = userRole === Roles.NetworkAdmin ? '请先创建网络' : '请等待盟主创建网络';
       message.warn(warnMes);
       return;
@@ -50,7 +54,7 @@ const LeftMenu: React.FC<LeftMenuProps> = (props) => {
     setOpenKeys(openKeys);
   };
 
-  const getMenuItem = (item: MenuProps) => {
+  const getMenuItem = (item: NetworkMenuProps) => {
     if (item.accessRole === Roles.NetworkMember && userRole === Roles.NetworkMember) {
       return '';
     }
@@ -119,10 +123,10 @@ const LeftMenu: React.FC<LeftMenuProps> = (props) => {
       </Menu>
     </div>
   );
-}
+};
 
 export default connect(({ Layout, User, Dashboard }: ConnectState) => ({
   Layout,
   User,
-  Dashboard
-}))(LeftMenu);
+  Dashboard,
+}))(NetworkPortalMenu);

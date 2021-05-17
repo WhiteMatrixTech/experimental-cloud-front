@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect } from 'umi';
 
-const index: React.FC = () => {
+const NetworkIndex: React.FC = () => {
   return <Redirect to="/about/league-dashboard" />;
 };
 
-export default index;
+export default NetworkIndex;

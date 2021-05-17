@@ -1,10 +1,10 @@
-import { BaaSLayout } from '@/components';
+import { NetworkPortalLayout } from '@/components';
 import { BasicLayoutComponentProps } from '@/utils/types';
 
 function BasicLayout(props: BasicLayoutComponentProps) {
   const { children, location } = props;
   const { pathname } = location;
-  return <BaaSLayout children={children} pathname={pathname} />;
+  return <NetworkPortalLayout children={children} pathname={pathname} />;
 }
 
 export default BasicLayout;

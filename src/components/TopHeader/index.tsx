@@ -1,12 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { connect } from 'dva';
-import { history } from 'umi';
+import { history, Portal, PortalNames } from 'umi';
 import type { Dispatch } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import { MenuList } from '@/utils/menu';
-import { Roles } from '@/utils/roles';
 import { ConnectState } from '@/models/connect';
 import buaaLogo from 'assets/images/buaa-small.png';
 import styles from './index.less';
@@ -17,18 +15,32 @@ export type TopHeaderProps = {
   dispatch: Dispatch;
   pathname: string;
   User: ConnectState['User'];
+  Layout: ConnectState['Layout'];
 };
 
 const TopHeader: React.FC<TopHeaderProps> = (props) => {
-  const { dispatch, pathname, User } = props;
-  const { userInfo } = User;
+  const { dispatch, pathname, User, Layout } = props;
+  const { userInfo, networkName } = User;
+  const { currentPortal } = Layout;
 
   const getUserMenu = () => {
-    const showChangeLeague = pathname.indexOf('about') > -1 || pathname.indexOf('userManagement') > -1;
+    // 当前在网络门户下才展示切换网络
+    const showChangeLeague = pathname.indexOf('about') > -1 && currentPortal === Portal.NetworkPortal;
     return (
       <Menu theme="dark" onClick={handleUserMenuClick}>
         {showChangeLeague && <Menu.Item key="changeLeague">切换联盟</Menu.Item>}
         <Menu.Item key="loginOut">退出账号</Menu.Item>
+      </Menu>
+    );
+  };
+
+  const getPortalMenu = () => {
+    const portalList = Object.keys(PortalNames).filter((portal) => portal !== currentPortal);
+    return (
+      <Menu theme="dark" onClick={handlePortalMenuClick}>
+        {portalList.map((portal) => (
+          <Menu.Item key={portal}>{PortalNames[portal].portalName}</Menu.Item>
+        ))}
       </Menu>
     );
   };
@@ -41,22 +53,31 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
       // 跳转至登录界面
       history.replace('/user/login');
     } else if (key === 'changeLeague') {
-      window.localStorage.setItem('roleToken', '');
+      localStorage.setItem('roleToken', '');
+      localStorage.setItem('leagueName', '');
+      localStorage.setItem('networkName', '');
+      dispatch({
+        type: 'User/cleanNetworkInfo',
+        payload: {},
+      });
       history.replace('/selectLeague');
     }
   };
 
-  // 查看消息
-  const onClickMessage = () => {
-    const breadCrumbItem = MenuList.filter((item) => item.menuHref.indexOf('/about/message') > -1);
+  const handlePortalMenuClick = ({ key }: any) => {
+    if (currentPortal === Portal.CommonPortal && !networkName) {
+      history.push('/selectLeague');
+    } else {
+      history.push(PortalNames[key].path);
+    }
     dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/message', breadCrumbItem },
+      payload: {
+        currentPortal: key,
+        commonPortalSelectedMenu: '/common/job-management',
+        selectedMenu: '/about/league-dashboard',
+      },
     });
-    const hashName = window.location.hash;
-    if (hashName.indexOf('/about/message') === -1) {
-      history.push('/about/message');
-    }
   };
 
   // 跳转至IDE
@@ -67,13 +88,6 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
     window.open(link);
   };
 
-  const onClickUserManagement = (e: any) => {
-    e.preventDefault();
-    history.push('/userManagement');
-  };
-
-  const isShowUserManagement = useMemo(() => (userInfo.role === Roles.SuperUser) && (pathname.indexOf('userManagement') === -1), [pathname, userInfo.role])
-
   return (
     <Header className={styles.header}>
       <div className={styles['logo-sub']}>
@@ -81,15 +95,14 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
         <span>欢迎使用区块链科研实验云平台</span>
       </div>
       <div className={styles['header-right-info']}>
-        {isShowUserManagement && <a className={styles['header-menu-item']} onClick={onClickUserManagement}>
-          用户角色管理
-        </a>}
         <a className={styles['header-menu-item']} onClick={onClickIDE}>
           ChainIDE
         </a>
-        {/* <Badge showZero count={100}>
-            <div className={styles['header-menu-item']} style={{ paddingRight: '12px' }} onClick={onClickMessage}>消息</div>
-          </Badge> */}
+        <Dropdown placement="bottomCenter" overlay={getPortalMenu()}>
+          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            切换Portal <DownOutlined />
+          </a>
+        </Dropdown>
         <Dropdown placement="bottomCenter" overlay={getUserMenu()}>
           <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
             {userInfo.loginName} <DownOutlined />
@@ -98,6 +111,6 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
       </div>
     </Header>
   );
-}
+};
 
 export default connect(({ Layout, User }: ConnectState) => ({ Layout, User }))(TopHeader);

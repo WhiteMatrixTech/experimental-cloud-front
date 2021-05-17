@@ -33,5 +33,5 @@ export async function getJobList() {
  * 查询Job日志
  */
 export async function getJobLog(params: { jobId: string }) {
-  return request(`/job/${params.jobId}/log`);
+  return request(`/job/${params.jobId}/logs`);
 }

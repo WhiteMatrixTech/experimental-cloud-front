@@ -1,0 +1,18 @@
+@import '~themes/variable.less';
+
+.commonPortalLayout {
+  display: flex;
+  height: 100%;
+  .leftMenu {
+    width: 220px;
+  }
+  .rightPart {
+    flex: 1;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 20px;
+    overflow: auto;
+    background: @wrapper-background;
+  }
+}

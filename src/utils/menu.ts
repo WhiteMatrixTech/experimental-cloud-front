@@ -11,17 +11,24 @@ import { Roles } from './roles';
  * accessRole: 可访问角色
  */
 export const RootMenuId = 'root';
-export type MenuProps = {
-  id: string,
-  menuPid: string,
-  menuHref: string,
-  menuIcon: string | null,
-  menuName: string,
-  subMenus: MenuProps[],
-  accessRole: Roles,
+interface BasicMenuProps {
+  id: string;
+  menuPid: string;
+  menuHref: string;
+  menuIcon: string | null;
+  menuName: string;
+}
+export interface NetworkMenuProps extends BasicMenuProps {
+  accessRole: Roles;
+  subMenus: NetworkMenuProps[];
 }
 
-const MenuList: MenuProps[] = [
+export interface CommonMenuProps extends BasicMenuProps {
+  accessRole: Roles[];
+  subMenus: CommonMenuProps[];
+}
+
+const NetworkMenuList: NetworkMenuProps[] = [
   {
     id: 'league-dashboard',
     menuPid: RootMenuId,
@@ -251,15 +258,6 @@ const MenuList: MenuProps[] = [
     subMenus: [],
   },
   {
-    id: 'elastic-cloud-server',
-    menuPid: RootMenuId,
-    menuHref: '/about/elastic-cloud-server',
-    menuIcon: 'KBasszhengshuguanli',
-    menuName: '弹性云服务器管理',
-    accessRole: Roles.NetworkAdmin,
-    subMenus: [],
-  },
-  {
     id: 'rbac',
     menuPid: RootMenuId,
     menuHref: '/about/rbac',
@@ -268,46 +266,67 @@ const MenuList: MenuProps[] = [
     accessRole: Roles.NetworkAdmin,
     subMenus: [],
   },
+];
+
+const CommonMenuList: CommonMenuProps[] = [
+  {
+    id: 'job-management',
+    menuPid: RootMenuId,
+    menuHref: '/common/job-management',
+    menuIcon: 'KBasszhengshuguanli',
+    menuName: '任务管理',
+    accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
+    subMenus: [],
+  },
   {
     id: 'block-compile',
     menuPid: RootMenuId,
-    menuHref: '/about/block-compile',
+    menuHref: '/common/block-compile',
     menuIcon: 'KBasslianmengguanli',
     menuName: '区块链编译',
-    accessRole: Roles.NetworkMember,
+    accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
     subMenus: [
       {
         id: 'package',
         menuPid: 'block-compile',
-        menuHref: '/about/block-compile/package',
+        menuHref: '/common/block-compile/package',
         menuIcon: null,
         menuName: '一键编译',
-        accessRole: Roles.NetworkAdmin,
+        accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
         subMenus: [],
       },
       {
         id: 'storage',
         menuPid: 'block-compile',
-        menuHref: '/about/block-compile/storage',
+        menuHref: '/common/block-compile/storage',
         menuIcon: null,
         menuName: '镜像仓库',
-        accessRole: Roles.NetworkMember,
+        accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
         subMenus: [],
       },
     ],
   },
   {
-    id: 'job-management',
+    id: 'elastic-cloud-server',
     menuPid: RootMenuId,
-    menuHref: '/about/job-management',
+    menuHref: '/common/elastic-cloud-server',
     menuIcon: 'KBasszhengshuguanli',
-    menuName: '任务管理',
-    accessRole: Roles.NetworkAdmin,
+    menuName: '弹性云服务器管理',
+    accessRole: [Roles.Admin, Roles.SuperUser],
+    subMenus: [],
+  },
+  {
+    id: 'user-role-management',
+    menuPid: RootMenuId,
+    menuHref: '/common/user-role-management',
+    menuIcon: 'KBasslianmengguanli',
+    menuName: '用户角色管理',
+    accessRole: [Roles.SuperUser],
     subMenus: [],
   },
 ];
 
-const getCurBreadcrumb = (menuList: MenuProps[], keyword = '', isLeftMenu = true) => {
+const getCurBreadcrumb = (menuList: NetworkMenuProps[] | CommonMenuProps[], keyword = '', isLeftMenu = true) => {
   const breadCrumb = [];
   const findMenu = tree2Arr(menuList).find((item) => item.menuHref === keyword);
   if (findMenu) {
@@ -317,4 +336,4 @@ const getCurBreadcrumb = (menuList: MenuProps[], keyword = '', isLeftMenu = true
   return breadCrumb;
 };
 
-export { MenuList, getCurBreadcrumb };
+export { NetworkMenuList as MenuList, CommonMenuList, getCurBreadcrumb };

@@ -1,9 +1,27 @@
 import type { Reducer, Effect } from 'umi';
 
+export enum Portal {
+  NetworkPortal = 'NetworkPortal',
+  CommonPortal = 'CommonPortal',
+}
+
+export const PortalNames = {
+  [Portal.NetworkPortal]: {
+    portalName: 'Network Portal',
+    path: '/about',
+  },
+  [Portal.CommonPortal]: {
+    portalName: 'Common Portal',
+    path: '/common',
+  },
+};
+
 export type LayoutModelState = {
   getUnreadMessage: number;
   selectedMenu: string;
-}
+  commonPortalSelectedMenu: string;
+  currentPortal: Portal;
+};
 
 export type LayoutModelType = {
   namespace: 'Layout';
@@ -20,7 +38,9 @@ const LayoutModel: LayoutModelType = {
   namespace: 'Layout',
 
   state: {
+    currentPortal: Portal.NetworkPortal,
     getUnreadMessage: 0, // 未读消息条数
+    commonPortalSelectedMenu: localStorage.getItem('commonPortalSelectedMenu') || '/common/job-management',
     selectedMenu: localStorage.getItem('selectedMenu') || '/about/league-dashboard', // 当前选中菜单
   },
 

@@ -3,11 +3,11 @@ import { connect } from 'dva';
 import { Table } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { CommonMenuList, getCurBreadcrumb } from 'utils/menu';
 import baseConfig from 'utils/config';
 import { serverPurpose } from '../_config';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/elastic-cloud-server');
+const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');
 breadCrumbItem.push({
   menuName: '实例数据',
   menuHref: `/`,
