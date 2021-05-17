@@ -9,7 +9,8 @@ import baseConfig from '@/utils/config';
 import { Roles } from '@/utils/roles';
 import { TableColumnsAttr, DetailViewAttr } from '@/utils/types';
 import { ConnectState } from '@/models/connect';
-import { Dispatch } from 'umi';
+import { Dispatch, Location } from 'umi';
+import { PeerSchema } from '@/models/node';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
   menuName: '查看节点',
@@ -19,7 +20,7 @@ export interface NodeListProps {
   dispatch: Dispatch;
   User: ConnectState['User'];
   Channel: ConnectState['Channel'];
-  location: Location;
+  location: Location<PeerSchema>;
   qryLoading: boolean;
 }
 const pageSize = baseConfig.pageSize;
@@ -91,7 +92,7 @@ function NodeList(props: NodeListProps) {
   const getNodeListOfChannel = () => {
     const { User, location } = props;
     const { networkName } = User;
-    let params: { networkName: string; channelId: string; orgName?: string } = {
+    let params: { networkName: string; channelId?: string; orgName?: string } = {
       networkName,
       channelId: location?.state?.channelId,
     };
