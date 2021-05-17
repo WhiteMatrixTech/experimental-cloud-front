@@ -1,32 +1,21 @@
 import React from 'react';
 import { ConnectState } from '@/models/connect';
-import { Button, Form, Input, Modal } from 'antd';
+import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import { Dispatch } from 'umi';
 
 const { Item } = Form;
 
-const formItemLayout = {
-  labelCol: {
-    sm: { span: 6 },
-  },
-  wrapperCol: {
-    sm: { span: 18 },
-  },
+export type OneKeyCompileProps = {
+  visible: boolean;
+  configLoading: boolean;
+  onCancel: () => void;
+  dispatch: Dispatch;
+  User: ConnectState['User'];
 };
 
-export type OneKeyCompileProps = {
-  visible: boolean,
-  configLoading: boolean,
-  onCancel: () => void,
-  dispatch: Dispatch,
-  User: ConnectState['User']
-}
-
-
 const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
-  const { visible, onCancel, configLoading = false, User, dispatch } = props;
-  const { networkName } = User;
+  const { visible, onCancel, configLoading = false, dispatch } = props;
 
   const [form] = Form.useForm();
 
@@ -34,9 +23,14 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
     form
       .validateFields()
       .then(async (values) => {
+        const { username, password, registryServer, ...rest } = values;
+        const params = {
+          ...rest,
+          credential: { username, password, registryServer },
+        };
         const res = dispatch({
           type: 'BlockChainCompile/oneKeyCompile',
-          payload: { networkName, ...values }
+          payload: params,
         });
         if (res) {
           onCancel();
@@ -65,7 +59,7 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
 
   return (
     <Modal {...drawerProps}>
-      <Form {...formItemLayout} form={form}>
+      <Form layout="vertical" form={form}>
         <Item
           label="仓库地址"
           name="gitRepoUrl"
@@ -94,7 +88,7 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
         </Item>
         <Item
           label="编译镜像名"
-          name="buildEnvImageName"
+          name="buildEnvImage"
           initialValue=""
           rules={[
             {
@@ -106,22 +100,70 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
           <Input placeholder="输入编译镜像名" />
         </Item>
         <Item
-          label="编译参数"
-          name="buildScript"
-          initialValue=""
+          label="编译命令"
+          name="buildCommands"
+          initialValue={[]}
           rules={[
             {
               required: true,
-              message: '请输入编译参数',
+              message: '请输入编译命令',
             },
           ]}
         >
-          <Input.TextArea placeholder="输入编译参数" />
+          <Select
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder="输入编译命令"
+            mode="tags"
+            allowClear
+          ></Select>
+        </Item>
+        <Item label="编译凭证">
+          <Input.Group compact>
+            <Item
+              name="username"
+              initialValue=""
+              style={{ width: '100%' }}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入用户名',
+                },
+              ]}
+            >
+              <Input placeholder="输入用户名" />
+            </Item>
+            <Item
+              name="password"
+              initialValue=""
+              style={{ width: '100%' }}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入密码',
+                },
+              ]}
+            >
+              <Input placeholder="输入密码" />
+            </Item>
+            <Item
+              name="registryServer"
+              initialValue=""
+              style={{ width: '100%' }}
+              rules={[
+                {
+                  required: true,
+                  message: '请输入注册服务器',
+                },
+              ]}
+            >
+              <Input placeholder="输入注册服务器" />
+            </Item>
+          </Input.Group>
         </Item>
       </Form>
     </Modal>
   );
-}
+};
 
 export default connect(({ User, BlockChainCompile, loading }: ConnectState) => ({
   User,

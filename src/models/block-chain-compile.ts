@@ -1,35 +1,45 @@
 import * as API from '../services/block-chain-compile';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
-import { JobStatus } from '@/pages/about/job-management/_config';
+import { JobCategory, JobStatus } from '@/pages/about/job-management/_config';
 
-export type GitBuildRepoSchema = {
+export type PublishImageCredential = {
+  username: string;
+  password: string;
+  registryServer: string;
+};
+
+export interface GitBuildRepoSchema {
   gitRepoUrl: string;
   branch: string;
-  buildEnvImageName: string;
-  buildScript: string;
+  buildEnvImage: string;
+  buildCommands: string[];
+  credential: PublishImageCredential;
 }
 
-export type GitBuildRepoTask = {
-  request: GitBuildRepoSchema;
-  buildingJob: JobSchema;
+export interface GitBuildRepoTask extends GitBuildRepoSchema {
+  buildJobId: string;
+  buildJobStatus: JobStatus;
 }
 
 export type JobSchema = {
   jobId: string;
   jobName: string;
+  jobCategory: JobCategory;
   status: JobStatus;
   message: Array<string>;
-}
+  additionalInfo: {
+    [key: string]: any;
+  };
+};
 
 export type BlockChainCompileModelState = {
-  gitBuildJobList: Array<JobSchema>,
-  gitBuildJobTotal: number,
-  jobList: Array<JobSchema>,
-  jobTotal: number,
-  jobDetail: JobSchema | null,
-  jobLog: any
-}
+  gitBuildJobList: Array<GitBuildRepoTask>;
+  gitBuildJobTotal: number;
+  jobList: Array<JobSchema>;
+  jobTotal: number;
+  jobLog: any;
+};
 
 export type BlockChainCompileModelType = {
   namespace: 'BlockChainCompile';
@@ -38,8 +48,6 @@ export type BlockChainCompileModelType = {
     oneKeyCompile: Effect;
     getCompileJobList: Effect;
     getJobList: Effect;
-    getJobById: Effect;
-    getJobDetail: Effect;
     getJobLog: Effect;
   };
   reducers: {
@@ -55,8 +63,7 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
     gitBuildJobTotal: 0,
     jobList: [],
     jobTotal: 0,
-    jobDetail: null,
-    jobLog: null
+    jobLog: null,
   },
 
   effects: {
@@ -64,18 +71,11 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
       const res = yield call(API.getCompileJobList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        const gitBuildJob = result.map((task: GitBuildRepoTask) => {
-          return {
-            ...task,
-            ...task.request,
-            ...task.buildingJob
-          }
-        })
         yield put({
           type: 'common',
           payload: {
-            gitBuildJobList: gitBuildJob,
-            gitBuildJobTotal: gitBuildJob.length,
+            gitBuildJobList: result,
+            gitBuildJobTotal: result.length,
           },
         });
       }
@@ -102,33 +102,6 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
           payload: {
             jobList: result,
             jobTotal: result.length,
-          },
-        });
-      }
-    },
-
-    *getJobById({ payload }, { call, put }) {
-      const res = yield call(API.getJobDetail, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            jobList: [result],
-            jobTotal: 1,
-          },
-        });
-      }
-    },
-
-    *getJobDetail({ payload }, { call, put }) {
-      const res = yield call(API.getJobDetail, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            jobDetail: result,
           },
         });
       }

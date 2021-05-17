@@ -7,7 +7,7 @@ import { Breadcrumb } from '@/components';
 import OneKeyCompile from './components/OneKeyCompile';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import { TableColumnsAttr } from '@/utils/types';
-import { JobSchema } from '@/models/block-chain-compile';
+import { GitBuildRepoTask } from '@/models/block-chain-compile';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block-compile', false);
 breadCrumbItem.push({
@@ -16,10 +16,10 @@ breadCrumbItem.push({
 });
 
 export type SourceCodeCompilationProps = {
-  qryLoading: boolean,
-  dispatch: Dispatch,
-  BlockChainCompile: ConnectState['BlockChainCompile']
-}
+  qryLoading: boolean;
+  dispatch: Dispatch;
+  BlockChainCompile: ConnectState['BlockChainCompile'];
+};
 
 const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   const { dispatch, qryLoading = false, BlockChainCompile } = props;
@@ -30,9 +30,9 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   const getCompileJobList = () => {
     dispatch({
       type: 'BlockChainCompile/getCompileJobList',
-      payload: {}
-    })
-  }
+      payload: {},
+    });
+  };
 
   const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
@@ -40,18 +40,22 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 
   const onClickOneKeyCompile = () => {
     setCompileModalVisible(true);
-  }
+  };
 
   const onCancel = () => {
     setCompileModalVisible(false);
-  }
+  };
 
-  const onViewJobLog = (record: JobSchema) => {
+  const onViewJobLog = (record: GitBuildRepoTask) => {
     history.push({
       pathname: `/about/job-management/job-logs`,
-      state: { ...record },
+      state: {
+        ...record,
+        jobId: record.buildJobId,
+        status: record.buildJobStatus,
+      },
     });
-  }
+  };
 
   const columns: TableColumnsAttr[] = [
     {
@@ -68,32 +72,32 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
     },
     {
       title: '编译镜像名',
-      dataIndex: 'buildEnvImageName',
-      key: 'buildEnvImageName',
+      dataIndex: 'buildEnvImage',
+      key: 'buildEnvImage',
       ellipsis: true,
     },
     {
-      title: '编译参数',
-      dataIndex: 'buildScript',
-      key: 'buildScript',
+      title: '编译命令',
+      dataIndex: 'buildCommands',
+      key: 'buildCommands',
       ellipsis: true,
     },
     {
       title: '任务ID',
-      dataIndex: 'jobId',
-      key: 'jobId',
+      dataIndex: 'buildJobId',
+      key: 'buildJobId',
       ellipsis: true,
     },
     {
       title: '任务状态',
-      dataIndex: 'status',
-      key: 'status',
+      dataIndex: 'buildJobStatus',
+      key: 'buildJobStatus',
       ellipsis: true,
     },
     {
       title: '操作',
       key: 'action',
-      render: (text, record: JobSchema) => (
+      render: (text, record: GitBuildRepoTask) => (
         <Space size="small">
           <a onClick={() => onViewJobLog(record)}>查看日志</a>
         </Space>
@@ -129,12 +133,10 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
           }}
         />
       </div>
-      {compileModalVisible && (
-        <OneKeyCompile visible={compileModalVisible} onCancel={onCancel} />
-      )}
+      {compileModalVisible && <OneKeyCompile visible={compileModalVisible} onCancel={onCancel} />}
     </div>
   );
-}
+};
 
 export default connect(({ User, BlockChainCompile, loading }: ConnectState) => ({
   User,

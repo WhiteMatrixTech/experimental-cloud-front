@@ -18,33 +18,33 @@ export type JobLogsProps = {
   dispatch: Dispatch;
   location: Location<JobSchema>;
   qryLoading: boolean;
-  BlockChainCompile: ConnectState['BlockChainCompile']
-}
+  BlockChainCompile: ConnectState['BlockChainCompile'];
+};
 
 const JobLogs: React.FC<JobLogsProps> = (props) => {
   const { dispatch, location, qryLoading = false, BlockChainCompile } = props;
-  const { jobDetail, jobLog } = BlockChainCompile;
+  const { jobLog } = BlockChainCompile;
 
   const detailList = useMemo(() => {
     return [
       {
         label: '任务ID',
-        value: jobDetail ? jobDetail.jobId : '',
+        value: location?.state?.jobId || '',
       },
       {
         label: '任务名称',
-        value: jobDetail ? jobDetail.jobName : '',
+        value: location?.state?.jobName || '',
       },
       {
         label: '任务状态',
-        value: jobDetail ? jobDetail.status : '',
+        value: location?.state?.status || '',
       },
       {
         label: '任务信息',
-        value: jobDetail ? jobDetail.message : '',
+        value: location?.state?.message || '',
       },
     ];
-  }, [jobDetail]);
+  }, [location?.state]);
 
   const getJobLog = () => {
     if (jobLog) {
@@ -62,12 +62,8 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
 
   useEffect(() => {
     dispatch({
-      type: 'BlockChainCompile/getJobDetail',
-      payload: { jobId: location?.state?.jobId, },
-    });
-    dispatch({
       type: 'BlockChainCompile/getJobLog',
-      payload: { jobId: location?.state?.jobId, },
+      payload: { jobId: location?.state?.jobId },
     });
   }, []);
 
@@ -89,7 +85,7 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
       </div>
     </div>
   );
-}
+};
 
 export default connect(({ BlockChainCompile, loading }: ConnectState) => ({
   BlockChainCompile,

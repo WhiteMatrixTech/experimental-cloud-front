@@ -3,7 +3,7 @@ import { Table, Space } from 'antd';
 import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
 import { ConnectState } from '@/models/connect';
-import { Breadcrumb, SearchBar } from '@/components';
+import { Breadcrumb } from '@/components';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import { TableColumnsAttr } from '@/utils/types';
 import { JobSchema } from '@/models/block-chain-compile';
@@ -11,41 +11,25 @@ import { JobSchema } from '@/models/block-chain-compile';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/job-management', false);
 
 export type SourceCodeCompilationProps = {
-  qryLoading: boolean,
-  dispatch: Dispatch,
-  BlockChainCompile: ConnectState['BlockChainCompile']
-}
+  qryLoading: boolean;
+  dispatch: Dispatch;
+  BlockChainCompile: ConnectState['BlockChainCompile'];
+};
 
 const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   const { dispatch, qryLoading = false, BlockChainCompile } = props;
   const { jobList, jobTotal } = BlockChainCompile;
   const [pageNum, setPageNum] = useState(1);
-  const [jobId, setJobId] = useState('');
 
   const getJobList = () => {
-    if (jobId) {
-      dispatch({
-        type: 'BlockChainCompile/getJobById',
-        payload: { jobId }
-      });
-      return;
-    }
     dispatch({
       type: 'BlockChainCompile/getJobList',
-      payload: {}
+      payload: {},
     });
-  }
+  };
 
   const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
-  };
-
-  // 搜索
-  const onSearch = (value: string, event: any): void => {
-    if (event.type && (event.type === 'click' || event.type === 'keydown')) {
-      setPageNum(1);
-      setJobId(value || '');
-    }
   };
 
   const onViewJobLog = (record: JobSchema) => {
@@ -53,7 +37,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       pathname: `/about/block-compile/package/job-logs`,
       state: { ...record },
     });
-  }
+  };
 
   const columns: TableColumnsAttr[] = [
     {
@@ -66,6 +50,12 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       title: '任务名称',
       dataIndex: 'jobName',
       key: 'jobName',
+      ellipsis: true,
+    },
+    {
+      title: '任务类别',
+      dataIndex: 'jobCategory',
+      key: 'jobCategory',
       ellipsis: true,
     },
     {
@@ -93,13 +83,12 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 
   useEffect(() => {
     getJobList();
-  }, [jobId]);
+  }, []);
 
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow table-wrapper">
-        <SearchBar placeholder="任务ID" onSearch={onSearch} />
         <Table
           rowKey="_id"
           loading={qryLoading}
@@ -117,7 +106,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       </div>
     </div>
   );
-}
+};
 
 export default connect(({ User, BlockChainCompile, loading }: ConnectState) => ({
   User,

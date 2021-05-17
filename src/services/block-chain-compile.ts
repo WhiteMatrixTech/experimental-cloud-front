@@ -30,16 +30,8 @@ export async function getJobList() {
 }
 
 /**
- * 查询Job详情
- */
-export async function getJobDetail(params: { jobId: string }) {
-  return request(`/job/${params.jobId}`);
-}
-
-/**
  * 查询Job日志
  */
 export async function getJobLog(params: { jobId: string }) {
   return request(`/job/${params.jobId}/log`);
 }
-
