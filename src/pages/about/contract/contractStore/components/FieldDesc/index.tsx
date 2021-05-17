@@ -2,9 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Table, Modal } from 'antd';
-import baseConfig from 'utils/config';
+import baseConfig from '@/utils/config';
+import { ConnectState } from '@/models/connect';
+import { Dispatch } from 'umi';
 
-function FieldDesc(props) {
+export interface FieldDescProps {
+  visible: boolean;
+  record: object;
+  onCancel: () => void;
+  dispatch: Dispatch;
+  qryLoading: boolean;
+  ContractStore: ConnectState['ContractStore'];
+}
+function FieldDesc(props: FieldDescProps) {
   const { visible, record = {}, onCancel, dispatch, qryLoading = false, ContractStore } = props;
   const { fieldDescList, fieldDescTotal } = ContractStore;
   const [pageNum, setPageNum] = useState(1)
@@ -16,7 +26,7 @@ function FieldDesc(props) {
     destroyOnClose: true,
     title: '查看字段说明',
     onCancel: onCancel,
-    footer: null
+    footer: null,
   }
 
   const columns = [
@@ -44,7 +54,7 @@ function FieldDesc(props) {
   ]
 
   // 翻页
-  const onPageChange = pageInfo => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current)
   }
 
@@ -54,7 +64,7 @@ function FieldDesc(props) {
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
-      id: record._id
+      id: record._id,//TODO:第18行record是个空对象
     }
     dispatch({
       type: 'ContractStore/getStoreSupplyExplainListOfChainCode',
@@ -63,7 +73,7 @@ function FieldDesc(props) {
   }, [pageNum]);
 
   return (
-    <Modal {...drawerProps}>
+    <Modal {...drawerProps} >
       <Table
         rowKey='_id'
         loading={qryLoading}
@@ -77,7 +87,7 @@ function FieldDesc(props) {
   );
 };
 
-export default connect(({ ContractStore, loading }) => ({
+export default connect(({ ContractStore, loading }: ConnectState) => ({
   ContractStore,
   qryLoading: loading.effects['ContractStore/getStoreSupplyExplainListOfChainCode']
 }))(FieldDesc);

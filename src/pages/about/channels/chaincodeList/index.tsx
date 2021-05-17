@@ -8,7 +8,7 @@ import { chainCodeStatusInfo } from '../../contract/myContract/_config';
 import baseConfig from '@/utils/config';
 import { TableColumnsAttr, DetailViewAttr } from '@/utils/types';
 import { ConnectState } from '@/models/connect';
-import { ChainCodeSchema, ChannelSchema, Dispatch, Location } from 'umi';
+import { ChannelSchema, Dispatch, Location } from 'umi';
 import { BasicApiParams, AllPaginationParams } from '@/utils/types';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({

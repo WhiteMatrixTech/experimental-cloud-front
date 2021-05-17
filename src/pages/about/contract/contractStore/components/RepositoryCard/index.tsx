@@ -3,8 +3,12 @@ import { Button } from 'antd';
 import style from './index.less';
 
 
-
-function RepositoryCard(props) {
+export interface RepositoryCardProps{
+  record:object;
+  deployContract:()=>void;
+  viewDetail:()=>void;
+}
+function RepositoryCard(props:RepositoryCardProps) {
   const { record, deployContract, viewDetail } = props
 
 
