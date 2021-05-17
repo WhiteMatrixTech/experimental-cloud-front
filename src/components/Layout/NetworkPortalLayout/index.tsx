@@ -2,20 +2,20 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Layout, Modal } from 'antd';
 import { history } from 'umi';
-import { LeftMenu, TopHeader } from '@/components';
+import { NetworkPortalMenu, TopHeader } from '@/components';
 import { ConnectState } from '@/models/connect';
-import styles from './Layout.less';
+import styles from './index.less';
 import { ModalFuncProps } from 'antd/lib/modal';
 
-export type BaaSLayoutProps = {
-  children: JSX.Element,
-  pathname: string
-}
+export type NetworkPortalLayoutProps = {
+  children: JSX.Element;
+  pathname: string;
+};
 
-function BaaSLayout(props: BaaSLayoutProps) {
+function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
   const { children, pathname } = props;
 
-  const receiveMessage = (e: { key: any; newValue: any; }) => {
+  const receiveMessage = (e: { key: any; newValue: any }) => {
     const { key, newValue } = e;
     if (key === 'accessToken' && newValue) {
       localStorage.setItem('newAccountLogin', 'true');
@@ -40,7 +40,10 @@ function BaaSLayout(props: BaaSLayoutProps) {
   }, []);
 
   useEffect(() => {
-    let modal: { destroy: any; update?: (configUpdate: ModalFuncProps | ((prevConfig: ModalFuncProps) => ModalFuncProps)) => void; };
+    let modal: {
+      destroy: any;
+      update?: (configUpdate: ModalFuncProps | ((prevConfig: ModalFuncProps) => ModalFuncProps)) => void;
+    };
     if (localStorage.getItem('newAccountLogin')) {
       modal = Modal.confirm({
         title: '你的账号已被登出',
@@ -62,7 +65,7 @@ function BaaSLayout(props: BaaSLayoutProps) {
       <Layout>
         <div className={styles.appLayout}>
           <div className={styles.leftMenu}>
-            <LeftMenu pathname={pathname} />
+            <NetworkPortalMenu pathname={pathname} />
           </div>
           <div id="app-layout" className={styles.rightPart}>
             {children}
@@ -75,4 +78,4 @@ function BaaSLayout(props: BaaSLayoutProps) {
 
 export default connect(({ Layout }: ConnectState) => ({
   Layout,
-}))(BaaSLayout);
+}))(NetworkPortalLayout);

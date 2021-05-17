@@ -4,14 +4,16 @@ import { connect, history, Dispatch } from 'umi';
 import { RolesMapNames } from '@/utils/roles';
 import { ConnectState } from '@/models/connect';
 import { UserInfo } from '@/models/user-role';
-import cs from 'classnames';
-import styles from './index.less';
+import { Breadcrumb } from '@/components';
+import { CommonMenuList, getCurBreadcrumb } from '@/utils/menu';
+
+const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/user-role-management', false);
 
 export type UserManagementProps = {
-  qryLoading: boolean,
-  dispatch: Dispatch,
-  UserRole: ConnectState['UserRole']
-}
+  qryLoading: boolean;
+  dispatch: Dispatch;
+  UserRole: ConnectState['UserRole'];
+};
 
 const UserManagement: React.FC<UserManagementProps> = (props) => {
   const { qryLoading, dispatch, UserRole } = props;
@@ -39,7 +41,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
       title: '注册角色',
       dataIndex: 'role',
       key: 'role',
-      render: (text: string) => <span>{RolesMapNames[text]}</span>
+      render: (text: string) => <span>{RolesMapNames[text]}</span>,
     },
     {
       title: '操作',
@@ -58,10 +60,10 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
       payload: {},
     });
     history.push({
-      pathname: `/userManagement/user-roles`,
+      pathname: `/user-role-management/user-roles`,
       state: { ...record },
     });
-  }
+  };
 
   const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
@@ -71,7 +73,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
     const params = {
       offset: (pageNum - 1) * 10,
       limit: 10,
-    }
+    };
     dispatch({
       type: 'UserRole/getUserList',
       payload: params,
@@ -86,29 +88,28 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
     getUserList();
   }, [pageNum]);
 
-  return <div className={styles.main}>
-    <div className={cs(styles['form-header-title'], 'page-content')}>
-      <h3>用户角色管理</h3>
-      <div className={styles['sub-title']}>平台中所有用户的列表，可在此管理用户在网络中的访问角色</div>
+  return (
+    <div className="page-wrapper">
+      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <div className="page-content page-content-shadow table-wrapper">
+        <Table
+          rowKey="companyName"
+          columns={columns}
+          dataSource={userList}
+          loading={qryLoading}
+          onChange={onPageChange}
+          pagination={{
+            pageSize: 10,
+            total: 0,
+            current: pageNum,
+            showSizeChanger: false,
+            position: ['bottomCenter'],
+          }}
+        />
+      </div>
     </div>
-    <div className="page-content page-content-shadow table-wrapper">
-      <Table
-        rowKey="companyName"
-        columns={columns}
-        dataSource={userList}
-        loading={qryLoading}
-        onChange={onPageChange}
-        pagination={{
-          pageSize: 10,
-          total: 0,
-          current: pageNum,
-          showSizeChanger: false,
-          position: ['bottomCenter'],
-        }}
-      />
-    </div>
-  </div>
-}
+  );
+};
 
 export default connect(({ UserRole, loading }: ConnectState) => ({
   UserRole,

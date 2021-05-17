@@ -1,7 +1,7 @@
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import React, { useEffect, useMemo } from 'react';
-import { serverPurpose } from '../../elastic-cloud-server/_config';
+import { serverPurpose } from '@/pages/common/elastic-cloud-server/_config';
 
 const { Item } = Form;
 const { Option } = Select;

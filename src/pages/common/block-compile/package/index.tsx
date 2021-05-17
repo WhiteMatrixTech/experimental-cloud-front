@@ -5,11 +5,11 @@ import { Dispatch, history } from 'umi';
 import { ConnectState } from '@/models/connect';
 import { Breadcrumb } from '@/components';
 import OneKeyCompile from './components/OneKeyCompile';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { CommonMenuList, getCurBreadcrumb } from '@/utils/menu';
 import { TableColumnsAttr } from '@/utils/types';
 import { GitBuildRepoTask } from '@/models/block-chain-compile';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block-compile', false);
+const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem.push({
   menuName: '一键编译',
   menuHref: `/`,
@@ -47,8 +47,12 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   };
 
   const onViewJobLog = (record: GitBuildRepoTask) => {
+    dispatch({
+      type: 'Layout/common',
+      payload: { commonPortalSelectedMenu: '/common/job-management' },
+    });
     history.push({
-      pathname: `/about/job-management/job-logs`,
+      pathname: `/common/job-management/job-logs`,
       state: {
         ...record,
         jobId: record.buildJobId,
@@ -119,7 +123,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
           </Button>
         </div>
         <Table
-          rowKey="_id"
+          rowKey="buildJobId"
           loading={qryLoading}
           columns={columns}
           dataSource={gitBuildJobList}

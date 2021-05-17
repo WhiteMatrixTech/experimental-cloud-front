@@ -1,0 +1,110 @@
+import React, { useState, useEffect } from 'react';
+import { connect } from 'dva';
+import { Menu } from 'antd';
+import { history } from 'umi';
+import { isEmpty } from 'lodash';
+import type { Dispatch } from 'umi';
+import { tree2Arr } from '@/utils';
+import { CommonMenuList, CommonMenuProps, RootMenuId } from '@/utils/menu';
+import { ConnectState } from '@/models/connect';
+import styles from './index.less';
+
+const { SubMenu } = Menu;
+
+export type CommonPortalMenuProps = {
+  dispatch: Dispatch;
+  pathname: string;
+  User: ConnectState['User'];
+  Layout: ConnectState['Layout'];
+};
+
+const CommonPortalMenu: React.FC<CommonPortalMenuProps> = (props) => {
+  const { pathname, dispatch, User, Layout } = props;
+  const { userInfo } = User;
+  const { commonPortalSelectedMenu } = Layout;
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
+
+  const hashChange = (menu: CommonMenuProps) => {
+    if (pathname !== menu.menuHref) {
+      history.push(menu.menuHref);
+      dispatch({
+        type: 'Layout/common',
+        payload: { commonPortalSelectedMenu: menu.menuHref },
+      });
+      localStorage.setItem('commonPortalSelectedMenu', menu.menuHref);
+    }
+  };
+
+  const onOpenChange = (openKeys: any) => {
+    setOpenKeys(openKeys);
+  };
+
+  const getMenuItem = (item: CommonMenuProps) => {
+    if (!item.accessRole.includes(userInfo.role)) {
+      return '';
+    }
+    if (isEmpty(item.subMenus)) {
+      return (
+        <Menu.Item key={item.menuHref} onClick={() => hashChange(item)}>
+          <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
+          <span>{item.menuName}</span>
+        </Menu.Item>
+      );
+    } else {
+      return (
+        <SubMenu
+          key={item.menuHref}
+          title={
+            <div className={styles.menuTitle}>
+              <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
+              <span>{item.menuName}</span>
+            </div>
+          }
+        >
+          {item.subMenus.map((subItem) => {
+            if (!item.accessRole.includes(userInfo.role)) {
+              return '';
+            }
+            return (
+              <Menu.Item key={subItem.menuHref} onClick={() => hashChange(subItem)}>
+                <span style={{ paddingLeft: '8px' }}>{subItem.menuName}</span>
+              </Menu.Item>
+            );
+          })}
+        </SubMenu>
+      );
+    }
+  };
+
+  useEffect(() => {
+    const allMenu = tree2Arr(CommonMenuList, 'subMenus');
+    const menuLen = allMenu.length;
+    for (let i = 0; i < menuLen; i++) {
+      const menu = allMenu[i];
+      if (menu.menuHref.indexOf(pathname) > -1 && menu.menuPid !== RootMenuId) {
+        const parentMenu = allMenu.find((item) => item.id === menu.menuPid);
+        setOpenKeys([parentMenu.menuHref]);
+        break;
+      }
+    }
+  }, []);
+
+  return (
+    <div className={styles.leftMenu}>
+      <Menu
+        onOpenChange={onOpenChange}
+        openKeys={openKeys}
+        selectedKeys={[commonPortalSelectedMenu]}
+        mode="inline"
+        theme="dark"
+      >
+        {CommonMenuList.map((item) => getMenuItem(item))}
+      </Menu>
+    </div>
+  );
+};
+
+export default connect(({ Layout, User }: ConnectState) => ({
+  Layout,
+  User,
+}))(CommonPortalMenu);

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Breadcrumb } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { CommonMenuList, getCurBreadcrumb } from '@/utils/menu';
 import styles from './index.less';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block-compile', false);
+const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem.push({
   menuName: '镜像仓库',
   menuHref: `/`,

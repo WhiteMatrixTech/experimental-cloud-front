@@ -3,7 +3,7 @@ export enum InstancePurpose {
   Peer = 'Peer',
   Orderer = 'Orderer',
   SwarmManager = 'SwarmManager',
-  Unknown = 'Unknown'
+  Unknown = 'Unknown',
 }
 
 export const serverPurpose = {

@@ -1,8 +1,8 @@
 export type RouteProps = {
-  path: string,
-  exact?: boolean,
-  routes?: RouteProps[],
-}
+  path: string;
+  exact?: boolean;
+  routes?: RouteProps[];
+};
 
 export function getRoutes(): RouteProps[] {
   const routes = [
@@ -17,6 +17,64 @@ export function getRoutes(): RouteProps[] {
     {
       path: '/wrappers/auth',
       exact: true,
+    },
+    {
+      path: 'common',
+      routes: [
+        {
+          path: '/common/job-management',
+          exact: true,
+          routes: [
+            {
+              path: '/common/job-management/job-logs',
+              exact: true,
+            },
+          ],
+        },
+        {
+          path: '/common/elastic-cloud-server',
+          exact: true,
+          routes: [
+            {
+              path: '/common/elastic-cloud-server/server-performance',
+              exact: true,
+            },
+            {
+              path: '/common/elastic-cloud-server/resource-usage',
+              exact: true,
+            },
+          ],
+        },
+        {
+          path: '/common/block-compile',
+          exact: true,
+          routes: [
+            {
+              path: '/common/block-compile/package',
+              exact: true,
+            },
+            {
+              path: '/common/block-compile/storage',
+              exact: true,
+            },
+          ],
+        },
+        {
+          path: '/common/user-role-management',
+          routes: [
+            {
+              path: '/common/user-role-management',
+              exact: true,
+              routes: [
+                {
+                  path: '/common/user-role-management/user-roles',
+                  exact: true,
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
     {
       path: '/about',
@@ -101,44 +159,6 @@ export function getRoutes(): RouteProps[] {
         {
           path: '/about/data-dashboard',
           exact: true,
-        },
-        {
-          path: '/about/job-management',
-          exact: true,
-          routes: [
-            {
-              path: '/about/job-management/job-logs',
-              exact: true,
-            },
-          ],
-        },
-        {
-          path: '/about/elastic-cloud-server',
-          exact: true,
-          routes: [
-            {
-              path: '/about/elastic-cloud-server/server-performance',
-              exact: true,
-            },
-            {
-              path: '/about/elastic-cloud-server/resource-usage',
-              exact: true,
-            },
-          ],
-        },
-        {
-          path: '/about/block-compile',
-          exact: true,
-          routes: [
-            {
-              path: '/about/block-compile/package',
-              exact: true,
-            },
-            {
-              path: '/about/block-compile/storage',
-              exact: true,
-            },
-          ],
         },
         {
           path: '/about/rbac',
@@ -265,21 +285,6 @@ export function getRoutes(): RouteProps[] {
         {
           path: '/selectLeague',
           exact: true,
-        },
-      ],
-    },
-    {
-      path: '/userManagement',
-      routes: [
-        {
-          path: '/userManagement',
-          exact: true,
-          routes: [
-            {
-              path: '/userManagement/user-roles',
-              exact: true,
-            },
-          ],
         },
       ],
     },

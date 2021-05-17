@@ -6,42 +6,42 @@ import type { Reducer, Effect } from 'umi';
 import { NetworkStatus } from '@/utils/networkStatus';
 
 export type UserInfoSchema = {
-  loginName: string,
-  did: string,
-  exp: number,
-  iat: number,
-  contactEmail: string,
-  companyName: string,
-  role: Roles,
-}
+  loginName: string;
+  did: string;
+  exp: number;
+  iat: number;
+  contactEmail: string;
+  companyName: string;
+  role: Roles;
+};
 
 export type LeagueSchema = {
-  leagueName: string,
-  leaderCompanyName: string,
-  networkName: string,
-  description: string,
-  networkStatus: NetworkStatus,
-  createdTime: string,
-  timeAdded?: string,
-  role?: Roles,
-}
+  leagueName: string;
+  leaderCompanyName: string;
+  networkName: string;
+  description: string;
+  networkStatus: NetworkStatus;
+  createdTime: string;
+  timeAdded?: string;
+  role?: Roles;
+};
 
 export type UserModelState = {
-  userInfo: UserInfoSchema,
-  accessToken: string,
-  roleToken: string,
-  loginInfo: string,
-  loginStatus: string,
-  cacheAccount: object,
-  userAndRegister: boolean,
+  userInfo: UserInfoSchema;
+  accessToken: string;
+  roleToken: string;
+  loginInfo: string;
+  loginStatus: string;
+  cacheAccount: object;
+  userAndRegister: boolean;
 
-  networkList: Array<LeagueSchema>,
-  myNetworkList: Array<LeagueSchema>,
+  networkList: Array<LeagueSchema>;
+  myNetworkList: Array<LeagueSchema>;
 
-  userRole: string,
-  networkName: string,
-  leagueName: string,
-}
+  userRole: string;
+  networkName: string;
+  leagueName: string;
+};
 
 export type UserModelType = {
   namespace: 'User';
@@ -57,17 +57,15 @@ export type UserModelType = {
     createLeague: Effect;
   };
   subscriptions: {
-    setup({ dispatch, history }: {
-      dispatch: any;
-      history: any;
-    }): any
+    setup({ dispatch, history }: { dispatch: any; history: any }): any;
   };
   reducers: {
     common: Reducer<UserModelState>;
+    cleanNetworkInfo: Reducer<UserModelState>;
   };
 };
 
-const storageUserInfo = localStorage.getItem('userInfo')
+const storageUserInfo = localStorage.getItem('userInfo');
 const userInfo = storageUserInfo ? JSON.parse(storageUserInfo) : {};
 
 const UserModel: UserModelType = {
@@ -86,7 +84,7 @@ const UserModel: UserModelType = {
     myNetworkList: [], // 我的网络列表
 
     userRole: localStorage.getItem('userRole') || Roles.NetworkMember, // 进入系统的身份
-    networkName: localStorage.getItem('networkName') || 'network1', // 进入系统时的网络
+    networkName: localStorage.getItem('networkName') || '', // 进入系统时的网络
     leagueName: localStorage.getItem('leagueName') || '', // 进入系统时的联盟
   },
 
@@ -222,6 +220,16 @@ const UserModel: UserModelType = {
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
+    },
+    cleanNetworkInfo(state, action) {
+      return {
+        ...state,
+        ...action.payload,
+        roleToken: '',
+        userRole: Roles.NetworkMember,
+        networkName: '',
+        leagueName: '',
+      };
     },
   },
 };

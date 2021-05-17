@@ -3,12 +3,12 @@ import { connect } from 'dva';
 import { Spin } from 'antd';
 import { Breadcrumb, DetailCard } from '@/components';
 import ReactJson from 'react-json-view';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { CommonMenuList, getCurBreadcrumb } from '@/utils/menu';
 import styles from './index.less';
 import { ConnectState } from '@/models/connect';
 import { Dispatch, JobSchema, Location } from 'umi';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/job-management');
+const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/job-management');
 breadCrumbItem.push({
   menuName: '任务日志',
   menuHref: `/`,
@@ -41,7 +41,7 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
       },
       {
         label: '任务信息',
-        value: location?.state?.message || '',
+        value: location?.state?.message ? JSON.stringify(location?.state?.message) : '',
       },
     ];
   }, [location?.state]);
