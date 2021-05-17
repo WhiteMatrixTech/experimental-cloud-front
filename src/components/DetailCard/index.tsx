@@ -12,12 +12,11 @@ import styles from './index.less';
  */
 interface DetailColumProps {
   label: string,
-  value: string | object,
+  value: string ,
   fullRow?: boolean,
   showJson?: boolean,
   buttonName?: string,
   onClick?: () => void,
-
 }
 interface IProps {
   cardTitle: string,

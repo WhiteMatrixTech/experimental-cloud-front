@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Modal } from 'antd';
+import { ConnectState } from '@/models/connect';
+import { Dispatch } from 'umi';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -14,8 +16,15 @@ const formItemLayout = {
     sm: { span: 18 },
   },
 };
-
-function CreateChannelModal({ visible, User, onCancel, dispatch, addLoading, Organization }) {
+export interface CreateChannelModalProps {
+  visible: boolean;
+  User: ConnectState['User'];
+  onCancel: any;
+  dispatch: Dispatch;
+  addLoading: boolean;
+  Organization: ConnectState['Organization'];
+}
+function CreateChannelModal({ visible, User, onCancel, dispatch, addLoading, Organization }: CreateChannelModalProps) {
   const { orgInUseList } = Organization;
   const { networkName } = User;
   const [form] = Form.useForm();
@@ -150,7 +159,7 @@ function CreateChannelModal({ visible, User, onCancel, dispatch, addLoading, Org
   );
 }
 
-export default connect(({ User, Channel, Organization, loading }) => ({
+export default connect(({ User, Channel, Organization, loading }: ConnectState) => ({
   User,
   Channel,
   Organization,

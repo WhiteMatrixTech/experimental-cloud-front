@@ -12,7 +12,7 @@ export type PeerSchema = {
   updatedAt: Date,          // 2021-01-29T07:26:18.934Z
   nodeIp: string,           // 节点ip
   nodePort: number,              // 节点端
-  nodeStatus: string        // 节点状态  Running
+  nodeStatus: string,        // 节点状态  Running
 }
 
 export type PeerModelState = {

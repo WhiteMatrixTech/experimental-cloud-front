@@ -20,6 +20,7 @@ export type ChannelSchema = {
   createUser: string,         // 创建用户
   updatedAt: Date,            // 更新时间 2021-01-29T02:47:00.959Z
   createdAt: Date,            // 创建时间 2021-01-27T06:08:08.216Z
+  openModal?:boolean,
 }
 
 export type ChannelModelState = {
@@ -89,6 +90,7 @@ const ChannelModel: ChannelModelType = {
     *createChannel({ payload }, { call, put }) {
       const res = yield call(API.createChannel, payload);
       const { statusCode, result } = res;
+      console.log(res,'创建成功！')
       if (statusCode === 'ok') {
         notification.success({ message: '通道创建请求发送成功', top: 64, duration: 3 });
         return true;
@@ -100,6 +102,7 @@ const ChannelModel: ChannelModelType = {
     *getChannelList({ payload }, { call, put }) {
       const res = yield call(API.getChannelList, payload);
       const { statusCode, result } = res;
+      console.log(res,'获取通道请求的列表')
       if (statusCode === 'ok') {
         yield put({
           type: 'common',

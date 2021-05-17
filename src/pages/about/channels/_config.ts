@@ -1,4 +1,15 @@
-export const ChannelStatusMap = {
+export interface ChannelStatusMapAttr {
+  InUse: string;
+  Creating: string;
+  CreationFailed: string;
+  Stopping: string;
+  StopFailed: string;
+  Stopped: string;
+  Deleting: string;
+  DeletionFailed: string;
+  Deleted: string;
+}
+export const ChannelStatusMap: ChannelStatusMapAttr = {
   // 通道状态
   InUse: 'InUse',
   Creating: 'Creating',
