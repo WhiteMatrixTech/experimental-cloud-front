@@ -20,6 +20,7 @@ export type ChannelSchema = {
   createUser: string,         // 创建用户
   updatedAt: Date,            // 更新时间 2021-01-29T02:47:00.959Z
   createdAt: Date,            // 创建时间 2021-01-27T06:08:08.216Z
+  openModal?:boolean,
 }
 
 export type ChannelModelState = {

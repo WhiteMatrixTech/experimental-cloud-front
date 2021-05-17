@@ -6,38 +6,29 @@ import { Breadcrumb, DetailCard, SearchBar } from '@/components';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import { chainCodeStatusInfo } from '../../contract/myContract/_config';
 import baseConfig from '@/utils/config';
-import { TableColumnsAttr } from '@/utils/types';
+import { TableColumnsAttr, DetailViewAttr } from '@/utils/types';
 import { ConnectState } from '@/models/connect';
-import { Dispatch } from 'umi';
+import { ChainCodeSchema, Dispatch, Location } from 'umi';
+import { BasicApiParams, AllPaginationParams } from '@/utils/types';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
   menuName: '查看合约',
   menuHref: `/`,
 });
-export interface GetContractListOfChannelParams {
-  networkName: string;
-  offset: number;
-  limit: number;
-  from: number;
-  ascend: boolean;
-  channelId: string;
-  orgName?: string;
-}
 export interface ChaincodeListProps {
   User: ConnectState['User'];
-  location: Location;
   dispatch: Dispatch;
   qryLoading: boolean;
+  location: Location<ChainCodeSchema>;
   Channel: ConnectState['Channel'];
 }
+const pageSize = baseConfig.pageSize;
 function ChaincodeList(props: ChaincodeListProps) {
-  const { User, location, dispatch, qryLoading } = props;
+  const { User, dispatch, location, qryLoading } = props;
   const { networkName } = User;
   const { contractListOfChannel, contractTotalOfChannel, orgTotalOfChannel, nodeTotalOfChannel } = props.Channel;
   const [pageNum, setPageNum] = useState(1);
-  const pageSize = baseConfig.pageSize;
   const [chainCodeName, setChainCodeName] = useState('');
-
   const columns: TableColumnsAttr[] = [
     {
       title: '合约ID',
@@ -85,7 +76,7 @@ function ChaincodeList(props: ChaincodeListProps) {
         text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
     },
   ];
-  const channelInfoList = [
+  const channelInfoList: DetailViewAttr[] = [
     {
       label: '通道名称',
       value: location?.state?.channelId,
@@ -120,14 +111,12 @@ function ChaincodeList(props: ChaincodeListProps) {
       type: 'Channel/getContractTotalOfChannel',
       payload: params,
     });
-    //TODO:没有传数据嗷~
-    getContractListOfChannel();
   }, []);
 
   // 获取 通道下的合约
-  const getContractListOfChannel = (current: number, chainCodeName: string) => {
-    const offset = ((current || pageNum) - 1) * pageSize;
-    const params: GetContractListOfChannelParams = {
+  const getContractListOfChannel = () => {
+    const offset = (pageNum - 1) * pageSize;
+    const params: BasicApiParams & AllPaginationParams = {
       networkName,
       offset,
       limit: pageSize,
@@ -143,12 +132,13 @@ function ChaincodeList(props: ChaincodeListProps) {
       payload: params,
     });
   };
+  useEffect(() => {
+    getContractListOfChannel()
+  }, [pageNum, chainCodeName]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
-    //TODO:定义了两个参数但是你只传了一个参数
-    getContractListOfChannel(pageInfo.current);
   };
 
   // 按 合约名 搜索
@@ -156,7 +146,6 @@ function ChaincodeList(props: ChaincodeListProps) {
     if (event.type && (event.type === 'click' || event.type === 'keydown')) {
       setPageNum(1);
       setChainCodeName(value || '');
-      getContractListOfChannel(1, value);
     }
   };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Dispatch, history } from 'umi';
+import { Dispatch, history, Location} from 'umi';
 import { Table, Button, Badge, Space, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Breadcrumb } from '@/components';
@@ -18,13 +18,13 @@ const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 
 export interface ChannelManagementProps {
   dispatch: Dispatch;
-  location: Location;
   qryLoading: boolean;
   User: ConnectState['User'];
   Channel: ConnectState['Channel'];
+  location: Location<ChannelSchema>;
 }
 function ChannelManagement(props: ChannelManagementProps) {
-  const { dispatch, location, qryLoading = false, User, Channel } = props;
+  const { dispatch, qryLoading = false, location, User, Channel } = props;
   const { networkName, userRole } = User;
   const { channelList, channelTotal } = Channel;
   const [pageNum, setPageNum] = useState(1);
@@ -32,8 +32,8 @@ function ChannelManagement(props: ChannelManagementProps) {
   const [createChannelVisible, setCreateChannelVisible] = useState(false);
 
   // 获取通道列表
-  const getChannelList = (current: number) => {
-    const offset = ((current || pageNum) - 1) * pageSize;
+  const getChannelList = () => {
+    const offset = ( pageNum- 1) * pageSize;
     const params = {
       offset,
       networkName,
@@ -46,11 +46,14 @@ function ChannelManagement(props: ChannelManagementProps) {
       payload: params,
     });
   };
+  // 页码改变重新查询列表
+  useEffect(() => {
+    getChannelList();
+  }, [pageNum]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
-    getChannelList(pageInfo.current);
   };
 
   // 点击 创建通道
@@ -62,7 +65,6 @@ function ChannelManagement(props: ChannelManagementProps) {
   const onCloseCreateChannel = (res: any) => {
     setCreateChannelVisible(false);
     if (res) {
-      //TODO:没有传参数
       getChannelList();
     }
   };
@@ -118,8 +120,7 @@ function ChannelManagement(props: ChannelManagementProps) {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
-      //TODO:model上的ChannelSchema上没有channelName这个属性
-      content: `确认要${tipTitle}通道 【${record.channelName}】 吗?`,
+      content: `确认要${tipTitle}通道 【${record.channelId}】 吗?`,
       okText: '确认',
       cancelText: '取消',
       onOk: callback,
@@ -183,11 +184,6 @@ function ChannelManagement(props: ChannelManagementProps) {
       ),
     },
   ]
-  // 页码改变、搜索值改变时，重新查询列表
-  useEffect(() => {
-    //TODO:没有传参
-    getChannelList();
-  }, [pageNum]);
 
   useEffect(() => {
     if (location?.state?.openModal) {

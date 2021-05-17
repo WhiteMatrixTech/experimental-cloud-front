@@ -22,9 +22,9 @@ export interface NodeListProps {
   location: Location;
   qryLoading: boolean;
 }
+const pageSize = baseConfig.pageSize;
 function NodeList(props: NodeListProps) {
   const [pageNum, setPageNum] = useState(1);
-  const [pageSize, setPageSize] = useState(baseConfig.pageSize);
   const [peerName, setPeerName] = useState('');
   const { qryLoading = false, location } = props;
   const { userRole } = props.User;
@@ -84,12 +84,11 @@ function NodeList(props: NodeListProps) {
       type: 'Channel/getOrgListOfChannel',
       payload: params,
     });
-    //TODO:没有传参数嗷~
     getNodeListOfChannel();
-  });
+  }, []);
 
   // 获取 通道下的节点
-  const getNodeListOfChannel = (peerName: string) => {
+  const getNodeListOfChannel = () => {
     const { User, location } = props;
     const { networkName } = User;
     let params: { networkName: string; channelId: string; orgName?: string } = {
@@ -110,14 +109,6 @@ function NodeList(props: NodeListProps) {
     setPageNum(pageInfo.current);
   };
 
-  // 按 组织名 搜索
-  const onSearch = (value: string, event: any) => {
-    if (event.type && (event.type === 'click' || event.type === 'keydown')) {
-      setPageNum(1);
-      setPeerName(value || '');
-      getNodeListOfChannel(value);
-    }
-  };
   const channelInfoList: DetailViewAttr[] = [
     {
       label: '通道名称',
@@ -136,13 +127,7 @@ function NodeList(props: NodeListProps) {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
-        <DetailCard
-          cardTitle="基本信息"
-          detailList={channelInfoList}
-          boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"
-          columnsNum={2}
-        />
-        {/* <SearchBar placeholder='输入节点名称' onSearch={onSearch} /> */}
+        <DetailCard cardTitle="基本信息" detailList={channelInfoList} />
         <Table
           rowKey="_id"
           loading={qryLoading}

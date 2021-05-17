@@ -1,8 +1,7 @@
-/* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
 import { Table, Space, Col, Row } from 'antd';
 import { connect } from 'dva';
-import { Dispatch, history } from 'umi';
+import { ChannelSchema, Dispatch, history, Location } from 'umi';
 import moment from 'moment';
 import { StatisticsCard, Breadcrumb } from '@/components';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
@@ -26,14 +25,14 @@ breadCrumbItem.push({
 const imgList = [msp, peer, block, transactions, chaincode];
 export interface ChannelDetailProps {
   dispatch: Dispatch;
-  location: Location;
   User: ConnectState['User'];
   qryBlockLoading: boolean;
   qryTransactionLoading: boolean;
   Channel: ConnectState['Channel'];
+  location: Location<ChannelSchema>;
 }
 function ChannelDetail(props: ChannelDetailProps) {
-  const { dispatch, location, User, qryBlockLoading, qryTransactionLoading } = props;
+  const { dispatch, User, qryBlockLoading, qryTransactionLoading, location } = props;
   const {
     blockListOfChannel,
     transactionListOfChannel,

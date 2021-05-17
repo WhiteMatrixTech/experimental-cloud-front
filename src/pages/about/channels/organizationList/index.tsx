@@ -57,7 +57,6 @@ function OrganizationList(props: OrganizationListProps) {
   const { qryLoading = false, location, dispatch } = props;
   const { userRole, networkName } = props.User;
   const { orgListOfChannel, orgTotalOfChannel, nodeTotalOfChannel } = props.Channel;
-
   const [pageNum, setPageNum] = useState(1);
   const [addOrgVisible, setAddOrgVisible] = useState(false);
 
@@ -90,6 +89,9 @@ function OrganizationList(props: OrganizationListProps) {
       payload: params,
     });
   };
+  useEffect(() => {
+    getOrgListOfChannel();
+  }, []);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
@@ -109,20 +111,6 @@ function OrganizationList(props: OrganizationListProps) {
     return userRole === Roles.NetworkAdmin && location?.state?.channelStatus === ChannelStatusMap.InUse;
   }, [userRole, location?.state?.channelStatus]);
 
-  useEffect(() => {
-    const params = {
-      networkName,
-      channelId: location?.state?.channelId,
-    };
-    dispatch({
-      type: 'Channel/getNodeListOfChannel',
-      payload: params,
-    });
-    getOrgListOfChannel();
-  }, []);
-
-  //TODO:DetailCard这个组件定义了一个columnsNum属性，组件中你给它默认的值是2，这里就传了一个2，
-  //TODO:没看懂columnsNum这是个什么意思，当前列的下标吗？
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
