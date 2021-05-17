@@ -13,6 +13,8 @@ export type OrganizationSchema = {
   orgMspId: string,         //
   orgStatus: string,        // 组织状态
   updatedAt: Date           // 更新日期 2021-01-29T02:23:02.141Z
+  channelId?:string;
+  channelStatus?:string;
 }
 
 export type OrganizationModelState = {

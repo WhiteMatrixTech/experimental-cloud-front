@@ -8,9 +8,10 @@ import { ChannelStatusMap } from '../_config';
 import baseConfig from '@/utils/config';
 import { Roles } from '@/utils/roles';
 import { TableColumnsAttr } from '@/utils/types';
-import { Dispatch } from 'umi';
+import { Dispatch, Location } from 'umi';
 import { ConnectState } from '@/models/connect';
 import { DetailViewAttr } from '@/utils/types';
+import { OrganizationSchema } from '@/models/organization';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
@@ -48,7 +49,7 @@ const columns: TableColumnsAttr[] = [
 
 export interface OrganizationListProps {
   qryLoading: boolean;
-  location: Location;
+  location: Location<OrganizationSchema>;
   dispatch: Dispatch;
   User: ConnectState['User'];
   Channel: ConnectState['Channel'];
@@ -115,7 +116,12 @@ function OrganizationList(props: OrganizationListProps) {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
-        <DetailCard cardTitle="基本信息" detailList={channelInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" columnsNum={2} />
+        <DetailCard
+          cardTitle="基本信息"
+          detailList={channelInfoList}
+          boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"
+          columnsNum={2}
+        />
         <div className="page-content page-content-shadow table-wrapper">
           {showAddOrg && (
             <div className="table-header-btn-wrapper">

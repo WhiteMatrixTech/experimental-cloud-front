@@ -19,7 +19,7 @@ const formItemLayout = {
 export interface AddOrgProps {
   visible: boolean;
   onCancel: () => void;
-  channelId: string;
+  channelId: string | undefined;
   addLoading: boolean;
   dispatch: Dispatch;
   User: ConnectState['User'];
