@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConnectState } from '@/models/connect';
-import { Button, Form, Input, Modal, Select } from 'antd';
+import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
 import { Dispatch } from 'umi';
 
@@ -23,9 +23,11 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
     form
       .validateFields()
       .then(async (values) => {
-        const { username, password, registryServer, ...rest } = values;
+        const { username, password, registryServer, buildCommands, ...rest } = values;
+        const splitBuildCommands = buildCommands.split('\n');
         const params = {
           ...rest,
+          buildCommands: splitBuildCommands,
           credential: { username, password, registryServer },
         };
         const res = dispatch({
@@ -102,7 +104,7 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
         <Item
           label="编译命令"
           name="buildCommands"
-          initialValue={[]}
+          initialValue=""
           rules={[
             {
               required: true,
@@ -110,12 +112,7 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
             },
           ]}
         >
-          <Select
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-            placeholder="输入编译命令"
-            mode="tags"
-            allowClear
-          ></Select>
+          <Input.TextArea placeholder="输入编译命令，换行分割" />
         </Item>
         <Item label="编译凭证">
           <Input.Group compact>

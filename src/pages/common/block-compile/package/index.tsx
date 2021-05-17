@@ -44,6 +44,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 
   const onCancel = () => {
     setCompileModalVisible(false);
+    getCompileJobList();
   };
 
   const onViewJobLog = (record: GitBuildRepoTask) => {
