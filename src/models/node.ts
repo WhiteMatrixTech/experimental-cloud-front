@@ -13,7 +13,6 @@ export type PeerSchema = {
   nodeIp: string,           // 节点ip
   nodePort: number,              // 节点端
   nodeStatus: string,        // 节点状态  Running
-  channelId?:string,
 }
 
 export type PeerModelState = {

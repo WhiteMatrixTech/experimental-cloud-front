@@ -8,7 +8,7 @@ import { chainCodeStatusInfo } from '../../contract/myContract/_config';
 import baseConfig from '@/utils/config';
 import { TableColumnsAttr, DetailViewAttr } from '@/utils/types';
 import { ConnectState } from '@/models/connect';
-import { ChainCodeSchema, Dispatch, Location } from 'umi';
+import { ChainCodeSchema, ChannelSchema, Dispatch, Location } from 'umi';
 import { BasicApiParams, AllPaginationParams } from '@/utils/types';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
@@ -19,7 +19,7 @@ export interface ChaincodeListProps {
   User: ConnectState['User'];
   dispatch: Dispatch;
   qryLoading: boolean;
-  location: Location<ChainCodeSchema>;
+  location: Location<ChannelSchema>;
   Channel: ConnectState['Channel'];
 }
 const pageSize = baseConfig.pageSize;

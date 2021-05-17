@@ -8,7 +8,7 @@ import { ChannelStatusMap } from '../_config';
 import baseConfig from '@/utils/config';
 import { Roles } from '@/utils/roles';
 import { TableColumnsAttr } from '@/utils/types';
-import { Dispatch, Location } from 'umi';
+import { ChannelSchema, Dispatch, Location } from 'umi';
 import { ConnectState } from '@/models/connect';
 import { DetailViewAttr } from '@/utils/types';
 import { OrganizationSchema } from '@/models/organization';
@@ -49,7 +49,7 @@ const columns: TableColumnsAttr[] = [
 
 export interface OrganizationListProps {
   qryLoading: boolean;
-  location: Location<OrganizationSchema>;
+  location: Location<ChannelSchema>;
   dispatch: Dispatch;
   User: ConnectState['User'];
   Channel: ConnectState['Channel'];

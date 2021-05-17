@@ -9,7 +9,7 @@ import baseConfig from '@/utils/config';
 import { Roles } from '@/utils/roles';
 import { TableColumnsAttr, DetailViewAttr } from '@/utils/types';
 import { ConnectState } from '@/models/connect';
-import { Dispatch, Location } from 'umi';
+import { ChannelSchema, Dispatch, Location } from 'umi';
 import { PeerSchema } from '@/models/node';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
@@ -20,7 +20,7 @@ export interface NodeListProps {
   dispatch: Dispatch;
   User: ConnectState['User'];
   Channel: ConnectState['Channel'];
-  location: Location<PeerSchema>;
+  location: Location<ChannelSchema>;
   qryLoading: boolean;
 }
 const pageSize = baseConfig.pageSize;
