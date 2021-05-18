@@ -102,7 +102,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
         break;
       }
     }
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     dispatch({
