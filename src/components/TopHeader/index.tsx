@@ -55,7 +55,7 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
         <span>欢迎使用区块链科研实验云平台</span>
         <a className={styles['header-menu-item']} onClick={onClickShowDrawer}>
           <BarsOutlined />
-          <span>pages</span>
+          <span>服务列表</span>
         </a>
       </div>
       <div className={styles['header-right-info']}>

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Drawer, Menu, Row, Col } from 'antd';
+import { Drawer, Menu, Row, Col, Divider } from 'antd';
 import { connect } from 'dva';
 import { ConnectState } from '@/models/connect';
 import { Dispatch, history } from 'umi';
@@ -84,9 +84,34 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
     ));
   };
 
+  const currentServices = useMemo(() => {
+    const service = {
+      servicePath: '',
+      serviceName: '',
+    };
+    if (pathname === '/selectLeague') {
+      service.servicePath = '/selectLeague';
+      service.serviceName = '切换联盟';
+      return service;
+    }
+    if (showNetworkMenu) {
+      const findResult = optionalNetworkMenuList.find((menu) => menu.finalPath === pathname);
+      if (findResult) {
+        service.servicePath = findResult.finalPath;
+        service.serviceName = findResult.finalPathName;
+      }
+      return service;
+    }
+    const findResult = optionalCommonMenuList.find((menu) => menu.finalPath === pathname);
+    if (findResult) {
+      service.servicePath = findResult.finalPath;
+      service.serviceName = findResult.finalPathName;
+    }
+    return service;
+  }, [optionalCommonMenuList, optionalNetworkMenuList, pathname, showNetworkMenu]);
+
   return (
     <Drawer
-      title="All Pages"
       placement="top"
       height={500}
       closable={false}
@@ -97,34 +122,43 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
       style={{ position: 'absolute' }}
       className={styles['services-drawer']}
     >
-      <Row gutter={[16, 24]}>
-        {showNetworkMenu && (
-          <Col span={4}>
-            <Menu>
-              <Menu.ItemGroup title="网络">{getNetworkMenu(optionalNetworkMenuList)}</Menu.ItemGroup>
-            </Menu>
-          </Col>
-        )}
-        <Col span={4}>
-          <Menu>
-            <Menu.ItemGroup title="通用">{getNetworkMenu(optionalCommonMenuList)}</Menu.ItemGroup>
-          </Menu>
-        </Col>
-        <Col span={4}>
-          <Menu>
-            <Menu.ItemGroup title="其他">
-              {showChangeLeague && (
-                <Menu.Item key="ChangeLeague" onClick={onClickChangeLeague}>
-                  切换联盟
-                </Menu.Item>
-              )}
-              <Menu.Item key="ChainIDE" onClick={onClickIDE}>
-                ChainIDE
-              </Menu.Item>
-            </Menu.ItemGroup>
-          </Menu>
-        </Col>
-      </Row>
+      <div className={styles['service-wrapper']}>
+        <div className={styles['left-service-wrapper']}>
+          <div>当前服务</div>
+          <div className={styles['current-service']}>{currentServices.serviceName}</div>
+        </div>
+        <div className={styles['right-service-wrapper']}>
+          <Row gutter={[16, 24]}>
+            <Col span={24}>所有服务</Col>
+            {showNetworkMenu && (
+              <Col span={4}>
+                <Menu>
+                  <Menu.ItemGroup title="网络">{getNetworkMenu(optionalNetworkMenuList)}</Menu.ItemGroup>
+                </Menu>
+              </Col>
+            )}
+            <Col span={4}>
+              <Menu>
+                <Menu.ItemGroup title="通用">{getNetworkMenu(optionalCommonMenuList)}</Menu.ItemGroup>
+              </Menu>
+            </Col>
+            <Col span={4}>
+              <Menu>
+                <Menu.ItemGroup title="其他">
+                  {showChangeLeague && (
+                    <Menu.Item key="ChangeLeague" onClick={onClickChangeLeague}>
+                      切换联盟
+                    </Menu.Item>
+                  )}
+                  <Menu.Item key="ChainIDE" onClick={onClickIDE}>
+                    ChainIDE
+                  </Menu.Item>
+                </Menu.ItemGroup>
+              </Menu>
+            </Col>
+          </Row>
+        </div>
+      </div>
     </Drawer>
   );
 };
