@@ -17,8 +17,8 @@ export interface FieldDescProps {
 function FieldDesc(props: FieldDescProps) {
   const { visible, record = {}, onCancel, dispatch, qryLoading = false, ContractStore } = props;
   const { fieldDescList, fieldDescTotal } = ContractStore;
-  const [pageNum, setPageNum] = useState(1)
-  const [pageSize] = useState(baseConfig.pageSize)
+  const [pageNum, setPageNum] = useState(1);
+  const [pageSize] = useState(baseConfig.pageSize);
 
   const drawerProps = {
     visible: visible,
@@ -27,8 +27,7 @@ function FieldDesc(props: FieldDescProps) {
     title: '查看字段说明',
     onCancel: onCancel,
     footer: null,
-  }
-
+  };
   const columns = [
     {
       title: '字段',
@@ -51,12 +50,12 @@ function FieldDesc(props: FieldDescProps) {
       key: 'fieldDesc',
       ellipsis: true,
     },
-  ]
+  ];
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
-    setPageNum(pageInfo.current)
-  }
+    setPageNum(pageInfo.current);
+  };
 
   useEffect(() => {
     const offset = (pageNum - 1) * pageSize;
@@ -64,30 +63,30 @@ function FieldDesc(props: FieldDescProps) {
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
-      id: record._id,//TODO:第18行record是个空对象
-    }
+      id: record._id, //TODO:第18行record是个空对象
+    };
     dispatch({
       type: 'ContractStore/getStoreSupplyExplainListOfChainCode',
-      payload: params
-    })
+      payload: params,
+    });
   }, [pageNum]);
 
   return (
-    <Modal {...drawerProps} >
+    <Modal {...drawerProps}>
       <Table
-        rowKey='_id'
+        rowKey="_id"
         loading={qryLoading}
         columns={columns}
-        className='page-content-shadow'
+        className="page-content-shadow"
         dataSource={fieldDescList}
         onChange={onPageChange}
         pagination={{ pageSize, total: fieldDescTotal, current: pageNum, position: ['bottomCenter'] }}
       />
     </Modal>
   );
-};
+}
 
 export default connect(({ ContractStore, loading }: ConnectState) => ({
   ContractStore,
-  qryLoading: loading.effects['ContractStore/getStoreSupplyExplainListOfChainCode']
+  qryLoading: loading.effects['ContractStore/getStoreSupplyExplainListOfChainCode'],
 }))(FieldDesc);

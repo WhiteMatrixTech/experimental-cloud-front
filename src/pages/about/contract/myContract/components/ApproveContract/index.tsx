@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Form, Button, Modal, Radio } from 'antd';
+import { Dispatch } from 'umi';
+import { ConnectState } from '@/models/connect';
 
 const { Item } = Form;
 
@@ -12,14 +14,21 @@ const formItemLayout = {
     sm: { span: 18 },
   },
 };
-
-function ApproveContract(props) {
+export interface ApproveContract {
+  visible: boolean;
+  editParams: any;
+  onCancel: any;
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+  approveLoading: boolean;
+}
+function ApproveContract(props: ApproveContract) {
   const [form] = Form.useForm();
   const { visible, editParams, onCancel, dispatch, User, approveLoading = false } = props;
   const { networkName } = User;
 
   const handleSubmit = () => {
-    form.validateFields().then(async (values) => {
+    form.validateFields().then(async (values: { networkName: string }) => {
       values.networkName = networkName;
       const params = {
         ...values,
@@ -78,7 +87,7 @@ function ApproveContract(props) {
   );
 }
 
-export default connect(({ Contract, User, loading }) => ({
+export default connect(({ Contract, User, loading }: ConnectState) => ({
   Contract,
   User,
   approveLoading: loading.effects['Contract/verifyContract'],

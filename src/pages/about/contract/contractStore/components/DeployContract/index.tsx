@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Modal } from 'antd';
 import { Dispatch } from 'umi';
-import {ConnectState} from '@/models/connect';
+import { ConnectState } from '@/models/connect';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -21,7 +21,7 @@ export interface DeployContractProps {
   onCancel: () => void;
   dispatch: Dispatch;
 }
-function DeployContract({ visible, record, onCancel, dispatch }:DeployContractProps) {
+function DeployContract({ visible, record, onCancel, dispatch }: DeployContractProps) {
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
@@ -168,7 +168,7 @@ function DeployContract({ visible, record, onCancel, dispatch }:DeployContractPr
   );
 }
 
-export default connect(({ ContractStore, loading }:ConnectState) => ({
+export default connect(({ ContractStore, loading }: ConnectState) => ({
   ContractStore,
   qryLoading: loading.effects['ContractStore/deployContract'],
 }))(DeployContract);

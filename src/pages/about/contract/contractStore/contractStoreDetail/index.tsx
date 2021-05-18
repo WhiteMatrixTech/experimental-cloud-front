@@ -7,9 +7,9 @@ import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import FieldDesc from '../components/FieldDesc';
 import DeployContract from '../components/DeployContract';
 import baseConfig from '@/utils/config';
-import {ConnectState} from '@/models/connect';
-import { Dispatch ,Location} from 'umi';
-import { TableColumnsAttr, DetailViewAttr} from '@/utils/types';
+import { ConnectState } from '@/models/connect';
+import { Dispatch, Location } from 'umi';
+import { TableColumnsAttr, DetailViewAttr } from '@/utils/types';
 
 let breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 breadCrumbItem = breadCrumbItem.concat([
@@ -24,24 +24,30 @@ breadCrumbItem = breadCrumbItem.concat([
   },
 ]);
 const pageSize = baseConfig.pageSize;
-export interface ContractStoreDetailProps{
-  qryLoading:boolean;
-  ContractStore:ConnectState['ContractStore'];
-  User:ConnectState['User'];
-  dispatch:Dispatch;
+export interface ContractStoreDetailProps {
+  qryLoading: boolean;
+  ContractStore: ConnectState['ContractStore'];
+  User: ConnectState['User'];
+  dispatch: Dispatch;
   //TODO:合约管理页面的item还没有具体的属性，so,传过来的只是object
   // location: Location<chainCodeName>;
-  location: { query: { chainCodeName :string },};
+  location: { query: { chainCodeName: string } };
 }
-function ContractStoreDetail(props:ContractStoreDetailProps) {
+function ContractStoreDetail(props: ContractStoreDetailProps) {
   const [pageNum, setPageNum] = useState(1);
-  const [record, setRecord] = useState(null);//当前查看的表格记录
-  const [fieldDescVisible, setFieldDescVisible] = useState(false);// 字段说明弹窗 是否可见
-  const [deployContractVisible, setDeployContractVisible] = useState(false);//部署合约弹窗 是否可见
+  const [record, setRecord] = useState(null); //当前查看的表格记录
+  const [fieldDescVisible, setFieldDescVisible] = useState(false); // 字段说明弹窗 是否可见
+  const [deployContractVisible, setDeployContractVisible] = useState(false); //部署合约弹窗 是否可见
   const { curRepository, repositoryDetailList, repositoryDetailTotal } = props.ContractStore;
   const { qryLoading = false } = props;
-  const {User,dispatch,location: {query: { chainCodeName = '' },},} = props;
-  let columns:TableColumnsAttr[] = [
+  const {
+    User,
+    dispatch,
+    location: {
+      query: { chainCodeName = '' },
+    },
+  } = props;
+  let columns: TableColumnsAttr[] = [
     {
       title: '方法名',
       dataIndex: 'chainCodeMethodName',
@@ -78,7 +84,7 @@ function ContractStoreDetail(props:ContractStoreDetailProps) {
 
   useEffect(() => {
     getStoreSupplyListOfChainCode();
-  }, [pageNum])
+  }, [pageNum]);
 
   // 获取合约列表
   const getStoreSupplyListOfChainCode = () => {
@@ -97,12 +103,12 @@ function ContractStoreDetail(props:ContractStoreDetailProps) {
   };
 
   // 翻页
- const  onPageChange = (pageInfo:any) => {
-    setPageNum(pageInfo.current)
+  const onPageChange = (pageInfo: any) => {
+    setPageNum(pageInfo.current);
   };
 
   // 查看字段说明
-  const onClickDetail = (record:any) => {
+  const onClickDetail = (record: any) => {
     setRecord(record);
     setFieldDescVisible(true);
   };
@@ -165,7 +171,7 @@ function ContractStoreDetail(props:ContractStoreDetailProps) {
         <div className="table-header-btn-wrapper">
           <Button type="primary" onClick={onClickDeploy}>
             部署合约
-            </Button>
+          </Button>
         </div>
         <Table
           rowKey="_id"
@@ -177,9 +183,7 @@ function ContractStoreDetail(props:ContractStoreDetailProps) {
           pagination={{ pageSize, total: repositoryDetailTotal, current: pageNum, position: ['bottomCenter'] }}
         />
       </div>
-      {fieldDescVisible && (
-        <FieldDesc visible={fieldDescVisible} record={record} onCancel={onCloseFieldDescModal} />
-      )}
+      {fieldDescVisible && <FieldDesc visible={fieldDescVisible} record={record} onCancel={onCloseFieldDescModal} />}
       {deployContractVisible && (
         <DeployContract visible={DeployContract} record={curRepository} onCancel={onCloseDeployModal} />
       )}
@@ -187,7 +191,7 @@ function ContractStoreDetail(props:ContractStoreDetailProps) {
   );
 }
 
-export default connect(({ User, ContractStore, loading }:ConnectState) => ({
+export default connect(({ User, ContractStore, loading }: ConnectState) => ({
   User,
   ContractStore,
   qryLoading: loading.effects['ContractStore/getStoreSupplyListOfChainCode'],

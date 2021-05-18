@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Modal } from 'antd';
+import { ConnectState } from '@/models/connect';
+import { Dispatch, Effect } from 'umi';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -15,7 +17,18 @@ const formItemLayout = {
   },
 };
 
-function EditStrategy(props) {
+export interface EditStrategyProps {
+  User: ConnectState['User'];
+  visible: boolean;
+  editParams: any;
+  onCancel: any;
+  getPageListOPrivacyStrategy: () => void;
+  getPrivacyStrategyTotalDocs: () => void;
+  operateType: any;
+  dispatch: Dispatch;
+  addLoading: boolean;
+}
+function EditStrategy(props: EditStrategyProps) {
   const {
     User,
     visible,
@@ -34,7 +47,7 @@ function EditStrategy(props) {
   const handleSubmit = () => {
     form
       .validateFields()
-      .then((values) => {
+      .then((values: any) => {
         form.resetFields();
         let params = values;
         params.networkName = networkName;
@@ -43,7 +56,7 @@ function EditStrategy(props) {
           dispatch({
             type: 'PrivacyStrategy/createAndUpdateStrategy',
             payload: params,
-          }).then((res) => {
+          }).then((res: any) => {
             if (res) {
               onCancel();
               getPageListOPrivacyStrategy();
@@ -60,7 +73,7 @@ function EditStrategy(props) {
           dispatch({
             type: 'PrivacyStrategy/modifyAndUpdateStrategy',
             payload: params,
-          }).then((res) => {
+          }).then((res: any) => {
             if (res) {
               onCancel();
               getPageListOPrivacyStrategy();
@@ -69,7 +82,7 @@ function EditStrategy(props) {
           });
         }
       })
-      .catch((info) => {
+      .catch((info: any) => {
         console.log('校验失败:', info);
       });
   };
@@ -130,7 +143,7 @@ function EditStrategy(props) {
         >
           <Select
             allowClear
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
             placeholder="请选择隐私保护策略状态"
           >
             <Option value={0}>停用</Option>
@@ -160,7 +173,7 @@ function EditStrategy(props) {
   );
 }
 
-export default connect(({ User, PrivacyStrategy, loading }) => ({
+export default connect(({ User, PrivacyStrategy, loading }: ConnectState) => ({
   User,
   PrivacyStrategy,
   addLoading:

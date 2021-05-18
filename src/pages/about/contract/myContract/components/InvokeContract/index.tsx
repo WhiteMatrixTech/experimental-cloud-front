@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import ReactJson from 'react-json-view';
 import { Input, Descriptions, Select, Form, Switch, Button, Modal, Radio, Divider } from 'antd';
+import { Dispatch } from 'umi';
+import { ConnectState } from '@/models/connect';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -14,15 +16,23 @@ const formItemLayout = {
     sm: { span: 18 },
   },
 };
-
-function InvokeContract(props) {
+export interface InvokeContractProps {
+  visible: boolean;
+  editParams: any;
+  onCancel: () => void;
+  dispatch: Dispatch;
+  Contract: ConnectState['Contract'];
+  User: ConnectState['User'];
+  invokeLoading: boolean;
+}
+function InvokeContract(props: InvokeContractProps) {
   const [form] = Form.useForm();
   const { visible, editParams, onCancel, dispatch, Contract, User, invokeLoading = false } = props;
   const { channelList, allUserId, invokeResult } = Contract;
   const { networkName } = User;
 
   const handleSubmit = () => {
-    form.validateFields().then((values) => {
+    form.validateFields().then((values: any) => {
       values.networkName = networkName;
       const { invokeType, ...params } = values;
       dispatch({
@@ -75,7 +85,7 @@ function InvokeContract(props) {
         >
           <Select
             allowClear
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
             placeholder="请选择通道"
             disabled
           >
@@ -104,7 +114,7 @@ function InvokeContract(props) {
         </Item>
         <Item label="参数列表" name="params" initialValue={[]}>
           <Select
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
             placeholder="请输入参数"
             mode="tags"
             allowClear
@@ -137,7 +147,11 @@ function InvokeContract(props) {
             },
           ]}
         >
-          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择fabric角色">
+          <Select
+            allowClear
+            getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
+            placeholder="请选择fabric角色"
+          >
             {allUserId.map((item) => (
               <Option key={item} value={item}>
                 {item}
@@ -164,6 +178,7 @@ function InvokeContract(props) {
         <div>
           <Divider />
           <Descriptions bordered column={1} title="">
+            {/* //TODO:invokeResult  models中定义的null */}
             <Descriptions.Item label="合约调用结果">{invokeResult.status}</Descriptions.Item>
             <Descriptions.Item label={invokeResult.status === 'Failed' ? `失败原因` : `返回数据`}>
               <ReactJson name="" src={invokeResult.message} />
@@ -175,7 +190,7 @@ function InvokeContract(props) {
   );
 }
 
-export default connect(({ Contract, User, loading }) => ({
+export default connect(({ Contract, User, loading }: ConnectState) => ({
   Contract,
   User,
   invokeLoading: loading.effects['Contract/invokeChainCodeMethod'] || loading.effects['Contract/queryChainCodeMethod'],

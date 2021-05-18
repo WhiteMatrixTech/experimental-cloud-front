@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Radio, Switch, Button } from 'antd';
-import { Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb } from '@/components';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import style from './index.less';
+import { ConnectState } from '@/models/connect';
+import { Dispatch } from 'umi';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -23,8 +25,12 @@ breadCrumbItem.push({
   menuName: '合约调用',
   menuHref: `/`,
 });
-
-function CallTransfer(props) {
+export interface CallTransferProps {
+  Contract: ConnectState['Contract'];
+  User: ConnectState['User'];
+  dispatch: Dispatch;
+}
+function CallTransfer(props: CallTransferProps) {
   const { Contract, User, dispatch } = props;
   const { channelList } = Contract;
   const { networkName } = User;
@@ -37,14 +43,14 @@ function CallTransfer(props) {
   const onChannelChange = () => {};
 
   // 调用类型改变
-  const onInvokeTypeChange = (e) => {
+  const onInvokeTypeChange = (e: any) => {
     setInvokeType(e.target.value);
   };
 
   // 表单域改变
-  const onFieldsChange = (changedFields, allFields) => {
+  const onFieldsChange = (changedFields: any, allFields: any) => {
     const validFields = allFields.slice(0, 4);
-    if (validFields.every((item) => item.value !== null && item.value !== '')) {
+    if (validFields.every((item: { value: string }) => item.value !== null && item.value !== '')) {
       setInvokeTypeAvailable(true);
     } else {
       setInvokeTypeAvailable(false);
@@ -55,11 +61,11 @@ function CallTransfer(props) {
   const handleSubmit = () => {
     form
       .validateFields()
-      .then((values) => {
+      .then((values: any) => {
         form.resetFields();
         form.setFieldsValue(values);
       })
-      .catch((info) => {
+      .catch((info: any) => {
         console.log('校验失败:', info);
       });
   };
@@ -92,7 +98,7 @@ function CallTransfer(props) {
               >
                 <Select
                   allowClear
-                  getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                  getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
                   placeholder="请选择通道"
                   onChange={onChannelChange}
                 >
@@ -114,7 +120,11 @@ function CallTransfer(props) {
                   },
                 ]}
               >
-                <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择合约">
+                <Select
+                  allowClear
+                  getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
+                  placeholder="请选择合约"
+                >
                   <Option value="aaa">aaa</Option>
                 </Select>
               </Item>
@@ -133,7 +143,7 @@ function CallTransfer(props) {
               </Item>
               <Item label="参数列表" name="params" initialValue={[]}>
                 <Select
-                  getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                  getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
                   placeholder="请输入参数"
                   mode="tags"
                   allowClear
@@ -191,7 +201,7 @@ function CallTransfer(props) {
   );
 }
 
-export default connect(({ User, Contract, loading }) => ({
+export default connect(({ User, Contract, loading }: ConnectState) => ({
   User,
   Contract,
   qryLoading: loading.effects['Contract/deployContract'],

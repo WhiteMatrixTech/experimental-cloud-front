@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Switch, Button, Upload, Modal, notification } from 'antd';
 import { normFile, handleBeforeUpload } from './_func';
+import { ConnectRC, Dispatch } from '@/.umi/plugin-dva/connect';
+import { ConnectState } from '@/models/connect';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -21,8 +23,17 @@ const modalTitle = {
   modify: '修改合约',
   upgrade: '升级合约',
 };
-
-function EditContract(props) {
+export interface EditContractProps {
+  visible: boolean;
+  editParams: any;
+  onCancel: any;
+  operateType: any;
+  dispatch: Dispatch;
+  Contract: ConnectState['Contract'];
+  User: ConnectState['User'];
+  btnLoading: boolean;
+}
+function EditContract(props: EditContractProps) {
   const [form] = Form.useForm();
   const [fileJson, setFileJson] = useState(null);
   const [initRequired, setInitRequired] = useState(false);
@@ -33,7 +44,7 @@ function EditContract(props) {
   const handleSubmit = () => {
     form
       .validateFields()
-      .then((values) => {
+      .then((values: any) => {
         values.chainCodePackageMetaData = fileJson;
         const { upload, ...rest } = values;
         const params = rest;
@@ -49,7 +60,7 @@ function EditContract(props) {
           dispatch({
             type: 'Contract/addContract',
             payload: params,
-          }).then((res) => {
+          }).then((res: any) => {
             if (res) {
               onCancel(true);
             }
@@ -58,23 +69,23 @@ function EditContract(props) {
           dispatch({
             type: 'Contract/upgradeContract',
             payload: params,
-          }).then((res) => {
+          }).then((res: any) => {
             if (res) {
               onCancel(true);
             }
           });
         }
       })
-      .catch((info) => {
+      .catch((info: any) => {
         console.log('校验失败:', info);
       });
   };
 
-  const onChangeInit = (checked) => {
+  const onChangeInit = (checked: any) => {
     setInitRequired(checked);
   };
 
-  const onChangeChannel = (value) => {
+  const onChangeChannel = (value: any) => {
     dispatch({
       type: 'Contract/getOrgListWithChannel',
       payload: { networkName, channelId: value },
@@ -102,7 +113,7 @@ function EditContract(props) {
       Authorization: `Bearer ${accessToken}`,
       RoleAuth: roleToken,
     },
-    onChange(info) {
+    onChange(info: { file: { status: string; name: any; response: React.SetStateAction<null> } }) {
       if (info.file.status === 'done') {
         notification.success({ message: `Succeed in uploading contract ${info.file.name}`, top: 64, duration: 3 });
         setFileJson(info.file.response);
@@ -117,7 +128,7 @@ function EditContract(props) {
     },
   };
 
-  const checkChaincodeVersion = (_, value) => {
+  const checkChaincodeVersion = (_: any, value: number) => {
     const promise = Promise; // 没有值的情况
 
     if (!value) {
@@ -167,12 +178,12 @@ function EditContract(props) {
         >
           <Select
             allowClear
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
             disabled={operateType !== 'new'}
             onChange={onChangeChannel}
             placeholder="请选择通道"
           >
-            {myChannelList.map((item) => (
+            {myChannelList.map((item: { channelId: React.Key | null | undefined }) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
               </Option>
@@ -261,7 +272,7 @@ function EditContract(props) {
   );
 }
 
-export default connect(({ Contract, User, loading }) => ({
+export default connect(({ Contract, User, loading }: ConnectState) => ({
   Contract,
   User,
   btnLoading: loading.effects['Contract/addContract'] || loading.effects['Contract/upgradeContract'],
