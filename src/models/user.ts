@@ -38,7 +38,7 @@ export type UserModelState = {
   networkList: Array<LeagueSchema>;
   myNetworkList: Array<LeagueSchema>;
 
-  userRole: string;
+  userRole: Roles;
   networkName: string;
   leagueName: string;
 };
@@ -83,7 +83,7 @@ const UserModel: UserModelType = {
     networkList: [], // 网络列表
     myNetworkList: [], // 我的网络列表
 
-    userRole: localStorage.getItem('userRole') || Roles.NetworkMember, // 进入系统的身份
+    userRole: (localStorage.getItem('userRole') as Roles) || Roles.NetworkMember, // 进入系统的身份
     networkName: localStorage.getItem('networkName') || '', // 进入系统时的网络
     leagueName: localStorage.getItem('leagueName') || '', // 进入系统时的联盟
   },

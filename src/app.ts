@@ -35,21 +35,19 @@ export function render(oldRender: () => void) {
 
   // 403路由控制
   //TODO 只做了网络portal的
-  const userRole = localStorage.getItem('userRole');
+  const userRole = localStorage.getItem('userRole') as Roles;
   const allMenu = tree2Arr(MenuList, 'subMenus');
   let isAdminPage = false;
-  allMenu
-    .filter((menu: NetworkMenuProps) => menu.accessRole !== Roles.NetworkMember)
-    .forEach((menu: NetworkMenuProps) => {
-      if (pathname.indexOf(menu.menuHref) > -1) {
-        isAdminPage = true;
-      }
-    });
+  allMenu.forEach((menu: NetworkMenuProps) => {
+    if (pathname.indexOf(menu.menuHref) > -1 && !menu.accessRole.includes(userRole)) {
+      isAdminPage = true;
+    }
+  });
+  const noAccessSituation = isAdminPage;
 
   // 外部登录
   const search = window.location.search ? window.location.search.replace('?', '') : '';
   const { redirect } = parse(search);
-  const noAccessSituation = userRole === Roles.NetworkMember && isAdminPage;
 
   if (noAccessSituation) {
     history.push('/403');

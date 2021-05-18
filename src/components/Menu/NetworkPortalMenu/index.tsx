@@ -23,7 +23,7 @@ export type LeftMenuProps = {
 
 const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
   const { pathname, dispatch, User, Dashboard, Layout } = props;
-  const { userRole, userInfo, networkName } = User;
+  const { userRole, networkName } = User;
   const { selectedMenu } = Layout;
   const { networkStatusInfo } = Dashboard;
   const [openKeys, setOpenKeys] = useState<string[]>([]);
@@ -55,10 +55,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
   };
 
   const getMenuItem = (item: NetworkMenuProps) => {
-    if (item.accessRole === Roles.NetworkMember && userRole === Roles.NetworkMember) {
-      return '';
-    }
-    if (item.accessRole === Roles.Admin && userInfo.role !== Roles.Admin) {
+    if (!item.accessRole.includes(userRole)) {
       return '';
     }
     if (isEmpty(item.subMenus)) {
@@ -80,7 +77,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
           }
         >
           {item.subMenus.map((subItem) => {
-            if (subItem.accessRole !== Roles.NetworkMember && userRole === Roles.NetworkMember) {
+            if (!item.accessRole.includes(userRole)) {
               return '';
             }
             return (

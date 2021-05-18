@@ -48,12 +48,8 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   };
 
   const onViewJobLog = (record: GitBuildRepoTask) => {
-    dispatch({
-      type: 'Layout/common',
-      payload: { commonPortalSelectedMenu: '/common/job-management' },
-    });
     history.push({
-      pathname: `/common/job-management/job-logs`,
+      pathname: `/common/block-compile/package/job-logs`,
       state: {
         ...record,
         jobId: record.buildJobId,
