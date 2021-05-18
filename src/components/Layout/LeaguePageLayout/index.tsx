@@ -1,26 +1,26 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Layout } from 'antd';
-import { TopHeader } from '@/components';
+import { Layout as AntdLayout } from 'antd';
+import { ServicesDrawer, TopHeader } from '@/components';
 import { ConnectState } from '@/models/connect';
-import { LoginLayoutProps } from '../LoginLayout';
+import { NetworkPortalLayoutProps } from '../NetworkPortalLayout';
 import styles from './index.less';
-
-class LeaguePageLayout extends React.PureComponent<LoginLayoutProps> {
-
+class LeaguePageLayout extends React.PureComponent<NetworkPortalLayoutProps> {
   render() {
-    const { children, pathname } = this.props;
+    const { children, pathname, Layout } = this.props;
+    const { showDrawer } = Layout;
     return (
-      <Layout className="layout-style">
+      <AntdLayout className="layout-style">
         <TopHeader pathname={pathname} />
-        <Layout>
+        <AntdLayout className="layout-content">
           <div className={styles.appLayout}>
             <div id="league-list-layout" className={styles.rightPart}>
               {children}
             </div>
+            {showDrawer && <ServicesDrawer pathname={pathname} />}
           </div>
-        </Layout>
-      </Layout>
+        </AntdLayout>
+      </AntdLayout>
     );
   }
 }

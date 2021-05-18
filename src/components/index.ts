@@ -13,14 +13,18 @@ import { LoginMessage } from './Message/LoginMessage';
 import CommonPortalMenu from './Menu/CommonPortalMenu';
 import CommonPortalLayout from './Layout/CommonPortalLayout';
 import NetworkPortalLayout from './Layout/NetworkPortalLayout';
+import HeaderSearch from './HeaderSearch';
+import ServicesDrawer from './Drawer/ServicesDrawer';
 
 export {
   NetworkPortalLayout,
   CommonPortalLayout,
   LoginLayout,
+  ServicesDrawer,
   LeaguePageLayout,
   LoginExternalLayout,
   TopHeader,
+  HeaderSearch,
   NetworkPortalMenu,
   CommonPortalMenu,
   Breadcrumb,

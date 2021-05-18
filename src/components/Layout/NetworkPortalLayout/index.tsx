@@ -1,19 +1,21 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Layout, Modal } from 'antd';
+import { Layout as AntdLayout, Modal } from 'antd';
 import { history } from 'umi';
-import { NetworkPortalMenu, TopHeader } from '@/components';
+import { NetworkPortalMenu, ServicesDrawer, TopHeader } from '@/components';
+import { ModalFuncProps } from 'antd/lib/modal';
 import { ConnectState } from '@/models/connect';
 import styles from './index.less';
-import { ModalFuncProps } from 'antd/lib/modal';
 
 export type NetworkPortalLayoutProps = {
   children: JSX.Element;
   pathname: string;
+  Layout: ConnectState['Layout'];
 };
 
 function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
-  const { children, pathname } = props;
+  const { children, pathname, Layout } = props;
+  const { showDrawer } = Layout;
 
   const receiveMessage = (e: { key: any; newValue: any }) => {
     const { key, newValue } = e;
@@ -60,9 +62,9 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
   }, []);
 
   return (
-    <Layout className="layout-style">
+    <AntdLayout className="layout-style">
       <TopHeader pathname={pathname} />
-      <Layout>
+      <AntdLayout>
         <div className={styles.appLayout}>
           <div className={styles.leftMenu}>
             <NetworkPortalMenu pathname={pathname} />
@@ -70,9 +72,10 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
           <div id="app-layout" className={styles.rightPart}>
             {children}
           </div>
+          {showDrawer && <ServicesDrawer pathname={pathname} />}
         </div>
-      </Layout>
-    </Layout>
+      </AntdLayout>
+    </AntdLayout>
   );
 }
 

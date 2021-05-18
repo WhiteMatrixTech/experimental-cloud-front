@@ -1,4 +1,4 @@
-import { tree2Arr } from './index';
+import { getAllPath, tree2Arr } from './index';
 import { Roles } from './roles';
 
 /**
@@ -17,15 +17,21 @@ interface BasicMenuProps {
   menuHref: string;
   menuIcon: string | null;
   menuName: string;
+  accessRole: Roles[];
 }
 export interface NetworkMenuProps extends BasicMenuProps {
-  accessRole: Roles;
   subMenus: NetworkMenuProps[];
 }
 
 export interface CommonMenuProps extends BasicMenuProps {
-  accessRole: Roles[];
   subMenus: CommonMenuProps[];
+}
+
+export interface IMenuPathProps {
+  allPath: string[];
+  finalPath: string;
+  finalPathName: string;
+  pathAccess: Roles[];
 }
 
 const NetworkMenuList: NetworkMenuProps[] = [
@@ -35,7 +41,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/league-dashboard',
     menuIcon: 'KBasslianmengguanli1',
     menuName: '联盟总览',
-    accessRole: Roles.NetworkMember,
+    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [],
   },
   {
@@ -44,7 +50,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/data-dashboard',
     menuIcon: 'KBassyibiaopan',
     menuName: '仪表盘',
-    accessRole: Roles.NetworkAdmin,
+    accessRole: [Roles.NetworkAdmin],
     subMenus: [],
   },
   {
@@ -53,7 +59,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/block',
     menuIcon: 'KBassqukuailian',
     menuName: '区块链',
-    accessRole: Roles.NetworkMember,
+    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [],
   },
   {
@@ -62,7 +68,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/transactions',
     menuIcon: 'KBassjiaoyi',
     menuName: '交易',
-    accessRole: Roles.NetworkMember,
+    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [],
   },
   {
@@ -71,7 +77,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/channels',
     menuIcon: 'KBasstongdaoguanli',
     menuName: '通道管理',
-    accessRole: Roles.NetworkMember,
+    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [],
   },
   {
@@ -80,7 +86,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/organizations',
     menuIcon: 'KBasszuzhiguanli',
     menuName: '组织管理',
-    accessRole: Roles.NetworkMember,
+    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [],
   },
   {
@@ -89,7 +95,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/nodes',
     menuIcon: 'KBassjiedianguanli',
     menuName: '节点管理',
-    accessRole: Roles.NetworkMember,
+    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [],
   },
   {
@@ -98,7 +104,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/contract',
     menuIcon: 'KBassheyueguanli',
     menuName: '合约管理',
-    accessRole: Roles.NetworkMember,
+    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [
       {
         id: 'myContract',
@@ -106,7 +112,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
         menuHref: '/about/contract/myContract',
         menuIcon: null,
         menuName: '合约列表',
-        accessRole: Roles.NetworkMember,
+        accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
         subMenus: [],
       },
       // {
@@ -115,7 +121,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
       //   menuHref: '/about/contract/cTransfer',
       //   menuIcon: null,
       //   menuName: '合约调用',
-      //   accessRole: Roles.NetworkMember,
+      //   accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
       //   subMenus: [],
       // },
       // {
@@ -124,7 +130,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
       //   menuHref: '/about/contract/privacyStrategy',
       //   menuIcon: null,
       //   menuName: '隐私保护策略',
-      //   accessRole: Roles.NetworkAdmin,
+      //   accessRole: [Roles.NetworkAdmin],
       //   subMenus: [],
       // },
       // {
@@ -133,7 +139,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
       //   menuHref: '/about/contract/contractStore',
       //   menuIcon: null,
       //   menuName: '合约仓库',
-      //   accessRole: Roles.NetworkMember,
+      //   accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
       //   subMenus: [],
       // },
     ],
@@ -144,7 +150,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/evidence',
     menuIcon: 'KBasszhengshuguanli',
     menuName: '存证上链',
-    accessRole: Roles.NetworkMember,
+    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [],
   },
   // {
@@ -153,7 +159,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
   //   menuHref: "/about/certificate",
   //   menuIcon: "KBasszhengshuguanli",
   //   menuName: "证书管理",
-  //   accessRole: Roles.NetworkMember,
+  //   accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
   //   subMenus: []
   // },
   // {
@@ -162,7 +168,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
   //   menuHref: "/about/logsList",
   //   menuIcon: "KBassdakaixinfeng",
   //   menuName: "日志管理",
-  //   accessRole: Roles.NetworkMember,
+  //   accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
   //   subMenus: []
   // },
   {
@@ -171,7 +177,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/enterprise-member',
     menuIcon: 'KBasschengyuanguanli',
     menuName: '成员管理',
-    accessRole: Roles.NetworkAdmin,
+    accessRole: [Roles.NetworkAdmin],
     subMenus: [],
   },
   // {
@@ -180,7 +186,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
   //   menuHref: "/about/message",
   //   menuIcon: "KBassxiaoxiguanli",
   //   menuName: "消息管理",
-  //   accessRole: Roles.NetworkMember,
+  //   accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
   //   subMenus: []
   // },
   {
@@ -189,7 +195,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/myinfo',
     menuIcon: 'KBasswodexinxi',
     menuName: '用户信息',
-    accessRole: Roles.NetworkMember,
+    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [
       {
         id: 'MyLeague',
@@ -197,7 +203,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
         menuHref: '/about/myinfo/MyLeague',
         menuIcon: null,
         menuName: '我的联盟',
-        accessRole: Roles.NetworkMember,
+        accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
         subMenus: [],
       },
       {
@@ -206,7 +212,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
         menuHref: '/about/myinfo/CompanyInfo',
         menuIcon: null,
         menuName: '我的信息',
-        accessRole: Roles.NetworkMember,
+        accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
         subMenus: [],
       },
       {
@@ -215,7 +221,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
         menuHref: '/about/myinfo/MyOrgList',
         menuIcon: null,
         menuName: '我的组织',
-        accessRole: Roles.NetworkMember,
+        accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
         subMenus: [],
       },
     ],
@@ -226,7 +232,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
   //   menuHref: '/about/did',
   //   menuIcon: 'KBasslianmengguanli',
   //   menuName: 'DID身份链',
-  //   accessRole: Roles.NetworkMember,
+  //   accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
   //   subMenus: [
   //     {
   //       id: 'did-management',
@@ -234,7 +240,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
   //       menuHref: '/about/did/did-management',
   //       menuIcon: null,
   //       menuName: 'DID管理',
-  //       accessRole: Roles.NetworkAdmin,
+  //       accessRole: [Roles.NetworkAdmin],
   //       subMenus: [],
   //     },
   //     {
@@ -243,7 +249,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
   //       menuHref: '/about/did/did-query',
   //       menuIcon: null,
   //       menuName: 'DID查询验证',
-  //       accessRole: Roles.NetworkMember,
+  //       accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
   //       subMenus: [],
   //     },
   //   ],
@@ -254,7 +260,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/fabricUsers',
     menuIcon: 'KBasslianmengguanli',
     menuName: 'Fabric用户管理',
-    accessRole: Roles.NetworkMember,
+    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [],
   },
   {
@@ -263,7 +269,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/rbac',
     menuIcon: 'KBasszhengshuguanli',
     menuName: '访问角色管理',
-    accessRole: Roles.NetworkAdmin,
+    accessRole: [Roles.NetworkAdmin],
     subMenus: [],
   },
 ];
@@ -336,4 +342,29 @@ const getCurBreadcrumb = (menuList: NetworkMenuProps[] | CommonMenuProps[], keyw
   return breadCrumb;
 };
 
-export { NetworkMenuList as MenuList, CommonMenuList, getCurBreadcrumb };
+const getAllMenuPath = (pathList: CommonMenuProps[][]): IMenuPathProps[] => {
+  let menuPath: IMenuPathProps[] = [];
+  pathList.forEach((path) => {
+    let onePath: IMenuPathProps = {
+      allPath: [],
+      finalPath: '',
+      finalPathName: '',
+      pathAccess: [],
+    };
+    const endIndex = path.length - 1;
+    path.forEach((menu, index) => {
+      onePath.allPath.push(menu.menuName);
+      if (endIndex === index) {
+        onePath.finalPath = menu.menuHref;
+        onePath.finalPathName = menu.menuName;
+        onePath.pathAccess = menu.accessRole;
+        menuPath.push(onePath);
+      }
+    });
+  });
+  return menuPath;
+};
+const NetworkMenuPath: IMenuPathProps[] = getAllMenuPath(getAllPath(NetworkMenuList, 'subMenus'));
+const CommonMenuPath: IMenuPathProps[] = getAllMenuPath(getAllPath(CommonMenuList, 'subMenus'));
+
+export { NetworkMenuList as MenuList, CommonMenuList, NetworkMenuPath, CommonMenuPath, getCurBreadcrumb };

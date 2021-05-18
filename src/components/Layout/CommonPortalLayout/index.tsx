@@ -1,32 +1,35 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Layout } from 'antd';
-import { CommonPortalMenu, TopHeader } from '@/components';
+import { Layout as AntdLayout } from 'antd';
+import { TopHeader, ServicesDrawer } from '@/components';
 import { ConnectState } from '@/models/connect';
 import styles from './index.less';
 
 export type BaaSLayoutProps = {
   children: JSX.Element;
   pathname: string;
+  Layout: ConnectState['Layout'];
 };
 
 const CommonPortalLayout: React.FC<BaaSLayoutProps> = (props) => {
-  const { children, pathname } = props;
+  const { children, pathname, Layout } = props;
+  const { showDrawer } = Layout;
 
   return (
-    <Layout className="layout-style">
+    <AntdLayout className="layout-style">
       <TopHeader pathname={pathname} />
-      <Layout>
+      <AntdLayout className="layout-content">
         <div className={styles.commonPortalLayout}>
-          <div className={styles.leftMenu}>
+          {/* <div className={styles.leftMenu}>
             <CommonPortalMenu pathname={pathname} />
-          </div>
+          </div> */}
           <div id="common-portal-layout" className={styles.rightPart}>
             {children}
           </div>
+          {showDrawer && <ServicesDrawer pathname={pathname} />}
         </div>
-      </Layout>
-    </Layout>
+      </AntdLayout>
+    </AntdLayout>
   );
 };
 
