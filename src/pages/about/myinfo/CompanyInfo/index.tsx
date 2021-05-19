@@ -1,19 +1,26 @@
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Spin, message } from 'antd';
-import { history } from 'umi';
-import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
-import { ApprovalStatus } from '../_config';
+import { Dispatch, history } from 'umi';
+import { Breadcrumb, DetailCard } from '@/components';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { statusList } from '@/pages/about/enterprise-member/_config';
 import { injectIntl } from 'umi';
+import { ConnectState } from '@/models/connect';
+import { DetailViewAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
 breadCrumbItem.push({
   menuName: '我的信息',
   menuHref: `/`,
 });
-
-function MyCompanyInfo(props) {
+export interface MyCompanyInfoProps {
+  User: ConnectState['User'];
+  dispatch: Dispatch;
+  qryLoading: boolean;
+  MyInfo: ConnectState['MyInfo'];
+}
+function MyCompanyInfo(props: MyCompanyInfoProps) {
   const {
     User,
     dispatch,
@@ -49,39 +56,39 @@ function MyCompanyInfo(props) {
     return userInfo?.did;
   }, [userInfo]);
 
-  const companyBasicInfo = [
+  const companyBasicInfo: DetailViewAttr[] = [
     {
       label: '用户名称',
-      value: myCompany.companyName,
+      value: myCompany && myCompany.companyName,
     },
     {
       label: '当前审批状态',
-      value: ApprovalStatus[myCompany.approvalStatus],
+      value: myCompany && statusList[myCompany.approvalStatus],
     },
-    // {
-    //   label: '我的DID',
-    //   value: getDid || 'NeedButton',
-    //   buttonName: '立即申请',
-    //   onClick: onClickCreate,
-    // },
+    {
+      label: '我的DID',
+      value: getDid || 'NeedButton',
+      buttonName: '立即申请',
+      onClick: onClickCreate,
+    },
   ];
 
-  const companyContactsInfo = [
+  const companyContactsInfo: DetailViewAttr[] = [
     {
       label: '联系人姓名',
-      value: myCompany.contactName,
+      value: myCompany && myCompany.contactName,
     },
     {
       label: '联系人电话',
-      value: myCompany.contactPhone,
+      value: myCompany && myCompany.contactPhone,
     },
     {
       label: '联系人邮箱',
-      value: myCompany.contactEmail,
+      value: myCompany && myCompany.contactEmail,
     },
     {
       label: '联系地址',
-      value: myCompany.companyAddress,
+      value: myCompany && myCompany.companyAddress,
     },
   ];
 
@@ -106,7 +113,7 @@ function MyCompanyInfo(props) {
 }
 
 export default injectIntl(
-  connect(({ User, MyInfo, DID, loading }) => ({
+  connect(({ User, MyInfo, DID, loading }: ConnectState) => ({
     User,
     DID,
     MyInfo,

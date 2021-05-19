@@ -2,17 +2,25 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, DetailCard } from 'components';
-import { NetworkInfo } from 'utils/networkStatus';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb, DetailCard } from '@/components';
+import { NetworkInfo } from '@/utils/networkStatus';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { ConnectState } from '@/models/connect';
+import { Dispatch } from 'umi';
+import { DetailViewAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
 breadCrumbItem.push({
   menuName: '我的联盟',
   menuHref: `/`,
 });
-
-function MyLeagueInfo(props) {
+export interface MyLeagueInfoProps {
+  User: ConnectState['User'];
+  dispatch: Dispatch;
+  qryLoading: boolean;
+  MyInfo: ConnectState['MyInfo'];
+}
+function MyLeagueInfo(props: MyLeagueInfoProps) {
   const {
     User,
     dispatch,
@@ -21,30 +29,30 @@ function MyLeagueInfo(props) {
   } = props;
   const { networkName } = User;
 
-  const myLeagueInfo = [
+  const myLeagueInfo: DetailViewAttr[] = [
     {
       label: '联盟名称',
-      value: myLeague.leagueName,
+      value: myLeague && myLeague.leagueName,
     },
     {
       label: '盟主名称',
-      value: myLeague.leaderCompanyName,
+      value: myLeague && myLeague.leaderCompanyName,
     },
     {
       label: '网络名称',
-      value: myLeague.networkName,
+      value: myLeague && myLeague.networkName,
     },
     {
       label: '网络状态',
-      value: myLeague.networkStatus ? NetworkInfo[myLeague.networkStatus] : '',
+      value: myLeague && myLeague.networkStatus ? NetworkInfo[myLeague.networkStatus] : '',
     },
     {
       label: '创建时间',
-      value: myLeague.createdTime ? moment(myLeague.createdTime).format('YYYY-MM-DD HH:mm:ss') : '- -',
+      value: myLeague && myLeague.createdTime ? moment(myLeague.createdTime).format('YYYY-MM-DD HH:mm:ss') : '- -',
     },
     {
       label: '联盟描述',
-      value: myLeague.description,
+      value: myLeague && myLeague.description,
     },
   ];
 
@@ -67,7 +75,7 @@ function MyLeagueInfo(props) {
   );
 }
 
-export default connect(({ User, MyInfo, loading }) => ({
+export default connect(({ User, MyInfo, loading }: ConnectState) => ({
   User,
   MyInfo,
   qryLoading: loading.effects['MyInfo/getMyInfoDetail'],
