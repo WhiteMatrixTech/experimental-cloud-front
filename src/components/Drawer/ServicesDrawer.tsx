@@ -16,8 +16,7 @@ export type ServicesDrawerProps = {
 const bodyStyle = {
   padding: 0,
   margin: 24,
-  overflowY: 'auto',
-  overflowX: 'hidden',
+  overflow: 'hidden auto',
 };
 
 const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
@@ -94,21 +93,15 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
       service.serviceName = '切换联盟';
       return service;
     }
-    if (showNetworkMenu) {
-      const findResult = optionalNetworkMenuList.find((menu) => menu.finalPath === pathname);
-      if (findResult) {
-        service.servicePath = findResult.finalPath;
-        service.serviceName = findResult.finalPathName;
-      }
-      return service;
-    }
-    const findResult = optionalCommonMenuList.find((menu) => menu.finalPath === pathname);
+    const findResult = optionalNetworkMenuList
+      .concat(optionalCommonMenuList)
+      .find((menu) => menu.finalPath === pathname);
     if (findResult) {
       service.servicePath = findResult.finalPath;
       service.serviceName = findResult.finalPathName;
     }
     return service;
-  }, [optionalCommonMenuList, optionalNetworkMenuList, pathname, showNetworkMenu]);
+  }, [optionalCommonMenuList, optionalNetworkMenuList, pathname]);
 
   return (
     <Drawer
@@ -128,7 +121,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
           <div className={styles['current-service']}>{currentServices.serviceName}</div>
         </div>
         <div className={styles['right-service-wrapper']}>
-          <Row gutter={[16, 24]}>
+          <Row gutter={[16, 12]}>
             <Col span={24}>所有服务</Col>
             {showNetworkMenu && (
               <Col span={4}>
@@ -146,7 +139,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
               <Menu>
                 <Menu.ItemGroup title="其他">
                   {showChangeLeague && (
-                    <Menu.Item key="ChangeLeague" onClick={onClickChangeLeague}>
+                    <Menu.Item key="/selectLeague" onClick={onClickChangeLeague}>
                       切换联盟
                     </Menu.Item>
                   )}
