@@ -2,6 +2,8 @@ import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import React, { useEffect, useMemo } from 'react';
 import { serverPurpose } from '@/pages/common/elastic-cloud-server/_config';
+import { ConnectState } from '@/models/connect';
+import { Dispatch } from 'umi';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -14,8 +16,24 @@ const formItemLayout = {
     sm: { span: 18 },
   },
 };
-
-function CreateNodeModal(props) {
+export interface handleSubmitParams {
+  networkName: string;
+  orgName: string;
+  peerName: string;
+  peerNameAlias: string;
+  serverName?: string;
+}
+export interface CreateNodeModalProps {
+  Organization: ConnectState['Organization'];
+  ElasticServer: ConnectState['ElasticServer'];
+  visible: boolean;
+  onCancel: () => void;
+  addLoading: boolean;
+  User: ConnectState['User'];
+  dispatch: Dispatch;
+  getNodeList: () => void;
+}
+function CreateNodeModal(props: CreateNodeModalProps) {
   const { Organization, ElasticServer, visible, onCancel, addLoading = false, User, dispatch } = props;
   const { networkName } = User;
   const { orgInUseList } = Organization;
@@ -49,7 +67,7 @@ function CreateNodeModal(props) {
       .validateFields()
       .then((values) => {
         form.resetFields();
-        let params = {
+        let params: handleSubmitParams = {
           networkName,
           orgName: values.orgName,
           peerName: values.peerName,
@@ -61,7 +79,7 @@ function CreateNodeModal(props) {
         dispatch({
           type: 'Peer/createNode',
           payload: params,
-        }).then((res) => {
+        }).then((res: any) => {
           if (res) {
             onCancel();
             props.getNodeList();
@@ -165,7 +183,7 @@ function CreateNodeModal(props) {
   );
 }
 
-export default connect(({ User, Peer, Organization, ElasticServer, loading }) => ({
+export default connect(({ User, Peer, Organization, ElasticServer, loading }: ConnectState) => ({
   User,
   Peer,
   Organization,
