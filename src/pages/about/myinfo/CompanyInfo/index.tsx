@@ -4,7 +4,7 @@ import { Spin, message } from 'antd';
 import { Dispatch, history } from 'umi';
 import { Breadcrumb, DetailCard } from '@/components';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import { ApprovalStatus } from '../_config';
+import { statusList } from '@/pages/about/enterprise-member/_config';
 import { injectIntl } from 'umi';
 import { ConnectState } from '@/models/connect';
 import { DetailViewAttr } from '@/utils/types';
@@ -63,7 +63,7 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
     },
     {
       label: '当前审批状态',
-      value: myCompany && ApprovalStatus[myCompany.approvalStatus],
+      value: myCompany && statusList[myCompany.approvalStatus],
     },
     {
       label: '我的DID',
