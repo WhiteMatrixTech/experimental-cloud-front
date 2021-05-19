@@ -14,7 +14,7 @@ const formItemLayout = {
     sm: { span: 18 },
   },
 };
-export interface ApproveContract {
+export interface ApproveContractProps {
   visible: boolean;
   editParams: { channelId: string; chainCodeName: string };
   onCancel: any;
@@ -22,7 +22,7 @@ export interface ApproveContract {
   User: ConnectState['User'];
   approveLoading: boolean;
 }
-function ApproveContract(props: ApproveContract) {
+function ApproveContract(props: ApproveContractProps) {
   const [form] = Form.useForm();
   const { visible, editParams, onCancel, dispatch, User, approveLoading = false } = props;
   const { networkName } = User;
