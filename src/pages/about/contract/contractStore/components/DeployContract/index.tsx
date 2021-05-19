@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Modal } from 'antd';
+import { ChainCodeSchema, Dispatch } from 'umi';
+import { ConnectState } from '@/models/connect';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -13,8 +15,13 @@ const formItemLayout = {
     sm: { span: 18 },
   },
 };
-
-function DeployContract({ visible, record, onCancel, dispatch }) {
+export interface DeployContractProps {
+  visible: boolean;
+  record: ChainCodeSchema;
+  onCancel: () => void;
+  dispatch: Dispatch;
+}
+function DeployContract({ visible, record, onCancel, dispatch }: DeployContractProps) {
   const [form] = Form.useForm();
 
   const handleSubmit = () => {
@@ -161,7 +168,7 @@ function DeployContract({ visible, record, onCancel, dispatch }) {
   );
 }
 
-export default connect(({ ContractStore, loading }) => ({
+export default connect(({ ContractStore, loading }: ConnectState) => ({
   ContractStore,
   qryLoading: loading.effects['ContractStore/deployContract'],
 }))(DeployContract);

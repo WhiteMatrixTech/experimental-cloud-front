@@ -11,7 +11,7 @@ import { TableColumnsAttr } from '@/utils/types';
 import { ChannelSchema, Dispatch, Location } from 'umi';
 import { ConnectState } from '@/models/connect';
 import { DetailViewAttr } from '@/utils/types';
-import { OrganizationSchema } from '@/models/organization';
+
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({

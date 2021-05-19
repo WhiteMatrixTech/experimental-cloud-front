@@ -4,48 +4,57 @@ import { notification } from 'antd';
 import type { Reducer, Effect, ChannelSchema } from 'umi';
 
 export type ChainCodeSchema = {
-  networkName: string,               // 网络名称
-  channelId: string,                 // 通道名称
-  chainCodeName: string,             // 合约名称
-  chainCodeVersion: string,          // 合约版本
+  networkName: string; // 网络名称
+  channelId: string; // 通道名称
+  chainCodeName: string; // 合约名称
+  chainCodeVersion: string; // 合约版本
   //TODO: 使用页面处的枚举
-  chainCodeStatus: string,           // 合约状态
-  initArgs: string,                  // 初始参数
-  chainCodePackageMetaData: {        // 合约包
-    uri: string,                     // 合约包链接
-    label: string,                   // 合约包标签
-    language: string                 // 合约包语言
-  },
-  createOrgName?: string,             // 创建组织名称
-  initRequired: boolean,             // 是否必需
-  description: string,               // 合约描述
+  chainCodeStatus: string; // 合约状态
+  initArgs: string; // 初始参数
+  chainCodePackageMetaData: {
+    // 合约包
+    uri: string; // 合约包链接
+    label: string; // 合约包标签
+    language: string; // 合约包语言
+  };
+  createOrgName?: string; // 创建组织名称
+  initRequired: boolean; // 是否必需
+  description: string; // 合约描述
   endorsementPolicy: {
-    policyType: 'Default',
-    expression?: string,
-    orgsToApprove: string[]
-  },
-  approvedOrgs: string[],
-  chainCodeSequence: number,               // 合约序列
-  updatedAt?: Date
-}
-
+    policyType: 'Default';
+    expression?: string;
+    orgsToApprove: string[];
+  };
+  approvedOrgs: string[];
+  chainCodeSequence: number; // 合约序列
+  updatedAt?: Date;
+  _id: string;
+  createdAt: string;
+  userId: string;
+  channelName: string;
+  chainCodeLanguage: string;
+  version: string | number;
+  createAt: string;
+  endorsementOrgName: string;
+  chainCodeDesc: string;
+};
 export type ContractModelState = {
-  userOrgInuse: boolean, // 用户是否有组织 且组织在使用中
-  channelList: Array<ChannelSchema>, // 使用中的通道列表
-  myChannelList: Array<ChannelSchema>, // 当前用户所在通道列表
-  myContractList: Array<ChainCodeSchema>, // 我的合约列表
-  myContractTotal: number,
+  userOrgInuse: boolean; // 用户是否有组织 且组织在使用中
+  channelList: Array<ChannelSchema>; // 使用中的通道列表
+  myChannelList: Array<ChannelSchema>; // 当前用户所在通道列表
+  myContractList: Array<ChainCodeSchema>; // 我的合约列表
+  myContractTotal: number;
 
-  curContractDetail: {}, // 当前合约详情
-  curContractVersionList: Array<object>, // 当前合约版本历史列表
-  curContractVersionTotal: number,
-  curVersionApprovalList: Array<object>, // 当前版本合约审批历史列表
-  curVersionApprovalTotal: number,
+  curContractDetail: ChainCodeSchema; // 当前合约详情
+  curContractVersionList: Array<object>; // 当前合约版本历史列表
+  curContractVersionTotal: number;
+  curVersionApprovalList: Array<object>; // 当前版本合约审批历史列表
+  curVersionApprovalTotal: number;
 
-  invokeResult: null | object,
+  invokeResult: null | object;
 
-  allUserId: Array<string>, // fabric角色用户列表
-}
+  allUserId: Array<string>; // fabric角色用户列表
+};
 
 export type ContractModelType = {
   namespace: 'Contract';
@@ -66,10 +75,9 @@ export type ContractModelType = {
     installContract: Effect;
     upgradeContract: Effect;
     releaseContract: Effect;
-    getAllUserId: Effect
+    getAllUserId: Effect;
     invokeChainCodeMethod: Effect;
     queryChainCodeMethod: Effect;
-
   };
   reducers: {
     common: Reducer<ContractModelState>;
@@ -357,7 +365,7 @@ const ContractModel: ContractModelType = {
           },
         });
         notification.error({ message: result.message || '调用合约失败', top: 64, duration: 3 });
-        return false
+        return false;
       }
     },
   },
@@ -369,4 +377,4 @@ const ContractModel: ContractModelType = {
   },
 };
 
-export default ContractModel
+export default ContractModel;

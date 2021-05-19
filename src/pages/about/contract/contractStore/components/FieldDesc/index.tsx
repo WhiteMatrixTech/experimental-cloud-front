@@ -2,13 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Table, Modal } from 'antd';
-import baseConfig from 'utils/config';
+import baseConfig from '@/utils/config';
+import { ConnectState } from '@/models/connect';
+import { ChainCodeSchema, Dispatch } from 'umi';
 
-function FieldDesc(props) {
+export interface FieldDescProps {
+  visible: boolean;
+  record: ChainCodeSchema;
+  onCancel: () => void;
+  dispatch: Dispatch;
+  qryLoading: boolean;
+  ContractStore: ConnectState['ContractStore'];
+}
+function FieldDesc(props: FieldDescProps) {
   const { visible, record = {}, onCancel, dispatch, qryLoading = false, ContractStore } = props;
   const { fieldDescList, fieldDescTotal } = ContractStore;
-  const [pageNum, setPageNum] = useState(1)
-  const [pageSize] = useState(baseConfig.pageSize)
+  const [pageNum, setPageNum] = useState(1);
+  const [pageSize] = useState(baseConfig.pageSize);
 
   const drawerProps = {
     visible: visible,
@@ -16,9 +26,8 @@ function FieldDesc(props) {
     destroyOnClose: true,
     title: '查看字段说明',
     onCancel: onCancel,
-    footer: null
-  }
-
+    footer: null,
+  };
   const columns = [
     {
       title: '字段',
@@ -41,12 +50,12 @@ function FieldDesc(props) {
       key: 'fieldDesc',
       ellipsis: true,
     },
-  ]
+  ];
 
   // 翻页
-  const onPageChange = pageInfo => {
-    setPageNum(pageInfo.current)
-  }
+  const onPageChange = (pageInfo: any) => {
+    setPageNum(pageInfo.current);
+  };
 
   useEffect(() => {
     const offset = (pageNum - 1) * pageSize;
@@ -54,30 +63,30 @@ function FieldDesc(props) {
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
-      id: record._id
-    }
+      id: record._id,
+    };
     dispatch({
       type: 'ContractStore/getStoreSupplyExplainListOfChainCode',
-      payload: params
-    })
+      payload: params,
+    });
   }, [pageNum]);
 
   return (
     <Modal {...drawerProps}>
       <Table
-        rowKey='_id'
+        rowKey="_id"
         loading={qryLoading}
         columns={columns}
-        className='page-content-shadow'
+        className="page-content-shadow"
         dataSource={fieldDescList}
         onChange={onPageChange}
         pagination={{ pageSize, total: fieldDescTotal, current: pageNum, position: ['bottomCenter'] }}
       />
     </Modal>
   );
-};
+}
 
-export default connect(({ ContractStore, loading }) => ({
+export default connect(({ ContractStore, loading }: ConnectState) => ({
   ContractStore,
-  qryLoading: loading.effects['ContractStore/getStoreSupplyExplainListOfChainCode']
+  qryLoading: loading.effects['ContractStore/getStoreSupplyExplainListOfChainCode'],
 }))(FieldDesc);

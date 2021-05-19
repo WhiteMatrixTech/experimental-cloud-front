@@ -2,12 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { Checkbox, Button, Modal } from 'antd';
 import style from './index.less';
+import { ConnectState } from '@/models/connect';
+import { ChainCodeSchema, Dispatch, Effect, StrategyListState, StrategyMemberListState } from 'umi';
 
-function ConfigStrategy(props) {
-  const { User, visible, editParams = {}, onCancel, getPageListOPrivacyStrategy, dispatch, configLoading = false } = props;
+export interface ConfigStrategyProps {
+  User: ConnectState['User'];
+  visible: boolean;
+  editParams: StrategyListState;
+  onCancel: () => void;
+  getPageListOPrivacyStrategy: any;
+  dispatch: Dispatch;
+  configLoading: boolean;
+  PrivacyStrategy: ConnectState['PrivacyStrategy'];
+}
+function ConfigStrategy(props: ConfigStrategyProps) {
+  const {
+    User,
+    visible,
+    editParams = {},
+    onCancel,
+    getPageListOPrivacyStrategy,
+    dispatch,
+    configLoading = false,
+  } = props;
   const { networkName, leagueName } = User;
-  const [initValue, setInitValue] = useState([]);
-  const [memberList, setMemberList] = useState([]);
+  const [initValue, setInitValue] = useState<string[]>([]);
+  const [memberList, setMemberList] = useState<string[]>([]);
   const { strategyMemberList } = props.PrivacyStrategy;
 
   const handleSubmit = () => {
@@ -19,7 +39,7 @@ function ConfigStrategy(props) {
     dispatch({
       type: 'PrivacyStrategy/updateStrategyMember',
       payload: params,
-    }).then((res) => {
+    }).then((res: any) => {
       if (res) {
         onCancel();
         getPageListOPrivacyStrategy();
@@ -43,12 +63,12 @@ function ConfigStrategy(props) {
     ],
   };
 
-  const onChange = (checkedValues) => {
+  const onChange = (checkedValues: any) => {
     setInitValue(checkedValues);
   };
 
   const getValue = () => {
-    const value = [];
+    let value: string[] = [];
     strategyMemberList.forEach((item) => {
       value.push(item.memberName);
     });
@@ -56,7 +76,7 @@ function ConfigStrategy(props) {
   };
 
   const getInitValue = () => {
-    const value = [];
+    let value: string[] = [];
     strategyMemberList.forEach((item) => {
       if (item.checked) {
         value.push(item.memberName);
@@ -89,7 +109,7 @@ function ConfigStrategy(props) {
   );
 }
 
-export default connect(({ User, PrivacyStrategy, loading }) => ({
+export default connect(({ User, PrivacyStrategy, loading }: ConnectState) => ({
   User,
   PrivacyStrategy,
   configLoading: loading.effects['PrivacyStrategy/updateStrategyMember'],
