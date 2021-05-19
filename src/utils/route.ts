@@ -115,35 +115,11 @@ export function getRoutes(): RouteProps[] {
           exact: true,
           routes: [
             {
-              path: '/about/contract/contractStore/contractStoreDetail',
+              path: '/about/contract/contractDetail',
               exact: true,
             },
             {
-              path: '/about/contract/contractStore',
-              exact: true,
-            },
-            {
-              path: '/about/contract/cTransfer',
-              exact: true,
-            },
-            {
-              path: '/about/contract/myContract/contractDetail',
-              exact: true,
-            },
-            {
-              path: '/about/contract/myContract/contractHistoryDetail',
-              exact: true,
-            },
-            {
-              path: '/about/contract/myContract',
-              exact: true,
-            },
-            {
-              path: '/about/contract/privacyStrategy',
-              exact: true,
-            },
-            {
-              path: '/about/contract/privacyStrategy/protectRecord',
+              path: '/about/contract/contractHistoryDetail',
               exact: true,
             },
           ],

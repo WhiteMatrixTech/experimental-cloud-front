@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { ChainCodeSchema, Dispatch, history } from 'umi';
@@ -13,20 +14,10 @@ import InvokeContract from './components/InvokeContract';
 import ApproveContract from './components/ApproveContract';
 import baseConfig from '@/utils/config';
 import { Roles } from '@/utils/roles';
-import {
-  chainCodeStatusInfo,
-  ChainCodeStatus,
-  VerifyChainCodeStatus,
-  VerifyStatusList,
-  UpdateStatusList,
-} from './_config';
+import { chainCodeStatusInfo, ChainCodeStatus, VerifyStatusList, UpdateStatusList } from './_config';
 import { ConnectState } from '@/models/connect';
 import { TableColumnsAttr } from '@/utils/types';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
-breadCrumbItem.push({
-  menuName: '合约列表',
-  menuHref: `/`,
-});
 
 const pageSize = baseConfig.pageSize;
 export interface MyContractProps {
@@ -35,21 +26,21 @@ export interface MyContractProps {
   Contract: ConnectState['Contract'];
   dispatch: Dispatch;
 }
-function MyContract(props: MyContractProps) {
+
+const MyContract: React.FC<MyContractProps> = (props) => {
   const { networkName, userRole } = props.User;
-  const { qryLoading = false } = props;
+  const { qryLoading = false, dispatch } = props;
   const [pageNum, setPageNum] = useState(1);
   const { myContractList, myContractTotal } = props.Contract;
-  const [chainCodeName, setChainCodeName] = useState('');
   const [editModalVisible, setEditModalVisible] = useState(false); // 新增、修改、升级合约弹窗是否可见
   const [invokeVisible, setInvokeVisible] = useState(false); // 合约调用弹窗 是否可见
   const [approveVisible, setApproveVisible] = useState(false); // 合约审批弹窗 是否可见
   const [operateType, setOperateType] = useState('new'); //打开弹窗类型--新增、修改、升级
-  const [editParams, setEditParams] = useState({}); //修改、升级合约的信息
+  const [editParams, setEditParams] = useState<ChainCodeSchema>(); //修改、升级合约的信息
   const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
-    props.dispatch({
+    dispatch({
       type: 'Contract/checkOrgInUse',
       payload: { networkName },
     });
@@ -67,22 +58,14 @@ function MyContract(props: MyContractProps) {
       from: Number(moment(new Date()).format('x')),
       ascend: false,
     };
-    props.dispatch({
+    dispatch({
       type: 'Contract/getChainCodeTotal',
       payload: { networkName },
     });
-    props.dispatch({
+    dispatch({
       type: 'Contract/getChainCodeList',
       payload: params,
     });
-  };
-
-  // 按合约名称查找
-  const onSearch = (value, event) => {
-    // if (event.type && (event.type === 'click' || event.type === 'keydown')) {
-    //   this.setState({ pageNum: 1, chainCodeName: value || '' })
-    //   this.getPageListOfChainCode(1, value)
-    // }
   };
 
   // 翻页
@@ -117,11 +100,11 @@ function MyContract(props: MyContractProps) {
   };
 
   // 关闭 新增&修改&升级合约 弹窗
-  const onCloseModal = (callback: any) => {
+  const onCloseModal = (callback?: any) => {
     setEditModalVisible(false);
     setInvokeVisible(false);
     setApproveVisible(false);
-    props.dispatch({
+    dispatch({
       type: 'Contract/common',
       payload: { invokeResult: null },
     });
@@ -141,18 +124,11 @@ function MyContract(props: MyContractProps) {
     setEditModalVisible(true);
   };
 
-  // 点击修改合约
-  const onClickModify = () => {
-    setOperateType('modify');
-    setEditModalVisible(true);
-  };
-
   const onDownLoadContract = (record: ChainCodeSchema) => {
     const { networkName } = props.User;
-    // token校验
     const accessToken = localStorage.getItem('accessToken');
     const roleToken = localStorage.getItem('roleToken');
-    let headers = {
+    const headers = {
       'Content-Type': 'text/plain',
       Authorization: `Bearer ${accessToken}`,
       RoleAuth: roleToken,
@@ -205,7 +181,7 @@ function MyContract(props: MyContractProps) {
       chainCodeName: record.chainCodeName,
       endorsementPolicy: { ...record.endorsementPolicy },
     };
-    const res = await props.dispatch({
+    const res = await dispatch({
       type: 'Contract/releaseContract',
       payload: params,
     });
@@ -216,7 +192,7 @@ function MyContract(props: MyContractProps) {
 
   // 安装合约
   const installContract = async (record: ChainCodeSchema) => {
-    const res = await props.dispatch({
+    const res = await dispatch({
       type: 'Contract/installContract',
       payload: {
         channelId: record.channelId,
@@ -232,14 +208,7 @@ function MyContract(props: MyContractProps) {
   // 查看合约详情
   const onClickDetail = (record: ChainCodeSchema) => {
     history.push({
-      pathname: `/about/contract/myContract/contractDetail`,
-      query: {
-        chainCodeId: record._id,
-        chainCodeName: record.chainCodeName,
-        //channelName: record.channelName,
-        //TODO:record打印出来没看见channelName属性成，猜着你是想用channeld
-        channelName: record.channelId,
-      },
+      pathname: `/about/contract/contractDetail`,
       state: record,
     });
   };
@@ -332,8 +301,6 @@ function MyContract(props: MyContractProps) {
             rowKey={(record: any) => `${record.chainCodeName}-${record.channelId}`}
             columns={columns}
             loading={qryLoading}
-            //TODO:render是myContractList数组里的对象，myContractList来源于model
-            //TODO：model中myContractList是个空数组
             dataSource={myContractList}
             onChange={onPageChange}
             pagination={{
@@ -358,7 +325,7 @@ function MyContract(props: MyContractProps) {
       </Spin>
     </div>
   );
-}
+};
 
 export default connect(({ User, Contract, loading }: ConnectState) => ({
   User,

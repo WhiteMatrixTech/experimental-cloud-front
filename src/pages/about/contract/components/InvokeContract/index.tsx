@@ -18,13 +18,14 @@ const formItemLayout = {
 };
 export interface InvokeContractProps {
   visible: boolean;
-  editParams: ChainCodeSchema;
+  editParams: ChainCodeSchema | undefined;
   onCancel: () => void;
   dispatch: Dispatch;
   Contract: ConnectState['Contract'];
   User: ConnectState['User'];
   invokeLoading: boolean;
 }
+
 function InvokeContract(props: InvokeContractProps) {
   const [form] = Form.useForm();
   const { visible, editParams, onCancel, dispatch, Contract, User, invokeLoading = false } = props;
@@ -75,7 +76,7 @@ function InvokeContract(props: InvokeContractProps) {
         <Item
           label="所属通道"
           name="channelId"
-          initialValue={editParams.channelId}
+          initialValue={editParams && editParams.channelId}
           rules={[
             {
               required: true,
@@ -96,7 +97,7 @@ function InvokeContract(props: InvokeContractProps) {
             ))}
           </Select>
         </Item>
-        <Item label="合约名称" name="chainCodeName" initialValue={editParams.chainCodeName}>
+        <Item label="合约名称" name="chainCodeName" initialValue={editParams && editParams.chainCodeName}>
           <Input placeholder="请输入合约名称" disabled />
         </Item>
         <Item
@@ -139,7 +140,6 @@ function InvokeContract(props: InvokeContractProps) {
         <Item
           label="Fabric角色"
           name="userId"
-          initialValue={editParams.userId}
           rules={[
             {
               required: true,
@@ -178,7 +178,6 @@ function InvokeContract(props: InvokeContractProps) {
         <div>
           <Divider />
           <Descriptions bordered column={1} title="">
-            {/* //TODO:invokeResult  models中定义的null */}
             <Descriptions.Item label="合约调用结果">{invokeResult.status}</Descriptions.Item>
             <Descriptions.Item label={invokeResult.status === 'Failed' ? `失败原因` : `返回数据`}>
               <ReactJson name="" src={invokeResult.message} />

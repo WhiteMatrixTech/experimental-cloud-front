@@ -4,7 +4,7 @@ import { Table, Badge } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard, SearchBar } from '@/components';
 import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import { chainCodeStatusInfo } from '../../contract/myContract/_config';
+import { chainCodeStatusInfo } from '../../contract/_config';
 import baseConfig from '@/utils/config';
 import { TableColumnsAttr, DetailViewAttr } from '@/utils/types';
 import { ConnectState } from '@/models/connect';
@@ -130,7 +130,7 @@ function ChaincodeList(props: ChaincodeListProps) {
     });
   };
   useEffect(() => {
-    getContractListOfChannel()
+    getContractListOfChannel();
   }, [pageNum, chainCodeName]);
 
   // 翻页

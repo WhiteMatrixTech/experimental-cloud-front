@@ -3,7 +3,6 @@ import { BlockModelState } from './block';
 import { CertificateModelState } from './certificate';
 import { ChannelModelState } from './channel';
 import { ContractModelState } from './contract';
-import { ContractStoreModelState } from './contractStore';
 import { DashboardModelState } from './dashboard';
 import { DIDModelState } from './did';
 import { ElasticServerModelState } from './elastic-cloud-server';
@@ -16,7 +15,6 @@ import { MessageModelState } from './message';
 import { MyInfoModelState } from './my-info';
 import { PeerModelState } from './node';
 import { OrganizationModelState } from './organization';
-import { PrivacyStrategyModelState } from './privacy-strategy';
 import { RBACModelState } from './rbac';
 import { TransactionsModelState } from './transactions';
 import { UserModelState } from './user';
@@ -28,7 +26,6 @@ export declare type ConnectState = {
   Certificate: CertificateModelState;
   Channel: ChannelModelState;
   Contract: ContractModelState;
-  ContractStore: ContractStoreModelState;
   Dashboard: DashboardModelState;
   DID: DIDModelState;
   ElasticServer: ElasticServerModelState;
@@ -41,10 +38,9 @@ export declare type ConnectState = {
   MyInfo: MyInfoModelState;
   Peer: PeerModelState;
   Organization: OrganizationModelState;
-  PrivacyStrategy: PrivacyStrategyModelState;
   RBAC: RBACModelState;
   Transactions: TransactionsModelState;
   User: UserModelState;
   UserRole: UserRoleModelState;
-  loading: { effects: Record<boolean> }
+  loading: { effects: Record<boolean> };
 };
