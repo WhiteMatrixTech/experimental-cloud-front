@@ -1,17 +1,31 @@
 import * as API from '../services/privacy-strategy';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
-
-export type PrivacyStrategyModelState = {
-  strategyList: Array<object>,
-  strategyTotal: number,
-
-  strategyMemberList: Array<object>,
-  leagueName: string,
-  curStrategyMember: string[],
-  protectRecordList: Array<object>,
-  protectRecordTotal: number
+export interface StrategyListState {
+  createdAt: string;
+  networkName: string;
+  strategyDesc: string;
+  strategyMember: string[];
+  strategyName: string;
+  strategyStatus: number;
+  updatedAt: string;
+  _id: string;
+  id: string;
 }
+export interface StrategyMemberListState {
+  memberName: string;
+  checked?: boolean;
+}
+export type PrivacyStrategyModelState = {
+  strategyList: Array<StrategyListState>;
+  strategyTotal: number;
+
+  strategyMemberList: StrategyMemberListState[];
+  leagueName: string;
+  curStrategyMember: string[];
+  protectRecordList: Array<object>;
+  protectRecordTotal: number;
+};
 
 export type PrivacyStrategyModelType = {
   namespace: 'PrivacyStrategy';

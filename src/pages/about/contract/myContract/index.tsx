@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Dispatch, history } from 'umi';
-import { request } from '@/utils/request';
+import { ChainCodeSchema, Dispatch, history } from 'umi';
+import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Table, Space, Badge, Modal, Button, message, Spin } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -147,7 +147,7 @@ function MyContract(props: MyContractProps) {
     setEditModalVisible(true);
   };
 
-  const onDownLoadContract = (record: any) => {
+  const onDownLoadContract = (record: ChainCodeSchema) => {
     const { networkName } = props.User;
     // token校验
     const accessToken = localStorage.getItem('accessToken');
@@ -169,7 +169,7 @@ function MyContract(props: MyContractProps) {
         responseType: 'blob',
       },
     )
-      .then((res: BlobPart) => {
+      .then((res: any) => {
         setDownloading(false);
         const file = new File([res], `${record.chainCodeName}.tar.gz`, { type: 'application/tar+gzip' });
         saveAs(file);
@@ -179,26 +179,26 @@ function MyContract(props: MyContractProps) {
       });
   };
 
-  const onClickApprove = (record: any) => {
+  const onClickApprove = (record: ChainCodeSchema) => {
     setApproveVisible(true);
-    setEditModalVisible(record);
+    setEditParams(record);
   };
 
   // 点击调用合约
-  const onClickInvoke = (record: any) => {
+  const onClickInvoke = (record: ChainCodeSchema) => {
     setInvokeVisible(true);
-    setEditModalVisible(record);
+    setEditParams(record);
   };
 
   // 升级合约
-  const onClickUpgrade = (record: any) => {
+  const onClickUpgrade = (record: ChainCodeSchema) => {
     setOperateType('upgrade');
     setEditModalVisible(true);
     setEditParams(record);
   };
 
   // 发布合约
-  const onClickRelease = async (record: any) => {
+  const onClickRelease = async (record: ChainCodeSchema) => {
     const params = {
       networkName,
       channelId: record.channelId,
@@ -215,7 +215,7 @@ function MyContract(props: MyContractProps) {
   };
 
   // 安装合约
-  const installContract = async (record: any) => {
+  const installContract = async (record: ChainCodeSchema) => {
     const res = await props.dispatch({
       type: 'Contract/installContract',
       payload: {
@@ -230,13 +230,15 @@ function MyContract(props: MyContractProps) {
   };
 
   // 查看合约详情
-  const onClickDetail = (record: any) => {
+  const onClickDetail = (record: ChainCodeSchema) => {
     history.push({
       pathname: `/about/contract/myContract/contractDetail`,
       query: {
         chainCodeId: record._id,
         chainCodeName: record.chainCodeName,
-        channelName: record.channelName,
+        //channelName: record.channelName,
+        //TODO:record打印出来没看见channelName属性成，猜着你是想用channeld
+        channelName: record.channelId,
       },
       state: record,
     });
@@ -330,6 +332,8 @@ function MyContract(props: MyContractProps) {
             rowKey={(record: any) => `${record.chainCodeName}-${record.channelId}`}
             columns={columns}
             loading={qryLoading}
+            //TODO:render是myContractList数组里的对象，myContractList来源于model
+            //TODO：model中myContractList是个空数组
             dataSource={myContractList}
             onChange={onPageChange}
             pagination={{

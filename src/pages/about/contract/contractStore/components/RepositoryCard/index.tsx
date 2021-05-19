@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from 'antd';
 import style from './index.less';
+import { ChainCodeSchema } from 'umi';
 
 export interface RepositoryCardProps {
-  record: object;
+  record: ChainCodeSchema;
   deployContract: () => void;
   viewDetail: () => void;
 }
@@ -13,7 +14,6 @@ function RepositoryCard(props: RepositoryCardProps) {
   return (
     <div className={style['card-wrapper']}>
       <div className={style['card-title']}>
-        //TODO:recode来源于models，modeles没有个对象设置具体的属性
         <div className={style['card-name']}>{record.chainCodeName}</div>
         <div className={style['card-version']}>
           <b className={style['card-version-dot']}>●</b> V{record.chainCodeVersion}

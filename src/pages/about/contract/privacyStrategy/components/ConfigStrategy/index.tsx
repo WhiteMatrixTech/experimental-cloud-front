@@ -3,14 +3,14 @@ import { connect } from 'dva';
 import { Checkbox, Button, Modal } from 'antd';
 import style from './index.less';
 import { ConnectState } from '@/models/connect';
-import { Dispatch, Effect } from 'umi';
+import { ChainCodeSchema, Dispatch, Effect, StrategyListState, StrategyMemberListState } from 'umi';
 
 export interface ConfigStrategyProps {
   User: ConnectState['User'];
   visible: boolean;
-  editParams: any;
-  onCancel: any;
-  getPageListOPrivacyStrategy: Effect;
+  editParams: StrategyListState;
+  onCancel: () => void;
+  getPageListOPrivacyStrategy: any;
   dispatch: Dispatch;
   configLoading: boolean;
   PrivacyStrategy: ConnectState['PrivacyStrategy'];
@@ -26,8 +26,8 @@ function ConfigStrategy(props: ConfigStrategyProps) {
     configLoading = false,
   } = props;
   const { networkName, leagueName } = User;
-  const [initValue, setInitValue] = useState([]);
-  const [memberList, setMemberList] = useState([]);
+  const [initValue, setInitValue] = useState<string[]>([]);
+  const [memberList, setMemberList] = useState<string[]>([]);
   const { strategyMemberList } = props.PrivacyStrategy;
 
   const handleSubmit = () => {
@@ -39,7 +39,7 @@ function ConfigStrategy(props: ConfigStrategyProps) {
     dispatch({
       type: 'PrivacyStrategy/updateStrategyMember',
       payload: params,
-    }).then((res) => {
+    }).then((res: any) => {
       if (res) {
         onCancel();
         getPageListOPrivacyStrategy();
@@ -67,9 +67,8 @@ function ConfigStrategy(props: ConfigStrategyProps) {
     setInitValue(checkedValues);
   };
 
-  //TODO:strategyMemberList来源于model.model里是空数组，so,item里面没有memberName属性
   const getValue = () => {
-    let value = [];
+    let value: string[] = [];
     strategyMemberList.forEach((item) => {
       value.push(item.memberName);
     });
@@ -77,7 +76,7 @@ function ConfigStrategy(props: ConfigStrategyProps) {
   };
 
   const getInitValue = () => {
-    let value = [];
+    let value: string[] = [];
     strategyMemberList.forEach((item) => {
       if (item.checked) {
         value.push(item.memberName);

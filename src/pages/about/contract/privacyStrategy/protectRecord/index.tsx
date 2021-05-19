@@ -5,7 +5,7 @@ import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import baseConfig from '@/utils/config';
 import { TableColumnsAttr } from '@/utils/types';
 import { ConnectState } from '@/models/connect';
-import { Dispatch } from 'umi';
+import { Dispatch, StrategyListState } from 'umi';
 import { Table } from 'antd';
 import { Breadcrumb, DetailCard, SearchBar } from '@/components';
 import ConfigStrategy from '../components/ConfigStrategy';
@@ -13,7 +13,7 @@ import { DetailViewAttr } from '@/utils/types';
 
 export interface PrivacyStrategyDetailProps {
   User: ConnectState['User'];
-  location: { query: { id: string; strategyName: string; strategyStatus: string; strategyDesc: string } };
+  location: { query: StrategyListState };
   PrivacyStrategy: ConnectState['PrivacyStrategy'];
   dispatch: Dispatch;
   qryLoading: boolean;
@@ -93,7 +93,7 @@ function PrivacyStrategyDetail(props: PrivacyStrategyDetailProps) {
   };
 
   // 按 方法名 搜索
-  const onSearch = (value: any, event: { type: string }) => {
+  const onSearch = (value: string, event: { type: string }) => {
     if (event.type && (event.type === 'click' || event.type === 'keydown')) {
       setPageNum(1);
       setMethodName(value || '');
@@ -119,7 +119,7 @@ function PrivacyStrategyDetail(props: PrivacyStrategyDetailProps) {
     {
       label: '策略状态',
       //TODO:strategyStatus上面你写的‘’是string类型
-      value: strategyStatus === 0 ? '停用' : '启用',
+      value: Number(strategyStatus) === 0 ? '停用' : '启用',
     },
     {
       label: '策略描述',

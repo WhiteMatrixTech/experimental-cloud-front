@@ -4,6 +4,7 @@ import { Input, Select, Form, Switch, Button, Upload, Modal, notification } from
 import { normFile, handleBeforeUpload } from './_func';
 import { ConnectRC, Dispatch } from '@/.umi/plugin-dva/connect';
 import { ConnectState } from '@/models/connect';
+import { ChainCodeSchema } from '@/models/contract';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -25,7 +26,7 @@ const modalTitle = {
 };
 export interface EditContractProps {
   visible: boolean;
-  editParams: any;
+  editParams: ChainCodeSchema;
   onCancel: any;
   operateType: any;
   dispatch: Dispatch;
@@ -134,7 +135,7 @@ function EditContract(props: EditContractProps) {
     if (!value) {
       return promise.reject('请输入合约版本');
     } // 有值的情况
-    if (editParams.chainCodeVersion && editParams.chainCodeVersion >= value) {
+    if (editParams.chainCodeVersion && Number(editParams.chainCodeVersion) >= value) {
       return promise.reject('请输入新的合约版本');
     }
     return promise.resolve();

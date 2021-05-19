@@ -1,15 +1,15 @@
 import * as API from '../services/contractStore';
-import type { Reducer, Effect } from 'umi';
+import type { Reducer, Effect, ChainCodeSchema } from 'umi';
 
 export type ContractStoreModelState = {
-  repositoryList: Array<object>, // 合约仓库列表
-  repositoryTotal: number,
-  curRepository: object, // 当前合约仓库信息
-  repositoryDetailList: Array<object>, // 合约仓库详情列表
-  repositoryDetailTotal: number,
-  fieldDescList: Array<object>, // 字段说明列表
-  fieldDescTotal: number,
-}
+  repositoryList: Array<object>; // 合约仓库列表
+  repositoryTotal: number;
+  curRepository: ChainCodeSchema; // 当前合约仓库信息
+  repositoryDetailList: Array<object>; // 合约仓库详情列表
+  repositoryDetailTotal: number;
+  fieldDescList: Array<object>; // 字段说明列表
+  fieldDescTotal: number;
+};
 
 export type ContractStoreModelType = {
   namespace: 'ContractStore';

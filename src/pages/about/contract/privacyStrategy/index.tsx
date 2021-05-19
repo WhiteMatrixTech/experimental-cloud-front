@@ -11,6 +11,7 @@ import ConfigStrategy from './components/ConfigStrategy';
 import baseConfig from '@/utils/config';
 import { ConnectState } from '@/models/connect';
 import { TableColumnsAttr } from '@/utils/types';
+import { StrategyListState } from '@/models/privacy-strategy';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 breadCrumbItem.push({
@@ -28,7 +29,7 @@ function PrivacyStrategy(props: PrivacyStrategyProps) {
   const [pageNum, setPageNum] = useState(1);
   const [configModalVisible, setConfigModalVisible] = useState(false); // 配置策略是否可见
   const [editModalVisible, setEditModalVisible] = useState(false); // 新增、修改策略是否可见
-  const [strategyObj, setStrategyObj] = useState({}); // 当前操作的策略
+  const [strategyObj, setStrategyObj] = useState<StrategyListState>({}); // 当前操作的策略
   const [operateType, setOperateType] = useState('new'); // 打开弹窗类型--新增、修改
   const { networkName } = props.User;
   const { strategyList, strategyTotal } = props.PrivacyStrategy;
@@ -67,7 +68,7 @@ function PrivacyStrategy(props: PrivacyStrategyProps) {
             <a onClick={() => onClickToConfirm(record, 'enable')}>启用</a>
           )}
           <a onClick={() => onClickConfig(record)}>配置策略</a>
-          {/* <a onClick={() => this.onClickDetail(record)}>隐私保护记录</a> */}
+          {/* <a onClick={() => onClickDetail(record)}>隐私保护记录</a> */}
         </Space>
       ),
     },
@@ -120,20 +121,20 @@ function PrivacyStrategy(props: PrivacyStrategyProps) {
   };
 
   // 点击修改策略
-  const onClickModify = (record: any) => {
+  const onClickModify = (record: StrategyListState) => {
     setOperateType('modify');
     setEditModalVisible(true);
     setStrategyObj(record);
   };
 
   // 点击配置策略
-  const onClickConfig = (record: any) => {
+  const onClickConfig = (record: StrategyListState) => {
     setConfigModalVisible(true);
     setStrategyObj(record);
   };
 
   // 点击操作按钮, 进行二次确认
-  const onClickToConfirm = (record: any, type: any) => {
+  const onClickToConfirm = (record: StrategyListState, type: string) => {
     let tipTitle = '';
     let callback = null;
     switch (type) {
@@ -159,7 +160,7 @@ function PrivacyStrategy(props: PrivacyStrategyProps) {
   };
 
   // 停用 & 启用 策略
-  const changeStrategyStatus = (record: any, strategyStatus: any) => {
+  const changeStrategyStatus = (record: StrategyListState, strategyStatus: any) => {
     props
       .dispatch({
         type: 'PrivacyStrategy/updateStrategyStatus',
@@ -177,18 +178,18 @@ function PrivacyStrategy(props: PrivacyStrategyProps) {
   };
 
   // 查看策略详情
-  const onClickDetail = (record: any) => {
-    history.push({
-      pathname: `/about/contract/privacyStrategy/protectRecord`,
-      query: {
-        id: record.strategyName,
-        strategyName: record.strategyName,
-        strategyStatus: record.strategyStatus,
-        strategyDesc: record.strategyDesc,
-        networkName,
-      },
-    });
-  };
+  // const onClickDetail = (record: StrategyListState) => {
+  //   history.push({
+  //     pathname: `/about/contract/privacyStrategy/protectRecord`,
+  //     query: {
+  //       id: record.strategyName,
+  //       strategyName: record.strategyName,
+  //       strategyStatus: record.strategyStatus,
+  //       strategyDesc: record.strategyDesc,
+  //       networkName,
+  //     },
+  //   });
+  // };
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />

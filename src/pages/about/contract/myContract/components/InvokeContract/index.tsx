@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import ReactJson from 'react-json-view';
 import { Input, Descriptions, Select, Form, Switch, Button, Modal, Radio, Divider } from 'antd';
-import { Dispatch } from 'umi';
+import { ChainCodeSchema, Dispatch } from 'umi';
 import { ConnectState } from '@/models/connect';
 
 const { Item } = Form;
@@ -18,7 +18,7 @@ const formItemLayout = {
 };
 export interface InvokeContractProps {
   visible: boolean;
-  editParams: any;
+  editParams: ChainCodeSchema;
   onCancel: () => void;
   dispatch: Dispatch;
   Contract: ConnectState['Contract'];

@@ -4,11 +4,11 @@ import moment from 'moment';
 import { Table, Modal } from 'antd';
 import baseConfig from '@/utils/config';
 import { ConnectState } from '@/models/connect';
-import { Dispatch } from 'umi';
+import { ChainCodeSchema, Dispatch } from 'umi';
 
 export interface FieldDescProps {
   visible: boolean;
-  record: object;
+  record: ChainCodeSchema;
   onCancel: () => void;
   dispatch: Dispatch;
   qryLoading: boolean;
@@ -63,7 +63,7 @@ function FieldDesc(props: FieldDescProps) {
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
-      id: record._id, //TODO:第18行record是个空对象
+      id: record._id,
     };
     dispatch({
       type: 'ContractStore/getStoreSupplyExplainListOfChainCode',

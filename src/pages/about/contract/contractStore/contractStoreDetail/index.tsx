@@ -29,8 +29,6 @@ export interface ContractStoreDetailProps {
   ContractStore: ConnectState['ContractStore'];
   User: ConnectState['User'];
   dispatch: Dispatch;
-  //TODO:合约管理页面的item还没有具体的属性，so,传过来的只是object
-  // location: Location<chainCodeName>;
   location: { query: { chainCodeName: string } };
 }
 function ContractStoreDetail(props: ContractStoreDetailProps) {

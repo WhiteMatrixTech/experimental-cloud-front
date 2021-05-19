@@ -17,7 +17,7 @@ breadCrumbItem.push({
 });
 
 export interface ContractRepositoryProps {
-  ContractStore: ConnectState["ContractStore"];
+  ContractStore: ConnectState['ContractStore'];
   qryLoading: boolean;
   User: ConnectState['User'];
   loading: boolean;
@@ -26,8 +26,8 @@ export interface ContractRepositoryProps {
 function ContractRepository(props: ContractRepositoryProps) {
   const [pageNum, setPageNum] = useState(1);
   const [pageSize, setPageSize] = useState(6);
-  const [curRepository, setCurRepository] = useState(null);//当前仓库
-  const [deployModalVisible, setDeployModalVisible] = useState(false);//当前合约是否可见
+  const [curRepository, setCurRepository] = useState(null); //当前仓库
+  const [deployModalVisible, setDeployModalVisible] = useState(false); //当前合约是否可见
   const { repositoryList, repositoryTotal } = props.ContractStore;
   const { qryLoading = false } = props;
 
@@ -91,7 +91,7 @@ function ContractRepository(props: ContractRepositoryProps) {
             <Row gutter={[16, 24]}>
               {repositoryList.map((item) => (
                 //TODO:model中repositoryList数组中是对象-->repositoryList: Array<object>, // 合约仓库列表
-                //TODO:_id是string | number 所以暂时爆红，属性是应该根据后端返回的字段来写的吧
+                //TODO:这个数组里没有数据，打印出来是空数组，我也没有办法去model中给它添加属性
                 <Col key={item._id} span={8}>
                   <RepositoryCard
                     record={item}
@@ -120,7 +120,6 @@ function ContractRepository(props: ContractRepositoryProps) {
     </div>
   );
 }
-
 
 export default connect(({ User, ContractStore, loading }: ConnectState) => ({
   User,

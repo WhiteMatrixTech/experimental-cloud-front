@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Form, Button, Modal, Radio } from 'antd';
-import { Dispatch } from 'umi';
+import { ChainCodeSchema, Dispatch } from 'umi';
 import { ConnectState } from '@/models/connect';
 
 const { Item } = Form;
@@ -16,7 +16,7 @@ const formItemLayout = {
 };
 export interface ApproveContract {
   visible: boolean;
-  editParams: any;
+  editParams: { channelId: string; chainCodeName: string };
   onCancel: any;
   dispatch: Dispatch;
   User: ConnectState['User'];
@@ -26,7 +26,6 @@ function ApproveContract(props: ApproveContract) {
   const [form] = Form.useForm();
   const { visible, editParams, onCancel, dispatch, User, approveLoading = false } = props;
   const { networkName } = User;
-
   const handleSubmit = () => {
     form.validateFields().then(async (values: { networkName: string }) => {
       values.networkName = networkName;

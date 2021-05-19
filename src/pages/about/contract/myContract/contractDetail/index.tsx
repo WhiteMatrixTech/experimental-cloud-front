@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Dispatch, history } from 'umi';
+import { Dispatch, history, Location } from 'umi';
 import { Table, Space, Spin } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from '@/components';
@@ -8,6 +8,7 @@ import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import baseConfig from '@/utils/config';
 import { TableColumnsAttr, DetailViewAttr } from '@/utils/types';
 import { ConnectState } from '@/models/connect';
+import { ChainCodeSchema } from '@/models/contract';
 
 let breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 breadCrumbItem = breadCrumbItem.concat([
@@ -27,10 +28,7 @@ export interface ContractDetailProps {
   Contract: ConnectState['Contract'];
   User: ConnectState['User'];
   dispatch: Dispatch;
-  location: {
-    query: { chainCodeName: string; channelName: string; version: string; chainCodeId: string };
-    [propName: string]: any;
-  };
+  location: { query: { chainCodeName: string; channelName: string; chainCodeId: string }; state: ChainCodeSchema };
 }
 function ContractDetail(props: ContractDetailProps) {
   const [pageNum, setPageNum] = useState(1);
@@ -39,11 +37,7 @@ function ContractDetail(props: ContractDetailProps) {
   const { curContractVersionList, curContractVersionTotal } = props.Contract;
   const chaincodeInfo = props.location?.state;
   const { qryLoading = false } = props;
-  const {
-    location: {
-      query: { chainCodeName = '', channelName = '', chainCodeId },
-    },
-  } = props;
+  const { chainCodeName = '', channelName = '', chainCodeId } = props.location.query;
   const columns: TableColumnsAttr[] = [
     {
       title: '合约版本',
@@ -73,14 +67,14 @@ function ContractDetail(props: ContractDetailProps) {
     },
   ];
 
-  useEffect(() => {
-    props.dispatch({
-      type: 'Contract/getDetailOfChainCode',
-      payload: { chainCodeId, networkName },
-    });
-    getChainCodeHistory();
-    getChainCodeHistoryTotalDocs();
-  }, [pageNum]);
+  // useEffect(() => {
+  //   props.dispatch({
+  //     type: 'Contract/getDetailOfChainCode',
+  //     payload: { chainCodeId, networkName },
+  //   });
+  //   getChainCodeHistory();
+  //   getChainCodeHistoryTotalDocs();
+  // }, [pageNum]);
 
   // 获取合约列表的totalCount
   const getChainCodeHistoryTotalDocs = () => {

@@ -7,7 +7,7 @@ import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import baseConfig from '@/utils/config';
 import { TableColumnsAttr, DetailViewAttr } from '@/utils/types';
 import { ConnectState } from '@/models/connect';
-import { Dispatch, Location } from 'umi';
+import { Dispatch } from 'umi';
 
 const pageSize = baseConfig.pageSize;
 export interface ContractDetailProps {
@@ -99,7 +99,6 @@ function ContractDetail(props: ContractDetailProps) {
     setPageNum(pageInfo.current);
   };
 
-  //TODO:curContractDetail来源于model,model中定义的是个空对象，so,curContractDetail上没有一下属性
   const contractInfoList: DetailViewAttr[] = [
     {
       label: '合约名称',

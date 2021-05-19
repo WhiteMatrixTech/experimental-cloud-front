@@ -28,8 +28,16 @@ export type ChainCodeSchema = {
   approvedOrgs: string[];
   chainCodeSequence: number; // 合约序列
   updatedAt?: Date;
+  _id: string;
+  createdAt: string;
+  userId: string;
+  channelName: string;
+  chainCodeLanguage: string;
+  version: string | number;
+  createAt: string;
+  endorsementOrgName: string;
+  chainCodeDesc: string;
 };
-
 export type ContractModelState = {
   userOrgInuse: boolean; // 用户是否有组织 且组织在使用中
   channelList: Array<ChannelSchema>; // 使用中的通道列表
@@ -37,7 +45,7 @@ export type ContractModelState = {
   myContractList: Array<ChainCodeSchema>; // 我的合约列表
   myContractTotal: number;
 
-  curContractDetail: {}; // 当前合约详情
+  curContractDetail: ChainCodeSchema; // 当前合约详情
   curContractVersionList: Array<object>; // 当前合约版本历史列表
   curContractVersionTotal: number;
   curVersionApprovalList: Array<object>; // 当前版本合约审批历史列表

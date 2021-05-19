@@ -117,7 +117,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
       },
       // {
       //   id: 'cTransfer',
-      //   menuPid: 'contract,
+      //   menuPid: 'contract',
       //   menuHref: '/about/contract/cTransfer',
       //   menuIcon: null,
       //   menuName: '合约调用',
@@ -126,7 +126,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
       // },
       // {
       //   id: 'privacyStrategy',
-      //   menuPid: 'contract,
+      //   menuPid: 'contract',
       //   menuHref: '/about/contract/privacyStrategy',
       //   menuIcon: null,
       //   menuName: '隐私保护策略',
@@ -135,7 +135,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
       // },
       // {
       //   id: 'contractStore',
-      //   menuPid: 'contract,
+      //   menuPid: 'contract',
       //   menuHref: '/about/contract/contractStore',
       //   menuIcon: null,
       //   menuName: '合约仓库',

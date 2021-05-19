@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Modal } from 'antd';
 import { ConnectState } from '@/models/connect';
-import { Dispatch, Effect } from 'umi';
+import { Dispatch, Effect, StrategyListState } from 'umi';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -20,8 +20,8 @@ const formItemLayout = {
 export interface EditStrategyProps {
   User: ConnectState['User'];
   visible: boolean;
-  editParams: any;
-  onCancel: any;
+  editParams: StrategyListState;
+  onCancel: () => void;
   getPageListOPrivacyStrategy: () => void;
   getPrivacyStrategyTotalDocs: () => void;
   operateType: any;
@@ -32,7 +32,7 @@ function EditStrategy(props: EditStrategyProps) {
   const {
     User,
     visible,
-    editParams = {},
+    editParams,
     onCancel,
     getPageListOPrivacyStrategy,
     getPrivacyStrategyTotalDocs,
@@ -65,8 +65,10 @@ function EditStrategy(props: EditStrategyProps) {
           });
         } else {
           params = {
-            networkName,
-            strategyName: editParams.strategyName,
+            //TODO:53行给params动态的添加了networkName属性，69行就不用了
+            //networkName,
+            //TODO:71我注释掉了，72行对editParams用了扩展运算符，71行的存在没什么意思似乎
+            // strategyName: editParams.strategyName,
             ...editParams,
             ...params,
           };
@@ -83,7 +85,7 @@ function EditStrategy(props: EditStrategyProps) {
         }
       })
       .catch((info: any) => {
-        console.log('校验失败:', info);
+        //console.log('校验失败:', info);
       });
   };
 

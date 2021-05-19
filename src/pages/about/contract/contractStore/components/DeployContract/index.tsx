@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Modal } from 'antd';
-import { Dispatch } from 'umi';
+import { ChainCodeSchema, Dispatch } from 'umi';
 import { ConnectState } from '@/models/connect';
 
 const { Item } = Form;
@@ -17,7 +17,7 @@ const formItemLayout = {
 };
 export interface DeployContractProps {
   visible: boolean;
-  record: object;
+  record: ChainCodeSchema;
   onCancel: () => void;
   dispatch: Dispatch;
 }
