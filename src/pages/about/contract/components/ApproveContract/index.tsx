@@ -16,13 +16,14 @@ const formItemLayout = {
 };
 export interface ApproveContractProps {
   visible: boolean;
-  editParams: { channelId: string; chainCodeName: string };
+  editParams: ChainCodeSchema | undefined;
   onCancel: any;
   dispatch: Dispatch;
   User: ConnectState['User'];
   approveLoading: boolean;
 }
-function ApproveContract(props: ApproveContractProps) {
+
+const ApproveContract: React.FC<ApproveContractProps> = (props) => {
   const [form] = Form.useForm();
   const { visible, editParams, onCancel, dispatch, User, approveLoading = false } = props;
   const { networkName } = User;
@@ -32,8 +33,8 @@ function ApproveContract(props: ApproveContractProps) {
       const params = {
         ...values,
         networkName,
-        channelId: editParams.channelId,
-        chainCodeName: editParams.chainCodeName,
+        channelId: editParams && editParams.channelId,
+        chainCodeName: editParams && editParams.chainCodeName,
       };
       const res = dispatch({
         type: `Contract/verifyContract`,
@@ -67,7 +68,7 @@ function ApproveContract(props: ApproveContractProps) {
         <Item
           label="审核状态"
           name="VerifyStatus"
-          initialValue={editParams.chainCodeStatus}
+          initialValue={editParams && editParams.chainCodeStatus}
           rules={[
             {
               required: true,
@@ -84,7 +85,7 @@ function ApproveContract(props: ApproveContractProps) {
       </Form>
     </Modal>
   );
-}
+};
 
 export default connect(({ Contract, User, loading }: ConnectState) => ({
   Contract,

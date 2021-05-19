@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Switch, Button, Upload, Modal, notification } from 'antd';
 import { normFile, handleBeforeUpload } from './_func';
-import { ConnectRC, Dispatch } from '@/.umi/plugin-dva/connect';
 import { ConnectState } from '@/models/connect';
 import { ChainCodeSchema } from '@/models/contract';
+import { Dispatch } from 'umi';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -26,7 +26,7 @@ const modalTitle = {
 };
 export interface EditContractProps {
   visible: boolean;
-  editParams: ChainCodeSchema;
+  editParams: ChainCodeSchema | undefined;
   onCancel: any;
   operateType: any;
   dispatch: Dispatch;
@@ -34,6 +34,7 @@ export interface EditContractProps {
   User: ConnectState['User'];
   btnLoading: boolean;
 }
+
 function EditContract(props: EditContractProps) {
   const [form] = Form.useForm();
   const [fileJson, setFileJson] = useState(null);
@@ -135,7 +136,7 @@ function EditContract(props: EditContractProps) {
     if (!value) {
       return promise.reject('请输入合约版本');
     } // 有值的情况
-    if (editParams.chainCodeVersion && Number(editParams.chainCodeVersion) >= value) {
+    if (editParams && editParams.chainCodeVersion && Number(editParams.chainCodeVersion) >= value) {
       return promise.reject('请输入新的合约版本');
     }
     return promise.resolve();
@@ -169,7 +170,7 @@ function EditContract(props: EditContractProps) {
         <Item
           label="所属通道"
           name="channelId"
-          initialValue={editParams.channelId}
+          initialValue={editParams && editParams.channelId}
           rules={[
             {
               required: true,
@@ -184,7 +185,7 @@ function EditContract(props: EditContractProps) {
             onChange={onChangeChannel}
             placeholder="请选择通道"
           >
-            {myChannelList.map((item: { channelId: React.Key | null | undefined }) => (
+            {myChannelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
               </Option>
@@ -194,7 +195,7 @@ function EditContract(props: EditContractProps) {
         <Item
           label="合约名称"
           name="chainCodeName"
-          initialValue={editParams.chainCodeName}
+          initialValue={editParams && editParams.chainCodeName}
           rules={[
             {
               required: true,
@@ -204,7 +205,7 @@ function EditContract(props: EditContractProps) {
         >
           <Input placeholder="请输入合约名称" disabled={operateType !== 'new'} />
         </Item>
-        {operateType !== 'new' && <Item label="当前版本">{editParams.chainCodeVersion}</Item>}
+        {operateType !== 'new' && <Item label="当前版本">{editParams && editParams.chainCodeVersion}</Item>}
         <Item
           label="合约版本"
           name="chainCodeVersion"

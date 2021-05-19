@@ -11,18 +11,18 @@ export const chainCodeStatusInfo = {
   Rejected: { color: 'red', text: '被驳回' },
 };
 
-export const ChainCodeStatus = {
-  Installing: 'Installing',
-  Installed: 'Installed',
-  InstallationFailed: 'InstallationFailed',
-  Approving: 'Approving',
-  Approved: 'Approved',
-  ApproveFailed: 'ApproveFailed',
-  Archived: 'Archived',
-  Pending: 'Pending', // 待审核
-  Verified: 'Verified', // 通过
-  Rejected: 'Rejected', // 驳回
-};
+export enum ChainCodeStatus {
+  Installing = 'Installing',
+  Installed = 'Installed',
+  InstallationFailed = 'InstallationFailed',
+  Approving = 'Approving',
+  Approved = 'Approved',
+  ApproveFailed = 'ApproveFailed',
+  Archived = 'Archived',
+  Pending = 'Pending',
+  Verified = 'Verified',
+  Rejected = 'Rejected',
+}
 
 export const VerifyChainCodeStatus = {
   Pending: 'Pending', // 待审核

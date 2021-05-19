@@ -1,5 +1,4 @@
 import { request } from '../utils/request';
-import { stringify } from 'qs';
 import { ChainCodeSchema } from 'umi';
 
 /**
@@ -84,39 +83,4 @@ export async function getChainCodeList(params) {
  */
 export async function getChainCodeTotal(params) {
   return request(`/network/${params.networkName}/chainCodes/totalCount`);
-}
-
-/**
- * 我的合约 -- 合约详情
- */
-export async function getDetailOfChainCode(params) {
-  return request(`/network/${params.networkName}/chainCodes/${params.chainCodeId}?${stringify(params)}`);
-}
-
-/**
- * 我的合约 - 合约升级历史
- */
-export async function getChainCodeHistory(params) {
-  return request(`/network/${params.networkName}/chainCodes/listVersions`, { method: 'POST', body: params });
-}
-
-/**
- * 我的合约 - 合约升级历史的totalDocs
- */
-export async function getChainCodeHistoryTotalDocs(params) {
-  return request(`/network/${params.networkName}/chainCodes/listVersions/totalCount`);
-}
-
-/**
- * 我的合约 - 合约审批历史
- */
-export async function getChainCodeApprovalHistory(params) {
-  return request(`/network/${params.networkName}/chainCodes/listHistory`, { method: 'POST', body: params });
-}
-
-/**
- * 我的合约 - 合约审批历史
- */
-export async function getChainCodeApprovalHistoryTotalDocs(params) {
-  return request(`/network/${params.networkName}/chainCodes/listHistory/totalCount`);
 }

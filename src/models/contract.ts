@@ -2,17 +2,16 @@ import * as API from '../services/contract';
 import { getAllUserId } from '../services/fabric-role';
 import { notification } from 'antd';
 import type { Reducer, Effect, ChannelSchema } from 'umi';
+import { ChainCodeStatus } from '@/pages/about/contract/_config';
 
 export type ChainCodeSchema = {
   networkName: string; // 网络名称
   channelId: string; // 通道名称
   chainCodeName: string; // 合约名称
   chainCodeVersion: string; // 合约版本
-  //TODO: 使用页面处的枚举
-  chainCodeStatus: string; // 合约状态
+  chainCodeStatus: ChainCodeStatus; // 合约状态
   initArgs: string; // 初始参数
   chainCodePackageMetaData: {
-    // 合约包
     uri: string; // 合约包链接
     label: string; // 合约包标签
     language: string; // 合约包语言
@@ -30,13 +29,6 @@ export type ChainCodeSchema = {
   updatedAt?: Date;
   _id: string;
   createdAt: string;
-  userId: string;
-  channelName: string;
-  chainCodeLanguage: string;
-  version: string | number;
-  createAt: string;
-  endorsementOrgName: string;
-  chainCodeDesc: string;
 };
 export type ContractModelState = {
   userOrgInuse: boolean; // 用户是否有组织 且组织在使用中
@@ -45,13 +37,7 @@ export type ContractModelState = {
   myContractList: Array<ChainCodeSchema>; // 我的合约列表
   myContractTotal: number;
 
-  curContractDetail: ChainCodeSchema; // 当前合约详情
-  curContractVersionList: Array<object>; // 当前合约版本历史列表
-  curContractVersionTotal: number;
-  curVersionApprovalList: Array<object>; // 当前版本合约审批历史列表
-  curVersionApprovalTotal: number;
-
-  invokeResult: null | object;
+  invokeResult: { status: any; message: object } | null;
 
   allUserId: Array<string>; // fabric角色用户列表
 };
@@ -62,11 +48,6 @@ export type ContractModelType = {
   effects: {
     getChainCodeList: Effect;
     getChainCodeTotal: Effect;
-    getDetailOfChainCode: Effect;
-    getChainCodeHistory: Effect;
-    getChainCodeHistoryTotalDocs: Effect;
-    getChainCodeApprovalHistory: Effect;
-    getChainCodeApprovalHistoryTotalDocs: Effect;
     getChannelList: Effect;
     getChannelListByOrg: Effect;
     checkOrgInUse: Effect;
@@ -93,12 +74,6 @@ const ContractModel: ContractModelType = {
     myChannelList: [],
     myContractList: [],
     myContractTotal: 0,
-
-    curContractDetail: {},
-    curContractVersionList: [],
-    curContractVersionTotal: 0,
-    curVersionApprovalList: [],
-    curVersionApprovalTotal: 0,
 
     invokeResult: null,
 
@@ -127,71 +102,6 @@ const ContractModel: ContractModelType = {
           type: 'common',
           payload: {
             myContractTotal: result.count,
-          },
-        });
-      }
-    },
-
-    *getDetailOfChainCode({ payload }, { call, put }) {
-      const res = yield call(API.getDetailOfChainCode, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            curContractDetail: result,
-          },
-        });
-      }
-    },
-
-    *getChainCodeHistory({ payload }, { call, put }) {
-      const res = yield call(API.getChainCodeHistory, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            curContractVersionList: result.items,
-          },
-        });
-      }
-    },
-
-    *getChainCodeHistoryTotalDocs({ payload }, { call, put }) {
-      const res = yield call(API.getChainCodeHistoryTotalDocs, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            curContractVersionTotal: result,
-          },
-        });
-      }
-    },
-
-    *getChainCodeApprovalHistory({ payload }, { call, put }) {
-      const res = yield call(API.getChainCodeApprovalHistory, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            curVersionApprovalList: result.items,
-          },
-        });
-      }
-    },
-
-    *getChainCodeApprovalHistoryTotalDocs({ payload }, { call, put }) {
-      const res = yield call(API.getChainCodeApprovalHistoryTotalDocs, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            curVersionApprovalTotal: result,
           },
         });
       }
