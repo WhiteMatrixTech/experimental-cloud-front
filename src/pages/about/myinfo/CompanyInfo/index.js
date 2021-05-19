@@ -58,12 +58,12 @@ function MyCompanyInfo(props) {
       label: '当前审批状态',
       value: ApprovalStatus[myCompany.approvalStatus],
     },
-    {
-      label: '我的DID',
-      value: getDid || 'NeedButton',
-      buttonName: '立即申请',
-      onClick: onClickCreate,
-    },
+    // {
+    //   label: '我的DID',
+    //   value: getDid || 'NeedButton',
+    //   buttonName: '立即申请',
+    //   onClick: onClickCreate,
+    // },
   ];
 
   const companyContactsInfo = [
