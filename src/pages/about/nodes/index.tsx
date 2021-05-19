@@ -3,25 +3,35 @@ import { connect } from 'dva';
 import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
-import { Breadcrumb } from 'components';
+import { Breadcrumb } from '@/components';
 import { Table, Button, Badge, Space } from 'antd';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import CreateNodeModal from './components/CreateNodeModal';
 import SSHCommand from './components/SSHCommand';
-import baseConfig from 'utils/config';
-import { Roles } from 'utils/roles';
+import baseConfig from '@/utils/config';
+import { Roles } from '@/utils/roles';
 import { peerStatus, availableNodeStatus } from './_config';
+import { ConnectState } from '@/models/connect';
+import { Dispatch, PeerSchema } from 'umi';
+import { TableColumnsAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/nodes');
 
-function NodeManagement(props) {
+export interface NodeManagementProps {
+  dispatch: Dispatch;
+  qryLoading: boolean;
+  User: ConnectState['User'];
+  Peer: ConnectState['Peer'];
+}
+
+function NodeManagement(props: NodeManagementProps) {
   const { dispatch, qryLoading = false, User } = props;
   const { networkName, userRole } = User;
   const { nodeList, nodeTotal } = props.Peer;
-  const [columns, setColumns] = useState([]);
+  const [columns, setColumns] = useState<TableColumnsAttr[]>([]);
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
-  const [nodeRecord, setNodeRecord] = useState(null);
+  const [nodeRecord, setNodeRecord] = useState<PeerSchema>({});
   const [sshModalVisible, setSshModalVisible] = useState(false);
   const [createNodeVisible, setCreateNodeVisible] = useState(false);
 
@@ -37,7 +47,7 @@ function NodeManagement(props) {
   };
 
   // 翻页
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
@@ -52,12 +62,12 @@ function NodeManagement(props) {
     setSshModalVisible(false);
   };
 
-  const onClickGetSSH = (record) => {
+  const onClickGetSSH = (record: PeerSchema) => {
     setNodeRecord(record);
     setSshModalVisible(true);
   };
 
-  const onDownLoadCertificate = (record) => {
+  const onDownLoadCertificate = (record: PeerSchema) => {
     // token校验
     const accessToken = localStorage.getItem('accessToken');
     const roleToken = localStorage.getItem('roleToken');
@@ -72,7 +82,7 @@ function NodeManagement(props) {
       mode: 'cors',
       method: 'GET',
       responseType: 'blob',
-    }).then((res) => {
+    }).then((res: any) => {
       const blob = new Blob([res]);
       saveAs(blob, `${networkName}.pem`);
     });
@@ -80,7 +90,7 @@ function NodeManagement(props) {
 
   // 用户身份改变时，表格展示改变
   useEffect(() => {
-    const data = [
+    const data: TableColumnsAttr[] = [
       {
         title: '节点名称',
         dataIndex: 'nodeName',
@@ -123,7 +133,7 @@ function NodeManagement(props) {
       {
         title: '操作',
         key: 'action',
-        render: (_, record) => (
+        render: (_, record: PeerSchema) => (
           <Space size="small">
             {userRole === Roles.NetworkAdmin && <a onClick={() => onDownLoadCertificate(record)}>下载证书</a>}
             {availableNodeStatus.includes(record.nodeStatus) && (
@@ -182,7 +192,7 @@ function NodeManagement(props) {
   );
 }
 
-export default connect(({ User, Layout, Peer, loading }) => ({
+export default connect(({ User, Layout, Peer, loading }: ConnectState) => ({
   User,
   Layout,
   Peer,

@@ -2,12 +2,20 @@ import React, { useEffect } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Button, Modal, message } from 'antd';
 import { connect } from 'dva';
-
-function SSHCommand(props) {
+import { ConnectState } from '@/models/connect';
+import { Dispatch, PeerSchema } from 'umi';
+export interface SSHCommandProps {
+  visible: boolean;
+  nodeRecord: PeerSchema;
+  onCancel: () => void;
+  User: ConnectState['User'];
+  Peer: ConnectState['Peer'];
+  dispatch: Dispatch;
+}
+function SSHCommand(props: SSHCommandProps) {
   const { visible, nodeRecord, onCancel, User, Peer, dispatch } = props;
   const { networkName } = User;
   const { nodeSSH } = Peer;
-
   const realNodeSSH = `ssh root@${nodeSSH} -i ${networkName}.pem`;
 
   useEffect(() => {
@@ -31,11 +39,10 @@ function SSHCommand(props) {
       </CopyToClipboard>,
     ],
   };
-
   return <Modal {...drawerProps}>{realNodeSSH}</Modal>;
 }
 
-export default connect(({ User, Peer, loading }) => ({
+export default connect(({ User, Peer, loading }: ConnectState) => ({
   User,
   Peer,
 }))(SSHCommand);
