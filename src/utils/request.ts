@@ -1,5 +1,6 @@
 import { notification } from 'antd';
 import { history } from 'umi';
+import { stringify } from 'qs';
 import { extend } from 'umi-request';
 
 let isSendNotification = false;
@@ -55,11 +56,11 @@ const errorHandler = (error: { response: Response }) => {
  * @param  {string} url       The URL we want to request
  * @param  {object} [options] The options we want to pass to "fetch"
  */
-export const request = (url: string, options?: { method: string, body: object }) => {
+export const request = (url: string, options?: { method: string; body?: object }) => {
   let headers = {
     'Content-Type': 'application/json',
     Authorization: '',
-    RoleAuth: ''
+    RoleAuth: '',
   };
   // token校验
   const accessToken = localStorage.getItem('accessToken');
@@ -81,11 +82,13 @@ export const request = (url: string, options?: { method: string, body: object })
     credentials: 'include', // 默认请求是否带上cookie,
     prefix: process.env.BAAS_BACKEND_LINK,
   });
-  let newOptions = { method: options ? options.method : 'GET', data: {} };
-  if (options && options.method) {
-    newOptions.data = options.body;
+
+  let newOptions = { method: options ? options.method : 'GET', data: options?.body };
+  let newUrl = url;
+  if (options?.method === 'GET') {
+    newUrl = `${url}?${stringify(options.body)}`;
   }
-  return _requestFunc(url, newOptions).then((response) => {
+  return _requestFunc(newUrl, newOptions).then((response) => {
     const data = {
       result: response,
       statusCode: response.statusCode || 'ok',

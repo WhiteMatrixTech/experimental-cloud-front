@@ -1,5 +1,4 @@
 import { request } from '../utils/request';
-import { stringify } from 'qs';
 import { BasicApiParams } from '@/utils/types';
 
 /**
@@ -16,9 +15,9 @@ export type GetNodeSSHApiParams = {
   networkName: string;
   orgName: string;
   nodeName: string;
-}
+};
 export async function getNodeSSH(params: GetNodeSSHApiParams) {
-  return request(`/network/${params.networkName}/nodes/getNodeIp?${stringify(params)}`);
+  return request(`/network/${params.networkName}/nodes/getNodeIp`, { method: 'GET', body: params });
 }
 
 /**
@@ -30,7 +29,7 @@ export type CreateNodeApiParams = {
   peerName: string;
   peerNameAlias: string;
   serverName?: string;
-}
+};
 export async function createNode(params: CreateNodeApiParams) {
   return request(`/network/${params.networkName}/nodes/createNode`, { method: 'POST', body: params });
 }

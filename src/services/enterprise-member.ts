@@ -1,17 +1,18 @@
 import { request } from '../utils/request';
-import { stringify } from 'qs';
 import { AllPaginationParams, BasicApiParams } from '@/utils/types';
 import { MemberApprovalStatus } from '@/pages/about/enterprise-member/_config';
 /**
  * 查询成员列表
  */
 export type GetMemberListByConditionalQueryParams = {
-  companyName: string,
-  createTimeStart: number,
-  createTimeEnd: number,
-  approvalStatus: MemberApprovalStatus,
-}
-export async function getPageListOfCompanyMember(params: BasicApiParams & AllPaginationParams & GetMemberListByConditionalQueryParams) {
+  companyName: string;
+  createTimeStart: number;
+  createTimeEnd: number;
+  approvalStatus: MemberApprovalStatus;
+};
+export async function getPageListOfCompanyMember(
+  params: BasicApiParams & AllPaginationParams & GetMemberListByConditionalQueryParams,
+) {
   return request(`/network/${params.networkName}/enterprises/query`, { method: 'POST', body: params });
 }
 /**
@@ -25,33 +26,33 @@ export async function getMemberTotalDocs(params: BasicApiParams) {
  * 查询成员详情
  */
 export async function getMemberDetail(params: any) {
-  return request(`/network/${params.networkName}/enterprises/${params.did}?${stringify(params)}`);
+  return request(`/network/${params.networkName}/enterprises/${params.did}`, { method: 'GET', body: params });
 }
 
 /**
  * 审批用户
  */
-export async function setCompanyApprove(params) {
+export async function setCompanyApprove(params: any) {
   return request(`/network/${params.networkName}/enterprises/approve`, { method: 'POST', body: params });
 }
 
 /**
  * 停用 & 启用 用户
  */
-export async function setStatusOfLeagueCompany(params) {
+export async function setStatusOfLeagueCompany(params: any) {
   return request(`/network/${params.networkName}/enterprises/validate`, { method: 'POST', body: params });
 }
 
 /**
  * 获取某个成员当前使用的角色
  */
-export async function getMemberRole(params) {
+export async function getMemberRole(params: any) {
   return request(`/network/${params.networkName}/accessPolicy/user/${params.companyName}`);
 }
 
 /**
  * 配置已有角色的访问策略给用户
  */
-export async function setRoleToMember(params) {
+export async function setRoleToMember(params: any) {
   return request(`/network/${params.networkName}/accessPolicy/configure`, { method: 'POST', body: params });
 }
