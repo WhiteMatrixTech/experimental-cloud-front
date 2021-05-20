@@ -2,6 +2,8 @@ import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import React, { useEffect, useMemo } from 'react';
 import { serverPurpose } from '@/pages/common/elastic-cloud-server/_config';
+import { ConnectState } from '@/models/connect';
+import { Dispatch } from 'umi';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -14,8 +16,16 @@ const formItemLayout = {
     sm: { span: 18 },
   },
 };
-
-function CreateOrgModal(props) {
+export interface CreateOrgModalProps {
+  dispatch: Dispatch;
+  visible: boolean;
+  onCancel: (callback?: any) => void;
+  addLoading: boolean;
+  User: ConnectState['User'];
+  Contract: ConnectState['Contract'];
+  ElasticServer: ConnectState['ElasticServer'];
+}
+function CreateOrgModal(props: CreateOrgModalProps) {
   const { dispatch, visible, onCancel, addLoading = false, User, Contract, ElasticServer } = props;
   const { networkName } = User;
   const { channelList } = Contract;
@@ -183,7 +193,7 @@ function CreateOrgModal(props) {
   );
 }
 
-export default connect(({ User, Organization, ElasticServer, Contract, loading }) => ({
+export default connect(({ User, Organization, ElasticServer, Contract, loading }: ConnectState) => ({
   User,
   Contract,
   Organization,
