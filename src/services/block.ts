@@ -1,5 +1,4 @@
 import { request } from '../utils/request';
-import { stringify } from 'qs';
 import { AllPaginationParams, BasicApiParams } from '@/utils/types';
 
 /**
@@ -29,7 +28,7 @@ export type GetTransactionParams = BasicApiParams & { blockHash: string };
  * 查询区块详情
  */
 export async function getBlockDetail(params: GetTransactionParams) {
-  return request(`/network/${params.networkName}/blocks/${params.blockHash}?${stringify(params)}`);
+  return request(`/network/${params.networkName}/blocks/${params.blockHash}`, { method: 'GET', body: params });
 }
 
 /**

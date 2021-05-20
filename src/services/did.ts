@@ -1,5 +1,4 @@
 import { request } from '../utils/request';
-import { stringify } from 'qs';
 import { BasicApiParams } from '@/utils/types';
 
 /**
@@ -19,7 +18,7 @@ export async function modifyDID(params: BasicApiParams) {
 /**
  * 删除DID
  */
-export async function deleteDID(params: { networkName: string; did: string; }) {
+export async function deleteDID(params: { networkName: string; did: string }) {
   return request(`/network/${params.networkName}/did/delete`, { method: 'POST', body: params });
 }
 
@@ -28,12 +27,12 @@ export async function deleteDID(params: { networkName: string; did: string; }) {
  */
 export async function getDidList(params: { networkName: string; paginator: string }) {
   const { networkName, ...rest } = params;
-  return request(`/network/${networkName}/did?${stringify(rest)}`);
+  return request(`/network/${networkName}/did`, { method: 'GET', body: rest });
 }
 
 /**
  * 查询DID
  */
-export async function getDetailByDid(params: { networkName: string; did: string; }) {
+export async function getDetailByDid(params: { networkName: string; did: string }) {
   return request(`/network/${params.networkName}/did/${params.did}`);
 }
