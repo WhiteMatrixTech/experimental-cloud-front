@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
+import { ConnectState } from '@/models/connect';
+import { DidSchema, Dispatch } from 'umi';
 
 const { Item } = Form;
 const { TextArea } = Input;
@@ -13,8 +15,16 @@ const formItemLayout = {
     sm: { span: 18 },
   },
 };
-
-function CreateDIDModal(props) {
+export interface CreateDIDModalProps {
+  visible: boolean;
+  onCancel: () => void;
+  record: DidSchema;
+  addLoading: boolean;
+  User: ConnectState['User'];
+  dispatch: Dispatch;
+  getDidList: () => void;
+}
+function CreateDIDModal(props: CreateDIDModalProps) {
   const { visible, onCancel, record, addLoading = false, User, dispatch } = props;
   const { networkName } = User;
 
@@ -52,7 +62,7 @@ function CreateDIDModal(props) {
       });
   };
 
-  const checkJSON = (_, value) => {
+  const checkJSON = (_: any, value: string) => {
     const promise = Promise; // 没有值的情况
 
     if (!value) {
@@ -90,7 +100,7 @@ function CreateDIDModal(props) {
           label="DID名称"
           name="didName"
           tooltip="用户名"
-          initialValue={record ? record.didName : ''}
+          initialValue={record ? record.idName : ''}
           rules={[
             {
               required: true,
@@ -133,7 +143,7 @@ function CreateDIDModal(props) {
   );
 }
 
-export default connect(({ User, DID, Organization, loading }) => ({
+export default connect(({ User, DID, Organization, loading }: ConnectState) => ({
   User,
   DID,
   Organization,

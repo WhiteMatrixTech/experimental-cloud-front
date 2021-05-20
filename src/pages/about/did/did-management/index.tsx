@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
-import { history } from 'umi';
-import { Breadcrumb } from 'components';
+import { DidSchema, Dispatch, history } from 'umi';
+import { Breadcrumb } from '@/components';
 import { Table, Button, Space, Form, Row, Col, Input, Modal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import CreateDIDModal from './components/CreateDIDModal';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
-import baseConfig from 'utils/config';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import baseConfig from '@/utils/config';
+import { ConnectState } from '@/models/connect';
+import { TableColumnsAttr } from '@/utils/types';
 
 const { Item } = Form;
 const formItemLayout = {
@@ -19,8 +19,13 @@ breadCrumbItem.push({
   menuName: 'DID管理',
   menuHref: `/`,
 });
-
-function DidManagement(props) {
+export interface DidManagementProps {
+  dispatch: Dispatch;
+  qryLoading: boolean;
+  User: ConnectState['User'];
+  DID: ConnectState['DID'];
+}
+function DidManagement(props: DidManagementProps) {
   const { dispatch, qryLoading = false } = props;
   const { networkName, userRole } = props.User;
   const { didList, didTotal } = props.DID;
@@ -48,7 +53,7 @@ function DidManagement(props) {
     });
   };
 
-  const onClickDetail = (record) => {
+  const onClickDetail = (record: DidSchema) => {
     history.push({
       pathname: `/about/did/did-management/did-detail`,
       state: record,
@@ -78,11 +83,11 @@ function DidManagement(props) {
     setSearchParams({ did: '' });
   };
 
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
-  const columns = useMemo(() => {
+  const columns: TableColumnsAttr[] = useMemo(() => {
     return [
       {
         title: 'DID',
@@ -111,7 +116,7 @@ function DidManagement(props) {
       {
         title: '操作',
         key: 'action',
-        render: (_, record) => (
+        render: (_: any, record: DidSchema) => (
           <Space size="small">
             {/* <a onClick={() => onClickModify(record)}>修改</a>
             <a onClick={() => onClickDelete(record)}>删除</a> */}
@@ -152,7 +157,7 @@ function DidManagement(props) {
         </div>
         <div className="table-wrapper page-content-shadow">
           <Table
-            rowKey={(record) => `${record.did}-${record.didName}`}
+            rowKey={(record: DidSchema) => `${record.did}-${record.idName}`}
             loading={qryLoading}
             columns={columns}
             dataSource={didList}
@@ -171,7 +176,7 @@ function DidManagement(props) {
   );
 }
 
-export default connect(({ User, Layout, DID, loading }) => ({
+export default connect(({ User, Layout, DID, loading }: ConnectState) => ({
   User,
   Layout,
   DID,

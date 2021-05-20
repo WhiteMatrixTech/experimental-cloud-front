@@ -1,11 +1,14 @@
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
-import { Breadcrumb, DetailCard } from 'components';
+import { Breadcrumb, DetailCard } from '@/components';
 import { Input, Result, Empty } from 'antd';
 import classnames from 'classnames';
 import { isObject } from 'lodash';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import styles from './index.less';
+import { Dispatch } from 'umi';
+import { ConnectState } from '@/models/connect';
+import { DetailViewAttr } from '@/utils/types';
 
 const { Search } = Input;
 
@@ -14,20 +17,24 @@ breadCrumbItem.push({
   menuName: 'DID查询验证',
   menuHref: `/`,
 });
-
-function DidQueryVerify(props) {
+export interface DidQueryVerifyProps {
+  dispatch: Dispatch;
+  DID: ConnectState['DID'];
+  User: ConnectState['User'];
+}
+function DidQueryVerify(props: DidQueryVerifyProps) {
   const { dispatch, DID, User } = props;
   const { didDetail } = DID;
   const { networkName } = User;
 
-  const onSearch = (value) => {
+  const onSearch = (value: string) => {
     dispatch({
       type: 'DID/getDetailByDid',
       payload: { networkName, did: value },
     });
   };
 
-  const didDetailInfo = useMemo(() => {
+  const didDetailInfo: DetailViewAttr[] = useMemo(() => {
     return [
       {
         label: 'DID',
@@ -71,7 +78,7 @@ function DidQueryVerify(props) {
   );
 }
 
-export default connect(({ User, DID, loading }) => ({
+export default connect(({ User, DID, loading }: ConnectState) => ({
   User,
   DID,
   qryLoading: loading.effects['DID/getDetailByDid'],

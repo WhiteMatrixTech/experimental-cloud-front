@@ -40,6 +40,7 @@ interface DetailViewAttr {
   fullRow?: boolean;
   onClick?: () => void;
   buttonName?: string;
+  showJson?: boolean;
 }
 
 export {

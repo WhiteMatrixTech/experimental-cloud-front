@@ -2,8 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
 import { isObject } from 'lodash';
-import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb, DetailCard } from '@/components';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { ConnectState } from '@/models/connect';
+import { DidSchema, Dispatch, Location } from 'umi';
+import { DetailViewAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/did', false);
 breadCrumbItem.push({
@@ -15,13 +18,19 @@ breadCrumbItem.push({
   menuName: 'DID详情',
   menuHref: `/`,
 });
-
-function DidDetail(props) {
+export interface DidDetailProps {
+  dispatch: Dispatch;
+  qryLoading: boolean;
+  User: ConnectState['User'];
+  DID: ConnectState['DID'];
+  location: Location<DidSchema>;
+}
+function DidDetail(props: DidDetailProps) {
   const { dispatch, qryLoading = false, location, DID, User } = props;
   const { didDetail } = DID;
   const { networkName } = User;
 
-  const didDetailInfo = [
+  const didDetailInfo: DetailViewAttr[] = [
     {
       label: 'DID',
       value: didDetail?.did || location?.state?.did,
@@ -70,7 +79,7 @@ function DidDetail(props) {
   );
 }
 
-export default connect(({ User, DID, loading }) => ({
+export default connect(({ User, DID, loading }: ConnectState) => ({
   User,
   DID,
   qryLoading: loading.effects['DID/getDetailByDid'],

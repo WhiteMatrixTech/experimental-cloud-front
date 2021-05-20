@@ -8,13 +8,13 @@ export type DidSchema = {
   idName: string;
   role: string;
   additionalAttributes: Record<string, unknown>;
-}
+};
 
 export type DIDModelState = {
-  didList: Array<DidSchema>,
-  didTotal: number,
-  didDetail: DidSchema | object,
-}
+  didList: Array<DidSchema>;
+  didTotal: number;
+  didDetail: DidSchema | null;
+};
 
 export type DIDModelType = {
   namespace: 'DID';
@@ -38,9 +38,8 @@ const DIDModel: DIDModelType = {
     didList: [],
     didTotal: 0,
 
-    didDetail: {},
+    didDetail: null,
   },
-
 
   effects: {
     *getDidList({ payload }, { call, put }) {
