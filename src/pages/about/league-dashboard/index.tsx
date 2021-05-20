@@ -1,24 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Spin, Table, Space, Col, Row, Button, message } from 'antd';
 import { connect } from 'dva';
-import { history } from 'umi';
+import { BlockSchema, Dispatch, history, TransactionSchema } from 'umi';
 import moment from 'moment';
-import { Roles } from 'utils/roles';
-import { StatisticsCard, Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
-import { NetworkStatus, NetworkInfo } from 'utils/networkStatus';
+import { Roles } from '@/utils/roles';
+import { StatisticsCard, Breadcrumb } from '@/components';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { NetworkStatus, NetworkInfo } from '@/utils/networkStatus';
 import CreateNetworkModal from './components/CreateNetworkModal';
-import config from 'utils/config';
+import config from '@/utils/config';
 import style from './index.less';
+import { ConnectState } from '@/models/connect';
+import { TableColumnsAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/league-dashboard');
-
-function LeagueDashboard(props) {
+export interface LeagueDashboardProps {
+  Dashboard: ConnectState['Dashboard'];
+  User: ConnectState['User'];
+  dispatch: Dispatch;
+  qryBlockLoading: boolean;
+  qryNetworkLoading: boolean;
+  qryTransactionLoading: boolean;
+  ElasticServer: ConnectState['ElasticServer'];
+}
+function LeagueDashboard(props: LeagueDashboardProps) {
   const { Dashboard, User, dispatch, qryBlockLoading, qryNetworkLoading = false, qryTransactionLoading } = props;
   const { leagueName, networkName, userRole } = User;
   const { serverTotal } = props.ElasticServer;
-  const [blockColumns, setBlockColumns] = useState([]);
-  const [transactionColumns, setTransactionColumns] = useState([]);
+  const [blockColumns, setBlockColumns] = useState<TableColumnsAttr[]>([]);
+  const [transactionColumns, setTransactionColumns] = useState<TableColumnsAttr[]>([]);
   const { networkStatusInfo, transactionList, blockList, channelTotal } = Dashboard;
   const [showCreateNetworkBtn, setShowCreateNetworkBtn] = useState(false);
   const [showCreateChannelBtn, setShowCreateChannelBtn] = useState(false);
@@ -65,7 +75,7 @@ function LeagueDashboard(props) {
   };
 
   // 取消创建网络
-  const onClickCancel = (res) => {
+  const onClickCancel = (res: any) => {
     setCreateVisible(false);
     if (res) {
       getNetworkInfo();
@@ -82,7 +92,7 @@ function LeagueDashboard(props) {
   };
 
   // 点击去创建通道
-  const linkToCreateChannel = (e) => {
+  const linkToCreateChannel = (e: any) => {
     e.preventDefault();
     dispatch({
       type: 'Layout/common',
@@ -110,7 +120,7 @@ function LeagueDashboard(props) {
   };
 
   // 查看区块详情
-  const onClickBlockDetail = (record) => {
+  const onClickBlockDetail = (record: BlockSchema) => {
     dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/block' },
@@ -139,7 +149,7 @@ function LeagueDashboard(props) {
   };
 
   // 查看交易详情
-  const onClickTransactionDetail = (record) => {
+  const onClickTransactionDetail = (record: TransactionSchema) => {
     dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/transactions' },
@@ -154,7 +164,7 @@ function LeagueDashboard(props) {
 
   //用户身份改变时，表格展示改变
   useEffect(() => {
-    const block = [
+    const block: TableColumnsAttr[] = [
       {
         title: '区块HASH',
         dataIndex: 'blockHash',
@@ -181,14 +191,14 @@ function LeagueDashboard(props) {
       {
         title: '操作',
         key: 'action',
-        render: (text, record) => (
+        render: (text, record: BlockSchema) => (
           <Space size="small">
             <a onClick={() => onClickBlockDetail(record)}>详情</a>
           </Space>
         ),
       },
     ];
-    const transaction = [
+    const transaction: TableColumnsAttr[] = [
       {
         title: '交易ID',
         dataIndex: 'txId',
@@ -224,7 +234,7 @@ function LeagueDashboard(props) {
       {
         title: '操作',
         key: 'action',
-        render: (text, record) => (
+        render: (text, record: TransactionSchema) => (
           <Space size="small">
             {record.channelId || record.txEndorseMsp ? (
               <a onClick={() => onClickTransactionDetail(record)}>详情</a>
@@ -340,7 +350,7 @@ function LeagueDashboard(props) {
   );
 }
 
-export default connect(({ Layout, Dashboard, ElasticServer, User, loading }) => ({
+export default connect(({ Layout, Dashboard, ElasticServer, User, loading }: ConnectState) => ({
   User,
   Layout,
   Dashboard,
