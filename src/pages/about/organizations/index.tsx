@@ -2,15 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Table, Badge, Button } from 'antd';
 import moment from 'moment';
-import { Breadcrumb } from 'components';
-import baseConfig from 'utils/config';
+import { Breadcrumb } from '@/components';
+import baseConfig from '@/utils/config';
 import { orgStatus } from './_config';
 import CreateOrgModal from './components/CreateOrgModal';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { ConnectState } from '@/models/connect';
+import { Dispatch } from 'umi';
+import { TableColumnsAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/organizations');
-
-function OrganizationManagement(props) {
+export interface OrganizationManagementProps {
+  Organization: ConnectState['Organization'];
+  qryLoading: boolean;
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+}
+function OrganizationManagement(props: OrganizationManagementProps) {
   const { Organization, qryLoading, dispatch, User } = props;
   const { networkName } = User;
   const { orgList, orgTotal } = Organization;
@@ -18,7 +26,7 @@ function OrganizationManagement(props) {
   const [pageSize] = useState(baseConfig.pageSize);
   const [createOrgVisible, setCreateOrgVisible] = useState(false);
 
-  const columns = [
+  const columns: TableColumnsAttr[] = [
     {
       title: '组织名称',
       dataIndex: 'orgName',
@@ -69,7 +77,7 @@ function OrganizationManagement(props) {
   };
 
   // 关闭 创建组织弹窗
-  const onCloseCreateOrg = (callback) => {
+  const onCloseCreateOrg = (callback: any) => {
     setCreateOrgVisible(false);
     if (callback) {
       getOrgList();
@@ -93,7 +101,7 @@ function OrganizationManagement(props) {
   };
 
   // 翻页
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
@@ -131,7 +139,7 @@ function OrganizationManagement(props) {
   );
 }
 
-export default connect(({ User, Layout, Organization, loading }) => ({
+export default connect(({ User, Layout, Organization, loading }: ConnectState) => ({
   User,
   Layout,
   Organization,
