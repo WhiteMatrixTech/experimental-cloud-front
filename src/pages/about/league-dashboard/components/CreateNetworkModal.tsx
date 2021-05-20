@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import styles from './CreateNetworkModal.less';
 import { Dispatch } from 'umi';
 import { ConnectState } from '@/models/connect';
+import { CreateNodeInfo } from '@/services/dashboard';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -22,12 +23,6 @@ export interface CreateNetworkModalProps {
   createLoading: boolean;
   User: ConnectState['User'];
   ElasticServer: ConnectState['ElasticServer'];
-}
-export interface peerInfoState {
-  nodeAliasName: string;
-  nodeName: string;
-  isAnchor?: string;
-  serverName?: string;
 }
 function CreateNetworkModal(props: CreateNetworkModalProps) {
   const { dispatch, visible, onCancel, createLoading = false, User, ElasticServer } = props;
@@ -400,7 +395,7 @@ function spliceFormValues(formValue: any, template: string) {
     const { networkTemplate, initPeerInfo, ...rest } = formValue;
     peerList = initPeerInfo.map(
       (peer: {
-        isAnchor: true;
+        isAnchor?: string;
         nodeAliasName: string;
         nodeName: string;
         serverName?: string;
@@ -408,6 +403,10 @@ function spliceFormValues(formValue: any, template: string) {
       }) => {
         if (!peer.serverName) {
           delete peer.serverName;
+        }
+        let isAnchor: any = peer.isAnchor;
+        if (!(isAnchor instanceof String)) {
+          peer.isAnchor = isAnchor.toString();
         }
         return peer;
       },
@@ -425,7 +424,7 @@ function spliceFormValues(formValue: any, template: string) {
     } = formValue;
     peerList = [];
     for (let i = 0; i < peerNumber; i++) {
-      const peerInfo: peerInfoState = {
+      const peerInfo: CreateNodeInfo = {
         nodeAliasName: `${templateNodeAliasName}${i}`,
         nodeName: `${templateNodeName}${i}`,
       };
