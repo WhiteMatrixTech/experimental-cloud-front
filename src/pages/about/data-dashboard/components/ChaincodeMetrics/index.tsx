@@ -11,7 +11,7 @@ export default function ChaincodeMetrics() {
             src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=15`}
             title="Chaincode Shim Requests"
             id="Chaincode Shim Requests"
-            frameborder="0"
+            frameBorder="0"
           ></iframe>
         </Col>
         <Col span={12}>
@@ -19,7 +19,7 @@ export default function ChaincodeMetrics() {
             src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=16`}
             title="Broadcast Enqueue"
             id="Broadcast Enqueue"
-            frameborder="0"
+            frameBorder="0"
           ></iframe>
         </Col>
         <Col span={12}>
@@ -28,7 +28,7 @@ export default function ChaincodeMetrics() {
               src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=28`}
               title="gRPC Closed Connections"
               id="gRPC Closed Connections"
-              frameborder="0"
+              frameBorder="0"
             ></iframe>
           </div>
         </Col>
@@ -38,7 +38,7 @@ export default function ChaincodeMetrics() {
               src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=14`}
               title="Chaincode Launch Duration"
               id="Chaincode Launch Duration"
-              frameborder="0"
+              frameBorder="0"
             ></iframe>
           </div>
         </Col>
