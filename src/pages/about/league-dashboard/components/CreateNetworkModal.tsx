@@ -395,7 +395,7 @@ function spliceFormValues(formValue: any, template: string) {
     const { networkTemplate, initPeerInfo, ...rest } = formValue;
     peerList = initPeerInfo.map(
       (peer: {
-        isAnchor?: string;
+        isAnchor: string | boolean;
         nodeAliasName: string;
         nodeName: string;
         serverName?: string;
@@ -404,10 +404,7 @@ function spliceFormValues(formValue: any, template: string) {
         if (!peer.serverName) {
           delete peer.serverName;
         }
-        let isAnchor: any = peer.isAnchor;
-        if (!(isAnchor instanceof String)) {
-          peer.isAnchor = isAnchor.toString();
-        }
+        peer.isAnchor = peer.isAnchor === 'true' || false;
         return peer;
       },
     );
