@@ -1,14 +1,25 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Button, Modal, Form, Select, Input } from 'antd';
+import { Dispatch, EnterpriseMemberSchema } from 'umi';
+import { ConnectState } from '@/models/connect';
 
 const { Option } = Select;
 const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 16 },
 };
-
-function ConfigMemberRole(props) {
+export interface ConfigMemberRoleProps {
+  visible: boolean;
+  onCancel: () => void;
+  dispatch: Dispatch;
+  RBAC: ConnectState['RBAC'];
+  Member: ConnectState['Member'];
+  User: ConnectState['User'];
+  record: EnterpriseMemberSchema | null;
+  setLoading: boolean;
+}
+function ConfigMemberRole(props: ConfigMemberRoleProps) {
   const { visible, onCancel, dispatch, RBAC, Member, User, record, setLoading = false } = props;
   const { networkName } = User;
   const { memberRole } = Member;
@@ -42,7 +53,7 @@ function ConfigMemberRole(props) {
           },
         });
         if (res) {
-          onCancel('refresh');
+          onCancel();
         }
       })
       .catch((info) => {
@@ -95,7 +106,7 @@ function ConfigMemberRole(props) {
   );
 }
 
-export default connect(({ Contract, User, RBAC, Member, loading }) => ({
+export default connect(({ Contract, User, RBAC, Member, loading }: ConnectState) => ({
   Contract,
   User,
   RBAC,

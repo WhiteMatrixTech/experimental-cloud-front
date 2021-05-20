@@ -15,14 +15,16 @@ export type EnterpriseMemberSchema = {
   contactEmail: string;
   createTimestamp: Date;
   did: string;
-}
+  approvalStatus: string;
+  isValid: string;
+};
 
 export type MemberModelState = {
-  memberList: Array<EnterpriseMemberSchema>,
-  memberTotal: number,
-  memberDetail: EnterpriseMemberSchema | object,
-  memberRole: string,
-}
+  memberList: Array<EnterpriseMemberSchema>;
+  memberTotal: number;
+  memberDetail: EnterpriseMemberSchema | object;
+  memberRole: string;
+};
 
 export type MemberModelType = {
   namespace: 'Member';

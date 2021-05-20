@@ -31,7 +31,8 @@ type TableColumnsAttr = {
   dataIndex?: string;
   key: string;
   ellipsis?: boolean;
-  width?: string;
+  width?: string | number;
+  fixed?: string;
   render?: (text: any, record?: any) => string | JSX.Element;
 };
 interface DetailViewAttr {
