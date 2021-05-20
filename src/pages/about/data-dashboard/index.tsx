@@ -3,8 +3,8 @@ import { Tabs } from 'antd';
 import cs from 'classnames';
 import { connect } from 'dva';
 import styles from './index.less';
-import { Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb } from '@/components';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import {
   BalanceTransfer,
   FabricMetrics,
@@ -13,11 +13,12 @@ import {
   OrdererMetrics,
   ChaincodeMetrics,
 } from './components';
+import { ConnectState } from '@/models/connect';
 
 const { TabPane } = Tabs;
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/data-dashboard');
 
-function DataDashboard(props) {
+function DataDashboard() {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -47,4 +48,4 @@ function DataDashboard(props) {
   );
 }
 
-export default connect(({ User }) => ({ User }))(DataDashboard);
+export default connect(({ User }: ConnectState) => ({ User }))(DataDashboard);

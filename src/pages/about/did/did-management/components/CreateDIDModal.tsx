@@ -100,7 +100,11 @@ function CreateDIDModal(props: CreateDIDModalProps) {
           label="DID名称"
           name="didName"
           tooltip="用户名"
+<<<<<<< HEAD:src/pages/about/did/did-management/components/CreateDIDModal.tsx
           initialValue={record && record.idName}
+=======
+          initialValue={record ? record.idName : ''}
+>>>>>>> 00a2052... ipfs and did files change JS into TS:src/pages/about/did/did-management/components/CreateDIDModal.js
           rules={[
             {
               required: true,
