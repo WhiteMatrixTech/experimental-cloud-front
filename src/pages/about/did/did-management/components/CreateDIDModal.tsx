@@ -100,7 +100,7 @@ function CreateDIDModal(props: CreateDIDModalProps) {
           label="DID名称"
           name="didName"
           tooltip="用户名"
-          initialValue={record ? record.idName : ''}
+          initialValue={record && record.idName}
           rules={[
             {
               required: true,
