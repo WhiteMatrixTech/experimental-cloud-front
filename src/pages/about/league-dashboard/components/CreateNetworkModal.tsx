@@ -3,6 +3,9 @@ import { Button, Form, Input, Modal, InputNumber, Select, Radio, Row, Col, messa
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import styles from './CreateNetworkModal.less';
+import { Dispatch } from 'umi';
+import { ConnectState } from '@/models/connect';
+import { CreateNodeInfo } from '@/services/dashboard';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -13,8 +16,15 @@ const inlineItemLayout = {
     sm: { span: 24 },
   },
 };
-
-function CreateNetworkModal(props) {
+export interface CreateNetworkModalProps {
+  dispatch: Dispatch;
+  visible: boolean;
+  onCancel: (res?: any) => void;
+  createLoading: boolean;
+  User: ConnectState['User'];
+  ElasticServer: ConnectState['ElasticServer'];
+}
+function CreateNetworkModal(props: CreateNetworkModalProps) {
   const { dispatch, visible, onCancel, createLoading = false, User, ElasticServer } = props;
   const { serverList } = ElasticServer;
 
@@ -42,7 +52,7 @@ function CreateNetworkModal(props) {
         setCurrent(current + 1);
       })
       .catch((info) => {
-        console.log('校验失败:', info);
+        message.warn('校验失败', info);
       });
   }, [current, form]);
 
@@ -66,11 +76,11 @@ function CreateNetworkModal(props) {
     }
   }, [dispatch, onCancel]);
 
-  const onChangeTemplate = (e) => {
+  const onChangeTemplate = (e: any) => {
     setTemplate(e.target.value);
   };
 
-  const onChangeConfirmValue = (e) => {
+  const onChangeConfirmValue = (e: any) => {
     confirmValues.current = e.target.value;
   };
 
@@ -199,7 +209,7 @@ function CreateNetworkModal(props) {
                 <>
                   {fields.map(({ key, name, fieldKey, ...restField }) => (
                     <div key={key}>
-                      <Row gutter="24">
+                      <Row gutter={24}>
                         <Col span={11}>
                           <Item
                             {...restField}
@@ -269,10 +279,10 @@ function CreateNetworkModal(props) {
                               style={{ width: '100%' }}
                               getPopupContainer={(triggerNode) => triggerNode.parentNode}
                             >
-                              <Option key="true" value={true}>
+                              <Option key="true" value={'true'}>
                                 anchor节点
                               </Option>
-                              <Option key="false" value={false}>
+                              <Option key="false" value={'false'}>
                                 非anchor节点
                               </Option>
                             </Select>
@@ -308,7 +318,7 @@ function CreateNetworkModal(props) {
               >
                 <InputNumber style={{ width: '100%' }} min={1} max={100} step={1} />
               </Item>
-              <Row gutter="24">
+              <Row gutter={24}>
                 <Col span={12}>
                   <Item
                     name="templateNodeName"
@@ -358,10 +368,10 @@ function CreateNetworkModal(props) {
                       style={{ width: '100%' }}
                       getPopupContainer={(triggerNode) => triggerNode.parentNode}
                     >
-                      <Option key="true" value={true}>
+                      <Option key="true" value={'true'}>
                         anchor节点
                       </Option>
-                      <Option key="false" value={false}>
+                      <Option key="false" value={'false'}>
                         非anchor节点
                       </Option>
                     </Select>
@@ -378,17 +388,26 @@ function CreateNetworkModal(props) {
   );
 }
 
-function spliceFormValues(formValue, template) {
-  let params = {};
+function spliceFormValues(formValue: any, template: string) {
   let peerList = [];
+  let params = [];
   if (template === 'default') {
     const { networkTemplate, initPeerInfo, ...rest } = formValue;
-    peerList = initPeerInfo.map((peer) => {
-      if (!peer.serverName) {
-        delete peer.serverName;
-      }
-      return peer;
-    });
+    peerList = initPeerInfo.map(
+      (peer: {
+        isAnchor: string | boolean;
+        nodeAliasName: string;
+        nodeName: string;
+        serverName?: string;
+        [propName: string]: any;
+      }) => {
+        if (!peer.serverName) {
+          delete peer.serverName;
+        }
+        peer.isAnchor = peer.isAnchor === 'true' || false;
+        return peer;
+      },
+    );
     params = { ...rest, initPeerInfo: peerList };
   } else {
     const {
@@ -402,7 +421,7 @@ function spliceFormValues(formValue, template) {
     } = formValue;
     peerList = [];
     for (let i = 0; i < peerNumber; i++) {
-      const peerInfo = {
+      const peerInfo: CreateNodeInfo = {
         nodeAliasName: `${templateNodeAliasName}${i}`,
         nodeName: `${templateNodeName}${i}`,
       };
@@ -419,7 +438,7 @@ function spliceFormValues(formValue, template) {
   return params;
 }
 
-export default connect(({ User, Dashboard, ElasticServer, loading }) => ({
+export default connect(({ User, Dashboard, ElasticServer, loading }: ConnectState) => ({
   User,
   Dashboard,
   ElasticServer,
