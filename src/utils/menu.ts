@@ -199,7 +199,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
   //   subMenus: [
   //     {
   //       id: 'did-management',
-  //       menuPid: 'did,
+  //       menuPid: 'did',
   //       menuHref: '/about/did/did-management',
   //       menuIcon: null,
   //       menuName: 'DID管理',
