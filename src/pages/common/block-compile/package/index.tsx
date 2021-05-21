@@ -8,6 +8,8 @@ import OneKeyCompile from './components/OneKeyCompile';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import { GitBuildRepoTask } from '~/models/block-chain-compile';
 import { ColumnsType } from 'antd/lib/table';
+import baseConfig from '~/utils/config';
+import styles from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem.push({
@@ -20,17 +22,21 @@ export type SourceCodeCompilationProps = {
   dispatch: Dispatch;
   BlockChainCompile: ConnectState['BlockChainCompile'];
 };
-
+const pageSize = baseConfig.pageSize;
 const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   const { dispatch, qryLoading = false, BlockChainCompile } = props;
-  const { gitBuildJobList, gitBuildJobTotal } = BlockChainCompile;
+  const { gitBuildJobList, gitBuildJobTotal, compileContinueData } = BlockChainCompile;
   const [pageNum, setPageNum] = useState(1);
   const [compileModalVisible, setCompileModalVisible] = useState(false);
+  const [moreBtnVisible, setMoreBtnVisible] = useState(false);
 
+  //获取编译模块的列表
   const getCompileJobList = () => {
     dispatch({
       type: 'BlockChainCompile/getCompileJobList',
-      payload: {},
+      payload: {
+        limit: pageSize,
+      },
     });
   };
 
@@ -110,6 +116,24 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
     getCompileJobList();
   }, []);
 
+  useEffect(() => {
+    if (compileContinueData) {
+      if (gitBuildJobTotal > pageSize) {
+        setMoreBtnVisible(true);
+      }
+    }
+  }, [compileContinueData]);
+
+  //获取更多编译任务
+  const getMoreCompileJobList = () => {
+    dispatch({
+      type: 'BlockChainCompile/getJobList',
+      payload: {
+        limit: pageSize,
+        continueData: compileContinueData,
+      },
+    });
+  };
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -133,6 +157,15 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
             position: ['bottomCenter'],
           }}
         />
+        <div className={styles.jobListMore}>
+          <button
+            className={styles.btn}
+            onClick={getMoreCompileJobList}
+            style={{ display: moreBtnVisible ? 'block' : 'none' }}
+          >
+            更多
+          </button>
+        </div>
       </div>
       {compileModalVisible && <OneKeyCompile visible={compileModalVisible} onCancel={onCancel} />}
     </div>

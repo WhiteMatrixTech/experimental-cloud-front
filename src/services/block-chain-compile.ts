@@ -11,10 +11,13 @@ export async function oneKeyCompileApi(params: GitBuildRepoSchema) {
 /**
  * 获取编译任务列表
  */
-export async function getCompileJobList() {
-  return request('/build');
+export async function getCompileJobList(params: getCompileJobListParams) {
+  return request('/build', { method: 'POST', body: params });
 }
-
+export interface getCompileJobListParams {
+  limit: number;
+  continueData?: string;
+}
 /**
  * 创建job
  */
@@ -25,8 +28,8 @@ export async function createJob(params: any) {
 /**
  * 查询Job列表
  */
-export async function getJobList() {
-  return request(`/job`);
+export async function getJobList(params: getCompileJobListParams) {
+  return request(`/job`, { method: 'POST', body: params });
 }
 
 /**

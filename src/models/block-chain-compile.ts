@@ -1,7 +1,7 @@
 import * as API from '../services/block-chain-compile';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
-import { JobCategory, JobStatus } from '@/pages/about/job-management/_config';
+import { JobCategory, JobStatus } from '~/pages/common/job-management/_config';
 
 export type PublishImageCredential = {
   username: string;
@@ -39,6 +39,8 @@ export type BlockChainCompileModelState = {
   jobList: Array<JobSchema>;
   jobTotal: number;
   jobLog: any;
+  compileContinueData: string;
+  jobContinueData: string;
 };
 
 export type BlockChainCompileModelType = {
@@ -64,6 +66,8 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
     jobList: [],
     jobTotal: 0,
     jobLog: null,
+    compileContinueData: '',
+    jobContinueData: '',
   },
 
   effects: {
@@ -74,8 +78,9 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
         yield put({
           type: 'common',
           payload: {
-            gitBuildJobList: result,
-            gitBuildJobTotal: result.length,
+            gitBuildJobList: result.buildRepoTasks,
+            gitBuildJobTotal: result.buildRepoTasks.length,
+            compileContinueData: result.continueData || '',
           },
         });
       }
@@ -100,8 +105,9 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
         yield put({
           type: 'common',
           payload: {
-            jobList: result,
-            jobTotal: result.length,
+            jobList: result.jobs,
+            jobTotal: result.jobs.length,
+            jobContinueData: result.continueData || '',
           },
         });
       }
