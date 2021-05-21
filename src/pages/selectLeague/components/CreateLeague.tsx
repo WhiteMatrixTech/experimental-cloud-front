@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
 import { Dispatch } from 'umi';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 
 const { Item } = Form;
 const { TextArea } = Input;
@@ -17,12 +17,12 @@ const formItemLayout = {
 };
 
 export type CreateLeagueProps = {
-  addLoading: boolean,
-  dispatch: Dispatch,
-  visible: boolean,
-  User: ConnectState['User'],
-  onCancel: (callback: boolean) => void
-}
+  addLoading: boolean;
+  dispatch: Dispatch;
+  visible: boolean;
+  User: ConnectState['User'];
+  onCancel: (callback: boolean) => void;
+};
 
 const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
   const { dispatch, visible, onCancel, addLoading = false } = props;
@@ -121,7 +121,7 @@ const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
       </Form>
     </Modal>
   );
-}
+};
 
 export default connect(({ User, loading }: ConnectState) => ({
   User,

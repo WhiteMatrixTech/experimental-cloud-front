@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
-import { Breadcrumb, DetailCard } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { Breadcrumb, DetailCard } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { statusList } from '../_config';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 import { EnterpriseMemberSchema, Location } from 'umi';
-import { DetailViewAttr } from '@/utils/types';
+import { DetailViewAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterprise-member');
 breadCrumbItem.push({

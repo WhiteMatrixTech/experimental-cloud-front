@@ -2,12 +2,12 @@ import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Spin, message } from 'antd';
 import { Dispatch, history } from 'umi';
-import { Breadcrumb, DetailCard } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { Breadcrumb, DetailCard } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { statusList } from '@/pages/about/enterprise-member/_config';
 import { injectIntl } from 'umi';
-import { ConnectState } from '@/models/connect';
-import { DetailViewAttr } from '@/utils/types';
+import { ConnectState } from '~/models/connect';
+import { DetailViewAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
 breadCrumbItem.push({

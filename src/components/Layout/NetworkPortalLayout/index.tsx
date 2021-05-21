@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Layout as AntdLayout, Modal } from 'antd';
 import { history } from 'umi';
-import { NetworkPortalMenu, ServicesDrawer, TopHeader } from '@/components';
+import { NetworkPortalMenu, ServicesDrawer, TopHeader } from '~/components';
 import { ModalFuncProps } from 'antd/lib/modal';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 import styles from './index.less';
 
 export type NetworkPortalLayoutProps = {

@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
 import { isObject } from 'lodash';
-import { Breadcrumb, DetailCard } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import { ConnectState } from '@/models/connect';
+import { Breadcrumb, DetailCard } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import { ConnectState } from '~/models/connect';
 import { DidSchema, Dispatch, Location } from 'umi';
-import { DetailViewAttr } from '@/utils/types';
+import { DetailViewAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/did', false);
 breadCrumbItem.push({

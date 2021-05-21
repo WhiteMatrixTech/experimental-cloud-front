@@ -19,8 +19,8 @@
     "experimentalDecorators": true,
     "strict": true,
     "paths": {
-      "@/*": ["./src/*"],
-      "@@/*": ["./src/.umi/*"]
+      "~/*": ["./src/*"],
+      "~~/*": ["./src/.umi/*"]
     }
   },
   "include": [

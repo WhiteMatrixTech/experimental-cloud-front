@@ -4,11 +4,11 @@ import { Menu, message } from 'antd';
 import { history } from 'umi';
 import { isEmpty } from 'lodash';
 import type { Dispatch } from 'umi';
-import { tree2Arr } from '@/utils';
-import { MenuList, NetworkMenuProps, RootMenuId } from '@/utils/menu';
-import { Roles } from '@/utils/roles';
-import { NetworkStatus } from '@/utils/networkStatus';
-import { ConnectState } from '@/models/connect';
+import { tree2Arr } from '~/utils';
+import { MenuList, NetworkMenuProps, RootMenuId } from '~/utils/menu';
+import { Roles } from '~/utils/roles';
+import { NetworkStatus } from '~/utils/networkStatus';
+import { ConnectState } from '~/models/connect';
 import styles from './index.less';
 
 const { SubMenu } = Menu;

@@ -1,4 +1,4 @@
-import { BasicApiParams } from '@/utils/types';
+import { BasicApiParams } from '~/utils/types';
 import { request } from '../utils/request';
 
 /**
@@ -12,7 +12,7 @@ export type CreateOrgApiParams = {
   initPeerName: string;
   initPeerAliasName: string;
   serverName?: string;
-}
+};
 export async function createOrg(params: CreateOrgApiParams) {
   return request(`/network/${params.networkName}/orgs/createOrg`, { method: 'POST', body: params });
 }

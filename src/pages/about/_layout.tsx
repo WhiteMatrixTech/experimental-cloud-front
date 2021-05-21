@@ -1,5 +1,5 @@
-import { NetworkPortalLayout } from '@/components';
-import { BasicLayoutComponentProps } from '@/utils/types';
+import { NetworkPortalLayout } from '~/components';
+import { BasicLayoutComponentProps } from '~/utils/types';
 
 function BasicLayout(props: BasicLayoutComponentProps) {
   const { children, location } = props;

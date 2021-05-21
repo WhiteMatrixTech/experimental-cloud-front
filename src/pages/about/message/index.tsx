@@ -3,12 +3,12 @@ import { connect } from 'dva';
 import moment from 'moment';
 import { Dispatch, history } from 'umi';
 import { Tabs, Input, Table, Button, Space } from 'antd';
-import { Breadcrumb } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { Breadcrumb } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { messageType } from './_config';
-import baseConfig from '@/utils/config';
+import baseConfig from '~/utils/config';
 import styles from './index.less';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 
 const { TabPane } = Tabs;
 const { Search } = Input;
@@ -36,7 +36,7 @@ for (let i = 0; i < 46; i++) {
 }
 
 export interface Fun {
-  (selectedRowKeys: any): void
+  (selectedRowKeys: any): void;
 }
 
 export interface RowSelection {
@@ -44,7 +44,7 @@ export interface RowSelection {
   onChange: Fun;
 }
 export interface MessageProps {
-  Message: { selectedMessageTab: string; };
+  Message: { selectedMessageTab: string };
   selectedMessageTab: string;
   dispatch: Dispatch;
 }
@@ -52,8 +52,8 @@ export interface MessageProps {
 function Message(props: MessageProps) {
   const [loading, setLoading] = useState(false);
   const [searchMesTitle, setSearchMesTitle] = useState('');
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);// 表格中选中的行
-  const [isShowViewAll, setIsShowViewAll] = useState(false);// 是否展示 查看全部消息按钮
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 表格中选中的行
+  const [isShowViewAll, setIsShowViewAll] = useState(false); // 是否展示 查看全部消息按钮
   const { selectedMessageTab } = props.Message;
 
   const columns = [
@@ -78,9 +78,16 @@ function Message(props: MessageProps) {
       title: '状态',
       dataIndex: 'messageStatus',
       key: 'messageStatus',
-      render: (text: number) => <span style={{
-        color: text === 0 ? '#000' : 'grey'
-      }}> {text === 0 ? '未读' : '已读'}</span >,
+      render: (text: number) => (
+        <span
+          style={{
+            color: text === 0 ? '#000' : 'grey',
+          }}
+        >
+          {' '}
+          {text === 0 ? '未读' : '已读'}
+        </span>
+      ),
     },
     {
       title: '消息类型',
@@ -113,7 +120,7 @@ function Message(props: MessageProps) {
     });
     //TODO:没有给它传参嗷~
     getMesList();
-  }, [])
+  }, []);
 
   // 获取消息列表
   const getMesList = (messageType: string | object, messageTitle: string, isShowViewAll: boolean): void => {
@@ -131,13 +138,13 @@ function Message(props: MessageProps) {
 
   // 点击查看全部消息
   const viewAllMess = (): void => {
-    setIsShowViewAll(false)
+    setIsShowViewAll(false);
     getMesList('', '', true);
   };
 
   // 点击查看未读消息
   const viewUnreadMess = (): void => {
-    setIsShowViewAll(false)
+    setIsShowViewAll(false);
     getMesList('', '', isShowViewAll);
   };
 
@@ -162,26 +169,27 @@ function Message(props: MessageProps) {
 
   // 回车、点击搜索图标 进行搜索
   const onSearch = (value: string): void => {
-    setSearchMesTitle(value)
+    setSearchMesTitle(value);
     getMesList('', value, isShowViewAll);
   };
 
   // 搜索栏值改变
   const onSearchChange = (e: any): void => {
-    setSearchMesTitle(e.target.value)
+    setSearchMesTitle(e.target.value);
   };
 
   // 选中消息
   const onSelectChange = (selectedRowKeys: any): void => {
-    setSelectedRowKeys(selectedRowKeys)
+    setSelectedRowKeys(selectedRowKeys);
   };
 
   // 批量已读
   const batchReadMes = () => {
-    props.dispatch({
-      type: 'Message/batchReadMes',
-      payload: { messageIds: selectedRowKeys },
-    })
+    props
+      .dispatch({
+        type: 'Message/batchReadMes',
+        payload: { messageIds: selectedRowKeys },
+      })
       .then((res: any) => {
         if (res) {
           //TODO:没有传参嗷~
@@ -192,10 +200,11 @@ function Message(props: MessageProps) {
 
   // 批量删除
   const batchDeleteMes = (): void => {
-    props.dispatch({
-      type: 'Message/batchDeleteMes',
-      payload: { messageIds: selectedRowKeys },
-    })
+    props
+      .dispatch({
+        type: 'Message/batchDeleteMes',
+        payload: { messageIds: selectedRowKeys },
+      })
       .then((res: any) => {
         if (res) {
           getMesList();
@@ -232,7 +241,7 @@ function Message(props: MessageProps) {
           <span>
             <Button type="primary" disabled={!hasSelected} loading={loading} onClick={batchReadMes}>
               标为已读
-              </Button>
+            </Button>
             <Button
               loading={loading}
               disabled={!hasSelected}
@@ -240,7 +249,7 @@ function Message(props: MessageProps) {
               className={hasSelected ? 'default-blue-btn' : ''}
             >
               批量删除
-              </Button>
+            </Button>
           </span>
           {isShowViewAll ? (
             <Button className="default-blue-btn" onClick={viewAllMess}>

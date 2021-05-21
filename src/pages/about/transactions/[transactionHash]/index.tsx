@@ -2,10 +2,10 @@ import React, { useEffect, useMemo, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Row, Col, Spin } from 'antd';
-import { Breadcrumb } from '@/components';
+import { Breadcrumb } from '~/components';
 import styles from './index.less';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import { ConnectState } from '@/models/connect';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
@@ -15,20 +15,22 @@ breadCrumbItem.push({
 });
 
 export type TransactionDetailProps = {
-  User: ConnectState['User'],
-  dispatch: Dispatch,
-  transactionHash: string,
-  qryLoading: boolean,
-  Transactions: ConnectState['Transactions'],
-  match: { params: { transactionHash: string } },
-}
-const TransactionDetail: React.FC<TransactionDetailProps> = (
-  { match: { params: { transactionHash }, },
-    User,
-    dispatch,
-    qryLoading = false,
-    Transactions
-  }) => {
+  User: ConnectState['User'];
+  dispatch: Dispatch;
+  transactionHash: string;
+  qryLoading: boolean;
+  Transactions: ConnectState['Transactions'];
+  match: { params: { transactionHash: string } };
+};
+const TransactionDetail: React.FC<TransactionDetailProps> = ({
+  match: {
+    params: { transactionHash },
+  },
+  User,
+  dispatch,
+  qryLoading = false,
+  Transactions,
+}) => {
   const { networkName } = User;
   const { transactionDetail } = Transactions;
 
@@ -71,7 +73,7 @@ const TransactionDetail: React.FC<TransactionDetailProps> = (
           label: '交易参数',
           value: JSON.stringify(transactionDetail.txArgs),
         },
-      ]
+      ];
     }
     return [];
   }, [transactionDetail]);
@@ -113,7 +115,7 @@ const TransactionDetail: React.FC<TransactionDetailProps> = (
       </div>
     </div>
   );
-}
+};
 
 export default connect(({ User, Transactions, loading }: ConnectState) => ({
   User,

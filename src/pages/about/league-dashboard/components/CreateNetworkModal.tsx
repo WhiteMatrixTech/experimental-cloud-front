@@ -4,8 +4,8 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import styles from './CreateNetworkModal.less';
 import { Dispatch } from 'umi';
-import { ConnectState } from '@/models/connect';
-import { CreateNodeInfo } from '@/services/dashboard';
+import { ConnectState } from '~/models/connect';
+import { CreateNodeInfo } from '~/services/dashboard';
 
 const { Item } = Form;
 const { Option } = Select;

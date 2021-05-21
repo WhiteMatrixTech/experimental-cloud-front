@@ -4,9 +4,9 @@ import { Menu } from 'antd';
 import { history } from 'umi';
 import { isEmpty } from 'lodash';
 import type { Dispatch } from 'umi';
-import { tree2Arr } from '@/utils';
-import { CommonMenuList, CommonMenuProps, RootMenuId } from '@/utils/menu';
-import { ConnectState } from '@/models/connect';
+import { tree2Arr } from '~/utils';
+import { CommonMenuList, CommonMenuProps, RootMenuId } from '~/utils/menu';
+import { ConnectState } from '~/models/connect';
 import styles from './index.less';
 
 const { SubMenu } = Menu;

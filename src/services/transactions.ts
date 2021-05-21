@@ -1,4 +1,4 @@
-import { AllPaginationParams, BasicApiParams } from '@/utils/types';
+import { AllPaginationParams, BasicApiParams } from '~/utils/types';
 import { request } from '../utils/request';
 
 /**

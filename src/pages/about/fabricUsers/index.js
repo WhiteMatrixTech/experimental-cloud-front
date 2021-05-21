@@ -3,12 +3,12 @@ import { connect } from 'dva';
 import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
-import { Breadcrumb } from 'components';
+import { Breadcrumb } from '~/components';
 import { Table, Button, Space, Form, Row, Col, Select, message } from 'antd';
 import CreateFabricUserModal from './components/CreateFabricUserModal';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { orgStatusEnum } from '../organizations/_config';
-import baseConfig from 'utils/config';
+import baseConfig from '~/utils/config';
 import styles from './index.less';
 
 const { Item } = Form;

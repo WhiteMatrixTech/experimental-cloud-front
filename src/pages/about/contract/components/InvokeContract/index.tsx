@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import ReactJson from 'react-json-view';
 import { Input, Descriptions, Select, Form, Switch, Button, Modal, Radio, Divider } from 'antd';
 import { ChainCodeSchema, Dispatch } from 'umi';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 
 const { Item } = Form;
 const { Option } = Select;

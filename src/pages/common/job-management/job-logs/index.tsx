@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
-import { Breadcrumb, DetailCard } from '@/components';
+import { Breadcrumb, DetailCard } from '~/components';
 import ReactJson from 'react-json-view';
-import { CommonMenuList, getCurBreadcrumb } from '@/utils/menu';
+import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 import { Dispatch, JobSchema, Location } from 'umi';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/job-management');

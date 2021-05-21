@@ -3,9 +3,9 @@ import { Link, connect, history } from 'umi';
 import { Form } from 'antd';
 import { parse } from 'qs';
 import LoginFrom from '@/pages/user/login/components/Login';
-import { LoginMessage } from '@/components';
-import LoginStatus from '@/utils/loginStatus';
-import { ConnectState } from '@/models/connect';
+import { LoginMessage } from '~/components';
+import LoginStatus from '~/utils/loginStatus';
+import { ConnectState } from '~/models/connect';
 import styles from './index.less';
 import { LoginProps } from '@/pages/user/login';
 
@@ -23,7 +23,7 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
         dispatch({
           type: 'User/login',
           payload: values,
-        }).then((res: { access_token: string; }) => {
+        }).then((res: { access_token: string }) => {
           if (res) {
             const search = window.location.search ? window.location.search.replace('?', '') : '';
             const { redirect } = parse(search);
@@ -74,7 +74,9 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
             },
           ]}
         />
-        <Submit className='' loading={loginLoading}>登录</Submit>
+        <Submit className="" loading={loginLoading}>
+          登录
+        </Submit>
         <div className={styles.other}>
           暂无账号?
           <Link className={styles.register} to="/user/register">
@@ -84,7 +86,7 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
       </LoginFrom>
     </div>
   );
-}
+};
 
 export default connect(({ User, loading }: ConnectState) => ({
   User,

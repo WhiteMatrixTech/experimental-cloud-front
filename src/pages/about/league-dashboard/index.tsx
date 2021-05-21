@@ -3,15 +3,15 @@ import { Spin, Table, Space, Col, Row, Button, message } from 'antd';
 import { connect } from 'dva';
 import { BlockSchema, Dispatch, history, TransactionSchema } from 'umi';
 import moment from 'moment';
-import { Roles } from '@/utils/roles';
-import { StatisticsCard, Breadcrumb } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import { NetworkStatus, NetworkInfo } from '@/utils/networkStatus';
+import { Roles } from '~/utils/roles';
+import { StatisticsCard, Breadcrumb } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import { NetworkStatus, NetworkInfo } from '~/utils/networkStatus';
 import CreateNetworkModal from './components/CreateNetworkModal';
-import config from '@/utils/config';
+import config from '~/utils/config';
 import style from './index.less';
-import { ConnectState } from '@/models/connect';
-import { TableColumnsAttr } from '@/utils/types';
+import { ConnectState } from '~/models/connect';
+import { TableColumnsAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/league-dashboard');
 export interface LeagueDashboardProps {

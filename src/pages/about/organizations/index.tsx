@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Table, Badge, Button } from 'antd';
 import moment from 'moment';
-import { Breadcrumb } from '@/components';
-import baseConfig from '@/utils/config';
+import { Breadcrumb } from '~/components';
+import baseConfig from '~/utils/config';
 import { orgStatus } from './_config';
 import CreateOrgModal from './components/CreateOrgModal';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import { ConnectState } from '@/models/connect';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
-import { TableColumnsAttr } from '@/utils/types';
+import { TableColumnsAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/organizations');
 export interface OrganizationManagementProps {

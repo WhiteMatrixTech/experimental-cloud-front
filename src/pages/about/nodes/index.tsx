@@ -3,17 +3,17 @@ import { connect } from 'dva';
 import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
-import { Breadcrumb } from '@/components';
+import { Breadcrumb } from '~/components';
 import { Table, Button, Badge, Space } from 'antd';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import CreateNodeModal from './components/CreateNodeModal';
 import SSHCommand from './components/SSHCommand';
-import baseConfig from '@/utils/config';
-import { Roles } from '@/utils/roles';
+import baseConfig from '~/utils/config';
+import { Roles } from '~/utils/roles';
 import { peerStatus, availableNodeStatus } from './_config';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
-import { TableColumnsAttr } from '@/utils/types';
+import { TableColumnsAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/nodes');
 

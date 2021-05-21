@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Table, Badge } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, DetailCard, SearchBar } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { Breadcrumb, DetailCard, SearchBar } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { chainCodeStatusInfo } from '../../contract/_config';
-import baseConfig from '@/utils/config';
-import { TableColumnsAttr, DetailViewAttr } from '@/utils/types';
-import { ConnectState } from '@/models/connect';
+import baseConfig from '~/utils/config';
+import { TableColumnsAttr, DetailViewAttr } from '~/utils/types';
+import { ConnectState } from '~/models/connect';
 import { ChannelSchema, Dispatch, Location } from 'umi';
-import { BasicApiParams, AllPaginationParams } from '@/utils/types';
+import { BasicApiParams, AllPaginationParams } from '~/utils/types';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
   menuName: '查看合约',

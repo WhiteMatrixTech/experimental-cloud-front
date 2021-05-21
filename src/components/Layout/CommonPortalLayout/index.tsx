@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Layout as AntdLayout } from 'antd';
-import { TopHeader, ServicesDrawer } from '@/components';
-import { ConnectState } from '@/models/connect';
+import { TopHeader, ServicesDrawer } from '~/components';
+import { ConnectState } from '~/models/connect';
 import styles from './index.less';
 
 export type BaaSLayoutProps = {

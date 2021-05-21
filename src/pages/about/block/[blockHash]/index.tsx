@@ -3,12 +3,12 @@ import { connect } from 'dva';
 import moment from 'moment';
 import { Dispatch, history } from 'umi';
 import { Table, Space, Row, Col, Spin } from 'antd';
-import { Breadcrumb } from '@/components';
-import baseConfig from '@/utils/config';
+import { Breadcrumb } from '~/components';
+import baseConfig from '~/utils/config';
 import styles from './index.less';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import { ConnectState } from '@/models/connect';
-import { DetailViewAttr } from '@/utils/types';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import { ConnectState } from '~/models/connect';
+import { DetailViewAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 breadCrumbItem.push({
@@ -17,7 +17,7 @@ breadCrumbItem.push({
 });
 
 export interface BlockDetailProps {
-  match: { params: { blockHash: string } },
+  match: { params: { blockHash: string } };
   User: ConnectState['User'];
   Block: ConnectState['Block'];
   qryLoading: boolean;
@@ -74,7 +74,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
     {
       title: '操作',
       key: 'action',
-      render: (text: string, record: { channelId?: string; txMsp?: string; txId?: string; }) => (
+      render: (text: string, record: { channelId?: string; txMsp?: string; txId?: string }) => (
         <Space size="small">
           {record.channelId || record.txMsp ? (
             <a onClick={() => onClickDetail(record)}>详情</a>
@@ -108,7 +108,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
   };
 
   // 点击查看交易详情
-  const onClickDetail = (record: { channelId?: string | undefined; txMsp?: string | undefined; txId: string; }) => {
+  const onClickDetail = (record: { channelId?: string | undefined; txMsp?: string | undefined; txId: string }) => {
     dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/transactions' },
@@ -163,7 +163,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
           value: blockDetail.channelId,
         },
       ];
-    };
+    }
     return [];
   }, [blockDetail]);
 
@@ -216,7 +216,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
       </Spin>
     </div>
   );
-}
+};
 
 export default connect(({ User, Layout, Block, loading }: ConnectState) => ({
   User,

@@ -6,8 +6,8 @@ import { connect } from 'dva';
 import { history } from 'umi';
 import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal, Input, message } from 'antd';
 import { CaretDownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Breadcrumb } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { defaultValue, setParams } from '../_config';
 import styles from './index.less';
 

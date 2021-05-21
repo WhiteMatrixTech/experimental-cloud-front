@@ -1,16 +1,16 @@
-import { AllPaginationParams, BasicApiParams } from '@/utils/types';
+import { AllPaginationParams, BasicApiParams } from '~/utils/types';
 import { request } from '../utils/request';
 
 /**
  * 创建通道
  */
 export type CreateChannelApiParams = {
-  networkName: string
-  channelNameAlias: string,   // 通道别名
-  channelId: string,          // 通道id
-  peerOrgNames: string[],    // 组织别名
-  description: string        // 通道描述
-}
+  networkName: string;
+  channelNameAlias: string; // 通道别名
+  channelId: string; // 通道id
+  peerOrgNames: string[]; // 组织别名
+  description: string; // 通道描述
+};
 
 export async function createChannel(params: CreateChannelApiParams) {
   return request(`/network/${params.networkName}/channels/createChannel`, { method: 'POST', body: params });

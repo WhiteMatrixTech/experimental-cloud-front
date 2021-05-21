@@ -3,18 +3,18 @@ import { Table, Space, Col, Row } from 'antd';
 import { connect } from 'dva';
 import { ChannelSchema, Dispatch, history, Location } from 'umi';
 import moment from 'moment';
-import { StatisticsCard, Breadcrumb } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { StatisticsCard, Breadcrumb } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ChannelStatus } from '../_config';
 import style from './index.less';
-import config from '@/utils/config';
-import peer from 'assets/images/dashboard/icon-peer.png';
-import msp from 'assets/images/dashboard/icon-msp.png';
-import chaincode from 'assets/images/dashboard/icon-chaincode.png';
-import block from 'assets/images/dashboard/icon-block.png';
-import transactions from 'assets/images/dashboard/icon-transcation.png';
-import { ConnectState } from '@/models/connect';
-import { TableColumnsAttr } from '@/utils/types';
+import config from '~/utils/config';
+import peer from '~/assets/images/dashboard/icon-peer.png';
+import msp from '~/assets/images/dashboard/icon-msp.png';
+import chaincode from '~/assets/images/dashboard/icon-chaincode.png';
+import block from '~/assets/images/dashboard/icon-block.png';
+import transactions from '~/assets/images/dashboard/icon-transcation.png';
+import { ConnectState } from '~/models/connect';
+import { TableColumnsAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
@@ -133,7 +133,7 @@ function ChannelDetail(props: ChannelDetailProps) {
     getStaticInfo();
     getBlockList();
     getTransactionList();
-  }, [])
+  }, []);
 
   // 获取汇总信息
   const getStaticInfo = () => {
@@ -165,7 +165,7 @@ function ChannelDetail(props: ChannelDetailProps) {
   };
 
   // 查看交易详情
-  const onClickTransactionDetail = (record: { txId: string; }) => {
+  const onClickTransactionDetail = (record: { txId: string }) => {
     props.dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/transactions' },
@@ -195,7 +195,7 @@ function ChannelDetail(props: ChannelDetailProps) {
   };
 
   // 查看区块详情
-  const onClickBlockDetail = (record: { blockHash: string; }) => {
+  const onClickBlockDetail = (record: { blockHash: string }) => {
     props.dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/block' },

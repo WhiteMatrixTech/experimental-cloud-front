@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Table, Space } from 'antd';
 import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
-import { ConnectState } from '@/models/connect';
-import { Breadcrumb } from '@/components';
-import { CommonMenuList, getCurBreadcrumb } from '@/utils/menu';
-import { TableColumnsAttr } from '@/utils/types';
-import { JobSchema } from '@/models/block-chain-compile';
-import baseConfig from '@/utils/config';
+import { ConnectState } from '~/models/connect';
+import { Breadcrumb } from '~/components';
+import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
+import { TableColumnsAttr } from '~/utils/types';
+import { JobSchema } from '~/models/block-chain-compile';
+import baseConfig from '~/utils/config';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/job-management', false);
 

@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Button, Modal, Form, Select } from 'antd';
 import MonacoEditor from 'react-monaco-editor';
 import { Dispatch } from 'umi';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 
 const { Option } = Select;
 const editorOptions = {

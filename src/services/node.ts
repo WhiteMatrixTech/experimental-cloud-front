@@ -1,5 +1,5 @@
 import { request } from '../utils/request';
-import { BasicApiParams } from '@/utils/types';
+import { BasicApiParams } from '~/utils/types';
 
 /**
  * 获取节点的列表

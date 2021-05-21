@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Dispatch, history, Location} from 'umi';
+import { Dispatch, history, Location } from 'umi';
 import { Table, Button, Badge, Space, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Breadcrumb } from '@/components';
+import { Breadcrumb } from '~/components';
 import CreateChannelModal from './components/CreateChannelModal';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import baseConfig from '@/utils/config';
-import { Roles } from '@/utils/roles';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import baseConfig from '~/utils/config';
+import { Roles } from '~/utils/roles';
 import { ChannelStatus } from './_config';
-import { ConnectState } from '@/models/connect';
-import { TableColumnsAttr, } from '@/utils/types';
-import { ChannelSchema} from '@/models/channel';
+import { ConnectState } from '~/models/connect';
+import { TableColumnsAttr } from '~/utils/types';
+import { ChannelSchema } from '~/models/channel';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 
@@ -33,7 +33,7 @@ function ChannelManagement(props: ChannelManagementProps) {
 
   // 获取通道列表
   const getChannelList = () => {
-    const offset = ( pageNum- 1) * pageSize;
+    const offset = (pageNum - 1) * pageSize;
     const params = {
       offset,
       networkName,
@@ -104,7 +104,7 @@ function ChannelManagement(props: ChannelManagementProps) {
   // 点击操作按钮, 进行二次确认
   const onClickToConfirm = (record: ChannelSchema, type: any) => {
     let tipTitle = '';
-    let callback = () => { };
+    let callback = () => {};
     switch (type) {
       case 'enable':
         tipTitle = '启用';
@@ -183,7 +183,7 @@ function ChannelManagement(props: ChannelManagementProps) {
         </Space>
       ),
     },
-  ]
+  ];
 
   useEffect(() => {
     if (location?.state?.openModal) {

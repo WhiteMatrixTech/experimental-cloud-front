@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Switch, Button, Upload, Modal, notification } from 'antd';
 import { normFile, handleBeforeUpload } from './_func';
-import { ConnectState } from '@/models/connect';
-import { ChainCodeSchema } from '@/models/contract';
+import { ConnectState } from '~/models/connect';
+import { ChainCodeSchema } from '~/models/contract';
 import { Dispatch } from 'umi';
 
 const { Item } = Form;

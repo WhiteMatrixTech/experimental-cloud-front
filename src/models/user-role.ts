@@ -1,28 +1,28 @@
 import * as API from '../services/user-role';
 import type { Reducer, Effect } from 'umi';
 import { notification } from 'antd';
-import { Roles } from '@/utils/roles';
+import { Roles } from '~/utils/roles';
 
 export type UserRoleObject = {
-  networkName: string,
-  roleName: string
-}
+  networkName: string;
+  roleName: string;
+};
 export type UserInfo = {
-  loginName: string,
-  companyName: string,
-  contactEmail: string,
-  contactName: string,
-  role: Roles,
+  loginName: string;
+  companyName: string;
+  contactEmail: string;
+  contactName: string;
+  role: Roles;
   did?: string;
-  createTimeStamp: string
-}
+  createTimeStamp: string;
+};
 
 export type UserRoleModelState = {
-  userList: Array<UserInfo>,
-  userTotal: number,
-  roleNameList: string[],
-  userRoles: UserRoleObject[]
-}
+  userList: Array<UserInfo>;
+  userTotal: number;
+  roleNameList: string[];
+  userRoles: UserRoleObject[];
+};
 
 export type UserRoleModelType = {
   namespace: 'UserRole';
@@ -46,7 +46,7 @@ const UserRoleModel: UserRoleModelType = {
     userList: [], // 用户列表
     userTotal: 0,
     roleNameList: [],
-    userRoles: []
+    userRoles: [],
   },
 
   effects: {

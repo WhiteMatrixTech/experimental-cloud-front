@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Row, Col } from 'antd';
-import { Breadcrumb } from 'components';
-import { CommonMenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb } from '~/components';
+import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');

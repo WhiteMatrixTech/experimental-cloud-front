@@ -2,8 +2,8 @@ import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Select, Form, Button, Modal } from 'antd';
 import { Dispatch } from 'umi';
-import { ConnectState } from '@/models/connect';
-import { OrganizationSchema } from '@/models/organization';
+import { ConnectState } from '~/models/connect';
+import { OrganizationSchema } from '~/models/organization';
 
 const { Item } = Form;
 const { Option } = Select;

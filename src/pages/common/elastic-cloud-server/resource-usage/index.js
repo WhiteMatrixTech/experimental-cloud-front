@@ -2,9 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Table } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, DetailCard } from 'components';
-import { CommonMenuList, getCurBreadcrumb } from 'utils/menu';
-import baseConfig from 'utils/config';
+import { Breadcrumb, DetailCard } from '~/components';
+import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
+import baseConfig from '~/utils/config';
 import { serverPurpose } from '../_config';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');

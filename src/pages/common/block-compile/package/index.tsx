@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Space } from 'antd';
 import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
-import { ConnectState } from '@/models/connect';
-import { Breadcrumb } from '@/components';
+import { ConnectState } from '~/models/connect';
+import { Breadcrumb } from '~/components';
 import OneKeyCompile from './components/OneKeyCompile';
-import { CommonMenuList, getCurBreadcrumb } from '@/utils/menu';
-import { TableColumnsAttr } from '@/utils/types';
-import { GitBuildRepoTask } from '@/models/block-chain-compile';
+import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
+import { TableColumnsAttr } from '~/utils/types';
+import { GitBuildRepoTask } from '~/models/block-chain-compile';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem.push({

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
 import { DidSchema, Dispatch, history } from 'umi';
-import { Breadcrumb } from '@/components';
+import { Breadcrumb } from '~/components';
 import { Table, Button, Space, Form, Row, Col, Input, Modal } from 'antd';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import baseConfig from '@/utils/config';
-import { ConnectState } from '@/models/connect';
-import { TableColumnsAttr } from '@/utils/types';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import baseConfig from '~/utils/config';
+import { ConnectState } from '~/models/connect';
+import { TableColumnsAttr } from '~/utils/types';
 
 const { Item } = Form;
 const formItemLayout = {

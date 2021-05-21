@@ -1,4 +1,4 @@
-import { BasicLayoutComponentProps } from '@/utils/types';
+import { BasicLayoutComponentProps } from '~/utils/types';
 import { Redirect } from 'umi';
 
 function Auth(props: BasicLayoutComponentProps): JSX.Element {
@@ -9,6 +9,6 @@ function Auth(props: BasicLayoutComponentProps): JSX.Element {
   } else {
     return <Redirect to="/user/login" />;
   }
-};
+}
 
 export default Auth;

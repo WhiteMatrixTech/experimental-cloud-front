@@ -2,17 +2,17 @@ import React from 'react';
 import { connect } from 'dva';
 import { history } from 'umi';
 import { Button, Result } from 'antd';
-import { ConnectState } from '@/models/connect';
-import { BasicComponentProps } from '@/utils/types';
+import { ConnectState } from '~/models/connect';
+import { BasicComponentProps } from '~/utils/types';
 
 const UnAuthorizedPage = (props: BasicComponentProps) => {
   const onClickBack = () => {
     props.dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/league-dashboard' }
+      payload: { selectedMenu: '/about/league-dashboard' },
     });
-    history.push('/')
-  }
+    history.push('/');
+  };
 
   return (
     <Result
@@ -22,10 +22,10 @@ const UnAuthorizedPage = (props: BasicComponentProps) => {
       extra={
         <Button type="primary" onClick={onClickBack}>
           Back Home
-      </Button>
+        </Button>
       }
     />
-  )
+  );
 };
 
 export default connect(({ Layout }: ConnectState) => ({ Layout }))(UnAuthorizedPage);
