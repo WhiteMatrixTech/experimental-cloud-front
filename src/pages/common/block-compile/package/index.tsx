@@ -117,10 +117,8 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    if (compileContinueData) {
-      if (gitBuildJobTotal > pageSize) {
-        setMoreBtnVisible(true);
-      }
+    if (gitBuildJobTotal >= pageSize) {
+      setMoreBtnVisible(true);
     }
   }, [compileContinueData]);
 
@@ -150,11 +148,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
           dataSource={gitBuildJobList}
           onChange={onPageChange}
           pagination={{
-            pageSize: 10,
-            total: gitBuildJobTotal,
-            current: pageNum,
-            showSizeChanger: false,
-            position: ['bottomCenter'],
+            hideOnSinglePage: true,
           }}
         />
         <div className={styles.jobListMore}>
@@ -163,7 +157,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
             onClick={getMoreCompileJobList}
             style={{ display: moreBtnVisible ? 'block' : 'none' }}
           >
-            更多
+            加载更多
           </button>
         </div>
       </div>

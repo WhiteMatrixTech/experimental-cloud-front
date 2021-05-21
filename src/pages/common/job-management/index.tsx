@@ -85,10 +85,8 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   }, []);
 
   useEffect(() => {
-    if (jobContinueData) {
-      if (jobTotal > pageSize) {
-        setMoreBtnVisible(true);
-      }
+    if (jobTotal >= pageSize) {
+      setMoreBtnVisible(true);
     }
   }, [jobContinueData]);
   //获取更多
@@ -112,11 +110,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
           dataSource={jobList}
           onChange={onPageChange}
           pagination={{
-            pageSize: baseConfig.pageSize,
-            total: jobTotal,
-            current: pageNum,
-            showSizeChanger: false,
-            position: ['bottomCenter'],
+            hideOnSinglePage: true,
           }}
         />
         <div className={styles.jobListMore}>
@@ -125,7 +119,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
             onClick={getMoreJobList}
             style={{ display: moreBtnVisible ? 'block' : 'none' }}
           >
-            更多
+            加载更多
           </button>
         </div>
       </div>
