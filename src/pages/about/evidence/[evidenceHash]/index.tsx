@@ -3,17 +3,27 @@ import { connect } from 'dva';
 import moment from 'moment';
 import { Spin } from 'antd';
 import { isObject } from 'lodash';
-import { Breadcrumb, DetailCard } from 'components';
+import { Breadcrumb, DetailCard } from '@/components';
 import ReactJson from 'react-json-view';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import styles from './index.less';
+import { ConnectState } from '@/models/connect';
+import { Dispatch, EvidenceSchema, Location } from 'umi';
+import { DetailViewAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 breadCrumbItem.push({
   menuName: '存证上链详情',
   menuHref: `/`,
 });
-
+export interface EvidenceDataDetailProps {
+  User: ConnectState['User'];
+  Evidence: ConnectState['Evidence'];
+  qryLoading: boolean;
+  location: Location<EvidenceSchema>;
+  dispatch: Dispatch;
+  match: { params: { evidenceHash: string } };
+}
 function EvidenceDataDetail({
   match: {
     params: { evidenceHash },
@@ -23,39 +33,39 @@ function EvidenceDataDetail({
   qryLoading = false,
   location,
   dispatch,
-}) {
+}: EvidenceDataDetailProps) {
   const { networkName } = User;
   const { evidenceDataDetail } = Evidence;
-  const detailList = [
+  const detailList: DetailViewAttr[] = [
     {
       label: '存证哈希',
-      value: evidenceDataDetail.evidenceHash,
+      value: evidenceDataDetail && evidenceDataDetail.evidenceHash,
     },
     {
       label: '所属通道',
-      value: evidenceDataDetail.channelId,
+      value: evidenceDataDetail && evidenceDataDetail.channelId,
     },
     {
       label: '创建用户',
-      value: evidenceDataDetail.companyName,
+      value: evidenceDataDetail && evidenceDataDetail.companyName,
     },
     {
       label: '上链时间',
-      value: moment(evidenceDataDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+      value: evidenceDataDetail && moment(evidenceDataDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       label: '所属网络',
-      value: evidenceDataDetail.networkName,
+      value: evidenceDataDetail && evidenceDataDetail.networkName,
     },
     {
       label: '存证用户',
-      value: evidenceDataDetail.createUser,
+      value: evidenceDataDetail && evidenceDataDetail.createUser,
     },
   ];
 
   const getEvidenceData = () => {
-    if (evidenceDataDetail.evidenceData) {
-      let evidenceData = '';
+    let evidenceData: { evidenceData: string } = { evidenceData: '' };
+    if (evidenceDataDetail && evidenceDataDetail.evidenceData) {
       try {
         let parsedData = null;
         parsedData = JSON.parse(evidenceDataDetail.evidenceData);
@@ -68,7 +78,7 @@ function EvidenceDataDetail({
       }
       return evidenceData;
     }
-    return '';
+    return evidenceData;
   };
 
   useEffect(() => {
@@ -98,7 +108,7 @@ function EvidenceDataDetail({
   );
 }
 
-export default connect(({ User, Layout, Evidence, loading }) => ({
+export default connect(({ User, Layout, Evidence, loading }: ConnectState) => ({
   User,
   Evidence,
   Layout,
