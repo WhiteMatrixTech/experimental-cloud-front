@@ -3,20 +3,20 @@ import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
 export type EvidenceSchema = {
-  evidenceHash: string,
-  networkName: string,
-  channelId: string,
-  evidenceData: string,
-  companyName: string,
-  createUser: string,
-  createdAt: string
-}
+  evidenceHash: string;
+  networkName: string;
+  channelId: string;
+  evidenceData: string;
+  companyName: string;
+  createUser: string;
+  createdAt: string;
+};
 
 export type EvidenceModelState = {
-  evidenceDataList: Array<EvidenceSchema>,
-  evidenceDataTotal: number,
-  evidenceDataDetail: EvidenceSchema | object,
-}
+  evidenceDataList: Array<EvidenceSchema>;
+  evidenceDataTotal: number;
+  evidenceDataDetail: EvidenceSchema | null;
+};
 
 export type EvidenceModelType = {
   namespace: 'Evidence';
@@ -38,7 +38,7 @@ const EvidenceModel: EvidenceModelType = {
 
   state: {
     evidenceDataList: [], // 已存证上链列表
-    evidenceDataDetail: {}, //存证的详情
+    evidenceDataDetail: null, //存证的详情
     evidenceDataTotal: 0,
   },
 

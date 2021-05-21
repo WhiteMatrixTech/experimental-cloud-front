@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { history } from 'umi';
+import { Dispatch, EvidenceSchema, history } from 'umi';
 import { Table, Space } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, SearchBar } from 'components';
-import baseConfig from 'utils/config';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb, SearchBar } from '@/components';
+import baseConfig from '@/utils/config';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import EvidenceOnChain from './components/EvidenceOnChain';
+import { ConnectState } from '@/models/connect';
+import { TableColumnsAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 
-function EvidenceDataList(props) {
+export interface EvidenceDataListProps {
+  User: ConnectState['User'];
+  Evidence: ConnectState['Evidence'];
+  qryLoading: boolean;
+  dispatch: Dispatch;
+}
+function EvidenceDataList(props: EvidenceDataListProps) {
   const { User, Evidence, qryLoading, dispatch } = props;
   const { evidenceDataList, evidenceDataTotal } = Evidence;
   const { networkName } = User;
@@ -19,7 +27,7 @@ function EvidenceDataList(props) {
   const [uploadVisible, setUploadVisible] = useState(false);
   const [pageSize] = useState(baseConfig.pageSize);
 
-  const columns = [
+  const columns: TableColumnsAttr[] = [
     {
       title: '哈希',
       dataIndex: 'evidenceHash',
@@ -46,7 +54,7 @@ function EvidenceDataList(props) {
     {
       title: '操作',
       key: 'action',
-      render: (text, record) => (
+      render: (text, record: EvidenceSchema) => (
         <Space size="small">
           <a onClick={() => onClickDetail(record)}>详情</a>
         </Space>
@@ -54,7 +62,7 @@ function EvidenceDataList(props) {
     },
   ];
   // 点击查看详情
-  const onClickDetail = (record) => {
+  const onClickDetail = (record: EvidenceSchema) => {
     history.push({
       pathname: `/about/Evidence/${record.evidenceHash}`,
       query: {
@@ -70,7 +78,7 @@ function EvidenceDataList(props) {
   };
 
   // 取消存证上链
-  const onCloseUpload = (res) => {
+  const onCloseUpload = (res: any) => {
     setUploadVisible(false);
     if (res === 'refresh') {
       getEvidenceTotalDocs();
@@ -112,7 +120,7 @@ function EvidenceDataList(props) {
   };
 
   // 搜索
-  const onSearch = (value, event) => {
+  const onSearch = (value: string, event: { type: string }) => {
     if (event.type && (event.type === 'click' || event.type === 'keydown')) {
       setPageNum(1);
       setEvidenceHash(value || '');
@@ -120,7 +128,7 @@ function EvidenceDataList(props) {
   };
 
   // 翻页
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
@@ -157,7 +165,7 @@ function EvidenceDataList(props) {
   );
 }
 
-export default connect(({ User, Evidence, loading }) => ({
+export default connect(({ User, Evidence, loading }: ConnectState) => ({
   User,
   Evidence,
   qryLoading: loading.effects['Evidence/getEvidenceDataList'] || loading.effects['Evidence/getEvidenceDataByHash'],

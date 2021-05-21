@@ -2,13 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { Button, Modal, Form, Select } from 'antd';
 import MonacoEditor from 'react-monaco-editor';
+import { Dispatch } from 'umi';
+import { ConnectState } from '@/models/connect';
 
 const { Option } = Select;
 const editorOptions = {
   selectOnLineNumbers: true,
 };
-
-function EvidenceOnChain(props) {
+export interface EvidenceOnChainProps {
+  visible: boolean;
+  onCancel: (res?: any) => void;
+  dispatch: Dispatch;
+  Contract: ConnectState['Contract'];
+  User: ConnectState['User'];
+  addLoading: boolean;
+}
+function EvidenceOnChain(props: EvidenceOnChainProps) {
   const { visible, onCancel, dispatch, Contract, User, addLoading = false } = props;
   const { networkName } = User;
 
@@ -42,7 +51,7 @@ function EvidenceOnChain(props) {
       });
   };
 
-  const checkJSON = (_, value) => {
+  const checkJSON = (_: any, value: any) => {
     const promise = Promise; // 没有值的情况
 
     if (!value) {
@@ -52,10 +61,10 @@ function EvidenceOnChain(props) {
     return promise.resolve();
   };
 
-  const editorDidMount = (editor, _) => {
+  const editorDidMount = (editor: { focus: () => void }, _: any) => {
     editor.focus();
   };
-  const onChange = (newValue, e) => {
+  const onChange = (newValue: string, e: any) => {
     setJsonContent(newValue);
   };
 
@@ -125,7 +134,7 @@ function EvidenceOnChain(props) {
   );
 }
 
-export default connect(({ Contract, User, Evidence, loading }) => ({
+export default connect(({ Contract, User, Evidence, loading }: ConnectState) => ({
   Contract,
   User,
   Evidence,
