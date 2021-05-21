@@ -6,7 +6,7 @@ import { Table, Button, Space, Form, Row, Col, Input, Modal } from 'antd';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import baseConfig from '~/utils/config';
 import { ConnectState } from '~/models/connect';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 
 const { Item } = Form;
 const formItemLayout = {
@@ -87,7 +87,7 @@ function DidManagement(props: DidManagementProps) {
     setPageNum(pageInfo.current);
   };
 
-  const columns: TableColumnsAttr[] = useMemo(() => {
+  const columns: ColumnsType<any> = useMemo(() => {
     return [
       {
         title: 'DID',

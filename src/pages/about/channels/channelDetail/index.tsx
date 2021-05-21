@@ -14,7 +14,7 @@ import chaincode from '~/assets/images/dashboard/icon-chaincode.png';
 import block from '~/assets/images/dashboard/icon-block.png';
 import transactions from '~/assets/images/dashboard/icon-transcation.png';
 import { ConnectState } from '~/models/connect';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
@@ -49,7 +49,7 @@ function ChannelDetail(props: ChannelDetailProps) {
     { label: '交易', num: transactionTotalOfChannel },
     { label: '合约', num: contractTotalOfChannel },
   ];
-  const blockColumns: TableColumnsAttr[] = [
+  const blockColumns: ColumnsType<any> = [
     {
       title: '区块HASH',
       dataIndex: 'blockHash',
@@ -82,7 +82,7 @@ function ChannelDetail(props: ChannelDetailProps) {
       ),
     },
   ];
-  const transactionColumns: TableColumnsAttr[] = [
+  const transactionColumns: ColumnsType<any> = [
     {
       title: '交易ID',
       dataIndex: 'txId',

@@ -8,7 +8,7 @@ import baseConfig from '~/utils/config';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import EvidenceOnChain from './components/EvidenceOnChain';
 import { ConnectState } from '~/models/connect';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 
@@ -27,7 +27,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
   const [uploadVisible, setUploadVisible] = useState(false);
   const [pageSize] = useState(baseConfig.pageSize);
 
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '哈希',
       dataIndex: 'evidenceHash',

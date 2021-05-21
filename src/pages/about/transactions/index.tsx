@@ -7,7 +7,7 @@ import { Breadcrumb, SearchBar } from '~/components';
 import baseConfig from '~/utils/config';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 
@@ -81,7 +81,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       },
     });
   };
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '交易ID',
       dataIndex: 'txId',

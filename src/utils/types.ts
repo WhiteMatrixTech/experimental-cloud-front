@@ -26,15 +26,6 @@ type BasicApiParams = {
   channelId?: string;
 };
 
-type TableColumnsAttr = {
-  title: string;
-  dataIndex?: string;
-  key: string;
-  ellipsis?: boolean;
-  width?: string | number;
-  fixed?: string;
-  render?: (text: any, record?: any) => string | JSX.Element;
-};
 interface DetailViewAttr {
   label: string;
   value: any;
@@ -50,6 +41,5 @@ export {
   BasicPaginationParams,
   AllPaginationParams,
   BasicApiParams,
-  TableColumnsAttr,
   DetailViewAttr,
 };

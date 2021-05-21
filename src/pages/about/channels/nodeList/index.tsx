@@ -6,11 +6,10 @@ import { Breadcrumb, DetailCard } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { peerStatus } from '../../nodes/_config';
 import baseConfig from '~/utils/config';
-import { Roles } from '~/utils/roles';
-import { TableColumnsAttr, DetailViewAttr } from '~/utils/types';
+import { DetailViewAttr } from '~/utils/types';
 import { ConnectState } from '~/models/connect';
 import { ChannelSchema, Dispatch, Location } from 'umi';
-import { PeerSchema } from '~/models/node';
+import { ColumnsType } from 'antd/lib/table';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
   menuName: '查看节点',
@@ -28,10 +27,9 @@ function NodeList(props: NodeListProps) {
   const [pageNum, setPageNum] = useState(1);
   const [peerName, setPeerName] = useState('');
   const { qryLoading = false, location } = props;
-  const { userRole } = props.User;
   const { nodeListOfChannel, orgTotalOfChannel, nodeTotalOfChannel } = props.Channel;
 
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '节点名称',
       dataIndex: 'nodeName',

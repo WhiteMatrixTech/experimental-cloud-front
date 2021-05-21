@@ -13,7 +13,7 @@ import { Roles } from '~/utils/roles';
 import { peerStatus, availableNodeStatus } from './_config';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/nodes');
 
@@ -28,7 +28,7 @@ function NodeManagement(props: NodeManagementProps) {
   const { dispatch, qryLoading = false, User } = props;
   const { networkName, userRole } = User;
   const { nodeList, nodeTotal } = props.Peer;
-  const [columns, setColumns] = useState<TableColumnsAttr[]>([]);
+  const [columns, setColumns] = useState<ColumnsType<any>>([]);
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
   const [nodeRecord, setNodeRecord] = useState<PeerSchema>({});
@@ -90,7 +90,7 @@ function NodeManagement(props: NodeManagementProps) {
 
   // 用户身份改变时，表格展示改变
   useEffect(() => {
-    const data: TableColumnsAttr[] = [
+    const data: ColumnsType<any> = [
       {
         title: '节点名称',
         dataIndex: 'nodeName',

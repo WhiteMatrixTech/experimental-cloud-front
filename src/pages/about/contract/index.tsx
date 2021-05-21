@@ -16,7 +16,7 @@ import baseConfig from '~/utils/config';
 import { Roles } from '~/utils/roles';
 import { chainCodeStatusInfo, ChainCodeStatus, VerifyStatusList, UpdateStatusList } from './_config';
 import { ConnectState } from '~/models/connect';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 
 const pageSize = baseConfig.pageSize;
@@ -213,7 +213,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
     });
   };
 
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '合约名称',
       dataIndex: 'chainCodeName',

@@ -10,7 +10,7 @@ import { SecretType } from './_config';
 import styles from './index.less';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -42,7 +42,7 @@ function Certificate(props: CertificateProps) {
   const [queryParams, setQueryParams] = useState(initSearchObj);
   const [form] = Form.useForm();
 
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '证书名称',
       dataIndex: 'certificateName',

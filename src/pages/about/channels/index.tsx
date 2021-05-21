@@ -11,7 +11,7 @@ import baseConfig from '~/utils/config';
 import { Roles } from '~/utils/roles';
 import { ChannelStatus } from './_config';
 import { ConnectState } from '~/models/connect';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 import { ChannelSchema } from '~/models/channel';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
@@ -127,7 +127,7 @@ function ChannelManagement(props: ChannelManagementProps) {
     });
   };
 
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '通道名称',
       dataIndex: 'channelId',

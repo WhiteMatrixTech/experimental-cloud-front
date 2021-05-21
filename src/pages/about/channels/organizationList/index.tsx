@@ -7,7 +7,7 @@ import AddOrg from '../components/AddOrg';
 import { ChannelStatusMap } from '../_config';
 import baseConfig from '~/utils/config';
 import { Roles } from '~/utils/roles';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 import { ChannelSchema, Dispatch, Location } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { DetailViewAttr } from '~/utils/types';
@@ -18,7 +18,7 @@ breadCrumbItem.push({
   menuHref: `/`,
 });
 
-const columns: TableColumnsAttr[] = [
+const columns: ColumnsType<any> = [
   {
     title: '组织名称',
     dataIndex: 'orgName',

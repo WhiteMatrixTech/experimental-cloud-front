@@ -3,13 +3,12 @@ import { connect } from 'dva';
 import { Table, Row, Col, Form, DatePicker, Input, Button } from 'antd';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
-import { Breadcrumb } from '@/components';
-import baseConfig from '@/utils/config';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import styles from './index.less';
-import { ConnectState } from '@/models/connect';
+import { Breadcrumb } from '~/components';
+import baseConfig from '~/utils/config';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
-import { TableColumnsAttr } from '@/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 
 const { Item } = Form;
 const { RangePicker } = DatePicker;
@@ -39,7 +38,7 @@ function LogsList(props: LogsListProps) {
   const [form] = Form.useForm();
   const [queryParams, setQueryParams] = useState(initSearchObj);
 
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '用户名称',
       dataIndex: 'userName',

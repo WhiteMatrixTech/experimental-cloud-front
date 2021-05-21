@@ -13,7 +13,7 @@ import styles from './index.less';
 import { statusList, validStatus } from './_config';
 import ConfigMemberRole from './components/ConfigMemberRole';
 import { ConnectState } from '~/models/connect';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 
 const { Item } = Form;
 const Option = Select.Option;
@@ -49,7 +49,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   const [memberRecord, setMemberRecord] = useState<EnterpriseMemberSchema | null>(null);
   const [configVisible, setConfigVisible] = useState(false);
 
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '用户名',
       dataIndex: 'companyName',

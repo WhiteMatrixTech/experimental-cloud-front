@@ -6,8 +6,8 @@ import { ConnectState } from '~/models/connect';
 import { Breadcrumb } from '~/components';
 import OneKeyCompile from './components/OneKeyCompile';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
-import { TableColumnsAttr } from '~/utils/types';
 import { GitBuildRepoTask } from '~/models/block-chain-compile';
+import { ColumnsType } from 'antd/lib/table';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem.push({
@@ -58,7 +58,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
     });
   };
 
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '仓库地址',
       dataIndex: 'gitRepoUrl',

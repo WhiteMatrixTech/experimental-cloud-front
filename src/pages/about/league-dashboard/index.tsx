@@ -11,7 +11,7 @@ import CreateNetworkModal from './components/CreateNetworkModal';
 import config from '~/utils/config';
 import style from './index.less';
 import { ConnectState } from '~/models/connect';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/league-dashboard');
 export interface LeagueDashboardProps {
@@ -27,8 +27,8 @@ function LeagueDashboard(props: LeagueDashboardProps) {
   const { Dashboard, User, dispatch, qryBlockLoading, qryNetworkLoading = false, qryTransactionLoading } = props;
   const { leagueName, networkName, userRole } = User;
   const { serverTotal } = props.ElasticServer;
-  const [blockColumns, setBlockColumns] = useState<TableColumnsAttr[]>([]);
-  const [transactionColumns, setTransactionColumns] = useState<TableColumnsAttr[]>([]);
+  const [blockColumns, setBlockColumns] = useState<ColumnsType<any>>([]);
+  const [transactionColumns, setTransactionColumns] = useState<ColumnsType<any>>([]);
   const { networkStatusInfo, transactionList, blockList, channelTotal } = Dashboard;
   const [showCreateNetworkBtn, setShowCreateNetworkBtn] = useState(false);
   const [showCreateChannelBtn, setShowCreateChannelBtn] = useState(false);
@@ -164,7 +164,7 @@ function LeagueDashboard(props: LeagueDashboardProps) {
 
   //用户身份改变时，表格展示改变
   useEffect(() => {
-    const block: TableColumnsAttr[] = [
+    const block: ColumnsType<any> = [
       {
         title: '区块HASH',
         dataIndex: 'blockHash',
@@ -198,7 +198,7 @@ function LeagueDashboard(props: LeagueDashboardProps) {
         ),
       },
     ];
-    const transaction: TableColumnsAttr[] = [
+    const transaction: ColumnsType<any> = [
       {
         title: '交易ID',
         dataIndex: 'txId',

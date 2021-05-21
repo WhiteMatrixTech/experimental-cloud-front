@@ -9,7 +9,7 @@ import CreateOrgModal from './components/CreateOrgModal';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/organizations');
 export interface OrganizationManagementProps {
@@ -26,7 +26,7 @@ function OrganizationManagement(props: OrganizationManagementProps) {
   const [pageSize] = useState(baseConfig.pageSize);
   const [createOrgVisible, setCreateOrgVisible] = useState(false);
 
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '组织名称',
       dataIndex: 'orgName',

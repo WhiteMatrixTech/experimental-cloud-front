@@ -7,7 +7,7 @@ import { Breadcrumb, SearchBar } from '~/components';
 import baseConfig from '~/utils/config';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 
@@ -90,7 +90,7 @@ const Block: React.FC<BlockProps> = (props) => {
     });
   };
 
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '区块HASH',
       dataIndex: 'blockHash',

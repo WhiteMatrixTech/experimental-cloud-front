@@ -5,7 +5,7 @@ import { Dispatch, history } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { Breadcrumb } from '~/components';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
-import { TableColumnsAttr } from '~/utils/types';
+import { ColumnsType } from 'antd/lib/table';
 import { JobSchema } from '~/models/block-chain-compile';
 import baseConfig from '~/utils/config';
 
@@ -40,7 +40,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
     });
   };
 
-  const columns: TableColumnsAttr[] = [
+  const columns: ColumnsType<any> = [
     {
       title: '任务ID',
       dataIndex: 'jobId',
