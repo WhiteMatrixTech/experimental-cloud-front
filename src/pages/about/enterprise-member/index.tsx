@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
-import { history } from 'umi';
+import { Dispatch, EnterpriseMemberSchema, history } from 'umi';
 import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import cs from 'classnames';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
-import { Breadcrumb } from 'components';
-import baseConfig from 'utils/config';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb } from '@/components';
+import baseConfig from '@/utils/config';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import styles from './index.less';
 import { statusList, validStatus } from './_config';
 import ConfigMemberRole from './components/ConfigMemberRole';
+import { ConnectState } from '@/models/connect';
+import { TableColumnsAttr } from '@/utils/types';
 
 const { Item } = Form;
 const Option = Select.Option;
@@ -29,8 +31,13 @@ const initSearchObj = {
 };
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterprise-member');
-
-function EnterpriseMember(props) {
+export interface EnterpriseMemberProps {
+  Member: ConnectState['Member'];
+  qryLoading: boolean;
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+}
+function EnterpriseMember(props: EnterpriseMemberProps) {
   const { Member, qryLoading, dispatch, User } = props;
   const { networkName } = User;
   const { memberList, memberTotal } = Member;
@@ -39,10 +46,10 @@ function EnterpriseMember(props) {
   const [form] = Form.useForm();
   const [queryParams, setQueryParams] = useState(initSearchObj);
 
-  const [memberRecord, setMemberRecord] = useState(null);
+  const [memberRecord, setMemberRecord] = useState<EnterpriseMemberSchema | null>(null);
   const [configVisible, setConfigVisible] = useState(false);
 
-  const columns = [
+  const columns: TableColumnsAttr[] = [
     {
       title: '用户名',
       dataIndex: 'companyName',
@@ -123,7 +130,7 @@ function EnterpriseMember(props) {
       key: 'action',
       fixed: 'right',
       width: 230,
-      render: (text, record) => (
+      render: (text, record: EnterpriseMemberSchema) => (
         <Space size="small">
           {record.approvalStatus === 'pending' && (
             <>
@@ -199,12 +206,12 @@ function EnterpriseMember(props) {
   };
 
   // 翻页
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
   // 点击操作按钮, 进行二次确认
-  const onClickToConfirm = (record, type) => {
+  const onClickToConfirm = (record: EnterpriseMemberSchema, type: string) => {
     let tipTitle = '';
     let callback = null;
     switch (type) {
@@ -238,7 +245,7 @@ function EnterpriseMember(props) {
   };
 
   // 停用 & 启用 用户成员
-  const invalidateMember = (record, isValid) => {
+  const invalidateMember = (record: EnterpriseMemberSchema, isValid: string) => {
     const params = {
       networkName,
       isValid,
@@ -247,7 +254,7 @@ function EnterpriseMember(props) {
     dispatch({
       type: 'Member/setStatusOfLeagueCompany',
       payload: params,
-    }).then((res) => {
+    }).then((res: any) => {
       if (res) {
         getMemberList();
       }
@@ -255,7 +262,7 @@ function EnterpriseMember(props) {
   };
 
   // 通过 & 驳回 用户成员
-  const approvalMember = (record, approvalStatus) => {
+  const approvalMember = (record: EnterpriseMemberSchema, approvalStatus: string) => {
     const params = {
       networkName,
       approvalStatus,
@@ -264,14 +271,14 @@ function EnterpriseMember(props) {
     dispatch({
       type: 'Member/setCompanyApprove',
       payload: params,
-    }).then((res) => {
+    }).then((res: any) => {
       if (res) {
         getMemberList();
       }
     });
   };
 
-  const onClickRbacConfig = (record) => {
+  const onClickRbacConfig = (record: EnterpriseMemberSchema) => {
     setConfigVisible(true);
     setMemberRecord(record);
   };
@@ -283,7 +290,7 @@ function EnterpriseMember(props) {
   };
 
   // 点击查看详情
-  const onClickDetail = (record) => {
+  const onClickDetail = (record: EnterpriseMemberSchema) => {
     history.push({
       pathname: `/about/enterprise-member/${record.companyCertBusinessNumber}`,
       state: record,
@@ -311,7 +318,7 @@ function EnterpriseMember(props) {
               <Col span={8}>
                 <Item label="申请时间" name="createTime" initialValue={[]}>
                   <RangePicker
-                    getCalendarContainer={(triggerNode) => triggerNode.parentNode}
+                    getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
                     style={{ width: '100%' }}
                     showTime
                   />
@@ -365,7 +372,7 @@ function EnterpriseMember(props) {
   );
 }
 
-export default connect(({ User, Layout, Member, loading }) => ({
+export default connect(({ User, Layout, Member, loading }: ConnectState) => ({
   User,
   Layout,
   Member,

@@ -1,19 +1,25 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
-import { Breadcrumb, DetailCard } from 'components';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb, DetailCard } from '@/components';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import { statusList } from '../_config';
+import { ConnectState } from '@/models/connect';
+import { EnterpriseMemberSchema, Location } from 'umi';
+import { DetailViewAttr } from '@/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterprise-member');
 breadCrumbItem.push({
   menuName: '用户详情',
   menuHref: `/`,
 });
-
-function MemberDetail(props) {
+export interface MemberDetailProps {
+  qryLoading: boolean;
+  location: Location<EnterpriseMemberSchema>;
+}
+function MemberDetail(props: MemberDetailProps) {
   const { qryLoading = false, location } = props;
-  const basicInfo = [
+  const basicInfo: DetailViewAttr[] = [
     {
       label: '用户名称',
       value: location?.state?.companyName,
@@ -32,7 +38,7 @@ function MemberDetail(props) {
     },
   ];
 
-  const contactsInfo = [
+  const contactsInfo: DetailViewAttr[] = [
     {
       label: '联系人姓名',
       value: location?.state?.contactName,
@@ -64,7 +70,7 @@ function MemberDetail(props) {
   );
 }
 
-export default connect(({ User, Member, loading }) => ({
+export default connect(({ User, Member, loading }: ConnectState) => ({
   User,
   Member,
   qryLoading: loading.effects['Member/getMemberDetail'],
