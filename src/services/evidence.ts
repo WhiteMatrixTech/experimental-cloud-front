@@ -1,5 +1,5 @@
-import { request } from '@/utils/request';
-import { AllPaginationParams, BasicApiParams } from '@/utils/types';
+import { request } from '~/utils/request';
+import { AllPaginationParams, BasicApiParams } from '~/utils/types';
 
 // 存证上链
 export async function evidenceOnChain(params: BasicApiParams & { evidenceData: string }) {

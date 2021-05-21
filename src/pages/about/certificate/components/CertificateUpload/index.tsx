@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Upload, Modal, notification } from 'antd';
 import { Dispatch } from 'umi';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 const { Item } = Form;
 const { Option } = Select;
 
@@ -127,7 +127,11 @@ function CertificateUpload({ visible, onCancel, dispatch }: CertificateUploadPro
             beforeUpload={handleBeforeUpload}
             onChange={(info) => {
               if (info.file.status === 'done') {
-                notification.success({ message: `Succeed in uploading certificate ${info.file.name}`, top: 64, duration: 3 });
+                notification.success({
+                  message: `Succeed in uploading certificate ${info.file.name}`,
+                  top: 64,
+                  duration: 3,
+                });
               } else if (info.file.status === 'error') {
                 notification.error({ message: info.file.response.message, top: 64, duration: 3 });
               }

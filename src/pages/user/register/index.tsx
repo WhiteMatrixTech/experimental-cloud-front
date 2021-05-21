@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Steps } from 'antd';
 import { Link, connect, history, Dispatch } from 'umi';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 import StepOne from './_step1';
 import StepTwo from './_step2';
 import styles from './index.less';
@@ -19,15 +19,15 @@ const steps = [
 export enum operType {
   default = 'default',
   next = 'next',
-  submit = 'submit'
-};
+  submit = 'submit',
+}
 
 export type RegisterProps = {
-  submitting: boolean,
-  dispatch: Dispatch,
-  location: any,
-  User: ConnectState['User']
-}
+  submitting: boolean;
+  dispatch: Dispatch;
+  location: any;
+  User: ConnectState['User'];
+};
 
 const Register: React.FC<RegisterProps> = (props) => {
   const [curOper, setCurOper] = useState(operType.default);

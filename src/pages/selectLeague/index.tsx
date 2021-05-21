@@ -4,18 +4,18 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Row, Col, Button, Spin, Empty, Divider, Pagination } from 'antd';
 import CreateLeague from './components/CreateLeague';
 import { LeagueCard } from './components/LeagueCard';
-import { ConnectState } from '@/models/connect';
-import { Roles } from '@/utils/roles';
-import { getDifferenceSet } from '@/utils';
+import { ConnectState } from '~/models/connect';
+import { Roles } from '~/utils/roles';
+import { getDifferenceSet } from '~/utils';
 import styles from './index.less';
 
 const AdminRole = [Roles.Admin, Roles.SuperUser];
 
 export type SelectLeagueProps = {
-  joinLoading: boolean,
-  dispatch: Dispatch,
-  User: ConnectState['User']
-}
+  joinLoading: boolean;
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+};
 
 const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   const { joinLoading = false, dispatch, User } = props;
@@ -182,7 +182,7 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
       {visible && <CreateLeague visible={visible} onCancel={onCancel} />}
     </div>
   );
-}
+};
 
 export default connect(({ User, Layout, loading }: ConnectState) => ({
   User,

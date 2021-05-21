@@ -1,5 +1,5 @@
 import { FabricRole } from '@/pages/about/fabricUsers/_config';
-import { BasicApiParams } from '@/utils/types';
+import { BasicApiParams } from '~/utils/types';
 import { request } from '../utils/request';
 
 /**
@@ -19,7 +19,7 @@ export async function getAllUserId(params: BasicApiParams) {
 /**
  * 获取某组织下Fabric用户的列表
  */
-export async function getFabricRoleListWithOrg(params: { networkName: string; orgName: string; }) {
+export async function getFabricRoleListWithOrg(params: { networkName: string; orgName: string }) {
   return request(`/network/${params.networkName}/fabricRole/${params.orgName}/getAll`);
 }
 
@@ -33,8 +33,8 @@ export type CreateFabricUserApiParams = {
   pass: string;
   re_pass: string;
   attrs: string;
-  fabricRole: FabricRole
-}
+  fabricRole: FabricRole;
+};
 export async function createFabricUser(params: CreateFabricUserApiParams) {
   return request(`/network/${params.networkName}/fabricRole/create`, { method: 'POST', body: params });
 }

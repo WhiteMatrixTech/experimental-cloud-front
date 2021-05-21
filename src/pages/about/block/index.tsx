@@ -3,11 +3,11 @@ import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
 import { Table, Space } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, SearchBar } from '@/components';
-import baseConfig from '@/utils/config';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import { ConnectState } from '@/models/connect';
-import { TableColumnsAttr } from '@/utils/types';
+import { Breadcrumb, SearchBar } from '~/components';
+import baseConfig from '~/utils/config';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import { ConnectState } from '~/models/connect';
+import { TableColumnsAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 
@@ -77,7 +77,11 @@ const Block: React.FC<BlockProps> = (props) => {
   };
 
   // 点击查看详情
-  const onClickDetail = (record: { channelId?: string | undefined; txCount?: number | undefined; blockHash: string; }): void => {
+  const onClickDetail = (record: {
+    channelId?: string | undefined;
+    txCount?: number | undefined;
+    blockHash: string;
+  }): void => {
     history.push({
       pathname: `/about/block/${record.blockHash}`,
       query: {
@@ -116,7 +120,7 @@ const Block: React.FC<BlockProps> = (props) => {
     {
       title: '操作',
       key: 'action',
-      render: (text, record: { channelId?: string; txCount?: number; blockHash: string; }) => (
+      render: (text, record: { channelId?: string; txCount?: number; blockHash: string }) => (
         <Space size="small">
           {record.channelId || record.txCount ? (
             <a onClick={() => onClickDetail(record)}>详情</a>
@@ -160,7 +164,7 @@ const Block: React.FC<BlockProps> = (props) => {
       </div>
     </div>
   );
-}
+};
 
 export default connect(({ User, Block, loading }: ConnectState) => ({
   User,

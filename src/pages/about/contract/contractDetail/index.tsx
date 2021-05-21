@@ -3,11 +3,11 @@ import { connect } from 'dva';
 import { Dispatch, Location } from 'umi';
 import { Spin } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, DetailCard } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import { DetailViewAttr } from '@/utils/types';
-import { ConnectState } from '@/models/connect';
-import { ChainCodeSchema } from '@/models/contract';
+import { Breadcrumb, DetailCard } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import { DetailViewAttr } from '~/utils/types';
+import { ConnectState } from '~/models/connect';
+import { ChainCodeSchema } from '~/models/contract';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', true);
 breadCrumbItem.push({

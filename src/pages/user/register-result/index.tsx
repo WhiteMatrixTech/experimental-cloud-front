@@ -2,48 +2,48 @@ import React, { useEffect } from 'react';
 import { Button, Result } from 'antd';
 import { Link, connect } from 'umi';
 import styles from './style.less';
-import { BasicComponentProps, BasicLayoutComponentProps } from '@/utils/types';
-import { ConnectState } from '@/models/connect';
+import { BasicComponentProps, BasicLayoutComponentProps } from '~/utils/types';
+import { ConnectState } from '~/models/connect';
 
 const RegisterResult: React.FC<BasicComponentProps & BasicLayoutComponentProps> = ({ location, dispatch }) => {
-
   useEffect(() => {
     dispatch({
       type: 'User/common',
-      payload: { userAndRegister: false }
-    })
+      payload: { userAndRegister: false },
+    });
   }, []);
 
   const actions = (
     <div className={styles.actions}>
-      <Link to={{
-        pathname: "/user/login",
-        state: { account: location?.state?.account },
-      }}>
+      <Link
+        to={{
+          pathname: '/user/login',
+          state: { account: location?.state?.account },
+        }}
+      >
         <Button size="large" type="primary">
           立即登录
-      </Button>
+        </Button>
       </Link>
       <Link to="/user/register">
-        <Button size="large">
-          重新注册
-      </Button>
+        <Button size="large">重新注册</Button>
       </Link>
     </div>
   );
 
-  return (<Result
-    className={styles.registerResult}
-    status={location?.state?.account ? "success" : "warning"}
-    title={
-      <div className={styles.title}>
-        {location?.state?.account ? `你的账户：${location?.state?.account} 注册成功` : '暂无账户'}
-      </div>
-    }
-    subTitle=""
-    extra={actions}
-  />
-  )
+  return (
+    <Result
+      className={styles.registerResult}
+      status={location?.state?.account ? 'success' : 'warning'}
+      title={
+        <div className={styles.title}>
+          {location?.state?.account ? `你的账户：${location?.state?.account} 注册成功` : '暂无账户'}
+        </div>
+      }
+      subTitle=""
+      extra={actions}
+    />
+  );
 };
 
 export default connect(({ User }: ConnectState) => ({ User }))(RegisterResult);

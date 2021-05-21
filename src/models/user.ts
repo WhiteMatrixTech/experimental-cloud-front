@@ -3,7 +3,7 @@ import { notification } from 'antd';
 import { Roles } from '../utils/roles';
 import LoginStatus from '../utils/loginStatus';
 import type { Reducer, Effect } from 'umi';
-import { NetworkStatus } from '@/utils/networkStatus';
+import { NetworkStatus } from '~/utils/networkStatus';
 
 export type UserInfoSchema = {
   loginName: string;

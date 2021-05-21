@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Space, Table } from 'antd';
 import { connect, history, Dispatch } from 'umi';
-import { RolesMapNames } from '@/utils/roles';
-import { ConnectState } from '@/models/connect';
-import { UserInfo } from '@/models/user-role';
-import { Breadcrumb } from '@/components';
-import { CommonMenuList, getCurBreadcrumb } from '@/utils/menu';
+import { RolesMapNames } from '~/utils/roles';
+import { ConnectState } from '~/models/connect';
+import { UserInfo } from '~/models/user-role';
+import { Breadcrumb } from '~/components';
+import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/user-role-management', false);
 

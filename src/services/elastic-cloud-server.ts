@@ -1,5 +1,5 @@
 import { InstancePurpose } from '@/pages/about/elastic-cloud-server/_config';
-import { AllPaginationParams } from '@/utils/types';
+import { AllPaginationParams } from '~/utils/types';
 import { request } from '../utils/request';
 
 /**
@@ -27,7 +27,7 @@ export type CreateServerApiParams = {
   privateIp: string;
   publicKey: string;
   privateKey: string;
-}
+};
 export async function createServer(params: CreateServerApiParams) {
   return request('/server/create', { method: 'POST', body: params });
 }

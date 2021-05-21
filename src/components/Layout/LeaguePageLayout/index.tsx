@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Layout as AntdLayout } from 'antd';
-import { ServicesDrawer, TopHeader } from '@/components';
-import { ConnectState } from '@/models/connect';
+import { ServicesDrawer, TopHeader } from '~/components';
+import { ConnectState } from '~/models/connect';
 import { NetworkPortalLayoutProps } from '../NetworkPortalLayout';
 import styles from './index.less';
 class LeaguePageLayout extends React.PureComponent<NetworkPortalLayoutProps> {

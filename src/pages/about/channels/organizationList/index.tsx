@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Table, Button } from 'antd';
-import { Breadcrumb, DetailCard } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { Breadcrumb, DetailCard } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import AddOrg from '../components/AddOrg';
 import { ChannelStatusMap } from '../_config';
-import baseConfig from '@/utils/config';
-import { Roles } from '@/utils/roles';
-import { TableColumnsAttr } from '@/utils/types';
+import baseConfig from '~/utils/config';
+import { Roles } from '~/utils/roles';
+import { TableColumnsAttr } from '~/utils/types';
 import { ChannelSchema, Dispatch, Location } from 'umi';
-import { ConnectState } from '@/models/connect';
-import { DetailViewAttr } from '@/utils/types';
-
+import { ConnectState } from '~/models/connect';
+import { DetailViewAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({

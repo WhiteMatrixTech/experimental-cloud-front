@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Space, Button, Spin, Form, Row, Col, Input, Select } from 'antd';
 import { connect, history, Dispatch, Location, UserInfo } from 'umi';
-import { ConnectState } from '@/models/connect';
-import { RolesMapNames } from '@/utils/roles';
-import { Breadcrumb } from '@/components';
-import { CommonMenuList, getCurBreadcrumb } from '@/utils/menu';
+import { ConnectState } from '~/models/connect';
+import { RolesMapNames } from '~/utils/roles';
+import { Breadcrumb } from '~/components';
+import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
 
 const { Item } = Form;

@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { Drawer, Menu, Row, Col } from 'antd';
 import { connect } from 'dva';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 import { Dispatch, history } from 'umi';
-import { NetworkMenuPath, CommonMenuPath, IMenuPathProps } from '@/utils/menu';
+import { NetworkMenuPath, CommonMenuPath, IMenuPathProps } from '~/utils/menu';
 import styles from './ServicesDrawer.less';
 
 export type ServicesDrawerProps = {

@@ -1,7 +1,7 @@
 import * as API from '../services/my-info';
 import { checkOrgInUse } from '../services/contract';
 import type { Reducer, Effect } from 'umi';
-import { NetworkStatus } from '@/utils/networkStatus';
+import { NetworkStatus } from '~/utils/networkStatus';
 
 export type MyLeagueSchema = {
   leagueName: string;

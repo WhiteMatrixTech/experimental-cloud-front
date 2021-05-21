@@ -1,6 +1,6 @@
 import React from 'react';
-import { Breadcrumb } from '@/components';
-import { CommonMenuList, getCurBreadcrumb } from '@/utils/menu';
+import { Breadcrumb } from '~/components';
+import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);

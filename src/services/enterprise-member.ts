@@ -1,5 +1,5 @@
 import { request } from '../utils/request';
-import { AllPaginationParams, BasicApiParams } from '@/utils/types';
+import { AllPaginationParams, BasicApiParams } from '~/utils/types';
 import { MemberApprovalStatus } from '@/pages/about/enterprise-member/_config';
 /**
  * 查询成员列表

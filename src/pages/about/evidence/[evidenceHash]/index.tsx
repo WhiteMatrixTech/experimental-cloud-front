@@ -3,13 +3,13 @@ import { connect } from 'dva';
 import moment from 'moment';
 import { Spin } from 'antd';
 import { isObject } from 'lodash';
-import { Breadcrumb, DetailCard } from '@/components';
+import { Breadcrumb, DetailCard } from '~/components';
 import ReactJson from 'react-json-view';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 import { Dispatch, EvidenceSchema, Location } from 'umi';
-import { DetailViewAttr } from '@/utils/types';
+import { DetailViewAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 breadCrumbItem.push({

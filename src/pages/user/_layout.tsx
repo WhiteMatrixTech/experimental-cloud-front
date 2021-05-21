@@ -1,5 +1,5 @@
-import { LoginLayout } from '@/components';
-import { BasicLayoutComponentProps } from '@/utils/types';
+import { LoginLayout } from '~/components';
+import { BasicLayoutComponentProps } from '~/utils/types';
 
 function UserLayout(props: BasicLayoutComponentProps) {
   const { children, location } = props;

@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
-import { Breadcrumb, DetailCard } from '@/components';
+import { Breadcrumb, DetailCard } from '~/components';
 import { Input, Result, Empty } from 'antd';
 import classnames from 'classnames';
 import { isObject } from 'lodash';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
 import { Dispatch } from 'umi';
-import { ConnectState } from '@/models/connect';
-import { DetailViewAttr } from '@/utils/types';
+import { ConnectState } from '~/models/connect';
+import { DetailViewAttr } from '~/utils/types';
 
 const { Search } = Input;
 

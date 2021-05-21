@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { history } from 'umi';
-import { Breadcrumb } from 'components';
+import { Breadcrumb } from '~/components';
 import { Table, Button, Space, Modal, Dropdown, Menu } from 'antd';
 import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
-import { CommonMenuList, getCurBreadcrumb } from 'utils/menu';
+import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import CreateServerModal from './components/CreateServerModal';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');

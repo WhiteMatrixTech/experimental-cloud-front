@@ -1,4 +1,4 @@
-import { BasicApiParams } from '@/utils/types';
+import { BasicApiParams } from '~/utils/types';
 import { request } from '../utils/request';
 
 /**
@@ -6,5 +6,4 @@ import { request } from '../utils/request';
  */
 export async function getLogsList(params: BasicApiParams) {
   return request(`/network/${params.networkName}/enterprises/query`, { method: 'POST', body: params });
-};
-
+}

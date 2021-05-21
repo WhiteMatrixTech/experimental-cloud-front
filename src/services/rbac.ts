@@ -1,5 +1,5 @@
-import { RbacRole } from '@/models/rbac';
-import { BasicApiParams, BasicPaginationParams } from '@/utils/types';
+import { RbacRole } from '~/models/rbac';
+import { BasicApiParams, BasicPaginationParams } from '~/utils/types';
 import { request } from '../utils/request';
 
 /**

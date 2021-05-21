@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { Table, Badge } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, DetailCard } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { Breadcrumb, DetailCard } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { peerStatus } from '../../nodes/_config';
-import baseConfig from '@/utils/config';
-import { Roles } from '@/utils/roles';
-import { TableColumnsAttr, DetailViewAttr } from '@/utils/types';
-import { ConnectState } from '@/models/connect';
+import baseConfig from '~/utils/config';
+import { Roles } from '~/utils/roles';
+import { TableColumnsAttr, DetailViewAttr } from '~/utils/types';
+import { ConnectState } from '~/models/connect';
 import { ChannelSchema, Dispatch, Location } from 'umi';
-import { PeerSchema } from '@/models/node';
+import { PeerSchema } from '~/models/node';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
   menuName: '查看节点',

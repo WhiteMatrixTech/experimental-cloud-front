@@ -1,5 +1,5 @@
 import { request } from '../utils/request';
-import { AllPaginationParams, BasicApiParams } from '@/utils/types';
+import { AllPaginationParams, BasicApiParams } from '~/utils/types';
 
 /**
  * 获取block的totalDocs

@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { RocketTwoTone } from '@ant-design/icons';
 import moment from 'moment';
-import { Roles } from '@/utils/roles';
+import { Roles } from '~/utils/roles';
 import styles from '../index.less';
 
 export type LeagueCardProps = {
-  onClickCard: (leagueInfo: any) => void,
-  leagueInfo: any,
-  showTime?: string,
-}
+  onClickCard: (leagueInfo: any) => void;
+  leagueInfo: any;
+  showTime?: string;
+};
 
 export const LeagueCard: React.FC<LeagueCardProps> = (props) => {
   const { onClickCard, leagueInfo, showTime } = props;
@@ -19,10 +19,10 @@ export const LeagueCard: React.FC<LeagueCardProps> = (props) => {
 
   const getTime = useMemo(() => {
     if (showTime === 'Create Time') {
-      return leagueInfo.createdTime ? moment(leagueInfo.createdTime).format('YYYY-MM-DD') : ''
-    };
-    return leagueInfo.timeAdded ? moment(leagueInfo.timeAdded).format('YYYY-MM-DD') : ''
-  }, [leagueInfo.createdTime, leagueInfo.timeAdded, showTime])
+      return leagueInfo.createdTime ? moment(leagueInfo.createdTime).format('YYYY-MM-DD') : '';
+    }
+    return leagueInfo.timeAdded ? moment(leagueInfo.timeAdded).format('YYYY-MM-DD') : '';
+  }, [leagueInfo.createdTime, leagueInfo.timeAdded, showTime]);
 
   return (
     <div className={styles['league-card']} onClick={() => onClickCard(leagueInfo)}>
@@ -35,13 +35,10 @@ export const LeagueCard: React.FC<LeagueCardProps> = (props) => {
       <div className={styles['card-content']}>{leagueInfo.description}</div>
       <div className={styles['card-footer']}>
         <div className={styles.allies}>{showTime || getShowTimeLabel}</div>
-        <div
-          className={styles.createTime}
-          title={getTime}
-        >
+        <div className={styles.createTime} title={getTime}>
           {getTime}
         </div>
       </div>
     </div>
   );
-}
+};

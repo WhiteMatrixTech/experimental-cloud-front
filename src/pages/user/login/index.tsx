@@ -2,19 +2,19 @@ import React, { useEffect } from 'react';
 import { Link, connect, history, Dispatch } from 'umi';
 import { Form } from 'antd';
 import LoginFrom from './components/Login';
-import { LoginMessage } from '@/components';
-import LoginStatus from '@/utils/loginStatus';
-import { ConnectState } from '@/models/connect';
+import { LoginMessage } from '~/components';
+import LoginStatus from '~/utils/loginStatus';
+import { ConnectState } from '~/models/connect';
 import styles from './index.less';
 
 const { UserName, Password, Submit } = LoginFrom;
 
 export type LoginProps = {
-  loginLoading: boolean,
-  dispatch: Dispatch,
-  location: any,
-  User: ConnectState['User']
-}
+  loginLoading: boolean;
+  dispatch: Dispatch;
+  location: any;
+  User: ConnectState['User'];
+};
 
 const Login: React.FC<LoginProps> = (props) => {
   const [form] = Form.useForm();
@@ -28,7 +28,7 @@ const Login: React.FC<LoginProps> = (props) => {
         dispatch({
           type: 'User/login',
           payload: values,
-        }).then((res: { access_token: string; }) => {
+        }).then((res: { access_token: string }) => {
           if (res) {
             localStorage.setItem('accessToken', res.access_token);
             const redirect = localStorage.getItem('redirect');
@@ -78,7 +78,9 @@ const Login: React.FC<LoginProps> = (props) => {
             },
           ]}
         />
-        <Submit className='' loading={loginLoading}>登录</Submit>
+        <Submit className="" loading={loginLoading}>
+          登录
+        </Submit>
         <div className={styles.other}>
           <div>
             暂无账号?
@@ -90,7 +92,7 @@ const Login: React.FC<LoginProps> = (props) => {
       </LoginFrom>
     </div>
   );
-}
+};
 
 export default connect(({ User, loading }: ConnectState) => ({
   User,

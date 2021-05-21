@@ -3,12 +3,12 @@ import { connect } from 'dva';
 import { Dispatch, EvidenceSchema, history } from 'umi';
 import { Table, Space } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, SearchBar } from '@/components';
-import baseConfig from '@/utils/config';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { Breadcrumb, SearchBar } from '~/components';
+import baseConfig from '~/utils/config';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import EvidenceOnChain from './components/EvidenceOnChain';
-import { ConnectState } from '@/models/connect';
-import { TableColumnsAttr } from '@/utils/types';
+import { ConnectState } from '~/models/connect';
+import { TableColumnsAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 

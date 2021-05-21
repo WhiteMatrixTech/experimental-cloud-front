@@ -1,7 +1,8 @@
 import { resolve } from 'path';
+import { defineConfig } from 'umi';
 import { chainWebpack } from './.webpack.config';
 
-export default {
+export default defineConfig({
   history: { type: 'browser' },
   hash: true,
   ignoreMomentLocale: true,
@@ -16,12 +17,12 @@ export default {
 
   alias: {
     public: resolve(__dirname, './public'),
-    components: resolve(__dirname, './src/components'),
-    models: resolve(__dirname, './src/models'),
-    services: resolve(__dirname, './src/services'),
-    utils: resolve(__dirname, './src/utils'),
-    themes: resolve(__dirname, './src/themes'),
-    assets: resolve(__dirname, './src/assets'),
+    '~/components': resolve(__dirname, './src/components'),
+    '~/models': resolve(__dirname, './src/models'),
+    '~/services': resolve(__dirname, './src/services'),
+    '~/utils': resolve(__dirname, './src/utils'),
+    '~/themes': resolve(__dirname, './src/themes'),
+    '~/assets': resolve(__dirname, './src/assets'),
     locales: resolve(__dirname, './src/locales'),
     wrappers: resolve(__dirname, './src/pages/wrappers/'),
   },
@@ -55,4 +56,4 @@ export default {
     'process.env.CHAIN_IDE_LINK': process.env.CHAIN_IDE_LINK, // ChainIDE地址
     'process.env.BAAS_BACKEND_LINK': process.env.BAAS_BACKEND_LINK, // BaaS Backend地址
   },
-};
+});

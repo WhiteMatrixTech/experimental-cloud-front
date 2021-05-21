@@ -3,11 +3,11 @@ import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
 import { Table, Space } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, SearchBar } from '@/components';
-import baseConfig from '@/utils/config';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
-import { ConnectState } from '@/models/connect';
-import { TableColumnsAttr } from '@/utils/types';
+import { Breadcrumb, SearchBar } from '~/components';
+import baseConfig from '~/utils/config';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import { ConnectState } from '~/models/connect';
+import { TableColumnsAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 
@@ -118,7 +118,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       title: '操作',
       //dataIndex:'action'
       key: 'action',
-      render: (text, record?: { channelId: string; txMsp: string; txId: string; }) => (
+      render: (text, record?: { channelId: string; txMsp: string; txId: string }) => (
         <Space size="small">
           {(record && record.channelId) || (record && record.txMsp) ? (
             <a onClick={() => onClickDetail(record)}>详情</a>
@@ -161,7 +161,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       </div>
     </div>
   );
-}
+};
 
 export default connect(({ User, Layout, Transactions, loading }: ConnectState) => ({
   User,

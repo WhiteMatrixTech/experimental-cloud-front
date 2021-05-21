@@ -1,6 +1,6 @@
-import { UserRoleObject } from '@/models/user-role';
-import { request } from '@/utils/request';
-import { BasicPaginationParams } from '@/utils/types';
+import { UserRoleObject } from '~/models/user-role';
+import { request } from '~/utils/request';
+import { BasicPaginationParams } from '~/utils/types';
 
 /**
  * 获取用户列表
@@ -28,7 +28,7 @@ export async function getRoleNameList() {
 export type UserRoleParams = {
   companyName: string;
   accessRoles?: UserRoleObject[];
-}
+};
 export async function getUserRoles(params: UserRoleParams) {
   return request(`/superuser/customRole/${params.companyName}`);
 }

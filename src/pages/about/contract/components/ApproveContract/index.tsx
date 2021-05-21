@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Form, Button, Modal, Radio } from 'antd';
 import { ChainCodeSchema, Dispatch } from 'umi';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 
 const { Item } = Form;
 

@@ -1,5 +1,5 @@
-import { LeaguePageLayout } from '@/components';
-import { BasicLayoutComponentProps } from '@/utils/types';
+import { LeaguePageLayout } from '~/components';
+import { BasicLayoutComponentProps } from '~/utils/types';
 
 function NetworkLayout(props: BasicLayoutComponentProps) {
   const { children, location } = props;

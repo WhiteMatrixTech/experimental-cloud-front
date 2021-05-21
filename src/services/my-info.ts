@@ -1,4 +1,4 @@
-import { BasicApiParams } from '@/utils/types';
+import { BasicApiParams } from '~/utils/types';
 import { request } from '../utils/request';
 
 /**

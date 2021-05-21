@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
 import { Dispatch } from 'umi';

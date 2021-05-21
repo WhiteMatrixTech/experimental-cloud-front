@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Button, Modal, message } from 'antd';
 import { connect } from 'dva';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
 export interface SSHCommandProps {
   visible: boolean;

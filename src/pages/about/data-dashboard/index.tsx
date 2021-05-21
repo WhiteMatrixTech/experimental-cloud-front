@@ -3,8 +3,8 @@ import { Tabs } from 'antd';
 import cs from 'classnames';
 import { connect } from 'dva';
 import styles from './index.less';
-import { Breadcrumb } from '@/components';
-import { MenuList, getCurBreadcrumb } from '@/utils/menu';
+import { Breadcrumb } from '~/components';
+import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import {
   BalanceTransfer,
   FabricMetrics,
@@ -13,7 +13,7 @@ import {
   OrdererMetrics,
   ChaincodeMetrics,
 } from './components';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 
 const { TabPane } = Tabs;
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/data-dashboard');

@@ -1,15 +1,14 @@
 import React from 'react';
-import { connect } from "dva";
+import { connect } from 'dva';
 import { Layout } from 'antd';
 import LoginHeader from '../LoginLayout/LoginHeader';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 import { LoginLayoutProps } from '../LoginLayout';
 import styles from './index.less';
 
 const { Content } = Layout;
 
 class LoginExternalLayout extends React.PureComponent<LoginLayoutProps> {
-
   render() {
     const { children } = this.props;
     return (

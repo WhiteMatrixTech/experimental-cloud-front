@@ -8,24 +8,24 @@ import * as API from '../services/dashboard';
 import { notification } from 'antd';
 import moment from 'moment';
 import type { Reducer, Effect, BlockSchema, TransactionSchema } from 'umi';
-import { NetworkStatus } from '@/utils/networkStatus';
+import { NetworkStatus } from '~/utils/networkStatus';
 
 export type DashboardModelState = {
   networkStatusInfo: {
-    networkStatus: NetworkStatus,
-    createdAt: Date
-  } | null, // 网络状态信息
+    networkStatus: NetworkStatus;
+    createdAt: Date;
+  } | null; // 网络状态信息
 
   // 统计信息
-  blockTotal: number,
-  transactionTotal: number,
-  memberTotal: number,
-  channelTotal: number,
-  myContractTotal: number,
+  blockTotal: number;
+  transactionTotal: number;
+  memberTotal: number;
+  channelTotal: number;
+  myContractTotal: number;
 
-  blockList: Array<BlockSchema>, // 区块链列表
-  transactionList: Array<TransactionSchema>, // 交易列表
-}
+  blockList: Array<BlockSchema>; // 区块链列表
+  transactionList: Array<TransactionSchema>; // 交易列表
+};
 
 export type DashboardModelType = {
   namespace: 'Dashboard';
@@ -81,7 +81,7 @@ const DashboardModel: DashboardModelType = {
         return true;
       } else {
         notification.error({ message: result.message || '创建网络请求发起成功', top: 64, duration: 3 });
-        return false
+        return false;
       }
     },
     *deleteNetwork({ payload }, { call, put }) {

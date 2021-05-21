@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Button, Modal, Form, Select, Input } from 'antd';
 import { Dispatch, EnterpriseMemberSchema } from 'umi';
-import { ConnectState } from '@/models/connect';
+import { ConnectState } from '~/models/connect';
 
 const { Option } = Select;
 const formItemLayout = {

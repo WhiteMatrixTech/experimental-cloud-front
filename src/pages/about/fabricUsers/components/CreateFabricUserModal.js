@@ -1,7 +1,7 @@
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import React, { useEffect, useMemo } from 'react';
-import { Roles } from 'utils/roles';
+import { Roles } from '~/utils/roles';
 import { CreateFabricRole } from '../_config';
 
 const { Item } = Form;

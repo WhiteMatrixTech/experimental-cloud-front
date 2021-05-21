@@ -7,18 +7,17 @@ import styles from './index.less';
 const { Content } = Layout;
 
 export type LoginLayoutProps = {
-  children: JSX.Element,
-  pathname: string
-}
+  children: JSX.Element;
+  pathname: string;
+};
 
 class LoginLayout extends React.PureComponent<LoginLayoutProps> {
-
   render() {
     const { children } = this.props;
     return (
       <Layout
         className={styles['main-container']}
-        style={{ backgroundImage: `url("${require('@/assets/images/loginBg.png')}")` }}
+        style={{ backgroundImage: `url("${require('~/assets/images/loginBg.png')}")` }}
       >
         <div className={styles['background-mask']}> </div>
         <LoginHeader />
