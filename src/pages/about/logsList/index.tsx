@@ -3,10 +3,13 @@ import { connect } from 'dva';
 import { Table, Row, Col, Form, DatePicker, Input, Button } from 'antd';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
-import { Breadcrumb } from 'components';
-import baseConfig from 'utils/config';
-import { MenuList, getCurBreadcrumb } from 'utils/menu';
+import { Breadcrumb } from '@/components';
+import baseConfig from '@/utils/config';
+import { MenuList, getCurBreadcrumb } from '@/utils/menu';
 import styles from './index.less';
+import { ConnectState } from '@/models/connect';
+import { Dispatch } from 'umi';
+import { TableColumnsAttr } from '@/utils/types';
 
 const { Item } = Form;
 const { RangePicker } = DatePicker;
@@ -23,16 +26,20 @@ const initSearchObj = {
 };
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/logsList');
-
-function LogsList(props) {
+export interface LogsListProps {
+  Logs: ConnectState['Logs'];
+  qryLoading: boolean;
+  dispatch: Dispatch;
+}
+const pageSize = baseConfig.pageSize;
+function LogsList(props: LogsListProps) {
   const { Logs, qryLoading, dispatch } = props;
   const { logsList, logsTotal } = Logs;
   const [pageNum, setPageNum] = useState(1);
-  const [pageSize] = useState(baseConfig.pageSize);
   const [form] = Form.useForm();
   const [queryParams, setQueryParams] = useState(initSearchObj);
 
-  const columns = [
+  const columns: TableColumnsAttr[] = [
     {
       title: '用户名称',
       dataIndex: 'userName',
@@ -86,7 +93,7 @@ function LogsList(props) {
         setQueryParams(params);
       })
       .catch((info) => {
-        console.log('校验失败:', info);
+        //console.log('校验失败:', info);
       });
   }, []);
 
@@ -98,7 +105,7 @@ function LogsList(props) {
   };
 
   // 翻页
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
@@ -122,7 +129,7 @@ function LogsList(props) {
               <Col span={8}>
                 <Item label="申请时间" name="createTime" initialValue={[]}>
                   <RangePicker
-                    getCalendarContainer={(triggerNode) => triggerNode.parentNode}
+                    getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
                     style={{ width: '100%' }}
                     showTime
                   />
@@ -157,7 +164,7 @@ function LogsList(props) {
   );
 }
 
-export default connect(({ Logs, loading }) => ({
+export default connect(({ Logs, loading }: ConnectState) => ({
   Logs,
   qryLoading: loading.effects['Logs/getLogsList'],
 }))(LogsList);
