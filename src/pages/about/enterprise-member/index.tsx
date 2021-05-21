@@ -49,7 +49,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   const [memberRecord, setMemberRecord] = useState<EnterpriseMemberSchema | null>(null);
   const [configVisible, setConfigVisible] = useState(false);
 
-  let columns: TableColumnsAttr[] = [
+  const columns: TableColumnsAttr[] = [
     {
       title: '用户名',
       dataIndex: 'companyName',
