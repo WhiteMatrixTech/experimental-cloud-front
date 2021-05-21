@@ -8,6 +8,7 @@ import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ColumnsType } from 'antd/lib/table';
 import { JobSchema } from '~/models/block-chain-compile';
 import baseConfig from '~/utils/config';
+import styles from './index.less';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/job-management', false);
 
@@ -16,16 +17,19 @@ export type SourceCodeCompilationProps = {
   dispatch: Dispatch;
   BlockChainCompile: ConnectState['BlockChainCompile'];
 };
-
+const pageSize = baseConfig.pageSize;
 const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   const { dispatch, qryLoading = false, BlockChainCompile } = props;
-  const { jobList, jobTotal } = BlockChainCompile;
+  const { jobList, jobTotal, jobContinueData } = BlockChainCompile;
   const [pageNum, setPageNum] = useState(1);
+  const [moreBtnVisible, setMoreBtnVisible] = useState(false);
 
   const getJobList = () => {
     dispatch({
       type: 'BlockChainCompile/getJobList',
-      payload: {},
+      payload: {
+        limit: pageSize,
+      },
     });
   };
 
@@ -80,6 +84,21 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
     getJobList();
   }, []);
 
+  useEffect(() => {
+    if (jobTotal >= pageSize) {
+      setMoreBtnVisible(true);
+    }
+  }, [jobContinueData]);
+  //获取更多
+  const getMoreJobList = () => {
+    dispatch({
+      type: 'BlockChainCompile/getJobList',
+      payload: {
+        limit: pageSize,
+        continueData: jobContinueData,
+      },
+    });
+  };
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -91,13 +110,18 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
           dataSource={jobList}
           onChange={onPageChange}
           pagination={{
-            pageSize: baseConfig.pageSize,
-            total: jobTotal,
-            current: pageNum,
-            showSizeChanger: false,
-            position: ['bottomCenter'],
+            hideOnSinglePage: true,
           }}
         />
+        <div className={styles.jobListMore}>
+          <button
+            className={styles.btn}
+            onClick={getMoreJobList}
+            style={{ display: moreBtnVisible ? 'block' : 'none' }}
+          >
+            加载更多
+          </button>
+        </div>
       </div>
     </div>
   );
