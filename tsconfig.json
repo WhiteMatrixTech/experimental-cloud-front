@@ -20,7 +20,7 @@
     "strict": true,
     "paths": {
       "~/*": ["./src/*"],
-      "~~/*": ["./src/.umi/*"]
+      "@@/*": ["./src/.umi/*"] // umi临时文件
     }
   },
   "include": [
