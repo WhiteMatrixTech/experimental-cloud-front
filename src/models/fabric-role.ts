@@ -20,7 +20,7 @@ export type FabricRoleSchema = {
 export type FabricRoleModelState = {
   fabricRoleList: Array<FabricRoleSchema>;
   fabricRoleTotal: number;
-  myOrgInfo: OrganizationSchema | object;
+  myOrgInfo: OrganizationSchema | null;
 };
 
 export type FabricRoleModelType = {
@@ -44,7 +44,7 @@ const FabricRoleModel: FabricRoleModelType = {
     fabricRoleList: [],
     fabricRoleTotal: 0,
 
-    myOrgInfo: {}, // 我的组织信息
+    myOrgInfo: null // 我的组织信息
   },
 
   effects: {
@@ -56,8 +56,8 @@ const FabricRoleModel: FabricRoleModelType = {
           type: 'common',
           payload: {
             fabricRoleList: result,
-            fabricRoleTotal: result.length,
-          },
+            fabricRoleTotal: result.length
+          }
         });
       }
     },
@@ -70,8 +70,8 @@ const FabricRoleModel: FabricRoleModelType = {
           type: 'common',
           payload: {
             fabricRoleList: result,
-            fabricRoleTotal: result.length,
-          },
+            fabricRoleTotal: result.length
+          }
         });
       }
     },
@@ -83,8 +83,8 @@ const FabricRoleModel: FabricRoleModelType = {
         yield put({
           type: 'common',
           payload: {
-            myOrgInfo: result,
-          },
+            myOrgInfo: result
+          }
         });
       }
     },
@@ -101,14 +101,14 @@ const FabricRoleModel: FabricRoleModelType = {
         notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default FabricRoleModel;
