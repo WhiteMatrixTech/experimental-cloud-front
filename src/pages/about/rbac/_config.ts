@@ -1,27 +1,27 @@
-import { RbacRole } from "umi";
+import { RbacRole } from 'umi';
 
 // 访问行为
 export enum AccessAction {
-  Read = 'Read',  // 查看
-  QueryMethod = 'QueryChainCodeMethod',  // 链码调用方法
-  InvokeMethod = 'InvokeChainCodeMethod',  // 链码查询方法
-  Download = 'Download'  // 合约下载
+  Read = 'Read', // 查看
+  QueryMethod = 'QueryChainCodeMethod', // 链码调用方法
+  InvokeMethod = 'InvokeChainCodeMethod', // 链码查询方法
+  Download = 'Download', // 合约下载
 }
 
 // 资源类型
 export enum AccessSubject {
   BlockInfo = 'BlockInfo',
   Transaction = 'Transaction',
-  ChainCode = 'ChainCode'
+  ChainCode = 'ChainCode',
 }
 
 // 访问范围
 export enum AccessField {
-  All = 'All',  // 可访问网络下所有资源
-  InChannel = 'InChannel',  // 可访问通道下的所有资源
-  Own = 'Own',  // 可访问自己创建的资源
-  None = 'None',  // 任何资源无法访问
-  Custom = 'Custom'  // 只能访问指定资源
+  All = 'All', // 可访问网络下所有资源
+  InChannel = 'InChannel', // 可访问通道下的所有资源
+  Own = 'Own', // 可访问自己创建的资源
+  None = 'None', // 任何资源无法访问
+  Custom = 'Custom', // 只能访问指定资源
 }
 
 // chainCode唯一标识符
@@ -29,14 +29,14 @@ export type ChainCodeIndex = {
   networkName: string;
   channelId: string;
   chainCodeName: string;
-}
+};
 
 export type UserAccessPolicy = {
-  action: AccessAction;  // 访问行为
-  subject: AccessSubject;  // 访问资源类型
-  field: AccessField;  // 可访问的范围
-  custom?: ChainCodeIndex[];  // 如果自定义，则为链码的index
-}
+  action: AccessAction; // 访问行为
+  subject: AccessSubject; // 访问资源类型
+  field: AccessField; // 可访问的范围
+  custom?: ChainCodeIndex[]; // 如果自定义，则为链码的index
+};
 
 export const DisabledRole = ['NetworkAdmin', 'NetworkMember', 'OrgMember'];
 
@@ -102,4 +102,12 @@ export function setParams(formValue: any, roleName: string, networkName: string,
     params.policy[5].custom = customList;
   }
   return params;
+}
+export interface configValueState {
+  BlockInfo?: string;
+  Transaction?: string;
+  viewChaincode?: string;
+  downloadChaincode?: string;
+  invokeChaincode?: string;
+  invokeChaincodeSubject?: string[];
 }

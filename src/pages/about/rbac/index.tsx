@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { history } from 'umi';
+import { Dispatch, history, RbacRole } from 'umi';
 import { Table, Space, Button } from 'antd';
 import { Breadcrumb } from '~/components';
 import baseConfig from '~/utils/config';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { DisabledRole } from './_config';
+import { ConnectState } from '~/models/connect';
+import { ColumnsType } from 'antd/lib/table';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/rbac');
-
-function RbacConfig(props) {
+export interface RbacConfigProps {
+  RBAC: ConnectState['RBAC'];
+  qryLoading: boolean;
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+}
+function RbacConfig(props: RbacConfigProps) {
   const { RBAC, qryLoading, dispatch, User } = props;
   const { networkName } = User;
   const { roleList } = RBAC;
@@ -17,7 +24,7 @@ function RbacConfig(props) {
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
 
-  const columns = [
+  const columns: ColumnsType<any> = [
     {
       title: '角色名称',
       dataIndex: 'roleName',
@@ -29,7 +36,7 @@ function RbacConfig(props) {
       dataIndex: 'roleType',
       key: 'roleType',
       ellipsis: true,
-      render: (_, record) => {
+      render: (_: any, record: RbacRole) => {
         if (DisabledRole.includes(record.roleName)) {
           return '默认角色';
         }
@@ -39,7 +46,7 @@ function RbacConfig(props) {
     {
       title: '操作',
       key: 'action',
-      render: (text, record) => (
+      render: (text, record: RbacRole) => (
         <Space size="small">
           {!DisabledRole.includes(record.roleName) && <a onClick={() => onClickRbacConfig(record)}>配置</a>}
           <a onClick={() => onClickRbacDetail(record)}>详情</a>
@@ -63,7 +70,7 @@ function RbacConfig(props) {
   };
 
   // 翻页
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
@@ -73,7 +80,7 @@ function RbacConfig(props) {
     });
   };
 
-  const onClickRbacConfig = (record) => {
+  const onClickRbacConfig = (record: RbacRole) => {
     history.push({
       pathname: `/about/rbac/config`,
       state: {
@@ -82,7 +89,7 @@ function RbacConfig(props) {
     });
   };
 
-  const onClickRbacDetail = (record) => {
+  const onClickRbacDetail = (record: RbacRole) => {
     history.push({
       pathname: `/about/rbac/detail`,
       state: {
@@ -123,7 +130,7 @@ function RbacConfig(props) {
   );
 }
 
-export default connect(({ User, Layout, RBAC, loading }) => ({
+export default connect(({ User, Layout, RBAC, loading }: ConnectState) => ({
   User,
   Layout,
   RBAC,

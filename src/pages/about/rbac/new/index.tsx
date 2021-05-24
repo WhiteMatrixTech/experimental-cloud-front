@@ -3,13 +3,14 @@
  */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
-import { history } from 'umi';
+import { Dispatch, history } from 'umi';
 import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal, Input, message } from 'antd';
 import { CaretDownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Breadcrumb } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { defaultValue, setParams } from '../_config';
 import styles from './index.less';
+import { ConnectState } from '~/models/connect';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -19,8 +20,14 @@ breadCrumbItem.push({
   menuName: '访问角色新增',
   menuHref: `/`,
 });
-
-function NewRbacConfig(props) {
+export interface NewRbacConfigProps {
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+  RBAC: ConnectState['RBAC'];
+  configLoading: boolean;
+  resetLoading: boolean;
+}
+function NewRbacConfig(props: NewRbacConfigProps) {
   const { dispatch, User, RBAC, configLoading = false, resetLoading = false } = props;
   const { networkName } = User;
   const { chaincodeList } = RBAC;
@@ -43,19 +50,19 @@ function NewRbacConfig(props) {
     });
   };
 
-  const onInputRoleName = (e) => {
+  const onInputRoleName = (e: { target: { value: React.SetStateAction<string> } }) => {
     setRoleName(e.target.value);
   };
 
-  const onChangeConfigType = (e) => {
+  const onChangeConfigType = (e: any) => {
     setConfigType(e.target.value);
   };
 
-  const onInputJsonConfig = (e) => {
+  const onInputJsonConfig = (e: any) => {
     setJsonPolicy(e.target.value);
   };
 
-  const onChangeViewChaincode = (e) => {
+  const onChangeViewChaincode = (e: any) => {
     setViewChaincode(e.target.value);
     if (e.target.value === 'Own') {
       form.setFields([
@@ -66,7 +73,7 @@ function NewRbacConfig(props) {
     }
   };
 
-  const onChangeInvokeChaincode = (e) => {
+  const onChangeInvokeChaincode = (e: any) => {
     setInvokeChaincodeCustom(e.target.value);
     if (e.target.value === 'Custom') {
       getChaincodeList();
@@ -334,7 +341,7 @@ function NewRbacConfig(props) {
   );
 }
 
-export default connect(({ User, RBAC, loading }) => ({
+export default connect(({ User, RBAC, loading }: ConnectState) => ({
   User,
   RBAC,
   configLoading: loading.effects['RBAC/setConfig'],
