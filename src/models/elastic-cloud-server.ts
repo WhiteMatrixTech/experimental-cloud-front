@@ -13,7 +13,7 @@ export type ElasticServerSchema = {
   privateKey: string;
   createdAt: Date;
   instanceCount: number;
-}
+};
 
 export enum InstanceType {
   OneCpuOneGBMem = 'OneCpuOneGBMem',
@@ -40,15 +40,14 @@ export type ServerInstanceSchema = {
   state: string;
   publicIpAddress: string;
   ports: Ports;
-}
+};
 
 export type ElasticServerModelState = {
-  serverList: Array<ElasticServerSchema>,
-  serverTotal: number,
-  nodeList: Array<ServerInstanceSchema>,
-  nodeTotal: number,
-  serverPerformance: object,
-}
+  serverList: Array<ElasticServerSchema>;
+  serverTotal: number;
+  nodeList: Array<ServerInstanceSchema>;
+  nodeTotal: number;
+};
 
 export type ElasticServerModelType = {
   namespace: 'ElasticServer';
@@ -75,9 +74,7 @@ const ElasticServerModel: ElasticServerModelType = {
     serverTotal: 0,
 
     nodeList: [],
-    nodeTotal: 0,
-
-    serverPerformance: {},
+    nodeTotal: 0
   },
 
   effects: {
@@ -88,8 +85,8 @@ const ElasticServerModel: ElasticServerModelType = {
         yield put({
           type: 'common',
           payload: {
-            serverList: result.items,
-          },
+            serverList: result.items
+          }
         });
       }
     },
@@ -101,8 +98,8 @@ const ElasticServerModel: ElasticServerModelType = {
         yield put({
           type: 'common',
           payload: {
-            serverTotal: result.count,
-          },
+            serverTotal: result.count
+          }
         });
       }
     },
@@ -156,8 +153,8 @@ const ElasticServerModel: ElasticServerModelType = {
         yield put({
           type: 'common',
           payload: {
-            nodeList: result.items,
-          },
+            nodeList: result.items
+          }
         });
       }
     },
@@ -169,18 +166,18 @@ const ElasticServerModel: ElasticServerModelType = {
         yield put({
           type: 'common',
           payload: {
-            nodeTotal: result.count,
-          },
+            nodeTotal: result.count
+          }
         });
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default ElasticServerModel;

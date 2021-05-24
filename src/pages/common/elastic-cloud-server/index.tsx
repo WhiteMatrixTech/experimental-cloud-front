@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { history } from 'umi';
+import { Dispatch, ElasticServerSchema, history } from 'umi';
 import { Breadcrumb } from '~/components';
 import { Table, Button, Space, Modal, Dropdown, Menu } from 'antd';
 import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import CreateServerModal from './components/CreateServerModal';
+import { ConnectState } from '~/models/connect';
+import { ColumnsType } from 'antd/lib/table';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');
-
-function ServersManagement(props) {
+export interface ServersManagementProps {
+  dispatch: Dispatch;
+  qryLoading: boolean;
+  ElasticServer: ConnectState['ElasticServer'];
+}
+function ServersManagement(props: ServersManagementProps) {
   const { dispatch, qryLoading = false } = props;
   const { serverList, serverTotal } = props.ElasticServer;
-  const [columns, setColumns] = useState([]);
+  const [columns, setColumns] = useState<ColumnsType<any>>([]);
   const [pageNum, setPageNum] = useState(1);
   const [createServerVisible, setCreateServerVisible] = useState(false);
-  const [serverRecord, setServerRecord] = useState(null);
+  const [serverRecord, setServerRecord] = useState<ElasticServerSchema | null>(null);
 
   // 获取服务器列表
   const getServerList = () => {
@@ -25,28 +31,28 @@ function ServersManagement(props) {
     const params = {
       limit: 10,
       offset: offset,
-      ascend: false,
+      ascend: false
     };
     dispatch({
       type: 'ElasticServer/getServerList',
-      payload: params,
+      payload: params
     });
     dispatch({
       type: 'ElasticServer/getServerTotal',
-      payload: {},
+      payload: {}
     });
   };
 
   // 翻页
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
-  const onClickDelete = (record) => {
+  const onClickDelete = (record: ElasticServerSchema) => {
     const callback = async () => {
       const res = await dispatch({
         type: 'ElasticServer/deleteServer',
-        payload: { serverName: record.serverName },
+        payload: { serverName: record.serverName }
       });
       if (res) {
         getServerList();
@@ -58,26 +64,26 @@ function ServersManagement(props) {
       content: `确认要删除服务器 【${record.serverName}】 吗?`,
       okText: '确认',
       cancelText: '取消',
-      onOk: callback,
+      onOk: callback
     });
   };
 
-  const onClickModifyServer = (record) => {
+  const onClickModifyServer = (record: ElasticServerSchema) => {
     setServerRecord(record);
     setCreateServerVisible(true);
   };
 
-  const onViewPerformance = (record) => {
+  const onViewPerformance = (record: ElasticServerSchema) => {
     history.push({
       pathname: `/common/elastic-cloud-server/server-performance`,
-      state: { ...record },
+      state: { ...record }
     });
   };
 
-  const onViewNode = (record) => {
+  const onViewNode = (record: ElasticServerSchema) => {
     history.push({
       pathname: `/common/elastic-cloud-server/resource-usage`,
-      state: { ...record },
+      state: { ...record }
     });
   };
 
@@ -91,7 +97,7 @@ function ServersManagement(props) {
     setCreateServerVisible(false);
   };
 
-  const renderMenu = (record) => {
+  const renderMenu = (record: ElasticServerSchema) => {
     return (
       <Menu>
         <Menu.Item>
@@ -106,55 +112,55 @@ function ServersManagement(props) {
 
   // 用户身份改变时，表格展示改变
   useEffect(() => {
-    const data = [
+    const data: ColumnsType<any> = [
       {
         title: '服务器名称',
         dataIndex: 'serverName',
         key: 'serverName',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '用户名',
         dataIndex: 'username',
         key: 'username',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '用途类型',
         dataIndex: 'serverPurpose',
         key: 'serverPurpose',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '外网IP',
         dataIndex: 'publicIp',
         key: 'publicIp',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '内网IP',
         dataIndex: 'privateIp',
         key: 'privateIp',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '实例数量',
         dataIndex: 'instanceCount',
         key: 'instanceCount',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '创建时间',
         dataIndex: 'createAt',
         key: 'createAt',
         render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '操作',
         key: 'action',
         width: '12%',
-        render: (_, record) => (
+        render: (_: string, record: ElasticServerSchema) => (
           <Space size="small">
             <a onClick={() => onClickModifyServer(record)}>编辑</a>
             <a onClick={() => onClickDelete(record)}>删除</a>
@@ -164,8 +170,8 @@ function ServersManagement(props) {
               </a>
             </Dropdown>
           </Space>
-        ),
-      },
+        )
+      }
     ];
     setColumns(data);
   }, []);
@@ -194,7 +200,7 @@ function ServersManagement(props) {
             current: pageNum,
             showSizeChanger: false,
             position: ['bottomCenter'],
-            pageSize: 10,
+            pageSize: 10
           }}
         />
       </div>
@@ -210,9 +216,9 @@ function ServersManagement(props) {
   );
 }
 
-export default connect(({ User, Layout, ElasticServer, loading }) => ({
+export default connect(({ User, Layout, ElasticServer, loading }: ConnectState) => ({
   User,
   Layout,
   ElasticServer,
-  qryLoading: loading.effects['ElasticServer/getServerList'],
+  qryLoading: loading.effects['ElasticServer/getServerList']
 }))(ServersManagement);
