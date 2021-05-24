@@ -1,6 +1,8 @@
+import { ConnectState } from '~/models/connect';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import React, { useEffect, useMemo } from 'react';
+import { Dispatch, OrganizationSchema } from 'umi';
 import { Roles } from '~/utils/roles';
 import { CreateFabricRole } from '../_config';
 
@@ -10,14 +12,23 @@ const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
-
-function CreateFabricUserModal(props) {
+export interface CreateFabricUserModalProps {
+  FabricRole: ConnectState['FabricRole'];
+  Organization: ConnectState['Organization'];
+  visible: boolean;
+  onCancel: () => void;
+  addLoading: boolean;
+  User: ConnectState['User'];
+  dispatch: Dispatch;
+  getFabricRoleList: () => void;
+}
+function CreateFabricUserModal(props: CreateFabricUserModalProps) {
   const { FabricRole, Organization, visible, onCancel, addLoading = false, User, dispatch } = props;
   const { networkName, userRole } = User;
   const { myOrgInfo } = FabricRole;
@@ -28,11 +39,11 @@ function CreateFabricUserModal(props) {
   useEffect(() => {
     dispatch({
       type: 'FabricRole/getMyOrgInfo',
-      payload: { networkName },
+      payload: { networkName }
     });
     dispatch({
       type: 'Organization/getOrgInUseList',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, []);
 
@@ -40,7 +51,10 @@ function CreateFabricUserModal(props) {
     if (userRole === Roles.NetworkAdmin) {
       return orgInUseList;
     }
-    return [myOrgInfo];
+    if (myOrgInfo) {
+      return [myOrgInfo];
+    }
+    return [];
   }, [userRole, myOrgInfo, orgInUseList]);
 
   const handleSubmit = () => {
@@ -50,12 +64,12 @@ function CreateFabricUserModal(props) {
         form.resetFields();
         let params = {
           ...values,
-          networkName,
+          networkName
         };
         dispatch({
           type: 'FabricRole/createFabricRole',
-          payload: params,
-        }).then((res) => {
+          payload: params
+        }).then((res: any) => {
           if (res) {
             onCancel();
             props.getFabricRoleList();
@@ -68,7 +82,7 @@ function CreateFabricUserModal(props) {
       });
   };
 
-  const checkConfirm = (_, value) => {
+  const checkConfirm = (_: any, value: string) => {
     const promise = Promise;
 
     if (value && value !== form.getFieldValue('pass')) {
@@ -90,8 +104,8 @@ function CreateFabricUserModal(props) {
       </Button>,
       <Button key="submit" type="primary" onClick={handleSubmit} loading={addLoading}>
         提交
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
@@ -104,14 +118,13 @@ function CreateFabricUserModal(props) {
           rules={[
             {
               required: true,
-              message: '请输入Fabric角色名',
+              message: '请输入Fabric角色名'
             },
             {
               pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
-              message: 'Fabric角色名由4-20位字母、数字、下划线组成，字母开头',
-            },
-          ]}
-        >
+              message: 'Fabric角色名由4-20位字母、数字、下划线组成，字母开头'
+            }
+          ]}>
           <Input placeholder="请输入Fabric角色名" />
         </Item>
         <Item
@@ -121,15 +134,14 @@ function CreateFabricUserModal(props) {
           rules={[
             {
               required: true,
-              message: '请输入密码',
+              message: '请输入密码'
             },
             {
               min: 6,
               max: 18,
-              message: '密码长度为6-18位',
-            },
-          ]}
-        >
+              message: '密码长度为6-18位'
+            }
+          ]}>
           <Input type="password" placeholder="请输入密码" />
         </Item>
         <Item
@@ -139,13 +151,12 @@ function CreateFabricUserModal(props) {
           rules={[
             {
               required: true,
-              message: '请确认密码!',
+              message: '请确认密码!'
             },
             {
-              validator: checkConfirm,
-            },
-          ]}
-        >
+              validator: checkConfirm
+            }
+          ]}>
           <Input type="password" placeholder="请确认密码" />
         </Item>
         <Item
@@ -154,10 +165,9 @@ function CreateFabricUserModal(props) {
           rules={[
             {
               required: true,
-              message: '请选择角色类型',
-            },
-          ]}
-        >
+              message: '请选择角色类型'
+            }
+          ]}>
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择角色类型">
             {Object.keys(CreateFabricRole).map((role) => (
               <Option key={role} value={CreateFabricRole[role]}>
@@ -169,23 +179,21 @@ function CreateFabricUserModal(props) {
         <Item
           label="所属组织"
           name="orgName"
-          initialValue={userRole === Roles.NetworkMember ? myOrgInfo.orgName : null}
+          initialValue={userRole === Roles.NetworkMember ? myOrgInfo && myOrgInfo.orgName : null}
           rules={[
             {
               required: true,
-              message: '请选择所属组织',
-            },
-          ]}
-        >
+              message: '请选择所属组织'
+            }
+          ]}>
           <Select
             allowClear
             placeholder="请选择所属组织"
             disabled={userRole === Roles.NetworkMember}
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-          >
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}>
             {orgList.map((item) => (
               <Option key={item.orgName} value={item.orgName}>
-                {item.orgName}
+                {item && item.orgName}
               </Option>
             ))}
           </Select>
@@ -198,9 +206,9 @@ function CreateFabricUserModal(props) {
   );
 }
 
-export default connect(({ User, FabricRole, Organization, loading }) => ({
+export default connect(({ User, FabricRole, Organization, loading }: ConnectState) => ({
   User,
   FabricRole,
   Organization,
-  addLoading: loading.effects['FabricRole/createFabricRole'],
+  addLoading: loading.effects['FabricRole/createFabricRole']
 }))(CreateFabricUserModal);

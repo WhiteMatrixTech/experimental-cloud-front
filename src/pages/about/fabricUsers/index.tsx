@@ -10,24 +10,33 @@ import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { orgStatusEnum } from '../organizations/_config';
 import baseConfig from '~/utils/config';
 import styles from './index.less';
+import { Dispatch, FabricRoleSchema } from 'umi';
+import { ConnectState } from '~/models/connect';
+import { ColumnsType } from 'antd/lib/table';
 
 const { Item } = Form;
 const Option = Select.Option;
 const formItemLayout = {
   labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
+  wrapperCol: { span: 16 }
 };
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/fabricUsers');
-
-function FabricRoleManagement(props) {
+export interface FabricRoleManagementProps {
+  dispatch: Dispatch;
+  qryLoading: boolean;
+  Organization: ConnectState['Organization'];
+  User: ConnectState['User'];
+  FabricRole: ConnectState['FabricRole'];
+}
+function FabricRoleManagement(props: FabricRoleManagementProps) {
   const { dispatch, qryLoading = false } = props;
   const { orgList } = props.Organization;
   const { networkName, userRole } = props.User;
   const { fabricRoleList, fabricRoleTotal, myOrgInfo } = props.FabricRole;
 
   const [form] = Form.useForm();
-  const [columns, setColumns] = useState([]);
+  const [columns, setColumns] = useState<ColumnsType<any>>([]);
   const [pageNum, setPageNum] = useState(1);
   const [searchParams, setSearchParams] = useState({ orgName: '' });
 
@@ -35,29 +44,29 @@ function FabricRoleManagement(props) {
 
   const getFabricRoleList = () => {
     const { orgName } = searchParams;
-    const params = {
-      networkName,
+    const params: { networkName: string; orgName?: string } = {
+      networkName
     };
     if (orgName) {
       params.orgName = orgName;
       dispatch({
         type: 'FabricRole/getFabricRoleListWithOrg',
-        payload: params,
+        payload: params
       });
       return;
     }
     dispatch({
       type: 'FabricRole/getFabricRoleList',
-      payload: params,
+      payload: params
     });
   };
 
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
   const onClickCreate = () => {
-    if (myOrgInfo.orgStatus && myOrgInfo.orgStatus === orgStatusEnum.InUse) {
+    if (myOrgInfo && myOrgInfo.orgStatus && myOrgInfo.orgStatus === orgStatusEnum.InUse) {
       setCreateModalVisible(true);
     } else {
       message.warn('请先在【组织管理】中添加您的组织，并确保您的组织在使用中');
@@ -68,14 +77,14 @@ function FabricRoleManagement(props) {
     setCreateModalVisible(false);
   };
 
-  const onDownLoadSDK = (record) => {
+  const onDownLoadSDK = (record: FabricRoleSchema) => {
     // token校验
     const accessToken = localStorage.getItem('accessToken');
     const roleToken = localStorage.getItem('roleToken');
     let headers = {
       'Content-Type': 'text/plain',
       Authorization: `Bearer ${accessToken}`,
-      RoleAuth: roleToken,
+      RoleAuth: roleToken
     };
 
     request(
@@ -84,9 +93,9 @@ function FabricRoleManagement(props) {
         headers,
         mode: 'cors',
         method: 'GET',
-        responseType: 'blob',
-      },
-    ).then((res) => {
+        responseType: 'blob'
+      }
+    ).then((res: any) => {
       const blob = new Blob([res]);
       saveAs(blob, `${record.userId}.json`);
     });
@@ -98,7 +107,7 @@ function FabricRoleManagement(props) {
       .validateFields()
       .then((values) => {
         const params = {
-          orgName: values.orgNameSearch,
+          orgName: values.orgNameSearch
         };
         setSearchParams(params);
       })
@@ -117,51 +126,51 @@ function FabricRoleManagement(props) {
   useEffect(() => {
     dispatch({
       type: 'Organization/getOrgList',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, []);
 
   // 用户身份改变时，表格展示改变
   useEffect(() => {
-    const data = [
+    const data: ColumnsType<any> = [
       {
         title: 'Fabric角色名',
         dataIndex: 'userId',
         key: 'userId',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '角色类型',
         dataIndex: 'explorerRole',
-        key: 'explorerRole',
+        key: 'explorerRole'
       },
       {
         title: '所属组织',
         dataIndex: 'orgName',
         key: 'orgName',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '属性集',
         dataIndex: 'attrs',
         key: 'attrs',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '创建时间',
         dataIndex: 'updatedAt',
         key: 'updatedAt',
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+        render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss')
       },
       {
         title: '操作',
         key: 'action',
-        render: (_, record) => (
+        render: (_: any, record: FabricRoleSchema) => (
           <Space size="small">
             <a onClick={() => onDownLoadSDK(record)}>下载SDK配置</a>
           </Space>
-        ),
-      },
+        )
+      }
     ];
     setColumns(data);
   }, [userRole]);
@@ -174,7 +183,7 @@ function FabricRoleManagement(props) {
   useEffect(() => {
     dispatch({
       type: 'FabricRole/getMyOrgInfo',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, []);
 
@@ -214,7 +223,7 @@ function FabricRoleManagement(props) {
             </Button>
           </div>
           <Table
-            rowKey={(record) => `${record.orgName}-${record.userId}`}
+            rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.userId}`}
             loading={qryLoading}
             columns={columns}
             dataSource={fabricRoleList}
@@ -224,7 +233,7 @@ function FabricRoleManagement(props) {
               total: fabricRoleTotal,
               current: pageNum,
               showSizeChanger: false,
-              position: ['bottomCenter'],
+              position: ['bottomCenter']
             }}
           />
         </div>
@@ -240,10 +249,10 @@ function FabricRoleManagement(props) {
   );
 }
 
-export default connect(({ User, Organization, Layout, FabricRole, loading }) => ({
+export default connect(({ User, Organization, Layout, FabricRole, loading }: ConnectState) => ({
   User,
   Organization,
   Layout,
   FabricRole,
-  qryLoading: loading.effects['FabricRole/getFabricRoleList'],
+  qryLoading: loading.effects['FabricRole/getFabricRoleList']
 }))(FabricRoleManagement);
