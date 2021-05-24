@@ -2,20 +2,29 @@ import React from 'react';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import { serverPurpose } from '../_config';
+import { Dispatch, ElasticServerSchema } from 'umi';
+import { ConnectState } from '~/models/connect';
 
 const { Item } = Form;
 const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
-
-function CreateServerModal(props) {
+export interface CreateServerModalProps {
+  record: ElasticServerSchema | null;
+  visible: boolean;
+  onCancel: () => void;
+  submitLoading: boolean;
+  dispatch: Dispatch;
+  getServerList: () => void;
+}
+function CreateServerModal(props: CreateServerModalProps) {
   const { record, visible, onCancel, submitLoading = false, dispatch } = props;
 
   const [form] = Form.useForm();
@@ -29,12 +38,12 @@ function CreateServerModal(props) {
         if (record) {
           apiProgress = await dispatch({
             type: 'ElasticServer/modifyServer',
-            payload: params,
+            payload: params
           });
         } else {
           apiProgress = await dispatch({
             type: 'ElasticServer/createServer',
-            payload: params,
+            payload: params
           });
         }
         if (apiProgress) {
@@ -59,8 +68,8 @@ function CreateServerModal(props) {
       </Button>,
       <Button key="submit" type="primary" onClick={handleSubmit} loading={submitLoading}>
         提交
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
@@ -73,14 +82,13 @@ function CreateServerModal(props) {
           rules={[
             {
               required: true,
-              message: '请输入服务器名称',
+              message: '请输入服务器名称'
             },
             {
               pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
-              message: '服务器名称由4-20位字母、数字、下划线组成，小写字母开头',
-            },
-          ]}
-        >
+              message: '服务器名称由4-20位字母、数字、下划线组成，小写字母开头'
+            }
+          ]}>
           <Input disabled={!!(record && record.serverName)} placeholder="请输入服务器名称" />
         </Item>
         <Item
@@ -90,10 +98,9 @@ function CreateServerModal(props) {
           rules={[
             {
               required: true,
-              message: '请输入用户名',
-            },
-          ]}
-        >
+              message: '请输入用户名'
+            }
+          ]}>
           <Input placeholder="请输入用户名" />
         </Item>
         <Item
@@ -103,10 +110,9 @@ function CreateServerModal(props) {
           rules={[
             {
               required: true,
-              message: '请选择用途类型',
-            },
-          ]}
-        >
+              message: '请选择用途类型'
+            }
+          ]}>
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择用途类型">
             {Object.keys(serverPurpose).map((type) => (
               <Option key={serverPurpose[type]} value={serverPurpose[type]}>
@@ -122,10 +128,9 @@ function CreateServerModal(props) {
           rules={[
             {
               required: true,
-              message: '请输入外网IP',
-            },
-          ]}
-        >
+              message: '请输入外网IP'
+            }
+          ]}>
           <Input placeholder="请输入外网IP" />
         </Item>
         <Item
@@ -135,10 +140,9 @@ function CreateServerModal(props) {
           rules={[
             {
               required: true,
-              message: '请输入内网IP',
-            },
-          ]}
-        >
+              message: '请输入内网IP'
+            }
+          ]}>
           <Input placeholder="请输入内网IP" />
         </Item>
         <Item
@@ -148,10 +152,9 @@ function CreateServerModal(props) {
           rules={[
             {
               required: true,
-              message: '请输入SSH公钥',
-            },
-          ]}
-        >
+              message: '请输入SSH公钥'
+            }
+          ]}>
           <Input placeholder="请输入SSH公钥" />
         </Item>
         <Item
@@ -161,10 +164,9 @@ function CreateServerModal(props) {
           rules={[
             {
               required: true,
-              message: '请输入SSH私钥',
-            },
-          ]}
-        >
+              message: '请输入SSH私钥'
+            }
+          ]}>
           <Input.TextArea placeholder="请输入SSH私钥" />
         </Item>
       </Form>
@@ -172,8 +174,8 @@ function CreateServerModal(props) {
   );
 }
 
-export default connect(({ User, ElasticServer, loading }) => ({
+export default connect(({ User, ElasticServer, loading }: ConnectState) => ({
   User,
   ElasticServer,
-  submitLoading: loading.effects['ElasticServer/createServer'] || loading.effects['ElasticServer/modifyServer'],
+  submitLoading: loading.effects['ElasticServer/createServer'] || loading.effects['ElasticServer/modifyServer']
 }))(CreateServerModal);

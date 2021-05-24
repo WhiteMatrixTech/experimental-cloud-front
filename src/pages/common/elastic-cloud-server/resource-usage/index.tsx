@@ -6,39 +6,46 @@ import { Breadcrumb, DetailCard } from '~/components';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import baseConfig from '~/utils/config';
 import { serverPurpose } from '../_config';
-
+import { ColumnsType } from 'antd/lib/table';
+import { Dispatch, ElasticServerSchema, Location } from 'umi';
+import { ConnectState } from '~/models/connect';
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');
 breadCrumbItem.push({
   menuName: '实例数据',
-  menuHref: `/`,
+  menuHref: `/`
 });
 
-const columns = [
+const columns: ColumnsType<any> = [
   {
     title: '实例名称',
     dataIndex: 'instanceName',
-    key: 'instanceName',
+    key: 'instanceName'
   },
   {
     title: '实例类型',
     dataIndex: 'instanceType',
-    key: 'instanceType',
+    key: 'instanceType'
   },
   {
     title: '外网IP',
     dataIndex: 'publicIpAddress',
     key: 'publicIpAddress',
-    ellipsis: true,
+    ellipsis: true
   },
   {
     title: '创建时间',
     dataIndex: 'createdAt',
     key: 'createdAt',
-    render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
-  },
+    render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+  }
 ];
-
-function ResourceUsage(props) {
+export interface ResourceUsageProps {
+  qryLoading: boolean;
+  location: Location<ElasticServerSchema>;
+  dispatch: Dispatch;
+  ElasticServer: ConnectState['ElasticServer'];
+}
+function ResourceUsage(props: ResourceUsageProps) {
   const { qryLoading = false, location, dispatch, ElasticServer } = props;
   const { nodeList, nodeTotal } = ElasticServer;
   const [pageNum, setPageNum] = useState(1);
@@ -50,41 +57,41 @@ function ResourceUsage(props) {
       limit: baseConfig.pageSize,
       offset: offset,
       ascend: false,
-      serverName: location?.state?.serverName,
+      serverName: location?.state?.serverName
     };
     dispatch({
       type: 'ElasticServer/getNodeList',
-      payload: params,
+      payload: params
     });
     dispatch({
       type: 'ElasticServer/getNodeTotal',
-      payload: { serverName: location?.state?.serverName },
+      payload: { serverName: location?.state?.serverName }
     });
   };
 
-  const onPageChange = (pageInfo) => {
+  const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
   const serverInfoList = useMemo(
     () => [
       {
         label: '服务器名称',
-        value: location?.state?.serverName,
+        value: location?.state?.serverName
       },
       {
         label: '用户名称',
-        value: location?.state?.username,
+        value: location?.state?.username
       },
       {
         label: '用途类型',
-        value: serverPurpose[location?.state?.serverPurpose],
+        value: serverPurpose[location?.state?.serverPurpose]
       },
       {
         label: '实例总数',
-        value: nodeTotal,
-      },
+        value: nodeTotal
+      }
     ],
-    [location?.state, nodeTotal],
+    [location?.state, nodeTotal]
   );
 
   useEffect(() => {
@@ -107,7 +114,7 @@ function ResourceUsage(props) {
             pageSize: baseConfig.pageSize,
             total: nodeTotal,
             current: pageNum,
-            position: ['bottomCenter'],
+            position: ['bottomCenter']
           }}
         />
       </div>
@@ -115,9 +122,9 @@ function ResourceUsage(props) {
   );
 }
 
-export default connect(({ ElasticServer, Layout, User, loading }) => ({
+export default connect(({ ElasticServer, Layout, User, loading }: ConnectState) => ({
   ElasticServer,
   Layout,
   User,
-  qryLoading: loading.effects['ElasticServer/getNodeList'],
+  qryLoading: loading.effects['ElasticServer/getNodeList']
 }))(ResourceUsage);
