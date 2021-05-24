@@ -1,19 +1,19 @@
 import * as API from '../services/rbac';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
-import { ChainCodeIndex, UserAccessPolicy } from '@/pages/about/rbac/_config';
+import { ChainCodeIndex, UserAccessPolicy } from '~/pages/about/rbac/_config';
 
 export type RbacRole = {
   roleName: string;
   policy: UserAccessPolicy[];
-}
+};
 
 export type RBACModelState = {
-  roleList: Array<RbacRole>,
-  roleNameList: Array<string>,
-  chaincodeList: Array<ChainCodeIndex>,
-  rbacPolicy: RbacRole | object,
-}
+  roleList: Array<RbacRole>;
+  roleNameList: Array<string>;
+  chaincodeList: Array<ChainCodeIndex>;
+  rbacPolicy: RbacRole | null;
+};
 
 export type RBACModelType = {
   namespace: 'RBAC';
@@ -39,9 +39,8 @@ const RBACModel: RBACModelType = {
     roleList: [], // 角色列表
     roleNameList: [], // 角色名列表
     chaincodeList: [], // 合约列表
-    rbacPolicy: {},
+    rbacPolicy: null,
   },
-
 
   effects: {
     *getRoleList({ payload }, { call, put }) {

@@ -7,8 +7,10 @@ import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal, Input, messa
 import { CaretDownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Breadcrumb } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import { setParams } from '../_config';
 import styles from './index.less';
+import { ConnectState } from '~/models/connect';
+import { Dispatch, Location, RbacRole } from 'umi';
+import { configValueState, setParams } from '../_config';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -19,7 +21,15 @@ breadCrumbItem.push({
   menuHref: `/`,
 });
 
-function RbacConfig(props) {
+export interface RbacConfigProps {
+  dispatch: Dispatch;
+  location: Location<RbacRole>;
+  User: ConnectState['User'];
+  RBAC: ConnectState['RBAC'];
+  configLoading: boolean;
+  resetLoading: boolean;
+}
+function RbacConfig(props: RbacConfigProps) {
   const { dispatch, location, User, RBAC, configLoading = false, resetLoading = false } = props;
   const { networkName } = User;
   const { roleNameList, chaincodeList, rbacPolicy } = RBAC;
@@ -28,10 +38,10 @@ function RbacConfig(props) {
   const [configType, setConfigType] = useState('FormConfig');
   const [jsonPolicy, setJsonPolicy] = useState('');
 
-  const [viewChaincode, setViewChaincode] = useState('InChannel');
-  const [invokeChaincodeCustom, setInvokeChaincodeCustom] = useState('InChannel');
+  const [viewChaincode, setViewChaincode] = useState<string | undefined>('InChannel');
+  const [invokeChaincodeCustom, setInvokeChaincodeCustom] = useState<string>('InChannel');
 
-  const getConfig = (value) => {
+  const getConfig = (value: string) => {
     dispatch({
       type: 'RBAC/getRbacConfigWithRole',
       payload: { networkName, roleName: value },
@@ -47,15 +57,15 @@ function RbacConfig(props) {
     });
   };
 
-  const onChangeConfigType = (e) => {
+  const onChangeConfigType = (e: any) => {
     setConfigType(e.target.value);
   };
 
-  const onInputJsonConfig = (e) => {
+  const onInputJsonConfig = (e: any) => {
     setJsonPolicy(e.target.value);
   };
 
-  const onChangeViewChaincode = (e) => {
+  const onChangeViewChaincode = (e: any) => {
     setViewChaincode(e.target.value);
     if (e.target.value === 'Own') {
       form.setFields([
@@ -66,7 +76,7 @@ function RbacConfig(props) {
     }
   };
 
-  const onChangeInvokeChaincode = (e) => {
+  const onChangeInvokeChaincode = (e: any) => {
     setInvokeChaincodeCustom(e.target.value);
     if (e.target.value === 'Custom') {
       getChaincodeList();
@@ -122,8 +132,8 @@ function RbacConfig(props) {
   };
 
   useEffect(() => {
-    if (rbacPolicy.policy) {
-      const configValue = {};
+    if (rbacPolicy && rbacPolicy.policy) {
+      const configValue: configValueState = {};
       const policy = rbacPolicy.policy || [];
       const BlockInfo = policy.find((item) => item.subject === 'BlockInfo');
       const Transaction = policy.find((item) => item.subject === 'Transaction');
@@ -133,9 +143,7 @@ function RbacConfig(props) {
       if (InvokeChainCodeMethod?.field === 'Custom') {
         getChaincodeList();
         setInvokeChaincodeCustom('Custom');
-        configValue.invokeChaincodeSubject = InvokeChainCodeMethod.custom.map((item) => item.chainCodeName);
-      } else {
-        setInvokeChaincodeCustom();
+        configValue.invokeChaincodeSubject = InvokeChainCodeMethod.custom?.map((item) => item.chainCodeName);
       }
       configValue.BlockInfo = BlockInfo?.field;
       configValue.Transaction = Transaction?.field;
@@ -369,7 +377,7 @@ function RbacConfig(props) {
   );
 }
 
-export default connect(({ User, RBAC, loading }) => ({
+export default connect(({ User, RBAC, loading }: ConnectState) => ({
   User,
   RBAC,
   configLoading: loading.effects['RBAC/setConfig'],
