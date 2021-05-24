@@ -51,7 +51,10 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
     if (userRole === Roles.NetworkAdmin) {
       return orgInUseList;
     }
-    return [myOrgInfo];
+    if (myOrgInfo) {
+      return [myOrgInfo];
+    }
+    return [];
   }, [userRole, myOrgInfo, orgInUseList]);
 
   const handleSubmit = () => {
@@ -189,7 +192,7 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
             disabled={userRole === Roles.NetworkMember}
             getPopupContainer={(triggerNode) => triggerNode.parentNode}>
             {orgList.map((item) => (
-              <Option key={item?.orgName} value={item?.orgName || ''}>
+              <Option key={item.orgName} value={item.orgName}>
                 {item && item.orgName}
               </Option>
             ))}
