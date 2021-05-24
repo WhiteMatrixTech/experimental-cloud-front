@@ -1,4 +1,4 @@
-import { BlockChainCompileModelState } from '@/.umi/plugin-dva/connect';
+import { BlockChainCompileModelState } from './block-chain-compile';
 import { BlockModelState } from './block';
 import { CertificateModelState } from './certificate';
 import { ChannelModelState } from './channel';
