@@ -94,7 +94,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       ellipsis: true
     },
     {
-      title: '编译镜像名',
+      title: '编译镜像',
       dataIndex: 'buildEnvImage',
       key: 'buildEnvImage',
       ellipsis: true

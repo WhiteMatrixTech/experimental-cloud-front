@@ -5,7 +5,7 @@ import { request } from '../utils/request';
  * 获取编译镜像列表
  */
 export async function getCompileImageList() {
-  return request('/build/buildImages');
+  return request('/build/buildImages', { method: 'POST', body: {} });
 }
 
 /**
