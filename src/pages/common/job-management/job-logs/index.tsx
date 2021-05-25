@@ -51,7 +51,7 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
   useEffect(() => {
     const logDiv = document.getElementById('job-logs');
     if (jobLog && logDiv) {
-      logDiv.innerHTML = ansi_up.ansi_to_html(jobLog);
+      logDiv.innerHTML = ansi_up.ansi_to_html(jobLog).replace(/\n/g, '<br>');
     }
   }, [jobLog]);
 
