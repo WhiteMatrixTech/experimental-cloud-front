@@ -2,6 +2,13 @@ import { GitBuildRepoSchema } from 'umi';
 import { request } from '../utils/request';
 
 /**
+ * 获取编译镜像列表
+ */
+export async function getCompileImageList() {
+  return request('/build/buildImages');
+}
+
+/**
  * 一键编译
  */
 export async function oneKeyCompileApi(params: GitBuildRepoSchema) {

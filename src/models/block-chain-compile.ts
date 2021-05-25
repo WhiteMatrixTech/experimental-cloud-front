@@ -35,6 +35,7 @@ export type JobSchema = {
 };
 
 export type BlockChainCompileModelState = {
+  compileImageList: Array<{ name: string; url: string }>;
   gitBuildJobList: Array<GitBuildRepoTask>;
   gitBuildJobTotal: number;
   jobList: Array<JobSchema>;
@@ -48,6 +49,7 @@ export type BlockChainCompileModelType = {
   namespace: 'BlockChainCompile';
   state: BlockChainCompileModelState;
   effects: {
+    getCompileImageList: Effect;
     oneKeyCompile: Effect;
     getCompileJobList: Effect;
     getJobList: Effect;
@@ -63,6 +65,7 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
   namespace: 'BlockChainCompile',
 
   state: {
+    compileImageList: [],
     gitBuildJobList: [],
     gitBuildJobTotal: 0,
     jobList: [],
@@ -73,12 +76,26 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
   },
 
   effects: {
+    *getCompileImageList({ payload }, { call, put }) {
+      const res = yield call(API.getCompileImageList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            compileImageList: result.images
+          }
+        });
+      }
+    },
+
     *getCompileJobList({ payload }, { call, put, select }) {
       const res = yield call(API.getCompileJobList, payload);
+      const { continueData } = payload;
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         const { gitBuildJobList } = yield select((state: ConnectState) => state.BlockChainCompile);
-        const newList = gitBuildJobList.concat(result.buildRepoTasks);
+        const newList = continueData ? gitBuildJobList.concat(result.buildRepoTasks) : result.buildRepoTasks;
         yield put({
           type: 'common',
           payload: {
