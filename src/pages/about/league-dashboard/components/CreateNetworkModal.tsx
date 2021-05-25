@@ -3,7 +3,7 @@ import { Button, Form, Input, Modal, InputNumber, Select, Radio, Row, Col, messa
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import styles from './CreateNetworkModal.less';
-import { Dispatch } from 'umi';
+import { Dispatch, ImageDetail } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { CreateNodeInfo } from '~/services/dashboard';
 
@@ -13,8 +13,8 @@ const { Option } = Select;
 const operType = { default: 'default', next: 'next' };
 const inlineItemLayout = {
   wrapperCol: {
-    sm: { span: 24 },
-  },
+    sm: { span: 24 }
+  }
 };
 export interface CreateNetworkModalProps {
   dispatch: Dispatch;
@@ -22,11 +22,13 @@ export interface CreateNetworkModalProps {
   onCancel: (res?: any) => void;
   createLoading: boolean;
   User: ConnectState['User'];
+  Dashboard: ConnectState['Dashboard'];
   ElasticServer: ConnectState['ElasticServer'];
 }
 function CreateNetworkModal(props: CreateNetworkModalProps) {
-  const { dispatch, visible, onCancel, createLoading = false, User, ElasticServer } = props;
+  const { dispatch, visible, onCancel, createLoading = false, User, Dashboard, ElasticServer } = props;
   const { serverList } = ElasticServer;
+  const { imageList } = Dashboard;
 
   const [form] = Form.useForm();
   const [template, setTemplate] = useState('default');
@@ -64,9 +66,19 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
   const createNetwork = useCallback(async () => {
     try {
       const params = JSON.parse(confirmValues.current);
+      const { imageInfo, ...rest } = params;
+      if (imageInfo) {
+        const imageInfoList: ImageDetail[] = [];
+        rest.imageInfo = imageList.reduce((initialValue, cur) => {
+          if (imageInfo.includes(cur.imageUrl)) {
+            initialValue.push(cur);
+          }
+          return initialValue;
+        }, imageInfoList);
+      }
       const res = await dispatch({
         type: 'Dashboard/createNetwork',
-        payload: params,
+        payload: rest
       });
       if (res) {
         onCancel(true);
@@ -74,7 +86,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
     } catch (e) {
       message.warn('请输入标准JSON数据');
     }
-  }, [dispatch, onCancel]);
+  }, [dispatch, imageList, onCancel]);
 
   const onChangeTemplate = (e: any) => {
     setTemplate(e.target.value);
@@ -95,7 +107,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
         </Button>,
         <Button key="submit" onClick={createNetwork} type="primary" loading={createLoading}>
           创建
-        </Button>,
+        </Button>
       ];
     }
     return [
@@ -104,7 +116,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
       </Button>,
       <Button key="next" onClick={next} type="primary">
         下一步
-      </Button>,
+      </Button>
     ];
   }, [createLoading, createNetwork, curOper, next, onCancel, prev]);
 
@@ -119,11 +131,15 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
     const params = {
       limit: 100,
       offset: 0,
-      ascend: false,
+      ascend: false
     };
     dispatch({
       type: 'ElasticServer/getServerList',
-      payload: params,
+      payload: params
+    });
+    dispatch({
+      type: 'Dashboard/getImageList',
+      payload: params
     });
   }, [dispatch]);
 
@@ -133,7 +149,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
     destroyOnClose: true,
     title: modalTitle,
     onCancel: () => onCancel(),
-    footer: btnList,
+    footer: btnList
   };
 
   return (
@@ -157,17 +173,16 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
             rules={[
               {
                 required: true,
-                message: '请输入网络名称',
+                message: '请输入网络名称'
               },
               {
                 min: 6,
                 max: 15,
                 type: 'string',
                 pattern: /^[a-zA-Z0-9]+$/,
-                message: '网络名称由6~15位英文字母组成',
-              },
-            ]}
-          >
+                message: '网络名称由6~15位英文字母组成'
+              }
+            ]}>
             <Input disabled={true} placeholder="请输入网络名称" />
           </Item>
           <Item
@@ -177,17 +192,16 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
             rules={[
               {
                 required: true,
-                message: '请输入组织名称',
+                message: '请输入组织名称'
               },
               {
                 min: 3,
                 max: 15,
                 type: 'string',
                 pattern: /^[a-zA-Z0-9]+$/,
-                message: '组织名称由3~15位英文或数字组成',
-              },
-            ]}
-          >
+                message: '组织名称由3~15位英文或数字组成'
+              }
+            ]}>
             <Input placeholder="请输入组织名称" />
           </Item>
           <Item
@@ -197,11 +211,23 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
             rules={[
               {
                 required: true,
-                message: '请输入组织别名',
-              },
-            ]}
-          >
+                message: '请输入组织别名'
+              }
+            ]}>
             <Input placeholder="请输入组织别名" />
+          </Item>
+          <Item label="镜像" name="imageInfo" tooltip="不选择则使用默认镜像">
+            <Select
+              allowClear
+              mode="multiple"
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              placeholder="选择镜像">
+              {imageList.map((item) => (
+                <Option key={item.imageUrl} value={item.imageUrl}>
+                  {item.imageUrl}
+                </Option>
+              ))}
+            </Select>
           </Item>
           {template === 'default' && (
             <Form.List name="initPeerInfo">
@@ -219,17 +245,16 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
                             rules={[
                               {
                                 required: true,
-                                message: '请输入节点名称',
+                                message: '请输入节点名称'
                               },
                               {
                                 min: 3,
                                 max: 15,
                                 type: 'string',
                                 pattern: /^[a-zA-Z0-9]+$/,
-                                message: '节点名称由3~15位英文或数字组成',
-                              },
-                            ]}
-                          >
+                                message: '节点名称由3~15位英文或数字组成'
+                              }
+                            ]}>
                             <Input placeholder="请输入节点名称" />
                           </Item>
                         </Col>
@@ -239,8 +264,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
                             {...inlineItemLayout}
                             name={[name, 'nodeAliasName']}
                             fieldKey={[fieldKey, 'nodeAliasName']}
-                            rules={[{ required: true, message: '请输入节点别名' }]}
-                          >
+                            rules={[{ required: true, message: '请输入节点别名' }]}>
                             <Input placeholder="请输入节点别名" />
                           </Item>
                         </Col>
@@ -249,14 +273,12 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
                             {...restField}
                             {...inlineItemLayout}
                             name={[name, 'serverName']}
-                            fieldKey={[fieldKey, 'serverName']}
-                          >
+                            fieldKey={[fieldKey, 'serverName']}>
                             <Select
                               allowClear={true}
                               placeholder="选择服务器"
                               style={{ width: '100%' }}
-                              getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                            >
+                              getPopupContainer={(triggerNode) => triggerNode.parentNode}>
                               {serverList.map((item) => (
                                 <Option key={item.serverName} value={item.serverName}>
                                   {item.serverName}
@@ -271,14 +293,12 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
                             {...inlineItemLayout}
                             initialValue={true}
                             name={[name, 'isAnchor']}
-                            fieldKey={[fieldKey, 'isAnchor']}
-                          >
+                            fieldKey={[fieldKey, 'isAnchor']}>
                             <Select
                               allowClear={true}
                               placeholder="是否为anchor节点"
                               style={{ width: '100%' }}
-                              getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                            >
+                              getPopupContainer={(triggerNode) => triggerNode.parentNode}>
                               <Option key="true" value={'true'}>
                                 anchor节点
                               </Option>
@@ -312,10 +332,9 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
                 rules={[
                   {
                     required: true,
-                    message: '请输入模板节点数',
-                  },
-                ]}
-              >
+                    message: '请输入模板节点数'
+                  }
+                ]}>
                 <InputNumber style={{ width: '100%' }} min={1} max={100} step={1} />
               </Item>
               <Row gutter={24}>
@@ -325,17 +344,16 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
                     rules={[
                       {
                         required: true,
-                        message: '请输入模板节点名称',
+                        message: '请输入模板节点名称'
                       },
                       {
                         min: 3,
                         max: 15,
                         type: 'string',
                         pattern: /^[a-zA-Z0-9]+$/,
-                        message: '节点名称由3~15位英文或数字组成',
-                      },
-                    ]}
-                  >
+                        message: '节点名称由3~15位英文或数字组成'
+                      }
+                    ]}>
                     <Input placeholder="模板节点名称" />
                   </Item>
                 </Col>
@@ -350,8 +368,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
                       allowClear={true}
                       placeholder="选择服务器"
                       style={{ width: '100%' }}
-                      getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    >
+                      getPopupContainer={(triggerNode) => triggerNode.parentNode}>
                       {serverList.map((item) => (
                         <Option key={item.serverName} value={item.serverName}>
                           {item.serverName}
@@ -366,8 +383,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
                       allowClear={true}
                       placeholder="是否为anchor节点"
                       style={{ width: '100%' }}
-                      getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    >
+                      getPopupContainer={(triggerNode) => triggerNode.parentNode}>
                       <Option key="true" value={'true'}>
                         anchor节点
                       </Option>
@@ -406,7 +422,7 @@ function spliceFormValues(formValue: any, template: string) {
         }
         peer.isAnchor = peer.isAnchor === 'true' || false;
         return peer;
-      },
+      }
     );
     params = { ...rest, initPeerInfo: peerList };
   } else {
@@ -423,7 +439,7 @@ function spliceFormValues(formValue: any, template: string) {
     for (let i = 0; i < peerNumber; i++) {
       const peerInfo: CreateNodeInfo = {
         nodeAliasName: `${templateNodeAliasName}${i}`,
-        nodeName: `${templateNodeName}${i}`,
+        nodeName: `${templateNodeName}${i}`
       };
       if (i === 0) {
         peerInfo.isAnchor = isAnchor;
@@ -442,5 +458,5 @@ export default connect(({ User, Dashboard, ElasticServer, loading }: ConnectStat
   User,
   Dashboard,
   ElasticServer,
-  createLoading: loading.effects['Dashboard/createNetwork'],
+  createLoading: loading.effects['Dashboard/createNetwork']
 }))(CreateNetworkModal);

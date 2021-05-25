@@ -10,7 +10,26 @@ import moment from 'moment';
 import type { Reducer, Effect, BlockSchema, TransactionSchema } from 'umi';
 import { NetworkStatus } from '~/utils/networkStatus';
 
+export enum ImageType {
+  CA = 'ca',
+  Peer = 'peer',
+  Order = 'order'
+}
+
+export type ImageCredential = {
+  username: string;
+  password: string;
+  registryServer: string;
+};
+
+export interface ImageDetail {
+  imageUrl: string;
+  imageType: ImageType;
+  credential?: ImageCredential;
+}
+
 export type DashboardModelState = {
+  imageList: ImageDetail[];
   networkStatusInfo: {
     networkStatus: NetworkStatus;
     createdAt: Date;
@@ -23,14 +42,15 @@ export type DashboardModelState = {
   channelTotal: number;
   myContractTotal: number;
 
-  blockList: Array<BlockSchema>; // 区块链列表
-  transactionList: Array<TransactionSchema>; // 交易列表
+  blockList: BlockSchema[]; // 区块链列表
+  transactionList: TransactionSchema[]; // 交易列表
 };
 
 export type DashboardModelType = {
   namespace: 'Dashboard';
   state: DashboardModelState;
   effects: {
+    getImageList: Effect;
     getNetworkInfo: Effect;
     createNetwork: Effect;
     deleteNetwork: Effect;
@@ -48,6 +68,7 @@ const DashboardModel: DashboardModelType = {
   namespace: 'Dashboard',
 
   state: {
+    imageList: [],
     networkStatusInfo: null,
 
     blockTotal: 0,
@@ -57,10 +78,30 @@ const DashboardModel: DashboardModelType = {
     myContractTotal: 0,
 
     blockList: [],
-    transactionList: [],
+    transactionList: []
   },
 
   effects: {
+    *getImageList({ payload }, { call, put }) {
+      const res = yield call(API.getImageList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        const imageList = result.items.map((image: ImageDetail) => {
+          return {
+            imageUrl: image.imageUrl,
+            imageType: image.imageType,
+            credential: image.credential
+          };
+        });
+        yield put({
+          type: 'common',
+          payload: {
+            imageList
+          }
+        });
+      }
+    },
+
     *getNetworkInfo({ payload }, { call, put }) {
       const res = yield call(API.getNetworkInfo, payload);
       const { statusCode, result } = res;
@@ -68,8 +109,8 @@ const DashboardModel: DashboardModelType = {
         yield put({
           type: 'common',
           payload: {
-            networkStatusInfo: result,
-          },
+            networkStatusInfo: result
+          }
         });
       }
     },
@@ -91,7 +132,7 @@ const DashboardModel: DashboardModelType = {
         notification.success({ message: '网络删除成功', top: 64, duration: 3 });
         yield put({
           type: 'getNetworkInfo',
-          payload: {},
+          payload: {}
         });
       } else {
         notification.error({ message: result.message || '网络删除失败', top: 64, duration: 3 });
@@ -104,8 +145,8 @@ const DashboardModel: DashboardModelType = {
         yield put({
           type: 'common',
           payload: {
-            blockList: result.items,
-          },
+            blockList: result.items
+          }
         });
       }
     },
@@ -116,8 +157,8 @@ const DashboardModel: DashboardModelType = {
         yield put({
           type: 'common',
           payload: {
-            transactionList: result.items,
-          },
+            transactionList: result.items
+          }
         });
       }
     },
@@ -131,7 +172,7 @@ const DashboardModel: DashboardModelType = {
           companyName: '',
           createTimeEnd: 0,
           createTimeStart: 0,
-          from: Number(moment(new Date()).format('x')),
+          from: Number(moment(new Date()).format('x'))
         }),
         call(getChannelList, payload),
         call(getChainCodeList, {
@@ -139,8 +180,8 @@ const DashboardModel: DashboardModelType = {
           offset: 0,
           limit: 1000,
           from: Number(moment(new Date()).format('x')),
-          ascend: false,
-        }),
+          ascend: false
+        })
       ]);
       const blockTotal = res1.statusCode === 'ok' ? res1.result.count : 0;
       const transactionTotal = res2.statusCode === 'ok' ? res2.result.count : 0;
@@ -154,8 +195,8 @@ const DashboardModel: DashboardModelType = {
           transactionTotal,
           memberTotal,
           channelTotal,
-          myContractTotal,
-        },
+          myContractTotal
+        }
       });
     },
     *getStaticInfoForMember({ payload }, { call, put, all }) {
@@ -169,8 +210,8 @@ const DashboardModel: DashboardModelType = {
           offset: 0,
           limit: 1000,
           from: Number(moment(new Date()).format('x')),
-          ascend: false,
-        }),
+          ascend: false
+        })
       ]);
       const blockTotal = res1.statusCode === 'ok' ? res1.result.count : 0;
       const transactionTotal = res2.statusCode === 'ok' ? res2.result.count : 0;
@@ -184,17 +225,17 @@ const DashboardModel: DashboardModelType = {
           transactionTotal,
           memberTotal,
           channelTotal,
-          myContractTotal,
-        },
+          myContractTotal
+        }
       });
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default DashboardModel;
