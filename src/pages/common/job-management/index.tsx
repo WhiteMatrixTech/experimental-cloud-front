@@ -28,8 +28,25 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
     dispatch({
       type: 'BlockChainCompile/getJobList',
       payload: {
+        limit: pageSize
+      }
+    });
+  };
+
+  const getMoreJobList = () => {
+    dispatch({
+      type: 'BlockChainCompile/getJobList',
+      payload: {
         limit: pageSize,
-      },
+        continueData: jobContinueData
+      }
+    });
+  };
+
+  const cleanHob = () => {
+    dispatch({
+      type: 'BlockChainCompile/cleanJob',
+      payload: {}
     });
   };
 
@@ -40,7 +57,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   const onViewJobLog = (record: JobSchema) => {
     history.push({
       pathname: `/common/job-management/job-logs`,
-      state: { ...record },
+      state: { ...record }
     });
   };
 
@@ -49,25 +66,25 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       title: '任务ID',
       dataIndex: 'jobId',
       key: 'jobId',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '任务名称',
       dataIndex: 'jobName',
       key: 'jobName',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '任务类别',
       dataIndex: 'jobCategory',
       key: 'jobCategory',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '任务状态',
       dataIndex: 'status',
       key: 'status',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '操作',
@@ -76,29 +93,23 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
         <Space size="small">
           <a onClick={() => onViewJobLog(record)}>查看日志</a>
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   useEffect(() => {
     getJobList();
+    return () => cleanHob();
   }, []);
 
   useEffect(() => {
-    if (jobTotal >= pageSize) {
+    if (jobContinueData) {
       setMoreBtnVisible(true);
+    } else {
+      setMoreBtnVisible(false);
     }
   }, [jobContinueData]);
-  //获取更多
-  const getMoreJobList = () => {
-    dispatch({
-      type: 'BlockChainCompile/getJobList',
-      payload: {
-        limit: pageSize,
-        continueData: jobContinueData,
-      },
-    });
-  };
+
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -109,19 +120,16 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
           columns={columns}
           dataSource={jobList}
           onChange={onPageChange}
-          pagination={{
-            hideOnSinglePage: true,
-          }}
+          scroll={{ y: 450 }}
+          pagination={false}
         />
-        <div className={styles.jobListMore}>
-          <button
-            className={styles.btn}
-            onClick={getMoreJobList}
-            style={{ display: moreBtnVisible ? 'block' : 'none' }}
-          >
-            加载更多
-          </button>
-        </div>
+        {moreBtnVisible && (
+          <div className={styles.jobListMore}>
+            <button className={styles.btn} onClick={getMoreJobList}>
+              加载更多
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -130,5 +138,5 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 export default connect(({ User, BlockChainCompile, loading }: ConnectState) => ({
   User,
   BlockChainCompile,
-  qryLoading: loading.effects['BlockChainCompile/getJobList'] || loading.effects['BlockChainCompile/getJobById'],
+  qryLoading: loading.effects['BlockChainCompile/getJobList'] || loading.effects['BlockChainCompile/getJobById']
 }))(SourceCodeCompilation);

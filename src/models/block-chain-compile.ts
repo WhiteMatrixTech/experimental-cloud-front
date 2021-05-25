@@ -2,6 +2,7 @@ import * as API from '../services/block-chain-compile';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 import { JobCategory, JobStatus } from '~/pages/common/job-management/_config';
+import { ConnectState } from './connect';
 
 export type PublishImageCredential = {
   username: string;
@@ -54,6 +55,7 @@ export type BlockChainCompileModelType = {
   };
   reducers: {
     common: Reducer<BlockChainCompileModelState>;
+    cleanJob: Reducer<BlockChainCompileModelState>;
   };
 };
 
@@ -67,21 +69,23 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
     jobTotal: 0,
     jobLog: null,
     compileContinueData: '',
-    jobContinueData: '',
+    jobContinueData: ''
   },
 
   effects: {
-    *getCompileJobList({ payload }, { call, put }) {
+    *getCompileJobList({ payload }, { call, put, select }) {
       const res = yield call(API.getCompileJobList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
+        const { gitBuildJobList } = yield select((state: ConnectState) => state.BlockChainCompile);
+        const newList = gitBuildJobList.concat(result.buildRepoTasks);
         yield put({
           type: 'common',
           payload: {
-            gitBuildJobList: result.buildRepoTasks,
-            gitBuildJobTotal: result.buildRepoTasks.length,
-            compileContinueData: result.continueData || '',
-          },
+            gitBuildJobList: newList,
+            gitBuildJobTotal: newList.length,
+            compileContinueData: result.continueData || ''
+          }
         });
       }
     },
@@ -98,17 +102,19 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
       }
     },
 
-    *getJobList({ payload }, { call, put }) {
+    *getJobList({ payload }, { call, put, select }) {
       const res = yield call(API.getJobList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
+        const { jobList } = yield select((state: ConnectState) => state.BlockChainCompile);
+        const newList = jobList.concat(result.jobs);
         yield put({
           type: 'common',
           payload: {
-            jobList: result.jobs,
-            jobTotal: result.jobs.length,
-            jobContinueData: result.continueData || '',
-          },
+            jobList: newList,
+            jobTotal: newList.length,
+            jobContinueData: result.continueData || ''
+          }
         });
       }
     },
@@ -120,18 +126,30 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
         yield put({
           type: 'common',
           payload: {
-            jobLog: result,
-          },
+            jobLog: result
+          }
         });
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
     },
-  },
+    cleanJob(state, action) {
+      return {
+        ...state,
+        ...action.payload,
+        gitBuildJobList: [],
+        gitBuildJobTotal: 0,
+        compileContinueData: '',
+        jobList: [],
+        jobTotal: 0,
+        jobContinueData: ''
+      };
+    }
+  }
 };
 
 export default BlockChainCompileModel;

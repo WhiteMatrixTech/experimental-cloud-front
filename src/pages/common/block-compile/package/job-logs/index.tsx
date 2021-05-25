@@ -2,23 +2,25 @@ import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
 import { Breadcrumb, DetailCard } from '~/components';
-import ReactJson from 'react-json-view';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, JobSchema, Location } from 'umi';
+
+const AU = require('ansi_up');
+const ansi_up = new AU.default();
 
 let breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem = breadCrumbItem.concat([
   {
     menuName: '一键编译',
     menuHref: `/common/block-compile/package`,
-    isLeftMenu: true,
+    isLeftMenu: true
   },
   {
     menuName: '任务日志',
-    menuHref: `/`,
-  },
+    menuHref: `/`
+  }
 ]);
 
 export type JobLogsProps = {
@@ -36,41 +38,34 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
     return [
       {
         label: '任务ID',
-        value: location?.state?.jobId || '',
+        value: location?.state?.jobId || ''
       },
       {
         label: '任务名称',
-        value: location?.state?.jobName || '',
+        value: location?.state?.jobName || ''
       },
       {
         label: '任务状态',
-        value: location?.state?.status || '',
+        value: location?.state?.status || ''
       },
       {
         label: '任务信息',
-        value: location?.state?.message ? JSON.stringify(location?.state?.message) : '',
-      },
+        value: location?.state?.message ? JSON.stringify(location?.state?.message) : ''
+      }
     ];
   }, [location?.state]);
 
-  const getJobLog = () => {
-    if (jobLog) {
-      let jobLogToJson;
-      try {
-        let parsedData = JSON.parse(jobLog);
-        jobLogToJson = parsedData;
-      } catch (err) {
-        jobLogToJson = { logs: jobLog };
-      }
-      return jobLogToJson;
+  useEffect(() => {
+    const logDiv = document.getElementById('job-logs');
+    if (jobLog && logDiv) {
+      logDiv.innerHTML = ansi_up.ansi_to_html(jobLog);
     }
-    return {};
-  };
+  }, [jobLog]);
 
   useEffect(() => {
     dispatch({
       type: 'BlockChainCompile/getJobLog',
-      payload: { jobId: location?.state?.jobId },
+      payload: { jobId: location?.state?.jobId }
     });
   }, []);
 
@@ -84,9 +79,7 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
             <div className={styles['detail-card-title']}>
               <span className={styles['detail-title-content']}>日志信息</span>
             </div>
-            <div className={styles['detail-info-wrapper']}>
-              <ReactJson name={null} src={getJobLog()} />
-            </div>
+            <div id="job-logs" className={styles['detail-info-wrapper']}></div>
           </div>
         </Spin>
       </div>
@@ -96,5 +89,5 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
 
 export default connect(({ BlockChainCompile, loading }: ConnectState) => ({
   BlockChainCompile,
-  qryLoading: loading.effects['BlockChainCompile/getJobDetail'] || loading.effects['BlockChainCompile/getJobLog'],
+  qryLoading: loading.effects['BlockChainCompile/getJobDetail'] || loading.effects['BlockChainCompile/getJobLog']
 }))(JobLogs);

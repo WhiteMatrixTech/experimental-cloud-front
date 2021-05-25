@@ -14,7 +14,7 @@ import styles from './index.less';
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem.push({
   menuName: '一键编译',
-  menuHref: `/`,
+  menuHref: `/`
 });
 
 export type SourceCodeCompilationProps = {
@@ -30,13 +30,29 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   const [compileModalVisible, setCompileModalVisible] = useState(false);
   const [moreBtnVisible, setMoreBtnVisible] = useState(false);
 
-  //获取编译模块的列表
   const getCompileJobList = () => {
     dispatch({
       type: 'BlockChainCompile/getCompileJobList',
       payload: {
+        limit: pageSize
+      }
+    });
+  };
+
+  const getMoreCompileJobList = () => {
+    dispatch({
+      type: 'BlockChainCompile/getJobList',
+      payload: {
         limit: pageSize,
-      },
+        continueData: compileContinueData
+      }
+    });
+  };
+
+  const cleanHob = () => {
+    dispatch({
+      type: 'BlockChainCompile/cleanJob',
+      payload: {}
     });
   };
 
@@ -59,8 +75,8 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       state: {
         ...record,
         jobId: record.buildJobId,
-        status: record.buildJobStatus,
-      },
+        status: record.buildJobStatus
+      }
     });
   };
 
@@ -69,37 +85,37 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       title: '仓库地址',
       dataIndex: 'gitRepoUrl',
       key: 'gitRepoUrl',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '分支名',
       dataIndex: 'branch',
       key: 'branch',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '编译镜像名',
       dataIndex: 'buildEnvImage',
       key: 'buildEnvImage',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '编译命令',
       dataIndex: 'buildCommands',
       key: 'buildCommands',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '任务ID',
       dataIndex: 'buildJobId',
       key: 'buildJobId',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '任务状态',
       dataIndex: 'buildJobStatus',
       key: 'buildJobStatus',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '操作',
@@ -108,30 +124,23 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
         <Space size="small">
           <a onClick={() => onViewJobLog(record)}>查看日志</a>
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   useEffect(() => {
     getCompileJobList();
+    return () => cleanHob();
   }, []);
 
   useEffect(() => {
-    if (gitBuildJobTotal >= pageSize) {
+    if (compileContinueData) {
       setMoreBtnVisible(true);
+    } else {
+      setMoreBtnVisible(false);
     }
   }, [compileContinueData]);
 
-  //获取更多编译任务
-  const getMoreCompileJobList = () => {
-    dispatch({
-      type: 'BlockChainCompile/getJobList',
-      payload: {
-        limit: pageSize,
-        continueData: compileContinueData,
-      },
-    });
-  };
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
@@ -147,19 +156,16 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
           columns={columns}
           dataSource={gitBuildJobList}
           onChange={onPageChange}
-          pagination={{
-            hideOnSinglePage: true,
-          }}
+          scroll={{ y: 450 }}
+          pagination={false}
         />
-        <div className={styles.jobListMore}>
-          <button
-            className={styles.btn}
-            onClick={getMoreCompileJobList}
-            style={{ display: moreBtnVisible ? 'block' : 'none' }}
-          >
-            加载更多
-          </button>
-        </div>
+        {moreBtnVisible && (
+          <div className={styles.jobListMore}>
+            <button className={styles.btn} onClick={getMoreCompileJobList}>
+              加载更多
+            </button>
+          </div>
+        )}
       </div>
       {compileModalVisible && <OneKeyCompile visible={compileModalVisible} onCancel={onCancel} />}
     </div>
@@ -169,5 +175,5 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 export default connect(({ User, BlockChainCompile, loading }: ConnectState) => ({
   User,
   BlockChainCompile,
-  qryLoading: loading.effects['BlockChainCompile/getCompileJobList'],
+  qryLoading: loading.effects['BlockChainCompile/getCompileJobList']
 }))(SourceCodeCompilation);

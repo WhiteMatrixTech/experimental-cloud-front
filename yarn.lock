@@ -2476,6 +2476,11 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
+ansi_up@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/ansi_up/-/ansi_up-5.0.1.tgz#b66839dba408d3d2f8548904f1ae6fc62d6917ef"
+  integrity sha512-HGOTjFQECRKZM9fIlGhJfR2pcK8PMUWzFOqcPwqBEnNIa4P2r0Di+g2hxCX0hL0n1NUtAHGRA+fUyA/OajZYFw==
+
 antd-mobile@^2.3.1:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/antd-mobile/-/antd-mobile-2.3.4.tgz#8f584707b30343d102f3ca10fdaf677e2a5d1cc8"

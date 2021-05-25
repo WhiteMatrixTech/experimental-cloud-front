@@ -4,7 +4,7 @@ import { Spin, message } from 'antd';
 import { Dispatch, history } from 'umi';
 import { Breadcrumb, DetailCard } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import { statusList } from '~/pages/about/enterprise-member/_config';
+import { statusList } from '../../enterprise-member/_config';
 import { injectIntl } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { DetailViewAttr } from '~/utils/types';
