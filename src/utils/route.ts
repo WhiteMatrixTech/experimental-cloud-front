@@ -7,289 +7,210 @@ export type RouteProps = {
 export function getRoutes(): RouteProps[] {
   const routes = [
     {
-      path: '/404',
-      exact: true,
+      path: '/403'
     },
     {
-      path: '/',
-      exact: true,
+      path: '/404'
     },
     {
-      path: '/wrappers/auth',
-      exact: true,
+      path: '/'
     },
     {
-      path: 'common',
-      routes: [
-        {
-          path: '/common/job-management',
-          exact: true,
-          routes: [
-            {
-              path: '/common/job-management/job-logs',
-              exact: true,
-            },
-          ],
-        },
-        {
-          path: '/common/elastic-cloud-server',
-          exact: true,
-          routes: [
-            {
-              path: '/common/elastic-cloud-server/server-performance',
-              exact: true,
-            },
-            {
-              path: '/common/elastic-cloud-server/resource-usage',
-              exact: true,
-            },
-          ],
-        },
-        {
-          path: '/common/block-compile',
-          exact: true,
-          routes: [
-            {
-              path: '/common/block-compile/package',
-              exact: true,
-            },
-            {
-              path: '/common/block-compile/storage',
-              exact: true,
-            },
-          ],
-        },
-        {
-          path: '/common/user-role-management',
-          routes: [
-            {
-              path: '/common/user-role-management',
-              exact: true,
-              routes: [
-                {
-                  path: '/common/user-role-management/user-roles',
-                  exact: true,
-                },
-              ],
-            },
-          ],
-        },
-      ],
+      path: '/wrappers/auth'
     },
     {
       path: '/about',
       routes: [
         {
-          path: '/about/block',
-          exact: true,
-          routes: [
-            {
-              path: '/about/block/:blockHash',
-              exact: true,
-            },
-          ],
+          path: '/about/block'
         },
         {
-          path: '/about/certificate',
-          exact: true,
+          path: '/about/block/:blockHash'
         },
         {
-          path: '/about/evidence',
-          exact: true,
+          path: '/about/channels/chaincodeList',
+          exact: true
         },
         {
-          path: '/about/evidence/:evidenceHash',
-          exact: true,
+          path: '/about/channels/channelDetail',
+          exact: true
         },
         {
-          path: '/about/enterprise-member',
-          routes: [
-            {
-              path: '/about/enterprise-member/:memberDetail',
-              exact: true,
-            },
-          ],
+          path: '/about/channels'
         },
         {
-          path: '/about/contract',
-          exact: true,
-          routes: [
-            {
-              path: '/about/contract/contractDetail',
-              exact: true,
-            },
-            {
-              path: '/about/contract/contractHistoryDetail',
-              exact: true,
-            },
-          ],
+          path: '/about/channels/nodeList',
+          exact: true
         },
         {
-          path: '/about',
-          exact: true,
+          path: '/about/channels/organizationList',
+          exact: true
         },
         {
-          path: '/about/league-dashboard',
-          exact: true,
+          path: '/about/contract/contractDetail',
+          exact: true
         },
         {
-          path: '/about/data-dashboard',
-          exact: true,
+          path: '/about/contract'
         },
         {
-          path: '/about/rbac',
-          exact: true,
-          routes: [
-            {
-              path: '/about/rbac/config',
-              exact: true,
-            },
-            {
-              path: '/about/rbac/new',
-              exact: true,
-            },
-            {
-              path: '/about/rbac/detail',
-              exact: true,
-            },
-          ],
+          path: '/about/data-dashboard'
+        },
+        // {
+        //   path: "/about/did/did-management/did-detail",
+        //   exact: true
+        // },
+        // {
+        //   path: "/about/did/did-management",
+        // },
+        // {
+        //   path: "/about/did/did-query",
+        // },
+        {
+          path: '/about/enterprise-member'
         },
         {
-          path: '/about/logsList',
-          exact: true,
+          path: '/about/enterprise-member/:memberDetail'
         },
         {
-          path: '/about/message',
-          exact: true,
-          routes: [
-            {
-              path: '/about/message/:messageDetail',
-              exact: true,
-            },
-          ],
+          path: '/about/evidence'
         },
         {
-          path: '/about/myinfo',
-          routes: [
-            {
-              path: '/about/myinfo/CompanyInfo',
-              exact: true,
-            },
-            {
-              path: '/about/myinfo/MyLeague',
-              exact: true,
-            },
-            {
-              path: '/about/myinfo/MyOrgList',
-              exact: true,
-            },
-          ],
+          path: '/about/evidence/:evidenceHash'
         },
         {
-          path: '/about/organizations',
-          exact: true,
+          path: '/about/fabricUsers'
         },
         {
-          path: '/about/nodes',
-          exact: true,
+          path: '/about'
         },
         {
-          path: '/about/fabricUsers',
-          exact: true,
+          path: '/about/ipfs'
         },
         {
-          path: '/about/ipfs',
-          exact: true,
+          path: '/about/league-dashboard'
+        },
+        // {
+        //   path: "/about/logsList",
+        // },
+        // {
+        //   path: "/about/message",
+        // },
+        // {
+        //   path: "/about/message/:messageDetail",
+        // },
+        {
+          path: '/about/myinfo/CompanyInfo'
         },
         {
-          path: '/about/did',
-          exact: true,
-          routes: [
-            {
-              path: '/about/did/did-management',
-              exact: true,
-              routes: [
-                {
-                  path: '/about/did/did-management/did-detail',
-                  exact: true,
-                },
-              ],
-            },
-            {
-              path: '/about/did/did-query',
-              exact: true,
-            },
-          ],
+          path: '/about/myinfo/MyLeague'
         },
         {
-          path: '/about/transactions',
-          exact: true,
-          routes: [
-            {
-              path: '/about/transactions/:transactionHash',
-              exact: true,
-            },
-          ],
+          path: '/about/myinfo/MyOrgList'
         },
         {
-          path: '/about/channels',
-          exact: true,
-          routes: [
-            {
-              path: '/about/channels/chaincodeList',
-              exact: true,
-            },
-            {
-              path: '/about/channels/channelDetail',
-              exact: true,
-            },
-            {
-              path: '/about/channels/organizationList',
-              exact: true,
-            },
-            {
-              path: '/about/channels/nodeList',
-              exact: true,
-            },
-          ],
+          path: '/about/nodes'
         },
-      ],
+        {
+          path: '/about/organizations'
+        },
+        {
+          path: '/about/rbac/config',
+          exact: true
+        },
+        {
+          path: '/about/rbac/detail',
+          exact: true
+        },
+        {
+          path: '/about/rbac'
+        },
+        {
+          path: '/about/rbac/new',
+          exact: true
+        },
+        {
+          path: '/about/transactions'
+        },
+        {
+          path: '/about/transactions/:transactionHash'
+        }
+      ]
+    },
+    {
+      path: '/common',
+      routes: [
+        {
+          path: '/common/block-compile/package'
+        },
+        {
+          path: '/common/block-compile/package/job-logs',
+          exact: true
+        },
+        {
+          path: '/common/block-compile/storage'
+        },
+        {
+          path: '/common/elastic-cloud-server'
+        },
+        {
+          path: '/common/elastic-cloud-server/resource-usage',
+          exact: true
+        },
+        {
+          path: '/common/elastic-cloud-server/server-performance',
+          exact: true
+        },
+        {
+          path: '/common'
+        },
+        {
+          path: '/common/job-management'
+        },
+        {
+          path: '/common/job-management/job-logs',
+          exact: true
+        },
+        {
+          path: '/common/user-role-management'
+        },
+        {
+          path: '/common/user-role-management/user-roles',
+          exact: true
+        }
+      ]
     },
     {
       path: '/selectLeague',
       routes: [
         {
-          path: '/selectLeague',
-          exact: true,
-        },
-      ],
+          path: '/selectLeague'
+        }
+      ]
     },
     {
       path: '/user',
       routes: [
         {
-          path: '/user/login',
-          exact: true,
+          path: '/user/login'
         },
         {
-          path: '/user/register',
-          exact: true,
+          path: '/user/register'
         },
         {
           path: '/user/register-result',
-          exact: true,
-        },
-      ],
+          exact: true
+        }
+      ]
     },
     {
       path: '/userForExternal',
       routes: [
         {
-          path: '/userForExternal/login',
-          exact: true,
-        },
-      ],
-    },
+          path: '/userForExternal/login'
+        }
+      ]
+    }
   ];
 
   return routes;

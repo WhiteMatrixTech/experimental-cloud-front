@@ -42,7 +42,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBasslianmengguanli1',
     menuName: '联盟总览',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-    subMenus: [],
+    subMenus: []
   },
   {
     id: 'data-dashboard',
@@ -51,7 +51,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBassyibiaopan',
     menuName: '仪表盘',
     accessRole: [Roles.NetworkAdmin],
-    subMenus: [],
+    subMenus: []
   },
   {
     id: 'block',
@@ -60,7 +60,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBassqukuailian',
     menuName: '区块链',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-    subMenus: [],
+    subMenus: []
   },
   {
     id: 'transactions',
@@ -69,7 +69,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBassjiaoyi',
     menuName: '交易',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-    subMenus: [],
+    subMenus: []
   },
   {
     id: 'channels',
@@ -78,7 +78,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBasstongdaoguanli',
     menuName: '通道管理',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-    subMenus: [],
+    subMenus: []
   },
   {
     id: 'organizations',
@@ -87,7 +87,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBasszuzhiguanli',
     menuName: '组织管理',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-    subMenus: [],
+    subMenus: []
   },
   {
     id: 'nodes',
@@ -96,7 +96,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBassjiedianguanli',
     menuName: '节点管理',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-    subMenus: [],
+    subMenus: []
   },
   {
     id: 'contract',
@@ -105,7 +105,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBassheyueguanli',
     menuName: '合约管理',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-    subMenus: [],
+    subMenus: []
   },
   {
     id: 'evidence',
@@ -114,7 +114,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBasszhengshuguanli',
     menuName: '存证上链',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-    subMenus: [],
+    subMenus: []
   },
   // {
   //   id: 'certificate',
@@ -141,7 +141,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBasschengyuanguanli',
     menuName: '成员管理',
     accessRole: [Roles.NetworkAdmin],
-    subMenus: [],
+    subMenus: []
   },
   // {
   //   id: 'message',
@@ -167,7 +167,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
         menuIcon: null,
         menuName: '我的联盟',
         accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-        subMenus: [],
+        subMenus: []
       },
       {
         id: 'CompanyInfo',
@@ -176,7 +176,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
         menuIcon: null,
         menuName: '我的信息',
         accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-        subMenus: [],
+        subMenus: []
       },
       {
         id: 'MyOrgList',
@@ -185,9 +185,9 @@ const NetworkMenuList: NetworkMenuProps[] = [
         menuIcon: null,
         menuName: '我的组织',
         accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-        subMenus: [],
-      },
-    ],
+        subMenus: []
+      }
+    ]
   },
   // {
   //   id: 'did',
@@ -224,7 +224,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBasslianmengguanli',
     menuName: 'Fabric用户管理',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-    subMenus: [],
+    subMenus: []
   },
   {
     id: 'rbac',
@@ -233,8 +233,8 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuIcon: 'KBasszhengshuguanli',
     menuName: '访问角色管理',
     accessRole: [Roles.NetworkAdmin],
-    subMenus: [],
-  },
+    subMenus: []
+  }
 ];
 
 const CommonMenuList: CommonMenuProps[] = [
@@ -245,7 +245,7 @@ const CommonMenuList: CommonMenuProps[] = [
     menuIcon: 'KBasszhengshuguanli',
     menuName: '任务管理',
     accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
-    subMenus: [],
+    subMenus: []
   },
   {
     id: 'block-compile',
@@ -262,7 +262,7 @@ const CommonMenuList: CommonMenuProps[] = [
         menuIcon: null,
         menuName: '一键编译',
         accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
-        subMenus: [],
+        subMenus: []
       },
       {
         id: 'storage',
@@ -271,9 +271,9 @@ const CommonMenuList: CommonMenuProps[] = [
         menuIcon: null,
         menuName: '镜像仓库',
         accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
-        subMenus: [],
-      },
-    ],
+        subMenus: []
+      }
+    ]
   },
   {
     id: 'elastic-cloud-server',
@@ -282,7 +282,7 @@ const CommonMenuList: CommonMenuProps[] = [
     menuIcon: 'KBasszhengshuguanli',
     menuName: '弹性云服务器管理',
     accessRole: [Roles.Admin, Roles.SuperUser],
-    subMenus: [],
+    subMenus: []
   },
   {
     id: 'user-role-management',
@@ -291,8 +291,8 @@ const CommonMenuList: CommonMenuProps[] = [
     menuIcon: 'KBasslianmengguanli',
     menuName: '用户角色管理',
     accessRole: [Roles.SuperUser],
-    subMenus: [],
-  },
+    subMenus: []
+  }
 ];
 
 const getCurBreadcrumb = (menuList: NetworkMenuProps[] | CommonMenuProps[], keyword = '', isLeftMenu = true) => {
@@ -312,7 +312,7 @@ const getAllMenuPath = (pathList: CommonMenuProps[][]): IMenuPathProps[] => {
       allPath: [],
       finalPath: '',
       finalPathName: '',
-      pathAccess: [],
+      pathAccess: []
     };
     const endIndex = path.length - 1;
     path.forEach((menu, index) => {
@@ -330,4 +330,27 @@ const getAllMenuPath = (pathList: CommonMenuProps[][]): IMenuPathProps[] => {
 const NetworkMenuPath: IMenuPathProps[] = getAllMenuPath(getAllPath(NetworkMenuList, 'subMenus'));
 const CommonMenuPath: IMenuPathProps[] = getAllMenuPath(getAllPath(CommonMenuList, 'subMenus'));
 
-export { NetworkMenuList as MenuList, CommonMenuList, NetworkMenuPath, CommonMenuPath, getCurBreadcrumb };
+const allNetworkMenu: NetworkMenuProps[] = tree2Arr(NetworkMenuList, 'subMenus');
+const allCommonMenu: CommonMenuProps[] = tree2Arr(CommonMenuList, 'subMenus');
+const pageAuthControl = (pathname: string): boolean => {
+  const userRole = localStorage.getItem('userRole') as Roles;
+  const role = localStorage.getItem('role') as Roles;
+  const isNetworkMenu = allNetworkMenu.find((menu) => menu.menuHref.indexOf(pathname) > -1);
+  if (isNetworkMenu) {
+    return !isNetworkMenu.accessRole.includes(userRole);
+  }
+  const isCommonMenu = allCommonMenu.find((menu) => menu.menuHref.indexOf(pathname) > -1);
+  if (isCommonMenu) {
+    return !isCommonMenu.accessRole.includes(role);
+  }
+  return false;
+};
+
+export {
+  NetworkMenuList as MenuList,
+  CommonMenuList,
+  NetworkMenuPath,
+  CommonMenuPath,
+  getCurBreadcrumb,
+  pageAuthControl
+};

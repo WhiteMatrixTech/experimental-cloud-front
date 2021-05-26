@@ -29,7 +29,7 @@ function RbacConfig(props: RbacConfigProps) {
       title: '角色名称',
       dataIndex: 'roleName',
       key: 'roleName',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '角色类型',
@@ -41,7 +41,7 @@ function RbacConfig(props: RbacConfigProps) {
           return '默认角色';
         }
         return '自定义角色';
-      },
+      }
     },
     {
       title: '操作',
@@ -51,8 +51,8 @@ function RbacConfig(props: RbacConfigProps) {
           {!DisabledRole.includes(record.roleName) && <a onClick={() => onClickRbacConfig(record)}>配置</a>}
           <a onClick={() => onClickRbacDetail(record)}>详情</a>
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   // 查询列表
@@ -61,11 +61,11 @@ function RbacConfig(props: RbacConfigProps) {
     const params = {
       networkName,
       offset,
-      limit: pageSize,
+      limit: pageSize
     };
     dispatch({
       type: 'RBAC/getRoleList',
-      payload: params,
+      payload: params
     });
   };
 
@@ -77,6 +77,9 @@ function RbacConfig(props: RbacConfigProps) {
   const onClickCreateConfig = () => {
     history.push({
       pathname: `/about/rbac/new`,
+      state: {
+        type: 'new'
+      }
     });
   };
 
@@ -84,8 +87,8 @@ function RbacConfig(props: RbacConfigProps) {
     history.push({
       pathname: `/about/rbac/config`,
       state: {
-        roleName: record.roleName,
-      },
+        roleName: record.roleName
+      }
     });
   };
 
@@ -93,8 +96,8 @@ function RbacConfig(props: RbacConfigProps) {
     history.push({
       pathname: `/about/rbac/detail`,
       state: {
-        roleName: record.roleName,
-      },
+        roleName: record.roleName
+      }
     });
   };
 
@@ -122,7 +125,7 @@ function RbacConfig(props: RbacConfigProps) {
             pageSize,
             current: pageNum,
             total: roleList.length,
-            position: ['bottomCenter'],
+            position: ['bottomCenter']
           }}
         />
       </div>
@@ -134,5 +137,5 @@ export default connect(({ User, Layout, RBAC, loading }: ConnectState) => ({
   User,
   Layout,
   RBAC,
-  qryLoading: loading.effects['RBAC/getRbacRoleList'],
+  qryLoading: loading.effects['RBAC/getRbacRoleList']
 }))(RbacConfig);
