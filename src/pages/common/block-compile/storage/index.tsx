@@ -61,18 +61,20 @@ function CustomImage(props: CustomImageProps) {
   };
   const columns: ColumnsType<any> = [
     { title: '镜像地址', dataIndex: 'imageUrl', key: 'imageUrl', ellipsis: true },
-    { title: '镜像类型', dataIndex: 'imageType', key: 'imageType' },
-    { title: '镜像ID', dataIndex: '_id', key: '_id' },
+    { title: '镜像类型', dataIndex: 'imageType', key: 'imageType', ellipsis: true },
+    { title: '镜像ID', dataIndex: '_id', key: '_id', ellipsis: true },
     {
       title: '注册服务器',
       dataIndex: 'registerServer',
       key: 'registerServer',
+      ellipsis: true,
       render: (_: string, record: ImageDetail) => record.credential?.registryServer || ''
     },
     {
       title: '创建时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
+      ellipsis: true,
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
