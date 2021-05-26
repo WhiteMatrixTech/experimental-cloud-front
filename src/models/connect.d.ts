@@ -3,6 +3,7 @@ import { BlockModelState } from './block';
 import { CertificateModelState } from './certificate';
 import { ChannelModelState } from './channel';
 import { ContractModelState } from './contract';
+import { CustomImageModelState } from './custom-image';
 import { DashboardModelState } from './dashboard';
 import { DIDModelState } from './did';
 import { ElasticServerModelState } from './elastic-cloud-server';
@@ -26,6 +27,7 @@ export declare type ConnectState = {
   Certificate: CertificateModelState;
   Channel: ChannelModelState;
   Contract: ContractModelState;
+  CustomImage: CustomImageModelState;
   Dashboard: DashboardModelState;
   DID: DIDModelState;
   ElasticServer: ElasticServerModelState;

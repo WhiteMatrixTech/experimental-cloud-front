@@ -22,13 +22,13 @@ export interface CreateNetworkModalProps {
   onCancel: (res?: any) => void;
   createLoading: boolean;
   User: ConnectState['User'];
-  Dashboard: ConnectState['Dashboard'];
+  CustomImage: ConnectState['CustomImage'];
   ElasticServer: ConnectState['ElasticServer'];
 }
 function CreateNetworkModal(props: CreateNetworkModalProps) {
-  const { dispatch, visible, onCancel, createLoading = false, User, Dashboard, ElasticServer } = props;
+  const { dispatch, visible, onCancel, createLoading = false, User, CustomImage, ElasticServer } = props;
   const { serverList } = ElasticServer;
-  const { imageList } = Dashboard;
+  const { imageList } = CustomImage;
 
   const [form] = Form.useForm();
   const [template, setTemplate] = useState('default');
@@ -138,7 +138,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
       payload: params
     });
     dispatch({
-      type: 'Dashboard/getImageList',
+      type: 'CustomImage/getImageListForForm',
       payload: params
     });
   }, [dispatch]);
@@ -454,9 +454,10 @@ function spliceFormValues(formValue: any, template: string) {
   return params;
 }
 
-export default connect(({ User, Dashboard, ElasticServer, loading }: ConnectState) => ({
+export default connect(({ User, Dashboard, ElasticServer, CustomImage, loading }: ConnectState) => ({
   User,
   Dashboard,
   ElasticServer,
+  CustomImage,
   createLoading: loading.effects['Dashboard/createNetwork']
 }))(CreateNetworkModal);

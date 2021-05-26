@@ -10,26 +10,7 @@ import moment from 'moment';
 import type { Reducer, Effect, BlockSchema, TransactionSchema } from 'umi';
 import { NetworkStatus } from '~/utils/networkStatus';
 
-export enum ImageType {
-  CA = 'ca',
-  Peer = 'peer',
-  Order = 'order'
-}
-
-export type ImageCredential = {
-  username: string;
-  password: string;
-  registryServer: string;
-};
-
-export interface ImageDetail {
-  imageUrl: string;
-  imageType: ImageType;
-  credential?: ImageCredential;
-}
-
 export type DashboardModelState = {
-  imageList: ImageDetail[];
   networkStatusInfo: {
     networkStatus: NetworkStatus;
     createdAt: Date;
@@ -50,7 +31,6 @@ export type DashboardModelType = {
   namespace: 'Dashboard';
   state: DashboardModelState;
   effects: {
-    getImageList: Effect;
     getNetworkInfo: Effect;
     createNetwork: Effect;
     deleteNetwork: Effect;
@@ -68,7 +48,6 @@ const DashboardModel: DashboardModelType = {
   namespace: 'Dashboard',
 
   state: {
-    imageList: [],
     networkStatusInfo: null,
 
     blockTotal: 0,
@@ -82,26 +61,6 @@ const DashboardModel: DashboardModelType = {
   },
 
   effects: {
-    *getImageList({ payload }, { call, put }) {
-      const res = yield call(API.getImageList, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        const imageList = result.items.map((image: ImageDetail) => {
-          return {
-            imageUrl: image.imageUrl,
-            imageType: image.imageType,
-            credential: image.credential
-          };
-        });
-        yield put({
-          type: 'common',
-          payload: {
-            imageList
-          }
-        });
-      }
-    },
-
     *getNetworkInfo({ payload }, { call, put }) {
       const res = yield call(API.getNetworkInfo, payload);
       const { statusCode, result } = res;

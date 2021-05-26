@@ -1,13 +1,6 @@
-import { ImageDetail } from '~/models/dashboard';
-import { AllPaginationParams, BasicApiParams } from '~/utils/types';
+import { ImageDetail } from '~/models/custom-image';
+import { BasicApiParams } from '~/utils/types';
 import { request } from '../utils/request';
-
-/**
- * 获取镜像列表
- */
-export async function getImageList(params: AllPaginationParams) {
-  return request('/image/query', { method: 'POST', body: params });
-}
 
 /**
  * 获取网络信息
