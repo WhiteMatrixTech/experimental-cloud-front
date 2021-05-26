@@ -85,7 +85,7 @@ const CustomImageModel: CustomImageModelType = {
     *addCustomImage({ payload }, { call, put }) {
       const res = yield call(API.addCustomImage, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok') {
+      if (statusCode === 'ok' && result.status) {
         //添加成功
         notification.success({ message: result.message, top: 64, duration: 3 });
       } else {
@@ -95,7 +95,7 @@ const CustomImageModel: CustomImageModelType = {
     *deleteCustomImage({ payload }, { call, put }) {
       const res = yield call(API.deleteCustomImage, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok') {
+      if (statusCode === 'ok' && result.status) {
         notification.success({ message: result.message, top: 64, duration: 3 });
       } else {
         notification.error({ message: result.message, top: 64, duration: 3 });
