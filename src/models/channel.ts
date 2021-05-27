@@ -7,7 +7,7 @@ import type {
   TransactionSchema,
   OrganizationSchema,
   PeerSchema,
-  ChainCodeSchema,
+  ChainCodeSchema
 } from 'umi';
 
 export type ChannelSchema = {
@@ -83,7 +83,7 @@ const ChannelModel: ChannelModelType = {
     blockTotalOfChannel: 0,
 
     transactionListOfChannel: [],
-    transactionTotalOfChannel: 0,
+    transactionTotalOfChannel: 0
   },
 
   effects: {
@@ -108,8 +108,8 @@ const ChannelModel: ChannelModelType = {
           type: 'common',
           payload: {
             channelList: result,
-            channelTotal: result.length,
-          },
+            channelTotal: result.length
+          }
         });
       }
     },
@@ -122,6 +122,7 @@ const ChannelModel: ChannelModelType = {
         return true;
       } else {
         notification.error({ message: result.message || '添加组织请求发送失败', top: 64, duration: 3 });
+        return false;
       }
     },
 
@@ -133,8 +134,8 @@ const ChannelModel: ChannelModelType = {
           type: 'common',
           payload: {
             orgListOfChannel: result,
-            orgTotalOfChannel: result.length,
-          },
+            orgTotalOfChannel: result.length
+          }
         });
       }
     },
@@ -147,8 +148,8 @@ const ChannelModel: ChannelModelType = {
           type: 'common',
           payload: {
             nodeListOfChannel: result,
-            nodeTotalOfChannel: result.length,
-          },
+            nodeTotalOfChannel: result.length
+          }
         });
       }
     },
@@ -160,8 +161,8 @@ const ChannelModel: ChannelModelType = {
         yield put({
           type: 'common',
           payload: {
-            contractListOfChannel: result.items,
-          },
+            contractListOfChannel: result.items
+          }
         });
       }
     },
@@ -173,8 +174,8 @@ const ChannelModel: ChannelModelType = {
         yield put({
           type: 'common',
           payload: {
-            contractTotalOfChannel: result.count,
-          },
+            contractTotalOfChannel: result.count
+          }
         });
       }
     },
@@ -186,8 +187,8 @@ const ChannelModel: ChannelModelType = {
         yield put({
           type: 'common',
           payload: {
-            blockListOfChannel: result.items,
-          },
+            blockListOfChannel: result.items
+          }
         });
       }
     },
@@ -199,8 +200,8 @@ const ChannelModel: ChannelModelType = {
         yield put({
           type: 'common',
           payload: {
-            transactionListOfChannel: result.items,
-          },
+            transactionListOfChannel: result.items
+          }
         });
       }
     },
@@ -211,7 +212,7 @@ const ChannelModel: ChannelModelType = {
         call(API.getTransactionsTotalOfChannel, payload),
         call(API.getOrgListOfChannel, payload),
         call(API.getNodeListOfChannel, payload),
-        call(API.getContractTotalOfChannel, payload),
+        call(API.getContractTotalOfChannel, payload)
       ]);
       const blockTotalOfChannel = blockRes.statusCode === 'ok' ? blockRes.result.count : 0;
       const transactionTotalOfChannel = transactionRes.statusCode === 'ok' ? transactionRes.result.count : 0;
@@ -225,17 +226,17 @@ const ChannelModel: ChannelModelType = {
           nodeTotalOfChannel,
           blockTotalOfChannel,
           contractTotalOfChannel,
-          transactionTotalOfChannel,
-        },
+          transactionTotalOfChannel
+        }
       });
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default ChannelModel;
