@@ -10,11 +10,11 @@ const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
 export interface CreateOrgModalProps {
   dispatch: Dispatch;
@@ -35,22 +35,22 @@ function CreateOrgModal(props: CreateOrgModalProps) {
 
   const filteredServerList = useMemo(
     () => serverList.filter((server) => server.serverPurpose !== serverPurpose.SwarmManager),
-    [serverList],
+    [serverList]
   );
 
   useEffect(() => {
     const params = {
       limit: 100,
       offset: 0,
-      ascend: false,
+      ascend: false
     };
     dispatch({
       type: 'ElasticServer/getServerList',
-      payload: params,
+      payload: params
     });
     dispatch({
       type: 'Contract/getChannelList',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, []);
 
@@ -61,18 +61,20 @@ function CreateOrgModal(props: CreateOrgModalProps) {
         const { serverName, ...rest } = values;
         let params = {
           ...rest,
-          networkName,
+          networkName
         };
         if (values.serverName) {
           params.serverName = values.serverName;
         }
         const res = await dispatch({
           type: 'Organization/createOrg',
-          payload: params,
+          payload: params
         });
-        if (res) {
-          onCancel(true);
-        }
+        res.then((res: boolean) => {
+          if (res) {
+            onCancel(true);
+          }
+        });
       })
       .catch((info) => {
         console.log('校验失败:', info);
@@ -91,8 +93,8 @@ function CreateOrgModal(props: CreateOrgModalProps) {
       </Button>,
       <Button key="submit" onClick={handleSubmit} type="primary" loading={addLoading}>
         提交
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
@@ -104,10 +106,9 @@ function CreateOrgModal(props: CreateOrgModalProps) {
           rules={[
             {
               required: true,
-              message: '请选择通道',
-            },
-          ]}
-        >
+              message: '请选择通道'
+            }
+          ]}>
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择通道">
             {channelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
@@ -122,17 +123,16 @@ function CreateOrgModal(props: CreateOrgModalProps) {
           rules={[
             {
               required: true,
-              message: '请输入组织名称',
+              message: '请输入组织名称'
             },
             {
               min: 4,
               max: 20,
               type: 'string',
               pattern: /^[a-zA-Z0-9]{4,20}$/,
-              message: '组织名必须由4-20位数字英文字母或字符组成',
-            },
-          ]}
-        >
+              message: '组织名必须由4-20位数字英文字母或字符组成'
+            }
+          ]}>
           <Input placeholder="输入组织名称" />
         </Item>
         <Item
@@ -141,10 +141,9 @@ function CreateOrgModal(props: CreateOrgModalProps) {
           rules={[
             {
               required: true,
-              message: '请输入组织别名',
-            },
-          ]}
-        >
+              message: '请输入组织别名'
+            }
+          ]}>
           <Input placeholder="输入组织别名" />
         </Item>
         <Item
@@ -154,17 +153,16 @@ function CreateOrgModal(props: CreateOrgModalProps) {
           rules={[
             {
               required: true,
-              message: '请输入初始化节点名',
+              message: '请输入初始化节点名'
             },
             {
               min: 4,
               max: 20,
               type: 'string',
               pattern: /^[a-zA-Z0-9]{4,20}$/,
-              message: '初始化节点名必须由4-20位数字英文字母或字符组成',
-            },
-          ]}
-        >
+              message: '初始化节点名必须由4-20位数字英文字母或字符组成'
+            }
+          ]}>
           <Input placeholder="输入初始化节点名" />
         </Item>
         <Item
@@ -173,10 +171,9 @@ function CreateOrgModal(props: CreateOrgModalProps) {
           rules={[
             {
               required: true,
-              message: '请输入初始化节点别名',
-            },
-          ]}
-        >
+              message: '请输入初始化节点别名'
+            }
+          ]}>
           <Input placeholder="输入初始化节点别名" />
         </Item>
         <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
@@ -198,5 +195,5 @@ export default connect(({ User, Organization, ElasticServer, Contract, loading }
   Contract,
   Organization,
   ElasticServer,
-  addLoading: loading.effects['Organization/createOrg'],
+  addLoading: loading.effects['Organization/createOrg']
 }))(CreateOrgModal);
