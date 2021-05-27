@@ -10,11 +10,11 @@ const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
 export interface AddOrgProps {
   visible: boolean;
@@ -47,7 +47,7 @@ function AddOrg(props: AddOrgProps) {
   useEffect(() => {
     dispatch({
       type: 'Organization/getOrgList',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, []);
 
@@ -55,9 +55,9 @@ function AddOrg(props: AddOrgProps) {
     form
       .validateFields()
       .then(async (values) => {
-        const res = dispatch({
+        const res = await dispatch({
           type: 'Channel/addOrgForChannel',
-          payload: { networkName, channelId, orgName: values.peerOrgNames },
+          payload: { networkName, channelId, orgName: values.peerOrgNames }
         });
         if (res) {
           onCancel();
@@ -80,8 +80,8 @@ function AddOrg(props: AddOrgProps) {
       </Button>,
       <Button key="submit" onClick={handleSubmit} type="primary" loading={addLoading}>
         提交
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
@@ -93,10 +93,9 @@ function AddOrg(props: AddOrgProps) {
           rules={[
             {
               required: true,
-              message: '请选择组织',
-            },
-          ]}
-        >
+              message: '请选择组织'
+            }
+          ]}>
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择组织">
             {optionalOrgList.map((item) => (
               <Option key={item.orgName} value={item.orgName}>
@@ -114,5 +113,5 @@ export default connect(({ Channel, User, Organization, loading }: ConnectState) 
   User,
   Channel,
   Organization,
-  addLoading: loading.effects['Channel/addOrgForChannel'],
+  addLoading: loading.effects['Channel/addOrgForChannel']
 }))(AddOrg);
