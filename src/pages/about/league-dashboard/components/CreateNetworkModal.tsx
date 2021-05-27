@@ -71,7 +71,12 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
         const imageInfoList: ImageDetail[] = [];
         rest.imageInfo = imageList.reduce((initialValue, cur) => {
           if (imageInfo.includes(cur.imageUrl)) {
-            initialValue.push(cur);
+            const imageInfo = {
+              imageUrl: cur.imageUrl,
+              imageType: cur.imageType,
+              credential: cur.credential
+            };
+            initialValue.push(imageInfo);
           }
           return initialValue;
         }, imageInfoList);
@@ -223,7 +228,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
               placeholder="选择镜像">
               {imageList.map((item) => (
-                <Option key={item.imageUrl} value={item.imageUrl}>
+                <Option key={item._id} value={item.imageUrl}>
                   {item.imageUrl}
                 </Option>
               ))}

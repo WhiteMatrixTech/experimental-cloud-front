@@ -269,7 +269,7 @@ const CommonMenuList: CommonMenuProps[] = [
         menuPid: 'block-compile',
         menuHref: '/common/block-compile/storage',
         menuIcon: null,
-        menuName: '镜像仓库',
+        menuName: '自定义镜像管理',
         accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
         subMenus: []
       }

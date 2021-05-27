@@ -1,7 +1,8 @@
+import React from 'react';
 import { Button, Form, Input, Modal, Select } from 'antd';
-import React, { useState, useEffect } from 'react';
 import { connect, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
+import { ImageTypeForForm } from '../_config';
 
 const { Item } = Form;
 
@@ -12,14 +13,14 @@ interface AddCustomImageModalProps {
   configLoading: boolean;
   CustomImage: ConnectState['CustomImage'];
 }
-function AddCustomImageModal(props: AddCustomImageModalProps) {
+const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
   const [form] = Form.useForm();
   const { visible, onCancel, dispatch, configLoading = false } = props;
-  const { ImageTypeList } = props.CustomImage;
 
-  const imageOptions = ImageTypeList.map((image) => {
+  const imageOptions = ImageTypeForForm.map((image) => {
     return { labe: image.imageType, value: image.value };
   });
+
   const handleSubmit = () => {
     form
       .validateFields()
@@ -43,6 +44,7 @@ function AddCustomImageModal(props: AddCustomImageModalProps) {
         console.log('校验失败:', info);
       });
   };
+
   const drawerProps = {
     visible: visible,
     closable: true,
@@ -133,7 +135,7 @@ function AddCustomImageModal(props: AddCustomImageModalProps) {
       </Form>
     </Modal>
   );
-}
+};
 export default connect(({ CustomImage, loading }: ConnectState) => ({
   CustomImage,
   configLoading: loading.effects['BlockChainCompile/oneKeyCompile']

@@ -18,18 +18,14 @@ export interface ImageDetail {
   imageUrl: string;
   imageType: ImageType;
   credential?: ImageCredential;
-  updatedAt: string;
-  createdAt: string;
-  _id: string;
+  updatedAt?: string;
+  createdAt?: string;
+  _id?: string;
 }
-export interface ImageTypeListState {
-  imageType: string;
-  value: string;
-}
+
 export type CustomImageModelState = {
   imageList: ImageDetail[];
   imageListTotal: number;
-  ImageTypeList: ImageTypeListState[];
 };
 
 export type CustomImageModelType = {
@@ -37,6 +33,7 @@ export type CustomImageModelType = {
   state: CustomImageModelState;
   effects: {
     getImageListForForm: Effect;
+    getImageList: Effect;
     getImageListTotal: Effect;
     addCustomImage: Effect;
     deleteCustomImage: Effect;
@@ -51,12 +48,7 @@ const CustomImageModel: CustomImageModelType = {
 
   state: {
     imageList: [], //镜像列表
-    imageListTotal: 0, //镜像列表总数
-    ImageTypeList: [
-      { imageType: 'ca', value: 'ca' },
-      { imageType: 'peer', value: 'peer' },
-      { imageType: 'order', value: 'order' }
-    ] //镜像的类型
+    imageListTotal: 0 //镜像列表总数
   },
 
   effects: {
@@ -65,7 +57,12 @@ const CustomImageModel: CustomImageModelType = {
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         const imageList = result.items.map((image: ImageDetail) => {
-          return { ...image };
+          return {
+            imageId: image._id,
+            imageUrl: image.imageUrl,
+            imageType: image.imageType,
+            credential: image.credential
+          };
         });
         yield put({
           type: 'common',
@@ -75,6 +72,20 @@ const CustomImageModel: CustomImageModelType = {
         });
       }
     },
+
+    *getImageList({ payload }, { call, put }) {
+      const res = yield call(API.getImageList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            imageList: result.items
+          }
+        });
+      }
+    },
+
     *getImageListTotal({ payload }, { call, put }) {
       const res = yield call(API.getImageListTotal, payload);
       const { statusCode, result } = res;
@@ -82,26 +93,28 @@ const CustomImageModel: CustomImageModelType = {
         yield put({ type: 'common', payload: { imageListTotal: result.count } });
       }
     },
+
     *addCustomImage({ payload }, { call, put }) {
       const res = yield call(API.addCustomImage, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result.status) {
-        //添加成功
-        notification.success({ message: result.message, top: 64, duration: 3 });
+        notification.success({ message: '自定义镜像添加成功', top: 64, duration: 3 });
       } else {
-        notification.error({ message: '镜像添加失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || '自定义镜像添加失败', top: 64, duration: 3 });
       }
     },
+
     *deleteCustomImage({ payload }, { call, put }) {
       const res = yield call(API.deleteCustomImage, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result.status) {
-        notification.success({ message: result.message, top: 64, duration: 3 });
+        notification.success({ message: '删除自定义镜像成功', top: 64, duration: 3 });
       } else {
-        notification.error({ message: result.message, top: 64, duration: 3 });
+        notification.error({ message: result.message || '删除自定义镜像失败', top: 64, duration: 3 });
       }
     }
   },
+
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };

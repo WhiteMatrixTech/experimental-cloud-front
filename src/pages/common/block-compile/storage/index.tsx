@@ -1,23 +1,23 @@
-import { Button, Space, Table } from 'antd';
 import React, { useState, useEffect } from 'react';
+import { Button, Space, Table } from 'antd';
 import { connect, Dispatch, ImageDetail } from 'umi';
 import { Breadcrumb } from '~/components';
 import { ConnectState } from '~/models/connect';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
-import styles from './index.less';
 import baseConfig from '../../../../utils/config';
 import { ColumnsType } from 'antd/lib/table';
-import AddCustomImageModal from './components/AddCustonImageModal';
+import AddCustomImageModal from './components/AddCustomImageModal';
 import moment from 'moment';
 import { Roles } from '~/utils/roles';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem.push({
-  menuName: '自定义镜像',
+  menuName: '自定义镜像管理',
   menuHref: `/`
 });
 
-const OperatinalRole = [Roles.Admin, Roles.SuperUser];
+const OperationalRole = [Roles.Admin, Roles.SuperUser];
+const pageSize = baseConfig.pageSize;
 
 export interface CustomImageProps {
   qryLoading: boolean;
@@ -26,7 +26,7 @@ export interface CustomImageProps {
   imageList: ImageDetail[];
   User: ConnectState['User'];
 }
-const pageSize = baseConfig.pageSize;
+
 function CustomImage(props: CustomImageProps) {
   const { dispatch, qryLoading = false } = props;
   const { imageList, imageListTotal } = props.CustomImage;
@@ -34,31 +34,35 @@ function CustomImage(props: CustomImageProps) {
   const [pageNum, setPageNum] = useState(1);
   const [addCustomImageVisible, setAddCustomImageVisible] = useState(false);
 
-  useEffect(() => {
-    const offset = (pageNum - 1) * 5;
+  const getImageList = () => {
+    const offset = (pageNum - 1) * pageSize;
     const params = {
       offset,
       limit: pageSize
     };
-    //获取镜像列表
     dispatch({
-      type: 'CustomImage/getImageListForForm',
+      type: 'CustomImage/getImageList',
       payload: params
     });
-  }, [pageNum, addCustomImageVisible]);
-
-  useEffect(() => {
-    //获取镜像列表总数
     dispatch({
       type: 'CustomImage/getImageListTotal',
       payload: {}
     });
-  }, [addCustomImageVisible]);
+  };
 
-  //添加镜像
+  useEffect(() => {
+    getImageList();
+  }, [pageNum]);
+
   const onClickAddMirrorImage = () => {
     setAddCustomImageVisible(true);
   };
+
+  const onCloseModal = () => {
+    getImageList();
+    setAddCustomImageVisible(false);
+  };
+
   const columns: ColumnsType<any> = [
     { title: '镜像地址', dataIndex: 'imageUrl', key: 'imageUrl', ellipsis: true },
     { title: '镜像类型', dataIndex: 'imageType', key: 'imageType', ellipsis: true },
@@ -89,12 +93,12 @@ function CustomImage(props: CustomImageProps) {
       key: 'operation',
       render: (_: string, record: ImageDetail) => (
         <Space size="small">
-          {OperatinalRole.includes(userInfo.role) && <a onClick={() => onClickDelete(record)}>删除</a>}
+          {OperationalRole.includes(userInfo.role) && <a onClick={() => onClickDelete(record)}>删除</a>}
         </Space>
       )
     }
   ];
-  //删除
+
   const onClickDelete = (record: ImageDetail) => {
     dispatch({
       type: 'CustomImage/deleteCustomImage',
@@ -103,18 +107,16 @@ function CustomImage(props: CustomImageProps) {
       }
     });
   };
-  // 翻页
+
   const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
-  const onCloseModal = () => {
-    setAddCustomImageVisible(false);
-  };
+
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow table-wrapper">
-        {OperatinalRole.includes(userInfo.role) && (
+        {OperationalRole.includes(userInfo.role) && (
           <div className="table-header-btn-wrapper">
             <Button type="primary" onClick={onClickAddMirrorImage}>
               添加镜像
