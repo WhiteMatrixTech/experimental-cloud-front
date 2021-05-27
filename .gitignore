@@ -8,6 +8,7 @@
 
 # production
 /dist
+/frontend
 
 # misc
 .DS_Store
