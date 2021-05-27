@@ -335,11 +335,11 @@ const allCommonMenu: CommonMenuProps[] = tree2Arr(CommonMenuList, 'subMenus');
 const pageAuthControl = (pathname: string): boolean => {
   const userRole = localStorage.getItem('userRole') as Roles;
   const role = localStorage.getItem('role') as Roles;
-  const isNetworkMenu = allNetworkMenu.find((menu) => menu.menuHref.indexOf(pathname) > -1);
+  const isNetworkMenu = allNetworkMenu.find((menu) => menu.menuHref === pathname);
   if (isNetworkMenu) {
     return !isNetworkMenu.accessRole.includes(userRole);
   }
-  const isCommonMenu = allCommonMenu.find((menu) => menu.menuHref.indexOf(pathname) > -1);
+  const isCommonMenu = allCommonMenu.find((menu) => menu.menuHref === pathname);
   if (isCommonMenu) {
     return !isCommonMenu.accessRole.includes(role);
   }
