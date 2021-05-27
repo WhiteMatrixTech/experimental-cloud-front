@@ -42,13 +42,14 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
           buildCommands: splitBuildCommands,
           credential: { username, password, registryServer }
         };
-        const res = dispatch({
+        dispatch({
           type: 'BlockChainCompile/oneKeyCompile',
           payload: params
+        }).then((res: boolean) => {
+          if (res) {
+            onCancel();
+          }
         });
-        if (res) {
-          onCancel();
-        }
       })
       .catch((info) => {
         console.log('校验失败:', info);

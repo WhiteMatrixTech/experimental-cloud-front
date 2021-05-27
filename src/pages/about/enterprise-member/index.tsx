@@ -21,13 +21,13 @@ const { RangePicker } = DatePicker;
 
 const formItemLayout = {
   labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
+  wrapperCol: { span: 16 }
 };
 const initSearchObj = {
   companyName: '',
   createTimeStart: 0,
   createTimeEnd: 0,
-  approvalStatus: 'any',
+  approvalStatus: 'any'
 };
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterprise-member');
@@ -56,7 +56,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       key: 'companyName',
       ellipsis: true,
       fixed: 'left',
-      width: 160,
+      width: 160
     },
     // {
     //   title: '统一社会信用代码',
@@ -77,21 +77,21 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       dataIndex: 'contactName',
       key: 'contactName',
       ellipsis: true,
-      width: 120,
+      width: 120
     },
     {
       title: '联系人手机号',
       dataIndex: 'contactPhone',
       key: 'contactPhone',
       ellipsis: true,
-      width: 120,
+      width: 120
     },
     {
       title: '联系人邮箱',
       dataIndex: 'contactEmail',
       key: 'contactEmail',
       ellipsis: true,
-      width: 180,
+      width: 180
     },
     {
       title: '创建时间',
@@ -99,7 +99,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       key: 'createTimestamp',
       render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
       ellipsis: true,
-      width: 150,
+      width: 150
     },
     {
       title: '审批时间',
@@ -107,7 +107,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       key: 'approveTime',
       render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
       ellipsis: true,
-      width: 150,
+      width: 150
     },
     {
       title: '审批状态',
@@ -115,7 +115,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       key: 'approvalStatus',
       render: (text) => statusList[text],
       ellipsis: true,
-      width: 120,
+      width: 120
     },
     {
       title: '可用状态',
@@ -123,7 +123,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       key: 'isValid',
       render: (text) => validStatus[text],
       ellipsis: true,
-      width: 120,
+      width: 120
     },
     {
       title: '操作',
@@ -147,19 +147,19 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
           <a onClick={() => onClickRbacConfig(record)}>配置访问权限</a>
           <a onClick={() => onClickDetail(record)}>详情</a>
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   const getMemberTotalDocs = () => {
     const params = {
       ...queryParams,
       networkName,
-      from: Number(moment(new Date()).format('x')),
+      from: Number(moment(new Date()).format('x'))
     };
     dispatch({
       type: 'Member/getMemberTotalDocs',
-      payload: params,
+      payload: params
     });
   };
 
@@ -172,11 +172,11 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       offset,
       //isLeague: -1,
       limit: pageSize,
-      from: Number(moment(new Date()).format('x')),
+      from: Number(moment(new Date()).format('x'))
     };
     dispatch({
       type: 'Member/getPageListOfCompanyMember',
-      payload: params,
+      payload: params
     });
   };
 
@@ -189,7 +189,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
           companyName: values.companyName,
           createTimeStart: isEmpty(values.createTime) ? 0 : Number(values.createTime[0].format('x')),
           createTimeEnd: isEmpty(values.createTime) ? 0 : Number(values.createTime[1].format('x')),
-          approvalStatus: values.approvalStatus === null ? 'any' : values.approvalStatus,
+          approvalStatus: values.approvalStatus === null ? 'any' : values.approvalStatus
         };
         setQueryParams(params);
       })
@@ -240,7 +240,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       content: `确认要${tipTitle}成员 【${record.companyName}】 吗?`,
       okText: '确认',
       cancelText: '取消',
-      onOk: callback,
+      onOk: callback
     });
   };
 
@@ -249,11 +249,11 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     const params = {
       networkName,
       isValid,
-      companyName: record.companyName,
+      companyName: record.companyName
     };
     dispatch({
       type: 'Member/setStatusOfLeagueCompany',
-      payload: params,
+      payload: params
     }).then((res: any) => {
       if (res) {
         getMemberList();
@@ -266,11 +266,11 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     const params = {
       networkName,
       approvalStatus,
-      companyName: record.companyName,
+      companyName: record.companyName
     };
     dispatch({
       type: 'Member/setCompanyApprove',
-      payload: params,
+      payload: params
     }).then((res: any) => {
       if (res) {
         getMemberList();
@@ -293,7 +293,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   const onClickDetail = (record: EnterpriseMemberSchema) => {
     history.push({
       pathname: `/about/enterprise-member/${record.companyCertBusinessNumber}`,
-      state: record,
+      state: record
     });
   };
 
@@ -329,8 +329,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
                   <Select
                     allowClear
                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    placeholder="请选择审批状态"
-                  >
+                    placeholder="请选择审批状态">
                     {Object.keys(statusList).map((item) => (
                       <Option key={item} value={item}>
                         {statusList[item]}
@@ -362,7 +361,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
               pageSize,
               total: memberTotal,
               current: pageNum,
-              position: ['bottomCenter'],
+              position: ['bottomCenter']
             }}
           />
         </div>
@@ -376,5 +375,5 @@ export default connect(({ User, Layout, Member, loading }: ConnectState) => ({
   User,
   Layout,
   Member,
-  qryLoading: loading.effects['Member/getPageListOfCompanyMember'],
+  qryLoading: loading.effects['Member/getPageListOfCompanyMember']
 }))(EnterpriseMember);
