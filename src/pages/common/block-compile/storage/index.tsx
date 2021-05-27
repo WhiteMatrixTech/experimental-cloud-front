@@ -104,20 +104,19 @@ function CustomImage(props: CustomImageProps) {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
-      content: `确认删除吗?`,
+      content: `确认要删除此镜像吗?`,
       okText: '确认',
       cancelText: '取消',
-      onOk: () => {
-        dispatch({
+      onOk: async () => {
+        const res = await dispatch({
           type: 'CustomImage/deleteCustomImage',
           payload: {
             imageId: record._id
           }
-        }).then((res: boolean) => {
-          if (res) {
-            getImageList();
-          }
         });
+        if (res) {
+          getImageList();
+        }
       }
     });
   };
