@@ -99,8 +99,10 @@ const CustomImageModel: CustomImageModelType = {
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result.status) {
         notification.success({ message: '自定义镜像添加成功', top: 64, duration: 3 });
+        return true;
       } else {
         notification.error({ message: result.message || '自定义镜像添加失败', top: 64, duration: 3 });
+        return false;
       }
     },
 
@@ -109,8 +111,10 @@ const CustomImageModel: CustomImageModelType = {
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result.status) {
         notification.success({ message: '删除自定义镜像成功', top: 64, duration: 3 });
+        return true;
       } else {
         notification.error({ message: result.message || '删除自定义镜像失败', top: 64, duration: 3 });
+        return false;
       }
     }
   },

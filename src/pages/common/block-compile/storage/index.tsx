@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Space, Table } from 'antd';
+import { Button, Modal, Space, Table } from 'antd';
 import { connect, Dispatch, ImageDetail } from 'umi';
 import { Breadcrumb } from '~/components';
 import { ConnectState } from '~/models/connect';
@@ -9,6 +9,7 @@ import { ColumnsType } from 'antd/lib/table';
 import AddCustomImageModal from './components/AddCustomImageModal';
 import moment from 'moment';
 import { Roles } from '~/utils/roles';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem.push({
@@ -100,10 +101,23 @@ function CustomImage(props: CustomImageProps) {
   ];
 
   const onClickDelete = (record: ImageDetail) => {
-    dispatch({
-      type: 'CustomImage/deleteCustomImage',
-      payload: {
-        imageId: record._id
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: `确认删除吗?`,
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        dispatch({
+          type: 'CustomImage/deleteCustomImage',
+          payload: {
+            imageId: record._id
+          }
+        }).then((res: boolean) => {
+          if (res) {
+            getImageList();
+          }
+        });
       }
     });
   };

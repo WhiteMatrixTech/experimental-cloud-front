@@ -32,13 +32,14 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
           imageType,
           credential
         };
-        const res = dispatch({
+        dispatch({
           type: 'CustomImage/addCustomImage',
           payload: params
+        }).then((res: boolean) => {
+          if (res) {
+            onCancel();
+          }
         });
-        if (res) {
-          onCancel();
-        }
       })
       .catch((info) => {
         console.log('校验失败:', info);
