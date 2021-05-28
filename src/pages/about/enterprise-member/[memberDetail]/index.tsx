@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Spin } from 'antd';
 import { Breadcrumb, DetailCard } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import { statusList } from '../_config';
+import { statusList, validStatus } from '../_config';
 import { ConnectState } from '~/models/connect';
 import { EnterpriseMemberSchema, Location } from 'umi';
 import { DetailViewAttr } from '~/utils/types';
@@ -11,7 +11,7 @@ import { DetailViewAttr } from '~/utils/types';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterprise-member');
 breadCrumbItem.push({
   menuName: '用户详情',
-  menuHref: `/`,
+  menuHref: `/`
 });
 export interface MemberDetailProps {
   qryLoading: boolean;
@@ -22,39 +22,39 @@ function MemberDetail(props: MemberDetailProps) {
   const basicInfo: DetailViewAttr[] = [
     {
       label: '用户名称',
-      value: location?.state?.companyName,
+      value: location?.state?.loginName
     },
     {
-      label: '法人代表姓名',
-      value: location?.state?.legalPersonName,
+      label: '启用状态',
+      value: validStatus[location?.state?.isValid]
     },
     {
-      label: '当前审批状态',
-      value: statusList[location?.state?.approvalStatus],
+      label: '审批状态',
+      value: statusList[location?.state?.approvalStatus]
     },
     {
-      label: '统一社会信用代码',
-      value: location?.state?.companyCertBusinessNumber,
-    },
+      label: '审批时间',
+      value: location?.state?.approveTime
+    }
   ];
 
   const contactsInfo: DetailViewAttr[] = [
     {
       label: '联系人姓名',
-      value: location?.state?.contactName,
+      value: location?.state?.contactName
     },
     {
       label: '联系人手机号',
-      value: location?.state?.contactPhone,
+      value: location?.state?.contactPhone
     },
     {
       label: '联系人邮箱',
-      value: location?.state?.contactEmail,
+      value: location?.state?.contactEmail
     },
     {
       label: '联系地址',
-      value: location?.state?.companyAddress,
-    },
+      value: location?.state?.contactAddress
+    }
   ];
 
   return (
@@ -73,5 +73,5 @@ function MemberDetail(props: MemberDetailProps) {
 export default connect(({ User, Member, loading }: ConnectState) => ({
   User,
   Member,
-  qryLoading: loading.effects['Member/getMemberDetail'],
+  qryLoading: loading.effects['Member/getMemberDetail']
 }))(MemberDetail);

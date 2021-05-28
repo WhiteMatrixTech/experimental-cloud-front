@@ -3,23 +3,23 @@ import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
 export type OrganizationSchema = {
-  _id: string,
-  networkName: string,      // 网络名称
-  orgName: string,          // 组织名成
-  companyName: string,      // 企业名称
-  createdAt: Date,          // 创建日期  2021-01-29T02:23:02.141Z
-  orgAddress: string,       // 组织地址
-  orgAliasName: string,     // 组织别名
-  orgMspId: string,         //
-  orgStatus: string,        // 组织状态
-  updatedAt: Date           // 更新日期 2021-01-29T02:23:02.141Z
-}
+  _id: string;
+  networkName: string; // 网络名称
+  orgName: string; // 组织名成
+  loginName: string; // 用户名称
+  createdAt: Date; // 创建日期  2021-01-29T02:23:02.141Z
+  orgAddress: string; // 组织地址
+  orgAliasName: string; // 组织别名
+  orgMspId: string; //
+  orgStatus: string; // 组织状态
+  updatedAt: Date; // 更新日期 2021-01-29T02:23:02.141Z
+};
 
 export type OrganizationModelState = {
-  orgList: Array<OrganizationSchema>,
-  orgTotal: number,
-  orgInUseList: Array<OrganizationSchema>,
-}
+  orgList: Array<OrganizationSchema>;
+  orgTotal: number;
+  orgInUseList: Array<OrganizationSchema>;
+};
 
 export type OrganizationModelType = {
   namespace: 'Organization';
@@ -41,7 +41,7 @@ const OrganizationModel: OrganizationModelType = {
     orgList: [], // 用户列表
     orgTotal: 0,
 
-    orgInUseList: [],
+    orgInUseList: []
   },
 
   effects: {
@@ -65,8 +65,8 @@ const OrganizationModel: OrganizationModelType = {
           type: 'common',
           payload: {
             orgList: result,
-            orgTotal: result.length,
-          },
+            orgTotal: result.length
+          }
         });
       }
     },
@@ -77,18 +77,18 @@ const OrganizationModel: OrganizationModelType = {
         yield put({
           type: 'common',
           payload: {
-            orgInUseList: result,
-          },
+            orgInUseList: result
+          }
         });
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default OrganizationModel;

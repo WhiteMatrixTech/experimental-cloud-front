@@ -3,17 +3,17 @@ import { getMyOrgInfo } from '../services/my-info';
 import { notification } from 'antd';
 import type { Reducer, Effect, OrganizationSchema } from 'umi';
 import { Roles } from '~/utils/roles';
+import { FabricRole } from '~/pages/about/fabricUsers/_config';
 
 export type FabricRoleSchema = {
   networkName: string; // 网络名称
   userId: string; // 用户ID
   mspId: string; // MSP ID
-  //TODO: 使用页面处的枚举
-  explorerRole: string; // fabric网络角色
+  explorerRole: FabricRole; // fabric网络角色
   credentials: string; // 证书凭据
-  type: string; // 证书类型
+  type: string; // 类型
   orgName: string; // 组织名
-  companyName: string; // 公司名
+  loginName: string; // 用户名
   networkRole: Roles; // baas网络角色
 };
 

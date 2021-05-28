@@ -11,13 +11,12 @@ export type UserInfoSchema = {
   exp: number;
   iat: number;
   contactEmail: string;
-  companyName: string;
   role: Roles;
 };
 
 export type LeagueSchema = {
   leagueName: string;
-  leaderCompanyName: string;
+  leaderUserName: string;
   networkName: string;
   description: string;
   networkStatus: NetworkStatus;
@@ -85,7 +84,7 @@ const UserModel: UserModelType = {
 
     userRole: (localStorage.getItem('userRole') as Roles) || Roles.NetworkMember, // 进入系统的身份
     networkName: localStorage.getItem('networkName') || '', // 进入系统时的网络
-    leagueName: localStorage.getItem('leagueName') || '', // 进入系统时的联盟
+    leagueName: localStorage.getItem('leagueName') || '' // 进入系统时的联盟
   },
 
   subscriptions: {
@@ -97,7 +96,7 @@ const UserModel: UserModelType = {
           dispatch({ type: 'getMyNetworkList' });
         }
       });
-    },
+    }
   },
 
   effects: {
@@ -109,8 +108,8 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             cacheAccount: result,
-            userAndRegister: true,
-          },
+            userAndRegister: true
+          }
         });
         return true;
       } else {
@@ -126,8 +125,8 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             userInfo: payload,
-            accessToken: result.access_token,
-          },
+            accessToken: result.access_token
+          }
         });
         return result;
       } else {
@@ -135,8 +134,8 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             loginInfo: result.message || '',
-            loginStatus: LoginStatus.LOGIN_ERROR,
-          },
+            loginStatus: LoginStatus.LOGIN_ERROR
+          }
         });
       }
     },
@@ -149,8 +148,8 @@ const UserModel: UserModelType = {
         yield put({
           type: 'common',
           payload: {
-            userInfo: result,
-          },
+            userInfo: result
+          }
         });
       }
     },
@@ -160,7 +159,7 @@ const UserModel: UserModelType = {
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
-          payload: { networkList: result },
+          payload: { networkList: result }
         });
       }
     },
@@ -171,8 +170,8 @@ const UserModel: UserModelType = {
         yield put({
           type: 'common',
           payload: {
-            myNetworkList: result,
-          },
+            myNetworkList: result
+          }
         });
       }
     },
@@ -183,8 +182,8 @@ const UserModel: UserModelType = {
         yield put({
           type: 'common',
           payload: {
-            roleToken: result.role_token,
-          },
+            roleToken: result.role_token
+          }
         });
         localStorage.setItem('roleToken', result.role_token);
         return true;
@@ -214,7 +213,7 @@ const UserModel: UserModelType = {
         notification.error({ message: result.message || '联盟创建失败', top: 64, duration: 3 });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
@@ -228,10 +227,10 @@ const UserModel: UserModelType = {
         roleToken: '',
         userRole: Roles.NetworkMember,
         networkName: '',
-        leagueName: '',
+        leagueName: ''
       };
-    },
-  },
+    }
+  }
 };
 
 export default UserModel;

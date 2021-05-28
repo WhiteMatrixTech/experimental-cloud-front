@@ -3,18 +3,15 @@ import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
 export type EnterpriseMemberSchema = {
-  companyName: string;
-  companyCertBusinessNumber: string;
-  companyAddress: string;
-  companyDesc: string;
-  legalPersonName: string;
-  legalPersonIdCardNumber: string;
+  loginName: string;
   contactName: string;
   contactPhone: string;
   contactCell: string;
   contactEmail: string;
+  contactAddress: string;
   createTimestamp: Date;
   did: string;
+  approveTime: string;
   approvalStatus: string;
   isValid: string;
 };
@@ -51,7 +48,7 @@ const MemberModel: MemberModelType = {
     memberTotal: 0,
 
     memberDetail: {},
-    memberRole: '',
+    memberRole: ''
   },
 
   effects: {
@@ -62,8 +59,8 @@ const MemberModel: MemberModelType = {
         yield put({
           type: 'common',
           payload: {
-            memberTotal: result.count,
-          },
+            memberTotal: result.count
+          }
         });
       }
     },
@@ -75,8 +72,8 @@ const MemberModel: MemberModelType = {
         yield put({
           type: 'common',
           payload: {
-            memberList: result.items,
-          },
+            memberList: result.items
+          }
         });
       }
     },
@@ -88,8 +85,8 @@ const MemberModel: MemberModelType = {
         yield put({
           type: 'common',
           payload: {
-            memberDetail: result,
-          },
+            memberDetail: result
+          }
         });
       }
     },
@@ -131,8 +128,8 @@ const MemberModel: MemberModelType = {
         yield put({
           type: 'common',
           payload: {
-            memberRole: result?.roleName || '',
-          },
+            memberRole: result?.roleName || ''
+          }
         });
       }
     },
@@ -147,14 +144,14 @@ const MemberModel: MemberModelType = {
         notification.error({ message: result.message || '成员访问权限配置失败', top: 64, duration: 3 });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default MemberModel;

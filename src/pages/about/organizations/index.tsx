@@ -30,27 +30,27 @@ function OrganizationManagement(props: OrganizationManagementProps) {
     {
       title: '组织名称',
       dataIndex: 'orgName',
-      key: 'orgName',
+      key: 'orgName'
     },
     {
       title: '组织别名',
       dataIndex: 'orgAliasName',
-      key: 'orgAliasName',
+      key: 'orgAliasName'
     },
     {
       title: '组织MSPID',
       dataIndex: 'orgMspId',
-      key: 'orgMspId',
+      key: 'orgMspId'
     },
     {
       title: '所属用户',
-      dataIndex: 'companyName',
-      key: 'companyName',
+      dataIndex: 'loginName',
+      key: 'loginName'
     },
     {
       title: '组织地址',
       dataIndex: 'orgAddress',
-      key: 'orgAddress',
+      key: 'orgAddress'
     },
     {
       title: '当前状态',
@@ -61,14 +61,14 @@ function OrganizationManagement(props: OrganizationManagementProps) {
           <Badge color={orgStatus[text].color} text={orgStatus[text].text} style={{ color: orgStatus[text].color }} />
         ) : (
           ''
-        ),
+        )
     },
     {
       title: '创建时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
-    },
+      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+    }
   ];
 
   // 点击 创建组织
@@ -92,11 +92,11 @@ function OrganizationManagement(props: OrganizationManagementProps) {
       networkName,
       limit: pageSize,
       offset: paginator,
-      networkVersion: '1.0.0',
+      networkVersion: '1.0.0'
     };
     dispatch({
       type: 'Organization/getOrgList',
-      payload: params,
+      payload: params
     });
   };
 
@@ -130,7 +130,7 @@ function OrganizationManagement(props: OrganizationManagementProps) {
             total: orgTotal,
             current: pageNum,
             showSizeChanger: false,
-            position: ['bottomCenter'],
+            position: ['bottomCenter']
           }}
         />
       </div>
@@ -143,5 +143,5 @@ export default connect(({ User, Layout, Organization, loading }: ConnectState) =
   User,
   Layout,
   Organization,
-  qryLoading: loading.effects['Organization/getOrgList'],
+  qryLoading: loading.effects['Organization/getOrgList']
 }))(OrganizationManagement);

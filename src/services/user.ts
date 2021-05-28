@@ -5,13 +5,14 @@ import { request } from '../utils/request';
  * 注册
  */
 export type RegisterApiParams = {
-  username: string;
+  loginName: string;
   pass: string;
   re_pass: string;
-  email: string;
-  name: string;
-  phone: string;
-  invitationCode: string;
+  contactEmail: string;
+  contactName: string;
+  contactPhone: string;
+  contactAddress: string;
+  invitationCode?: string;
 };
 export async function register(params: RegisterApiParams) {
   return request(`/register`, { method: 'POST', body: params });

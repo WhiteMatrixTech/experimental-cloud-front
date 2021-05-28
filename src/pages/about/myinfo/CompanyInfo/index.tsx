@@ -25,7 +25,7 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
     User,
     dispatch,
     qryLoading = false,
-    MyInfo: { myCompany }
+    MyInfo: { myContactInfo }
   } = props;
   const { networkName, userInfo } = User;
 
@@ -53,17 +53,17 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
   };
 
   const getDid = useMemo(() => {
-    return userInfo?.did;
+    return userInfo.did || '';
   }, [userInfo]);
 
   const companyBasicInfo: DetailViewAttr[] = [
     {
       label: '用户名称',
-      value: myCompany && myCompany.companyName
+      value: myContactInfo && myContactInfo.loginName
     },
     {
       label: '当前审批状态',
-      value: myCompany && statusList[myCompany.approvalStatus]
+      value: myContactInfo && statusList[myContactInfo.approvalStatus]
     },
     {
       label: '我的DID',
@@ -74,19 +74,19 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
   const companyContactsInfo: DetailViewAttr[] = [
     {
       label: '联系人姓名',
-      value: myCompany && myCompany.contactName
+      value: myContactInfo && myContactInfo.contactName
     },
     {
       label: '联系人电话',
-      value: myCompany && myCompany.contactPhone
+      value: myContactInfo && myContactInfo.contactPhone
     },
     {
       label: '联系人邮箱',
-      value: myCompany && myCompany.contactEmail
+      value: myContactInfo && myContactInfo.contactEmail
     },
     {
       label: '联系地址',
-      value: myCompany && myCompany.companyAddress
+      value: myContactInfo && myContactInfo.contactAddress
     }
   ];
 

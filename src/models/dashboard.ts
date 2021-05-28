@@ -128,7 +128,7 @@ const DashboardModel: DashboardModelType = {
         call(getMemberTotalDocs, {
           ...payload,
           approvalStatus: 'any',
-          companyName: '',
+          loginName: '',
           createTimeEnd: 0,
           createTimeStart: 0,
           from: Number(moment(new Date()).format('x'))

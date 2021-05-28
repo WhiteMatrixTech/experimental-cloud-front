@@ -7,7 +7,7 @@ import { Breadcrumb } from '~/components';
 import { Table, Button, Space, Form, Row, Col, Select, message } from 'antd';
 import CreateFabricUserModal from './components/CreateFabricUserModal';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import { orgStatusEnum } from '../organizations/_config';
+import { OrgStatusEnum } from '../organizations/_config';
 import baseConfig from '~/utils/config';
 import styles from './index.less';
 import { Dispatch, FabricRoleSchema } from 'umi';
@@ -66,7 +66,7 @@ function FabricRoleManagement(props: FabricRoleManagementProps) {
   };
 
   const onClickCreate = () => {
-    if (myOrgInfo && myOrgInfo.orgStatus && myOrgInfo.orgStatus === orgStatusEnum.InUse) {
+    if (myOrgInfo && myOrgInfo.orgStatus && myOrgInfo.orgStatus === OrgStatusEnum.InUse) {
       setCreateModalVisible(true);
     } else {
       message.warn('请先在【组织管理】中添加您的组织，并确保您的组织在使用中');

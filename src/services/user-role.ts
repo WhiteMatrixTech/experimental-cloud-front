@@ -26,16 +26,16 @@ export async function getRoleNameList() {
  * 获取用户角色
  */
 export type UserRoleParams = {
-  companyName: string;
+  loginName: string;
   accessRoles?: UserRoleObject[];
 };
 export async function getUserRoles(params: UserRoleParams) {
-  return request(`/superuser/customRole/${params.companyName}`);
+  return request(`/superuser/customRole/${params.loginName}`);
 }
 
 /**
  * 配置用户角色
  */
 export async function configUserRoles(params: UserRoleParams) {
-  return request(`/superuser/customRole/${params.companyName}`, { method: 'POST', body: params });
+  return request(`/superuser/customRole/${params.loginName}`, { method: 'POST', body: params });
 }

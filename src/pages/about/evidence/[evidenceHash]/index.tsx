@@ -14,7 +14,7 @@ import { DetailViewAttr } from '~/utils/types';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 breadCrumbItem.push({
   menuName: '存证上链详情',
-  menuHref: `/`,
+  menuHref: `/`
 });
 export interface EvidenceDataDetailProps {
   User: ConnectState['User'];
@@ -26,41 +26,41 @@ export interface EvidenceDataDetailProps {
 }
 function EvidenceDataDetail({
   match: {
-    params: { evidenceHash },
+    params: { evidenceHash }
   },
   User,
   Evidence,
   qryLoading = false,
   location,
-  dispatch,
+  dispatch
 }: EvidenceDataDetailProps) {
   const { networkName } = User;
   const { evidenceDataDetail } = Evidence;
   const detailList: DetailViewAttr[] = [
     {
       label: '存证哈希',
-      value: evidenceDataDetail && evidenceDataDetail.evidenceHash,
+      value: evidenceDataDetail && evidenceDataDetail.evidenceHash
     },
     {
       label: '所属通道',
-      value: evidenceDataDetail && evidenceDataDetail.channelId,
+      value: evidenceDataDetail && evidenceDataDetail.channelId
     },
     {
       label: '创建用户',
-      value: evidenceDataDetail && evidenceDataDetail.companyName,
+      value: evidenceDataDetail && evidenceDataDetail.loginName
     },
     {
       label: '上链时间',
-      value: evidenceDataDetail && moment(evidenceDataDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+      value: evidenceDataDetail && moment(evidenceDataDetail.createdAt).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       label: '所属网络',
-      value: evidenceDataDetail && evidenceDataDetail.networkName,
+      value: evidenceDataDetail && evidenceDataDetail.networkName
     },
     {
       label: '存证用户',
-      value: evidenceDataDetail && evidenceDataDetail.createUser,
-    },
+      value: evidenceDataDetail && evidenceDataDetail.createUser
+    }
   ];
 
   const getEvidenceData = () => {
@@ -84,7 +84,7 @@ function EvidenceDataDetail({
   useEffect(() => {
     dispatch({
       type: 'Evidence/getEvidenceDataDetail',
-      payload: { channelId: location?.query?.channelId, evidenceHash, networkName },
+      payload: { channelId: location?.query?.channelId, evidenceHash, networkName }
     });
   }, []);
 
@@ -112,5 +112,5 @@ export default connect(({ User, Layout, Evidence, loading }: ConnectState) => ({
   User,
   Evidence,
   Layout,
-  qryLoading: loading.effects['certificateChain/getEvidenceDataDetail'],
+  qryLoading: loading.effects['certificateChain/getEvidenceDataDetail']
 }))(EvidenceDataDetail);

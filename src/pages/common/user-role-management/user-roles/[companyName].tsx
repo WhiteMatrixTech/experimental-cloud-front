@@ -56,7 +56,10 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
       .then((values) => {
         dispatch({
           type: 'UserRole/configUserRoles',
-          payload: { companyName, accessRoles: values.RoleList }
+          payload: {
+            loginName: location.state.loginName || '',
+            accessRoles: values.RoleList
+          }
         });
       })
       .catch((info) => {
@@ -75,9 +78,11 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
     });
     dispatch({
       type: 'UserRole/getUserRoles',
-      payload: { companyName }
+      payload: {
+        loginName: location.state.loginName || ''
+      }
     });
-  }, [dispatch, companyName]);
+  }, [dispatch, location.state]);
 
   return (
     <div className="page-wrapper">
@@ -88,7 +93,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
             <Form {...formItemLayout} form={form}>
               <Row justify="center" gutter={[24, 24]}>
                 <Col span={8}>
-                  <Item label="用户名" name="companyName" initialValue={companyName}>
+                  <Item label="用户名" name="loginName" initialValue={location.state.loginName || ''}>
                     <Input disabled placeholder="用户名" />
                   </Item>
                 </Col>

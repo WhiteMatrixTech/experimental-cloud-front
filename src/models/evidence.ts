@@ -7,7 +7,7 @@ export type EvidenceSchema = {
   networkName: string;
   channelId: string;
   evidenceData: string;
-  companyName: string;
+  loginName: string;
   createUser: string;
   createdAt: string;
 };
@@ -39,7 +39,7 @@ const EvidenceModel: EvidenceModelType = {
   state: {
     evidenceDataList: [], // 已存证上链列表
     evidenceDataDetail: null, //存证的详情
-    evidenceDataTotal: 0,
+    evidenceDataTotal: 0
   },
 
   effects: {
@@ -50,8 +50,8 @@ const EvidenceModel: EvidenceModelType = {
         yield put({
           type: 'common',
           payload: {
-            evidenceDataList: result.items,
-          },
+            evidenceDataList: result.items
+          }
         });
       }
     },
@@ -63,8 +63,8 @@ const EvidenceModel: EvidenceModelType = {
           type: 'common',
           payload: {
             evidenceDataList: result,
-            evidenceDataTotal: result.length,
-          },
+            evidenceDataTotal: result.length
+          }
         });
       }
     },
@@ -75,8 +75,8 @@ const EvidenceModel: EvidenceModelType = {
         yield put({
           type: 'common',
           payload: {
-            evidenceDataDetail: result,
-          },
+            evidenceDataDetail: result
+          }
         });
       }
     },
@@ -87,8 +87,8 @@ const EvidenceModel: EvidenceModelType = {
         yield put({
           type: 'common',
           payload: {
-            evidenceDataTotal: result.count,
-          },
+            evidenceDataTotal: result.count
+          }
         });
       }
     },
@@ -102,14 +102,14 @@ const EvidenceModel: EvidenceModelType = {
         notification.error({ message: result.message || '存证上链失败', top: 64, duration: 3 });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default EvidenceModel;

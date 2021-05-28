@@ -31,7 +31,7 @@ export interface RbacConfigProps {
 }
 function RbacConfig(props: RbacConfigProps) {
   const { dispatch, location, User, RBAC, configLoading = false, resetLoading = false } = props;
-  const { networkName } = User;
+  const { networkName, userInfo } = User;
   const { roleNameList, chaincodeList, rbacPolicy } = RBAC;
 
   const [form] = Form.useForm();
@@ -53,7 +53,7 @@ function RbacConfig(props: RbacConfigProps) {
     const apiName = viewChaincode === 'Own' ? 'RBAC/getMyselfChainCodeList' : 'RBAC/getChainCodeList';
     dispatch({
       type: apiName,
-      payload: { networkName, companyName: 'todo' }
+      payload: { networkName, loginName: userInfo.loginName }
     });
   };
 

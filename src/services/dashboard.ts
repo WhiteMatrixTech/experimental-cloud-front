@@ -23,7 +23,7 @@ export type CreateNetworkRequest = {
   initOrgName: string;
   initPeerInfo: CreateNodeInfo[];
   imageInfo?: ImageDetail[];
-  companyName?: string;
+  loginName?: string;
   networkName?: string;
 };
 export async function createNetwork(params: CreateNetworkRequest) {

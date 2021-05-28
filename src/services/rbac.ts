@@ -20,14 +20,14 @@ export async function getRoleNameList(params: BasicApiParams) {
  * 获取合约列表
  */
 export async function getChaincodeList(params: any) {
-  return request(`/network/${params.networkName}/chainCodes/queryAll/${params.companyName}`);
+  return request(`/network/${params.networkName}/chainCodes/queryAll/${params.loginName}`);
 }
 
 /**
  * 获取自己的合约列表
  */
 export async function getMyselfChainCodeList(params: any) {
-  return request(`/network/${params.networkName}/chainCodes/queryOwn/${params.companyName}`);
+  return request(`/network/${params.networkName}/chainCodes/queryOwn/${params.loginName}`);
 }
 
 /**

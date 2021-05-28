@@ -18,7 +18,7 @@ const { Option } = Select;
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/rbac');
 breadCrumbItem.push({
   menuName: '访问角色新增',
-  menuHref: `/`,
+  menuHref: `/`
 });
 export interface NewRbacConfigProps {
   dispatch: Dispatch;
@@ -29,7 +29,7 @@ export interface NewRbacConfigProps {
 }
 function NewRbacConfig(props: NewRbacConfigProps) {
   const { dispatch, User, RBAC, configLoading = false, resetLoading = false } = props;
-  const { networkName } = User;
+  const { networkName, userInfo } = User;
   const { chaincodeList } = RBAC;
 
   const [form] = Form.useForm();
@@ -46,7 +46,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
     const apiName = viewChaincode === 'Own' ? 'RBAC/getMyselfChainCodeList' : 'RBAC/getChainCodeList';
     dispatch({
       type: apiName,
-      payload: { networkName, companyName: 'todo' },
+      payload: { networkName, loginName: userInfo.loginName }
     });
   };
 
@@ -67,7 +67,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
     if (e.target.value === 'Own') {
       form.setFields([
         { name: 'downloadChaincode', value: 'Own' },
-        { name: 'invokeChaincode', value: 'None' },
+        { name: 'invokeChaincode', value: 'None' }
       ]);
       setInvokeChaincodeCustom('None');
     }
@@ -93,7 +93,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
             const params = setParams(values, roleName, networkName, chaincodeList);
             const res = dispatch({
               type: 'RBAC/setConfig',
-              payload: params,
+              payload: params
             });
             if (res) {
               history.push('/about/rbac');
@@ -105,7 +105,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
             content: `确认要添加此访问策略角色吗?`,
             okText: '确认',
             cancelText: '取消',
-            onOk: callback,
+            onOk: callback
           });
         })
         .catch((info) => {
@@ -117,7 +117,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
         const callback = async () => {
           const res = dispatch({
             type: 'RBAC/setConfigByJson',
-            payload: { networkName, roleName, policy: params },
+            payload: { networkName, roleName, policy: params }
           });
           if (res) {
             history.push('/about/rbac');
@@ -129,7 +129,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
           content: `确认要添加此访问策略角色吗?`,
           okText: '确认',
           cancelText: '取消',
-          onOk: callback,
+          onOk: callback
         });
       } catch (e) {
         message.warn('请输入标准JSON格式数据');
@@ -142,7 +142,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
   useEffect(() => {
     dispatch({
       type: 'RBAC/getRoleNameList',
-      payload: { networkName },
+      payload: { networkName }
     });
     form.setFieldsValue(defaultValue);
     setJsonPolicy(JSON.stringify(defaultValue, null, 2));
@@ -185,8 +185,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
                                 <span className={styles['form-label']}>区块信息</span>
                               </>
                             }
-                            name="BlockInfo"
-                          >
+                            name="BlockInfo">
                             <Radio.Group>
                               <Radio className={styles.radio} value="All">
                                 可查看网络下所有区块
@@ -205,8 +204,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
                                 <span className={styles['form-label']}>交易信息</span>
                               </>
                             }
-                            name="Transaction"
-                          >
+                            name="Transaction">
                             <Radio.Group>
                               <Radio className={styles.radio} value="All">
                                 可查看网络下所有交易
@@ -228,8 +226,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
                                 <span className={styles['form-label']}>合约（查看）</span>
                               </>
                             }
-                            name="viewChaincode"
-                          >
+                            name="viewChaincode">
                             <Radio.Group onChange={onChangeViewChaincode}>
                               <Radio className={styles.radio} value="All">
                                 可查看网络下所有合约（不推荐）
@@ -251,8 +248,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
                                 <span className={styles['form-label']}>合约（下载）</span>
                               </>
                             }
-                            name="downloadChaincode"
-                          >
+                            name="downloadChaincode">
                             <Radio.Group>
                               {viewChaincode !== 'Own' && (
                                 <Radio className={styles.radio} value="InChannel">
@@ -274,8 +270,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
                               </>
                             }
                             className={invokeChaincodeCustom === 'Custom' ? styles['inline-form-item'] : ''}
-                            name="invokeChaincode"
-                          >
+                            name="invokeChaincode">
                             <Radio.Group onChange={onChangeInvokeChaincode}>
                               {viewChaincode !== 'Own' && (
                                 <Radio className={styles.radio} value="InChannel">
@@ -298,22 +293,19 @@ function NewRbacConfig(props: NewRbacConfigProps) {
                               rules={[
                                 {
                                   required: true,
-                                  message: '请选择合约',
-                                },
-                              ]}
-                            >
+                                  message: '请选择合约'
+                                }
+                              ]}>
                               <Select
                                 allowClear
                                 mode="multiple"
                                 placeholder="请选择合约"
                                 className={styles['inline-select']}
-                                getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                              >
+                                getPopupContainer={(triggerNode) => triggerNode.parentNode}>
                                 {chaincodeList.map((chaincode) => (
                                   <Option
                                     key={`${chaincode.channelId}-${chaincode.chainCodeName}`}
-                                    value={chaincode.chainCodeName}
-                                  >
+                                    value={chaincode.chainCodeName}>
                                     {`通道: ${chaincode.channelId} - 合约: ${chaincode.chainCodeName}`}
                                   </Option>
                                 ))}
@@ -345,5 +337,5 @@ export default connect(({ User, RBAC, loading }: ConnectState) => ({
   User,
   RBAC,
   configLoading: loading.effects['RBAC/setConfig'],
-  resetLoading: loading.effects['RBAC/resetConfig'],
+  resetLoading: loading.effects['RBAC/resetConfig']
 }))(NewRbacConfig);

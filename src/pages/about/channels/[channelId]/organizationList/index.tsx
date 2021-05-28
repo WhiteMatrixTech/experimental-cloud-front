@@ -36,8 +36,8 @@ const columns: ColumnsType<any> = [
   },
   {
     title: '所属用户',
-    dataIndex: 'companyName',
-    key: 'companyName'
+    dataIndex: 'loginName',
+    key: 'loginName'
   },
   {
     title: '组织地址',
@@ -84,7 +84,7 @@ function OrganizationList(props: OrganizationListProps) {
       }
     ];
     return list;
-  }, [userRole, channelId, orgTotalOfChannel, nodeTotalOfChannel]);
+  }, [channelId, orgTotalOfChannel, nodeTotalOfChannel]);
 
   // 获取 通道下的组织
   const getOrgListOfChannel = () => {

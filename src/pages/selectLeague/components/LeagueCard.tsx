@@ -3,10 +3,11 @@ import { RocketTwoTone } from '@ant-design/icons';
 import moment from 'moment';
 import { Roles } from '~/utils/roles';
 import styles from '../index.less';
+import { LeagueSchema } from '~/models/user';
 
 export type LeagueCardProps = {
-  onClickCard: (leagueInfo: any) => void;
-  leagueInfo: any;
+  onClickCard: (leagueInfo: LeagueSchema) => void;
+  leagueInfo: LeagueSchema;
   showTime?: string;
 };
 
