@@ -115,7 +115,7 @@ export function getRoutes(): RouteProps[] {
           path: '/about/organizations'
         },
         {
-          path: '/about/rbac/config',
+          path: '/about/rbac/:roleName/config',
           exact: true
         },
         {
