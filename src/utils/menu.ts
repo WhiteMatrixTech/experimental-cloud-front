@@ -161,27 +161,27 @@ const NetworkMenuList: NetworkMenuProps[] = [
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [
       {
-        id: 'MyLeague',
+        id: 'my-league',
         menuPid: 'myinfo',
-        menuHref: '/about/myinfo/MyLeague',
+        menuHref: '/about/myinfo/my-league',
         menuIcon: null,
         menuName: '我的联盟',
         accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
         subMenus: []
       },
       {
-        id: 'CompanyInfo',
+        id: 'contact-info',
         menuPid: 'myinfo',
-        menuHref: '/about/myinfo/CompanyInfo',
+        menuHref: '/about/myinfo/contact-info',
         menuIcon: null,
         menuName: '我的信息',
         accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
         subMenus: []
       },
       {
-        id: 'MyOrgList',
+        id: 'my-organization',
         menuPid: 'myinfo',
-        menuHref: '/about/myinfo/MyOrgList',
+        menuHref: '/about/myinfo/my-organization',
         menuIcon: null,
         menuName: '我的组织',
         accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
