@@ -118,7 +118,7 @@ function NodeList(props: NodeListProps) {
   const channelInfoList: DetailViewAttr[] = [
     {
       label: '通道名称',
-      value: location?.state?.channelId
+      value: channelId
     },
     {
       label: '组织数量',

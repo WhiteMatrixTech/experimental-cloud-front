@@ -89,7 +89,7 @@ function ChaincodeList(props: ChaincodeListProps) {
   const channelInfoList: DetailViewAttr[] = [
     {
       label: '通道名称',
-      value: location?.state?.channelId
+      value: channelId
     },
     {
       label: '组织数量',
@@ -132,7 +132,7 @@ function ChaincodeList(props: ChaincodeListProps) {
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
       ascend: false,
-      channelId: location?.state?.channelId
+      channelId
     };
     props.dispatch({
       type: 'Channel/getContractListOfChannel',
