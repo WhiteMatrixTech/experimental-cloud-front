@@ -11,17 +11,17 @@ const { Item } = Form;
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/user-role-management');
 breadCrumbItem.push({
   menuName: '配置用户角色',
-  menuHref: `/`,
+  menuHref: `/`
 });
 
 export type UserManagementProps = {
@@ -29,10 +29,19 @@ export type UserManagementProps = {
   dispatch: Dispatch;
   location: Location<UserInfo>;
   UserRole: ConnectState['UserRole'];
+  match: { params: { companyName: string } };
 };
 
 const UserManagement: React.FC<UserManagementProps> = (props) => {
-  const { configLoading = false, dispatch, location, UserRole } = props;
+  const {
+    configLoading = false,
+    dispatch,
+    location,
+    UserRole,
+    match: {
+      params: { companyName }
+    }
+  } = props;
   const { userRoles, roleNameList } = UserRole;
 
   const [form] = Form.useForm();
@@ -47,7 +56,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
       .then((values) => {
         dispatch({
           type: 'UserRole/configUserRoles',
-          payload: { companyName: location.state?.companyName, accessRoles: values.RoleList },
+          payload: { companyName, accessRoles: values.RoleList }
         });
       })
       .catch((info) => {
@@ -62,13 +71,13 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
   useEffect(() => {
     dispatch({
       type: 'UserRole/getRoleNameList',
-      payload: {},
+      payload: {}
     });
     dispatch({
       type: 'UserRole/getUserRoles',
-      payload: { companyName: location.state?.companyName },
+      payload: { companyName }
     });
-  }, [dispatch, location.state?.companyName]);
+  }, [dispatch, companyName]);
 
   return (
     <div className="page-wrapper">
@@ -79,7 +88,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
             <Form {...formItemLayout} form={form}>
               <Row justify="center" gutter={[24, 24]}>
                 <Col span={8}>
-                  <Item label="用户名" name="companyName" initialValue={location.state?.companyName}>
+                  <Item label="用户名" name="companyName" initialValue={companyName}>
                     <Input disabled placeholder="用户名" />
                   </Item>
                 </Col>
@@ -100,8 +109,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
                               label="网络名称"
                               name={[key, 'networkName']}
                               initialValue={role.networkName}
-                              fieldKey={[key, 'networkName']}
-                            >
+                              fieldKey={[key, 'networkName']}>
                               <Input disabled placeholder="网络名称" />
                             </Item>
                           </Col>
@@ -111,8 +119,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
                                 allowClear={true}
                                 placeholder="选择角色"
                                 style={{ width: '100%' }}
-                                getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                              >
+                                getPopupContainer={(triggerNode) => triggerNode.parentNode}>
                                 {roleNameList.map((item) => (
                                   <Option key={item} value={item}>
                                     {item}
@@ -149,5 +156,5 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
 
 export default connect(({ UserRole, loading }: ConnectState) => ({
   UserRole,
-  configLoading: loading.effects['UserRole/configUserRoles'],
+  configLoading: loading.effects['UserRole/configUserRoles']
 }))(UserManagement);

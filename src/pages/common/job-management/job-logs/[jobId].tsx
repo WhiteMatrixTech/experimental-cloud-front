@@ -10,28 +10,30 @@ import { Dispatch, JobSchema, Location } from 'umi';
 const AU = require('ansi_up');
 const ansi_up = new AU.default();
 
-let breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
-breadCrumbItem = breadCrumbItem.concat([
-  {
-    menuName: '一键编译',
-    menuHref: `/common/block-compile/package`,
-    isLeftMenu: true
-  },
-  {
-    menuName: '任务日志',
-    menuHref: `/`
-  }
-]);
+const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/job-management');
+breadCrumbItem.push({
+  menuName: '任务日志',
+  menuHref: `/`
+});
 
 export type JobLogsProps = {
   dispatch: Dispatch;
   location: Location<JobSchema>;
   qryLoading: boolean;
   BlockChainCompile: ConnectState['BlockChainCompile'];
+  match: { params: { jobId: string } };
 };
 
 const JobLogs: React.FC<JobLogsProps> = (props) => {
-  const { dispatch, location, qryLoading = false, BlockChainCompile } = props;
+  const {
+    dispatch,
+    location,
+    qryLoading = false,
+    BlockChainCompile,
+    match: {
+      params: { jobId }
+    }
+  } = props;
   const { jobLog } = BlockChainCompile;
 
   const detailList = useMemo(() => {
@@ -65,7 +67,7 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
   useEffect(() => {
     dispatch({
       type: 'BlockChainCompile/getJobLog',
-      payload: { jobId: location?.state?.jobId }
+      payload: { jobId }
     });
   }, []);
 

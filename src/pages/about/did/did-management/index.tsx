@@ -11,13 +11,13 @@ import { ColumnsType } from 'antd/lib/table';
 const { Item } = Form;
 const formItemLayout = {
   labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
+  wrapperCol: { span: 16 }
 };
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/did', false);
 breadCrumbItem.push({
   menuName: 'DID管理',
-  menuHref: `/`,
+  menuHref: `/`
 });
 export interface DidManagementProps {
   dispatch: Dispatch;
@@ -38,25 +38,25 @@ function DidManagement(props: DidManagementProps) {
     const { did } = searchParams;
     const params = {
       networkName,
-      paginator: 'did',
+      paginator: 'did'
     };
     if (did) {
       dispatch({
         type: 'DID/getDetailByDid',
-        payload: { did, networkName },
+        payload: { did, networkName }
       });
       return;
     }
     dispatch({
       type: 'DID/getDidList',
-      payload: params,
+      payload: params
     });
   };
 
   const onClickDetail = (record: DidSchema) => {
     history.push({
-      pathname: `/about/did/did-management/did-detail`,
-      state: record,
+      pathname: `/about/did/did-management/did-detail/${record.did}`,
+      state: record
     });
   };
 
@@ -66,7 +66,7 @@ function DidManagement(props: DidManagementProps) {
       .validateFields()
       .then((values) => {
         const params = {
-          did: values.did,
+          did: values.did
         };
         setPageNum(1);
         setSearchParams(params);
@@ -94,24 +94,24 @@ function DidManagement(props: DidManagementProps) {
         dataIndex: 'did',
         key: 'did',
         width: '20%',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: 'DID名称',
         dataIndex: 'idName',
         key: 'idName',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: 'DID类型',
         dataIndex: 'idType',
-        key: 'idType',
+        key: 'idType'
       },
       {
         title: 'DID角色',
         dataIndex: 'role',
         key: 'role',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '操作',
@@ -122,8 +122,8 @@ function DidManagement(props: DidManagementProps) {
             <a onClick={() => onClickDelete(record)}>删除</a> */}
             <a onClick={() => onClickDetail(record)}>详情</a>
           </Space>
-        ),
-      },
+        )
+      }
     ];
   }, [userRole]);
 
@@ -167,7 +167,7 @@ function DidManagement(props: DidManagementProps) {
               total: didTotal,
               current: pageNum,
               showSizeChanger: false,
-              position: ['bottomCenter'],
+              position: ['bottomCenter']
             }}
           />
         </div>
@@ -180,5 +180,5 @@ export default connect(({ User, Layout, DID, loading }: ConnectState) => ({
   User,
   Layout,
   DID,
-  qryLoading: loading.effects['DID/getDidList'],
+  qryLoading: loading.effects['DID/getDidList']
 }))(DidManagement);

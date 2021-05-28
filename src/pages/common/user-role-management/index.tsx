@@ -25,23 +25,23 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
       title: '用户名',
       dataIndex: 'companyName',
       key: 'companyName',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '联系邮箱',
       dataIndex: 'contactEmail',
-      key: 'contactEmail',
+      key: 'contactEmail'
     },
     {
       title: '联系人',
       dataIndex: 'contactName',
-      key: 'contactName',
+      key: 'contactName'
     },
     {
       title: '注册角色',
       dataIndex: 'role',
       key: 'role',
-      render: (text: string) => <span>{RolesMapNames[text]}</span>,
+      render: (text: string) => <span>{RolesMapNames[text]}</span>
     },
     {
       title: '操作',
@@ -50,18 +50,18 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
         <Space size="small">
           <a onClick={() => onClickConfig(record)}>配置访问角色</a>
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   const onClickConfig = async (record: UserInfo) => {
     await dispatch({
       type: 'UserRole/getRoleNameList',
-      payload: {},
+      payload: {}
     });
     history.push({
-      pathname: `/user-role-management/user-roles`,
-      state: { ...record },
+      pathname: `/user-role-management/user-roles/${record.companyName}`,
+      state: { ...record }
     });
   };
 
@@ -72,15 +72,15 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
   const getUserList = () => {
     const params = {
       offset: (pageNum - 1) * 10,
-      limit: 10,
+      limit: 10
     };
     dispatch({
       type: 'UserRole/getUserList',
-      payload: params,
+      payload: params
     });
     dispatch({
       type: 'UserRole/getUserTotal',
-      payload: {},
+      payload: {}
     });
   };
 
@@ -103,7 +103,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
             total: 0,
             current: pageNum,
             showSizeChanger: false,
-            position: ['bottomCenter'],
+            position: ['bottomCenter']
           }}
         />
       </div>
@@ -113,5 +113,5 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
 
 export default connect(({ UserRole, loading }: ConnectState) => ({
   UserRole,
-  qryLoading: loading.effects['UserRole/getUserList'],
+  qryLoading: loading.effects['UserRole/getUserList']
 }))(UserManagement);

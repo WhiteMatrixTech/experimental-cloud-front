@@ -56,7 +56,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 
   const onViewJobLog = (record: JobSchema) => {
     history.push({
-      pathname: `/common/job-management/job-logs`,
+      pathname: `/common/job-management/job-logs/${record.jobId}`,
       state: { ...record }
     });
   };

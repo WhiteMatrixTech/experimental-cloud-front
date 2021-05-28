@@ -85,7 +85,7 @@ function RbacConfig(props: RbacConfigProps) {
 
   const onClickRbacConfig = (record: RbacRole) => {
     history.push({
-      pathname: `/about/rbac/config`,
+      pathname: `/about/rbac/${record.roleName}/config`,
       state: {
         roleName: record.roleName
       }
@@ -94,7 +94,7 @@ function RbacConfig(props: RbacConfigProps) {
 
   const onClickRbacDetail = (record: RbacRole) => {
     history.push({
-      pathname: `/about/rbac/detail`,
+      pathname: `/about/rbac/${record.roleName}/detail`,
       state: {
         roleName: record.roleName
       }

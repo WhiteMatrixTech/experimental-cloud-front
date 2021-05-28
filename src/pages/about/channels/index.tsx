@@ -39,11 +39,11 @@ function ChannelManagement(props: ChannelManagementProps) {
       networkName,
       ascend: false,
       limit: pageSize,
-      from: Number(moment(new Date()).format('x')),
+      from: Number(moment(new Date()).format('x'))
     };
     dispatch({
       type: 'Channel/getChannelList',
-      payload: params,
+      payload: params
     });
   };
   // 页码改变重新查询列表
@@ -72,32 +72,32 @@ function ChannelManagement(props: ChannelManagementProps) {
   // 点击 查看组织
   const onViewOrg = (record: ChannelSchema) => {
     history.push({
-      pathname: `/about/channels/organizationList`,
-      state: { ...record },
+      pathname: `/about/channels/${record.channelId}/organizationList`,
+      state: { ...record }
     });
   };
 
   // 点击 查看节点
   const onViewPeer = (record: ChannelSchema) => {
     history.push({
-      pathname: `/about/channels/nodeList`,
-      state: { ...record },
+      pathname: `/about/channels/${record.channelId}/nodeList`,
+      state: { ...record }
     });
   };
 
   // 点击 查看合约
   const onViewContract = (record: ChannelSchema) => {
     history.push({
-      pathname: `/about/channels/chaincodeList`,
-      state: { ...record },
+      pathname: `/about/channels/${record.channelId}/chaincodeList`,
+      state: { ...record }
     });
   };
 
   // 点击 查看详情
   const onViewDetail = (record: ChannelSchema) => {
     history.push({
-      pathname: `/about/channels/channelDetail`,
-      state: { ...record },
+      pathname: `/about/channels/${record.channelId}/channelDetail`,
+      state: { ...record }
     });
   };
 
@@ -123,7 +123,7 @@ function ChannelManagement(props: ChannelManagementProps) {
       content: `确认要${tipTitle}通道 【${record.channelId}】 吗?`,
       okText: '确认',
       cancelText: '取消',
-      onOk: callback,
+      onOk: callback
     });
   };
 
@@ -131,12 +131,12 @@ function ChannelManagement(props: ChannelManagementProps) {
     {
       title: '通道名称',
       dataIndex: 'channelId',
-      key: 'channelId',
+      key: 'channelId'
     },
     {
       title: '通道别名',
       dataIndex: 'channelAliasName',
-      key: 'channelAliasName',
+      key: 'channelAliasName'
     },
     {
       title: '通道状态',
@@ -151,24 +151,24 @@ function ChannelManagement(props: ChannelManagementProps) {
           />
         ) : (
           ''
-        ),
+        )
     },
     {
       title: '通道描述',
       dataIndex: 'channelDesc',
       key: 'channelDesc',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '创建者',
       dataIndex: 'createUser',
-      key: 'createUser',
+      key: 'createUser'
     },
     {
       title: '创建时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '操作',
@@ -181,8 +181,8 @@ function ChannelManagement(props: ChannelManagementProps) {
           <a onClick={() => onViewContract(record)}>查看合约</a>
           <a onClick={() => onViewDetail(record)}>详情</a>
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   useEffect(() => {
@@ -213,7 +213,7 @@ function ChannelManagement(props: ChannelManagementProps) {
             total: channelTotal,
             current: pageNum,
             showSizeChanger: false,
-            position: ['bottomCenter'],
+            position: ['bottomCenter']
           }}
         />
       </div>
@@ -226,5 +226,5 @@ export default connect(({ User, Layout, Channel, loading }: ConnectState) => ({
   User,
   Layout,
   Channel,
-  qryLoading: loading.effects['Channel/getChannelList'],
+  qryLoading: loading.effects['Channel/getChannelList']
 }))(ChannelManagement);

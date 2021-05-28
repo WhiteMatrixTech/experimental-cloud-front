@@ -28,26 +28,26 @@ export function getRoutes(): RouteProps[] {
           path: '/about/block/:blockHash'
         },
         {
-          path: '/about/channels/chaincodeList',
+          path: '/about/channels/:channelId/chaincodeList',
           exact: true
         },
         {
-          path: '/about/channels/channelDetail',
+          path: '/about/channels/:channelId/channelDetail',
           exact: true
         },
         {
           path: '/about/channels'
         },
         {
-          path: '/about/channels/nodeList',
+          path: '/about/channels/:channelId/nodeList',
           exact: true
         },
         {
-          path: '/about/channels/organizationList',
+          path: '/about/channels/:channelId/organizationList',
           exact: true
         },
         {
-          path: '/about/contract/contractDetail',
+          path: '/about/contract/:chainCodeName/contractDetail',
           exact: true
         },
         {
@@ -57,7 +57,7 @@ export function getRoutes(): RouteProps[] {
           path: '/about/data-dashboard'
         },
         // {
-        //   path: "/about/did/did-management/did-detail",
+        //   path: "/about/did/did-management/did-detail/:did",
         //   exact: true
         // },
         // {
@@ -119,7 +119,7 @@ export function getRoutes(): RouteProps[] {
           exact: true
         },
         {
-          path: '/about/rbac/detail',
+          path: '/about/rbac/:roleName/detail',
           exact: true
         },
         {
@@ -144,7 +144,7 @@ export function getRoutes(): RouteProps[] {
           path: '/common/block-compile/package'
         },
         {
-          path: '/common/block-compile/package/job-logs',
+          path: '/common/block-compile/package/job-logs/:buildJobId',
           exact: true
         },
         {
@@ -154,11 +154,11 @@ export function getRoutes(): RouteProps[] {
           path: '/common/elastic-cloud-server'
         },
         {
-          path: '/common/elastic-cloud-server/resource-usage',
+          path: '/common/elastic-cloud-server/:serverName/resource-usage',
           exact: true
         },
         {
-          path: '/common/elastic-cloud-server/server-performance',
+          path: '/common/elastic-cloud-server/:serverName/server-performance',
           exact: true
         },
         {
@@ -168,7 +168,7 @@ export function getRoutes(): RouteProps[] {
           path: '/common/job-management'
         },
         {
-          path: '/common/job-management/job-logs',
+          path: '/common/job-management/job-logs/:jobId',
           exact: true
         },
         {

@@ -12,7 +12,7 @@ import { ChainCodeSchema } from '~/models/contract';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', true);
 breadCrumbItem.push({
   menuName: '合约详情',
-  menuHref: `/`,
+  menuHref: `/`
 });
 export interface ContractDetailProps {
   Contract: ConnectState['Contract'];
@@ -27,38 +27,38 @@ const ContractDetail: React.FC<ContractDetailProps> = (props) => {
   const contractInfoList: DetailViewAttr[] = [
     {
       label: '合约名称',
-      value: chaincodeInfo.chainCodeName,
+      value: chaincodeInfo.chainCodeName
     },
     {
       label: '所属通道',
-      value: chaincodeInfo.channelId,
+      value: chaincodeInfo.channelId
     },
     {
       label: '合约语言类型',
-      value: chaincodeInfo.chainCodePackageMetaData ? chaincodeInfo.chainCodePackageMetaData.language : '',
+      value: chaincodeInfo.chainCodePackageMetaData ? chaincodeInfo.chainCodePackageMetaData.language : ''
     },
     {
       label: '当前版本',
-      value: chaincodeInfo.chainCodeVersion,
+      value: chaincodeInfo.chainCodeVersion
     },
     {
       label: '创建组织',
-      value: chaincodeInfo.createOrgName,
+      value: chaincodeInfo.createOrgName
     },
     {
       label: '创建时间',
-      value: chaincodeInfo.createdAt ? moment(chaincodeInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -',
+      value: chaincodeInfo.createdAt ? moment(chaincodeInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -'
     },
     {
       label: '背书组织',
       fullRow: true,
-      value: chaincodeInfo.endorsementPolicy ? JSON.stringify(chaincodeInfo.endorsementPolicy.orgsToApprove) : '',
+      value: chaincodeInfo.endorsementPolicy ? JSON.stringify(chaincodeInfo.endorsementPolicy.orgsToApprove) : ''
     },
     {
       label: '合约描述',
       fullRow: true,
-      value: chaincodeInfo.description,
-    },
+      value: chaincodeInfo.description
+    }
   ];
   return (
     <div className="page-wrapper">
@@ -77,5 +77,5 @@ const ContractDetail: React.FC<ContractDetailProps> = (props) => {
 
 export default connect(({ User, Contract }: ConnectState) => ({
   User,
-  Contract,
+  Contract
 }))(ContractDetail);
