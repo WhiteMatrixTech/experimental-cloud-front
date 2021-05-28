@@ -47,7 +47,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
   const [form] = Form.useForm();
 
   const onClickGoBack = () => {
-    history.push('/userManagement');
+    history.push('/common/userManagement');
   };
 
   const onSubmit = () => {

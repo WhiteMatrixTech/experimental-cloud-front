@@ -60,7 +60,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
       payload: {}
     });
     history.push({
-      pathname: `/user-role-management/user-roles/${record.companyName}`,
+      pathname: `/common/user-role-management/user-roles/${record.companyName}`,
       state: { ...record }
     });
   };
