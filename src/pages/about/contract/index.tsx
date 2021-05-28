@@ -42,7 +42,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
   useEffect(() => {
     dispatch({
       type: 'Contract/checkOrgInUse',
-      payload: { networkName },
+      payload: { networkName }
     });
     getChainCodeList();
   }, [pageNum]);
@@ -56,15 +56,15 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       offset,
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
-      ascend: false,
+      ascend: false
     };
     dispatch({
       type: 'Contract/getChainCodeTotal',
-      payload: { networkName },
+      payload: { networkName }
     });
     dispatch({
       type: 'Contract/getChainCodeList',
-      payload: params,
+      payload: params
     });
   };
 
@@ -95,7 +95,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       content: `确认要${tipTitle}合约 【${record.chainCodeName}】 吗?`,
       okText: '确认',
       cancelText: '取消',
-      onOk: callback,
+      onOk: callback
     });
   };
 
@@ -106,7 +106,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
     setApproveVisible(false);
     dispatch({
       type: 'Contract/common',
-      payload: { invokeResult: null },
+      payload: { invokeResult: null }
     });
     if (callback) {
       setTimeout(getChainCodeList, 500);
@@ -131,7 +131,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
     const headers = {
       'Content-Type': 'text/plain',
       Authorization: `Bearer ${accessToken}`,
-      RoleAuth: roleToken,
+      RoleAuth: roleToken
     };
 
     setDownloading(true);
@@ -142,8 +142,8 @@ const MyContract: React.FC<MyContractProps> = (props) => {
         headers,
         mode: 'cors',
         method: 'GET',
-        responseType: 'blob',
-      },
+        responseType: 'blob'
+      }
     )
       .then((res: any) => {
         setDownloading(false);
@@ -179,11 +179,11 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       networkName,
       channelId: record.channelId,
       chainCodeName: record.chainCodeName,
-      endorsementPolicy: { ...record.endorsementPolicy },
+      endorsementPolicy: { ...record.endorsementPolicy }
     };
     const res = await dispatch({
       type: 'Contract/releaseContract',
-      payload: params,
+      payload: params
     });
     if (res) {
       getChainCodeList();
@@ -197,8 +197,8 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       payload: {
         channelId: record.channelId,
         chainCodeName: record.chainCodeName,
-        networkName: props.User.networkName,
-      },
+        networkName: props.User.networkName
+      }
     });
     if (res) {
       getChainCodeList();
@@ -208,8 +208,8 @@ const MyContract: React.FC<MyContractProps> = (props) => {
   // 查看合约详情
   const onClickDetail = (record: ChainCodeSchema) => {
     history.push({
-      pathname: `/about/contract/contractDetail`,
-      state: record,
+      pathname: `/about/contract/contractDetail/${record.chainCodeName}`,
+      state: record
     });
   };
 
@@ -218,26 +218,26 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       title: '合约名称',
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '所属通道',
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '所属组织',
       dataIndex: 'createOrgName',
       key: 'createOrgName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '创建时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
+        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '状态',
@@ -252,7 +252,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
           />
         ) : (
           <span className="a-forbidden-style">信息访问受限</span>
-        ),
+        )
     },
     {
       title: '操作',
@@ -283,8 +283,8 @@ const MyContract: React.FC<MyContractProps> = (props) => {
             <a className="a-forbidden-style">详情</a>
           )}
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   return (
@@ -308,7 +308,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
               total: myContractTotal,
               current: pageNum,
               showSizeChanger: false,
-              position: ['bottomCenter'],
+              position: ['bottomCenter']
             }}
           />
         </div>
@@ -330,5 +330,5 @@ const MyContract: React.FC<MyContractProps> = (props) => {
 export default connect(({ User, Contract, loading }: ConnectState) => ({
   User,
   Contract,
-  qryLoading: loading.effects['Contract/getPageListOfChainCode'],
+  qryLoading: loading.effects['Contract/getPageListOfChainCode']
 }))(MyContract);

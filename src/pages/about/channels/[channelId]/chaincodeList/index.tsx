@@ -4,7 +4,7 @@ import { Table, Badge } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import { chainCodeStatusInfo } from '../../contract/_config';
+import { chainCodeStatusInfo } from '../../../contract/_config';
 import baseConfig from '~/utils/config';
 import { DetailViewAttr } from '~/utils/types';
 import { ConnectState } from '~/models/connect';
@@ -14,7 +14,7 @@ import { ColumnsType } from 'antd/lib/table';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
   menuName: '查看合约',
-  menuHref: `/`,
+  menuHref: `/`
 });
 export interface ChaincodeListProps {
   User: ConnectState['User'];
@@ -22,10 +22,19 @@ export interface ChaincodeListProps {
   qryLoading: boolean;
   location: Location<ChannelSchema>;
   Channel: ConnectState['Channel'];
+  match: { params: { channelId: string } };
 }
 const pageSize = baseConfig.pageSize;
 function ChaincodeList(props: ChaincodeListProps) {
-  const { User, dispatch, location, qryLoading } = props;
+  const {
+    User,
+    dispatch,
+    location,
+    qryLoading,
+    match: {
+      params: { channelId }
+    }
+  } = props;
   const { networkName } = User;
   const { contractListOfChannel, contractTotalOfChannel, orgTotalOfChannel, nodeTotalOfChannel } = props.Channel;
   const [pageNum, setPageNum] = useState(1);
@@ -34,25 +43,25 @@ function ChaincodeList(props: ChaincodeListProps) {
     {
       title: '合约ID',
       dataIndex: '_id',
-      key: '_id',
+      key: '_id'
     },
     {
       title: '合约名称',
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '创建组织',
       dataIndex: 'createOrgName',
       key: 'createOrgName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '合约版本',
       dataIndex: 'chainCodeVersion',
       key: 'chainCodeVersion',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '状态',
@@ -67,50 +76,50 @@ function ChaincodeList(props: ChaincodeListProps) {
           />
         ) : (
           <span className="a-forbidden-style">信息访问受限</span>
-        ),
+        )
     },
     {
       title: '创建时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
-    },
+        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+    }
   ];
   const channelInfoList: DetailViewAttr[] = [
     {
       label: '通道名称',
-      value: location?.state?.channelId,
+      value: channelId
     },
     {
       label: '组织数量',
-      value: orgTotalOfChannel,
+      value: orgTotalOfChannel
     },
     {
       label: '节点总数',
-      value: nodeTotalOfChannel,
+      value: nodeTotalOfChannel
     },
     {
       label: '合约总数',
-      value: contractTotalOfChannel,
-    },
+      value: contractTotalOfChannel
+    }
   ];
   useEffect(() => {
     const params = {
       networkName,
-      channelId: location?.state?.channelId,
+      channelId
     };
     dispatch({
       type: 'Channel/getOrgListOfChannel',
-      payload: params,
+      payload: params
     });
     dispatch({
       type: 'Channel/getNodeListOfChannel',
-      payload: params,
+      payload: params
     });
     dispatch({
       type: 'Channel/getContractTotalOfChannel',
-      payload: params,
+      payload: params
     });
   }, []);
 
@@ -123,11 +132,11 @@ function ChaincodeList(props: ChaincodeListProps) {
       limit: pageSize,
       from: Number(moment(new Date()).format('x')),
       ascend: false,
-      channelId: location?.state?.channelId,
+      channelId
     };
     props.dispatch({
       type: 'Channel/getContractListOfChannel',
-      payload: params,
+      payload: params
     });
   };
   useEffect(() => {
@@ -160,7 +169,7 @@ function ChaincodeList(props: ChaincodeListProps) {
               pageSize,
               total: contractTotalOfChannel,
               current: pageNum,
-              position: ['bottomCenter'],
+              position: ['bottomCenter']
             }}
           />
         </div>
@@ -173,5 +182,5 @@ export default connect(({ Channel, Layout, User, loading }: ConnectState) => ({
   Channel,
   Layout,
   User,
-  qryLoading: loading.effects['Channel/getContractListOfChannel'],
+  qryLoading: loading.effects['Channel/getContractListOfChannel']
 }))(ChaincodeList);

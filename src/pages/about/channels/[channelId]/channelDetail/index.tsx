@@ -5,7 +5,7 @@ import { ChannelSchema, Dispatch, history, Location } from 'umi';
 import moment from 'moment';
 import { StatisticsCard, Breadcrumb } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import { ChannelStatus } from '../_config';
+import { ChannelStatus } from '../../_config';
 import style from './index.less';
 import config from '~/utils/config';
 import peer from '~/assets/images/dashboard/icon-peer.png';
@@ -19,7 +19,7 @@ import { ColumnsType } from 'antd/lib/table';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
   menuName: '通道详情',
-  menuHref: `/`,
+  menuHref: `/`
 });
 
 const imgList = [msp, peer, block, transactions, chaincode];
@@ -30,9 +30,19 @@ export interface ChannelDetailProps {
   qryTransactionLoading: boolean;
   Channel: ConnectState['Channel'];
   location: Location<ChannelSchema>;
+  match: { params: { channelId: string } };
 }
 function ChannelDetail(props: ChannelDetailProps) {
-  const { dispatch, User, qryBlockLoading, qryTransactionLoading, location } = props;
+  const {
+    dispatch,
+    User,
+    qryBlockLoading,
+    qryTransactionLoading,
+    location,
+    match: {
+      params: { channelId }
+    }
+  } = props;
   const {
     blockListOfChannel,
     transactionListOfChannel,
@@ -40,37 +50,37 @@ function ChannelDetail(props: ChannelDetailProps) {
     nodeTotalOfChannel,
     blockTotalOfChannel,
     contractTotalOfChannel,
-    transactionTotalOfChannel,
+    transactionTotalOfChannel
   } = props.Channel;
   const statisticsList = [
     { label: '组织', num: orgTotalOfChannel },
     { label: '节点', num: nodeTotalOfChannel },
     { label: '区块', num: blockTotalOfChannel },
     { label: '交易', num: transactionTotalOfChannel },
-    { label: '合约', num: contractTotalOfChannel },
+    { label: '合约', num: contractTotalOfChannel }
   ];
   const blockColumns: ColumnsType<any> = [
     {
       title: '区块HASH',
       dataIndex: 'blockHash',
       key: 'blockHash',
-      ellipsis: true,
+      ellipsis: true
     },
     {
       title: '所属通道',
       dataIndex: 'channelId',
-      key: 'channelId',
+      key: 'channelId'
     },
     {
       title: '交易数量',
       dataIndex: 'txCount',
-      key: 'txCount',
+      key: 'txCount'
     },
     {
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '操作',
@@ -79,8 +89,8 @@ function ChannelDetail(props: ChannelDetailProps) {
         <Space size="small">
           <a onClick={() => onClickBlockDetail(record)}>详情</a>
         </Space>
-      ),
-    },
+      )
+    }
   ];
   const transactionColumns: ColumnsType<any> = [
     {
@@ -88,32 +98,32 @@ function ChannelDetail(props: ChannelDetailProps) {
       dataIndex: 'txId',
       key: 'txId',
       ellipsis: true,
-      width: '17%',
+      width: '17%'
     },
     {
       title: '所属通道',
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '交易组织',
       dataIndex: 'txEndorseMsp',
       key: 'txEndorseMsp',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '合约名称',
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
+        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '操作',
@@ -126,8 +136,8 @@ function ChannelDetail(props: ChannelDetailProps) {
             <a className="a-forbidden-style">详情</a>
           )}
         </Space>
-      ),
-    },
+      )
+    }
   ];
   useEffect(() => {
     getStaticInfo();
@@ -140,11 +150,11 @@ function ChannelDetail(props: ChannelDetailProps) {
     const { networkName } = User;
     const params = {
       networkName,
-      channelId: location?.state?.channelId,
+      channelId
     };
     dispatch({
       type: 'Channel/getStaticInfo',
-      payload: params,
+      payload: params
     });
   };
 
@@ -156,11 +166,11 @@ function ChannelDetail(props: ChannelDetailProps) {
       offset: 0,
       limit: config.pageSize,
       ascend: false,
-      channelId: location?.state?.channelId,
+      channelId
     };
     dispatch({
       type: 'Channel/getTransactionsListOfChannel',
-      payload: params,
+      payload: params
     });
   };
 
@@ -168,13 +178,13 @@ function ChannelDetail(props: ChannelDetailProps) {
   const onClickTransactionDetail = (record: { txId: string }) => {
     props.dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/transactions' },
+      payload: { selectedMenu: '/about/transactions' }
     });
     history.push({
       pathname: `/about/transactions/${record.txId}`,
       query: {
-        channelId: record.txId,
-      },
+        channelId: record.txId
+      }
     });
   };
 
@@ -186,11 +196,11 @@ function ChannelDetail(props: ChannelDetailProps) {
       offset: 0,
       limit: config.pageSize,
       ascend: false,
-      channelId: location?.state?.channelId,
+      channelId
     };
     dispatch({
       type: 'Channel/getBlockListOfChannel',
-      payload: params,
+      payload: params
     });
   };
 
@@ -198,13 +208,13 @@ function ChannelDetail(props: ChannelDetailProps) {
   const onClickBlockDetail = (record: { blockHash: string }) => {
     props.dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/block' },
+      payload: { selectedMenu: '/about/block' }
     });
     history.push({
       pathname: `/about/block/${record.blockHash}`,
       query: {
-        blockHash: record.blockHash,
-      },
+        blockHash: record.blockHash
+      }
     });
   };
   return (
@@ -264,5 +274,5 @@ export default connect(({ Layout, Channel, User, loading }: ConnectState) => ({
   Channel,
   User,
   qryBlockLoading: loading.effects['Channel/getBlockListOfChannel'],
-  qryTransactionLoading: loading.effects['Channel/getTransactionList'],
+  qryTransactionLoading: loading.effects['Channel/getTransactionList']
 }))(ChannelDetail);

@@ -3,8 +3,8 @@ import { connect } from 'dva';
 import { Table, Button } from 'antd';
 import { Breadcrumb, DetailCard } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import AddOrg from '../components/AddOrg';
-import { ChannelStatusMap } from '../_config';
+import AddOrg from '../../components/AddOrg';
+import { ChannelStatusMap } from '../../_config';
 import baseConfig from '~/utils/config';
 import { Roles } from '~/utils/roles';
 import { ColumnsType } from 'antd/lib/table';
@@ -15,35 +15,35 @@ import { DetailViewAttr } from '~/utils/types';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
   menuName: '查看组织',
-  menuHref: `/`,
+  menuHref: `/`
 });
 
 const columns: ColumnsType<any> = [
   {
     title: '组织名称',
     dataIndex: 'orgName',
-    key: 'orgName',
+    key: 'orgName'
   },
   {
     title: '组织别名',
     dataIndex: 'orgAliasName',
-    key: 'orgAliasName',
+    key: 'orgAliasName'
   },
   {
     title: '组织MSPID',
     dataIndex: 'orgMspId',
-    key: 'orgMspId',
+    key: 'orgMspId'
   },
   {
     title: '所属用户',
     dataIndex: 'companyName',
-    key: 'companyName',
+    key: 'companyName'
   },
   {
     title: '组织地址',
     dataIndex: 'orgAddress',
-    key: 'orgAddress',
-  },
+    key: 'orgAddress'
+  }
 ];
 
 export interface OrganizationListProps {
@@ -52,9 +52,17 @@ export interface OrganizationListProps {
   dispatch: Dispatch;
   User: ConnectState['User'];
   Channel: ConnectState['Channel'];
+  match: { params: { channelId: string } };
 }
 function OrganizationList(props: OrganizationListProps) {
-  const { qryLoading = false, location, dispatch } = props;
+  const {
+    qryLoading = false,
+    location,
+    dispatch,
+    match: {
+      params: { channelId }
+    }
+  } = props;
   const { userRole, networkName } = props.User;
   const { orgListOfChannel, orgTotalOfChannel, nodeTotalOfChannel } = props.Channel;
   const [pageNum, setPageNum] = useState(1);
@@ -64,29 +72,29 @@ function OrganizationList(props: OrganizationListProps) {
     const list: DetailViewAttr[] = [
       {
         label: '通道名称',
-        value: location?.state?.channelId,
+        value: channelId
       },
       {
         label: '组织数量',
-        value: orgTotalOfChannel,
+        value: orgTotalOfChannel
       },
       {
         label: '节点总数',
-        value: nodeTotalOfChannel,
-      },
+        value: nodeTotalOfChannel
+      }
     ];
     return list;
-  }, [userRole, location?.state, orgTotalOfChannel, nodeTotalOfChannel]);
+  }, [userRole, channelId, orgTotalOfChannel, nodeTotalOfChannel]);
 
   // 获取 通道下的组织
   const getOrgListOfChannel = () => {
     const params = {
       networkName,
-      channelId: location?.state?.channelId,
+      channelId
     };
     dispatch({
       type: 'Channel/getOrgListOfChannel',
-      payload: params,
+      payload: params
     });
   };
   useEffect(() => {
@@ -139,14 +147,12 @@ function OrganizationList(props: OrganizationListProps) {
               pageSize: baseConfig.pageSize,
               total: orgTotalOfChannel,
               current: pageNum,
-              position: ['bottomCenter'],
+              position: ['bottomCenter']
             }}
           />
         </div>
       </div>
-      {addOrgVisible && (
-        <AddOrg visible={addOrgVisible} channelId={location?.state?.channelId} onCancel={onCloseModal} />
-      )}
+      {addOrgVisible && <AddOrg visible={addOrgVisible} channelId={channelId} onCancel={onCloseModal} />}
     </div>
   );
 }
@@ -155,5 +161,5 @@ export default connect(({ Channel, Layout, User, loading }: ConnectState) => ({
   Channel,
   Layout,
   User,
-  qryLoading: loading.effects['Channel/getOrgListOfChannel'],
+  qryLoading: loading.effects['Channel/getOrgListOfChannel']
 }))(OrganizationList);

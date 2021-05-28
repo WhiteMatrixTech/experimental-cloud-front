@@ -71,7 +71,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 
   const onViewJobLog = (record: GitBuildRepoTask) => {
     history.push({
-      pathname: `/common/block-compile/package/job-logs`,
+      pathname: `/common/block-compile/package/job-logs/${record.buildJobId}`,
       state: {
         ...record,
         jobId: record.buildJobId,

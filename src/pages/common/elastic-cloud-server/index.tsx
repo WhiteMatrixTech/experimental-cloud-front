@@ -75,14 +75,14 @@ function ServersManagement(props: ServersManagementProps) {
 
   const onViewPerformance = (record: ElasticServerSchema) => {
     history.push({
-      pathname: `/common/elastic-cloud-server/server-performance`,
+      pathname: `/common/elastic-cloud-server/${record.serverName}/server-performance`,
       state: { ...record }
     });
   };
 
   const onViewNode = (record: ElasticServerSchema) => {
     history.push({
-      pathname: `/common/elastic-cloud-server/resource-usage`,
+      pathname: `/common/elastic-cloud-server/${record.serverName}/resource-usage`,
       state: { ...record }
     });
   };

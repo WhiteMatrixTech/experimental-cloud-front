@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Breadcrumb, DetailCard } from '~/components';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import baseConfig from '~/utils/config';
-import { serverPurpose } from '../_config';
+import { serverPurpose } from '../../_config';
 import { ColumnsType } from 'antd/lib/table';
 import { Dispatch, ElasticServerSchema, Location } from 'umi';
 import { ConnectState } from '~/models/connect';
@@ -44,9 +44,18 @@ export interface ResourceUsageProps {
   location: Location<ElasticServerSchema>;
   dispatch: Dispatch;
   ElasticServer: ConnectState['ElasticServer'];
+  match: { params: { serverName: string } };
 }
 function ResourceUsage(props: ResourceUsageProps) {
-  const { qryLoading = false, location, dispatch, ElasticServer } = props;
+  const {
+    qryLoading = false,
+    location,
+    dispatch,
+    ElasticServer,
+    match: {
+      params: { serverName }
+    }
+  } = props;
   const { nodeList, nodeTotal } = ElasticServer;
   const [pageNum, setPageNum] = useState(1);
 
@@ -57,7 +66,7 @@ function ResourceUsage(props: ResourceUsageProps) {
       limit: baseConfig.pageSize,
       offset: offset,
       ascend: false,
-      serverName: location?.state?.serverName
+      serverName
     };
     dispatch({
       type: 'ElasticServer/getNodeList',
@@ -65,7 +74,7 @@ function ResourceUsage(props: ResourceUsageProps) {
     });
     dispatch({
       type: 'ElasticServer/getNodeTotal',
-      payload: { serverName: location?.state?.serverName }
+      payload: { serverName }
     });
   };
 
