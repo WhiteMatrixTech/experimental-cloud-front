@@ -29,7 +29,7 @@ export type UserManagementProps = {
   dispatch: Dispatch;
   location: Location<UserInfo>;
   UserRole: ConnectState['UserRole'];
-  match: { params: { companyName: string } };
+  match: { params: { loginName: string } };
 };
 
 const UserManagement: React.FC<UserManagementProps> = (props) => {
@@ -39,7 +39,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
     location,
     UserRole,
     match: {
-      params: { companyName }
+      params: { loginName }
     }
   } = props;
   const { userRoles, roleNameList } = UserRole;
@@ -57,7 +57,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
         dispatch({
           type: 'UserRole/configUserRoles',
           payload: {
-            loginName: location.state.loginName || '',
+            loginName: loginName || '',
             accessRoles: values.RoleList
           }
         });
@@ -79,10 +79,10 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
     dispatch({
       type: 'UserRole/getUserRoles',
       payload: {
-        loginName: location.state.loginName || ''
+        loginName: loginName || ''
       }
     });
-  }, [dispatch, location.state]);
+  }, [dispatch, location.state, loginName]);
 
   return (
     <div className="page-wrapper">
@@ -93,7 +93,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
             <Form {...formItemLayout} form={form}>
               <Row justify="center" gutter={[24, 24]}>
                 <Col span={8}>
-                  <Item label="用户名" name="loginName" initialValue={location.state.loginName || ''}>
+                  <Item label="用户名" name="loginName" initialValue={loginName || ''}>
                     <Input disabled placeholder="用户名" />
                   </Item>
                 </Col>

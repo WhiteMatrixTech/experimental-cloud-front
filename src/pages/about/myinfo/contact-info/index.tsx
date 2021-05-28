@@ -14,13 +14,13 @@ breadCrumbItem.push({
   menuName: '我的信息',
   menuHref: `/`
 });
-export interface MyCompanyInfoProps {
+export interface MyContactInfoProps {
   User: ConnectState['User'];
   dispatch: Dispatch;
   qryLoading: boolean;
   MyInfo: ConnectState['MyInfo'];
 }
-function MyCompanyInfo(props: MyCompanyInfoProps) {
+function MyContactInfo(props: MyContactInfoProps) {
   const {
     User,
     dispatch,
@@ -92,7 +92,7 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
 
   useEffect(() => {
     dispatch({
-      type: 'MyInfo/getMyCompanyInfo',
+      type: 'MyInfo/getMyContactInfo',
       payload: { networkName }
     });
   }, []);
@@ -116,5 +116,5 @@ export default injectIntl(
     DID,
     MyInfo,
     qryLoading: loading.effects['MyInfo/getMyInfoDetail']
-  }))(MyCompanyInfo)
+  }))(MyContactInfo)
 );

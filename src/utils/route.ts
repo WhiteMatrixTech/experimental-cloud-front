@@ -100,13 +100,13 @@ export function getRoutes(): RouteProps[] {
         //   path: "/about/message/:messageDetail",
         // },
         {
-          path: '/about/myinfo/CompanyInfo'
+          path: '/about/myinfo/contact-info'
         },
         {
-          path: '/about/myinfo/MyLeague'
+          path: '/about/myinfo/my-league'
         },
         {
-          path: '/about/myinfo/MyOrgList'
+          path: '/about/myinfo/my-organization'
         },
         {
           path: '/about/nodes'
@@ -175,7 +175,7 @@ export function getRoutes(): RouteProps[] {
           path: '/common/user-role-management'
         },
         {
-          path: '/common/user-role-management/user-roles',
+          path: '/common/user-role-management/user-roles/:loginName',
           exact: true
         }
       ]

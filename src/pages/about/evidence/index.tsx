@@ -64,7 +64,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
   // 点击查看详情
   const onClickDetail = (record: EvidenceSchema) => {
     history.push({
-      pathname: `/about/Evidence/${record.evidenceHash}`,
+      pathname: `/about/evidence/${record.evidenceHash}`,
       query: {
         evidenceHash: record.evidenceHash,
         channelId: record.channelId
