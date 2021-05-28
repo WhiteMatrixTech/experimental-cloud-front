@@ -9,7 +9,6 @@ export type UserRoleObject = {
 };
 export type UserInfo = {
   loginName: string;
-  companyName: string;
   contactEmail: string;
   contactName: string;
   role: Roles;
@@ -46,7 +45,7 @@ const UserRoleModel: UserRoleModelType = {
     userList: [], // 用户列表
     userTotal: 0,
     roleNameList: [],
-    userRoles: [],
+    userRoles: []
   },
 
   effects: {
@@ -57,8 +56,8 @@ const UserRoleModel: UserRoleModelType = {
         yield put({
           type: 'common',
           payload: {
-            userList: result,
-          },
+            userList: result
+          }
         });
       }
     },
@@ -70,8 +69,8 @@ const UserRoleModel: UserRoleModelType = {
         yield put({
           type: 'common',
           payload: {
-            userTotal: result.count,
-          },
+            userTotal: result.count
+          }
         });
       }
     },
@@ -83,8 +82,8 @@ const UserRoleModel: UserRoleModelType = {
         yield put({
           type: 'common',
           payload: {
-            userRoles: result,
-          },
+            userRoles: result
+          }
         });
       }
     },
@@ -96,8 +95,8 @@ const UserRoleModel: UserRoleModelType = {
         yield put({
           type: 'common',
           payload: {
-            roleNameList: result,
-          },
+            roleNameList: result
+          }
         });
       }
     },
@@ -112,14 +111,14 @@ const UserRoleModel: UserRoleModelType = {
         notification.error({ message: result.message || '用户角色配置失败', top: 64, duration: 3 });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default UserRoleModel;

@@ -51,7 +51,7 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
     if (label) {
       dispatch({
         type: 'User/getMyNetworkList',
-        payload: {},
+        payload: {}
       });
     }
   };
@@ -66,17 +66,17 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
       type: 'User/enrollInLeague',
       payload: {
         networkName: league.networkName,
-        role: 'networkAssociateMember',
-      },
+        role: 'networkAssociateMember'
+      }
     });
     if (res) {
       await dispatch({
         type: 'User/getNetworkList',
-        payload: {},
+        payload: {}
       });
       await dispatch({
         type: 'User/getMyNetworkList',
-        payload: {},
+        payload: {}
       });
     }
   };
@@ -88,8 +88,8 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
       payload: {
         role: league.role,
         email: userInfo.contactEmail,
-        networkName: league.networkName,
-      },
+        networkName: league.networkName
+      }
     }).then((res: any) => {
       if (res) {
         dispatch({
@@ -97,12 +97,12 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
           payload: {
             userRole: league.role,
             networkName: league.networkName,
-            leagueName: league.leagueName,
-          },
+            leagueName: league.leagueName
+          }
         });
         dispatch({
           type: 'Layout/common',
-          payload: { selectedMenu: '/about/league-dashboard' },
+          payload: { selectedMenu: '/about/league-dashboard' }
         });
         localStorage.setItem('userRole', league.role as Roles);
         localStorage.setItem('leagueName', league.leagueName);
@@ -113,9 +113,18 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   };
 
   // 不同状态展示不同的内容
-  const isAdminWithEmpty = userInfo.role && AdminRole.includes(userInfo.role) && myNetworkList.length === 0;
-  const isAdminNotEmpty = userInfo.role && AdminRole.includes(userInfo.role) && myNetworkList.length > 0;
-  const notAdminWithEmpty = (!userInfo.role || !AdminRole.includes(userInfo.role)) && myNetworkList.length === 0;
+  const isAdminWithEmpty = useMemo(() => {
+    return userInfo.role && AdminRole.includes(userInfo.role) && myNetworkList.length === 0;
+  }, [myNetworkList.length, userInfo.role]);
+
+  const isAdminNotEmpty = useMemo(() => {
+    return userInfo.role && AdminRole.includes(userInfo.role) && myNetworkList.length > 0;
+  }, [myNetworkList.length, userInfo.role]);
+
+  const notAdminWithEmpty = useMemo(() => {
+    return (!userInfo.role || !AdminRole.includes(userInfo.role)) && myNetworkList.length === 0;
+  }, [myNetworkList.length, userInfo.role]);
+
   return (
     <div className={styles.main}>
       <div>
@@ -187,5 +196,5 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
 export default connect(({ User, Layout, loading }: ConnectState) => ({
   User,
   Layout,
-  joinLoading: loading.effects['User/enrollInLeague'],
+  joinLoading: loading.effects['User/enrollInLeague']
 }))(SelectLeague);

@@ -9,17 +9,17 @@ import styles from './index.less';
 const { Step } = Steps;
 const steps = [
   {
-    title: '基本信息',
+    title: '基本信息'
   },
   {
-    title: '账户密码',
-  },
+    title: '账户密码'
+  }
 ];
 
 export enum operType {
   default = 'default',
   next = 'next',
-  submit = 'submit',
+  submit = 'submit'
 }
 
 export type RegisterProps = {
@@ -63,15 +63,14 @@ const Register: React.FC<RegisterProps> = (props) => {
       setAccountInfo(value);
       const params = {
         ...basicInfo,
-        contactPhone: value.contactPhone,
         contactEmail: value.contactEmail,
         loginName: value.loginName,
         pass: value.password,
-        re_pass: value.confirm,
+        re_pass: value.confirm
       };
       dispatch({
         type: 'User/register',
-        payload: params,
+        payload: params
       });
       setCurOper(operType.default);
     }
@@ -85,16 +84,16 @@ const Register: React.FC<RegisterProps> = (props) => {
     if (userAndRegister) {
       history.push({
         pathname: '/user/register-result',
-        state: { account: accountInfo.contactEmail },
+        state: { account: accountInfo.contactEmail }
       });
     }
-  }, [userAndRegister]);
+  }, [accountInfo.contactEmail, userAndRegister]);
 
   const stepsProps = {
     curOper,
     basicInfo,
     failedToValidate,
-    afterValidate: (value: any, step: any) => afterValidate(value, step),
+    afterValidate: (value: any, step: any) => afterValidate(value, step)
   };
 
   return (
@@ -132,5 +131,5 @@ const Register: React.FC<RegisterProps> = (props) => {
 
 export default connect(({ User, loading }: ConnectState) => ({
   User,
-  submitting: loading.effects['User/register'],
+  submitting: loading.effects['User/register']
 }))(Register);

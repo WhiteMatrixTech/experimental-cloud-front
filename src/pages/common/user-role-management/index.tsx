@@ -23,8 +23,8 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
   const columns = [
     {
       title: '用户名',
-      dataIndex: 'companyName',
-      key: 'companyName',
+      dataIndex: 'loginName',
+      key: 'loginName',
       ellipsis: true
     },
     {
@@ -60,7 +60,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
       payload: {}
     });
     history.push({
-      pathname: `/common/user-role-management/user-roles/${record.companyName}`,
+      pathname: `/common/user-role-management/user-roles/${record.loginName}`,
       state: { ...record }
     });
   };
@@ -93,7 +93,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
-          rowKey="companyName"
+          rowKey="loginName"
           columns={columns}
           dataSource={userList}
           loading={qryLoading}

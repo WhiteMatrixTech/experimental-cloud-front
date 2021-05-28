@@ -9,11 +9,11 @@ const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
 export interface CreateDIDModalProps {
   visible: boolean;
@@ -35,21 +35,21 @@ function CreateDIDModal(props: CreateDIDModalProps) {
       .validateFields()
       .then(async (values) => {
         let params = {
-          companyName: values.didName,
+          loginName: values.didName,
           additionalAttr: values.additionalAttr,
           role: values.role,
-          networkName,
+          networkName
         };
         let res = null;
         if (record) {
           res = await dispatch({
             type: 'DID/modifyDID',
-            payload: params,
+            payload: params
           });
         } else {
           res = await dispatch({
             type: 'DID/createDID',
-            payload: params,
+            payload: params
           });
         }
         if (res) {
@@ -89,8 +89,8 @@ function CreateDIDModal(props: CreateDIDModalProps) {
       </Button>,
       <Button key="submit" type="primary" onClick={handleSubmit} loading={addLoading}>
         提交
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
@@ -104,10 +104,9 @@ function CreateDIDModal(props: CreateDIDModalProps) {
           rules={[
             {
               required: true,
-              message: '请输入DID名称',
-            },
-          ]}
-        >
+              message: '请输入DID名称'
+            }
+          ]}>
           <Input placeholder="请输入DID名称" />
         </Item>
         <Item
@@ -117,10 +116,9 @@ function CreateDIDModal(props: CreateDIDModalProps) {
           rules={[
             {
               required: true,
-              message: '请输入DID用户角色',
-            },
-          ]}
-        >
+              message: '请输入DID用户角色'
+            }
+          ]}>
           <Input placeholder="请输入DID用户角色" />
         </Item>
         <Item
@@ -132,10 +130,9 @@ function CreateDIDModal(props: CreateDIDModalProps) {
           rules={[
             {
               validateTrigger: 'submit',
-              validator: checkJSON,
-            },
-          ]}
-        >
+              validator: checkJSON
+            }
+          ]}>
           <TextArea placeholder="请输入JSON格式的附加信息" />
         </Item>
       </Form>
@@ -147,5 +144,5 @@ export default connect(({ User, DID, Organization, loading }: ConnectState) => (
   User,
   DID,
   Organization,
-  addLoading: loading.effects['DID/createDID'] || loading.effects['DID/modifyDID'],
+  addLoading: loading.effects['DID/createDID'] || loading.effects['DID/modifyDID']
 }))(CreateDIDModal);

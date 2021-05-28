@@ -2,10 +2,12 @@ import * as API from '../services/my-info';
 import { checkOrgInUse } from '../services/contract';
 import type { Reducer, Effect } from 'umi';
 import { NetworkStatus } from '~/utils/networkStatus';
+import { MemberApprovalStatus } from '~/pages/about/enterprise-member/_config';
+import { OrgStatusEnum } from '~/pages/about/organizations/_config';
 
 export type MyLeagueSchema = {
   leagueName: string;
-  leaderCompanyName: string;
+  leaderUserName: string;
   networkName: string;
   createdTime: string;
   description: string;
@@ -13,17 +15,13 @@ export type MyLeagueSchema = {
   startTime: string;
 };
 
-export type MyCompanySchema = {
-  companyName: string;
-  //TODO: 使用页面处的枚举
-  approvalStatus: string;
-  companyCertBusinessNumber: string;
-  legalPersonName: string;
-  legalPersonIdCardNumber: string;
+export type MyContactInfoSchema = {
+  loginName: string;
+  approvalStatus: MemberApprovalStatus;
   contactName: string;
   contactPhone: string;
   contactEmail: string;
-  companyAddress: string;
+  contactAddress: string;
 };
 
 export type MyOrganizationSchema = {
@@ -32,9 +30,8 @@ export type MyOrganizationSchema = {
   orgAliasName: string;
   orgMspId: string;
   orgAddress: string;
-  //TODO: 使用页面处的枚举
-  orgStatus: string;
-  companyName: string;
+  orgStatus: OrgStatusEnum;
+  FabricRole: string;
   updatedAt: string;
   orgFullName: string;
   createdAt: string;
@@ -42,7 +39,7 @@ export type MyOrganizationSchema = {
 
 export type MyInfoModelState = {
   myLeague: MyLeagueSchema | null; // 我的联盟信息
-  myCompany: MyCompanySchema | null; // 我的用户信息
+  myContactInfo: MyContactInfoSchema | null; // 我的用户信息
   myOrgInfo: MyOrganizationSchema | null; // 我的组织信息
 };
 
@@ -52,7 +49,7 @@ export type MyInfoModelType = {
   effects: {
     getMyLeagueInfo: Effect;
     checkOrgInUse: Effect;
-    getMyCompanyInfo: Effect;
+    getMyContactInfo: Effect;
     getMyOrgInfo: Effect;
   };
   reducers: {
@@ -65,8 +62,8 @@ const MyInfoModel: MyInfoModelType = {
 
   state: {
     myLeague: null, // 我的联盟信息
-    myCompany: null, // 我的用户信息
-    myOrgInfo: null, // 我的组织信息
+    myContactInfo: null, // 我的用户信息
+    myOrgInfo: null // 我的组织信息
   },
 
   effects: {
@@ -77,8 +74,8 @@ const MyInfoModel: MyInfoModelType = {
         yield put({
           type: 'common',
           payload: {
-            myLeague: result,
-          },
+            myLeague: result
+          }
         });
       }
     },
@@ -91,15 +88,15 @@ const MyInfoModel: MyInfoModelType = {
       }
     },
 
-    *getMyCompanyInfo({ payload }, { call, put }) {
-      const res = yield call(API.getMyCompanyInfo, payload);
+    *getMyContactInfo({ payload }, { call, put }) {
+      const res = yield call(API.getMyContactInfo, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            myCompany: result,
-          },
+            myCompany: result
+          }
         });
       }
     },
@@ -111,18 +108,18 @@ const MyInfoModel: MyInfoModelType = {
         yield put({
           type: 'common',
           payload: {
-            myOrgInfo: result,
-          },
+            myOrgInfo: result
+          }
         });
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default MyInfoModel;

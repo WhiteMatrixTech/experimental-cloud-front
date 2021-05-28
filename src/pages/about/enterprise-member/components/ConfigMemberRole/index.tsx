@@ -7,7 +7,7 @@ import { ConnectState } from '~/models/connect';
 const { Option } = Select;
 const formItemLayout = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 16 },
+  wrapperCol: { span: 16 }
 };
 export interface ConfigMemberRoleProps {
   visible: boolean;
@@ -29,17 +29,17 @@ function ConfigMemberRole(props: ConfigMemberRoleProps) {
   useEffect(() => {
     dispatch({
       type: 'RBAC/getRoleNameList',
-      payload: { networkName },
+      payload: { networkName }
     });
     dispatch({
       type: 'Member/getMemberRole',
-      payload: { networkName, companyName: record?.companyName },
+      payload: { networkName, loginName: record && record.loginName }
     });
-  }, []);
+  }, [dispatch, networkName, record]);
 
   useEffect(() => {
-    form.setFieldsValue({ companyName: record?.companyName, roleName: memberRole });
-  }, [memberRole]);
+    form.setFieldsValue({ loginName: record && record.loginName, roleName: memberRole });
+  }, [form, memberRole, record]);
 
   const handleSubmit = () => {
     form
@@ -49,8 +49,8 @@ function ConfigMemberRole(props: ConfigMemberRoleProps) {
           type: 'Member/setRoleToMember',
           payload: {
             ...values,
-            networkName,
-          },
+            networkName
+          }
         });
         if (res) {
           onCancel();
@@ -73,14 +73,14 @@ function ConfigMemberRole(props: ConfigMemberRoleProps) {
       </Button>,
       <Button key="submit" loading={setLoading} onClick={handleSubmit} type="primary">
         配置
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
-        <Form.Item label="用户名" name="companyName" initialValue={record?.companyName}>
+        <Form.Item label="用户名" name="loginName" initialValue={record && record.loginName}>
           <Input disabled />
         </Form.Item>
         <Form.Item
@@ -89,10 +89,9 @@ function ConfigMemberRole(props: ConfigMemberRoleProps) {
           rules={[
             {
               required: true,
-              message: '请选择访问角色',
-            },
-          ]}
-        >
+              message: '请选择访问角色'
+            }
+          ]}>
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择访问角色">
             {RBAC.roleNameList.map((role) => (
               <Option key={role} value={role}>
@@ -111,5 +110,5 @@ export default connect(({ Contract, User, RBAC, Member, loading }: ConnectState)
   User,
   RBAC,
   Member,
-  setLoading: loading.effects['Member/setRoleToMember'],
+  setLoading: loading.effects['Member/setRoleToMember']
 }))(ConfigMemberRole);

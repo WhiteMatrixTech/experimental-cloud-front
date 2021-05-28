@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, EnterpriseMemberSchema, history } from 'umi';
@@ -24,7 +25,7 @@ const formItemLayout = {
   wrapperCol: { span: 16 }
 };
 const initSearchObj = {
-  companyName: '',
+  loginName: '',
   createTimeStart: 0,
   createTimeEnd: 0,
   approvalStatus: 'any'
@@ -52,26 +53,12 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   const columns: ColumnsType<any> = [
     {
       title: '用户名',
-      dataIndex: 'companyName',
-      key: 'companyName',
+      dataIndex: 'loginName',
+      key: 'loginName',
       ellipsis: true,
       fixed: 'left',
       width: 160
     },
-    // {
-    //   title: '统一社会信用代码',
-    //   dataIndex: 'companyCertBusinessNumber',
-    //   key: 'companyCertBusinessNumber',
-    //   ellipsis: true,
-    //   width: 150,
-    // },
-    // {
-    //   title: '法人代表姓名',
-    //   dataIndex: 'legalPersonName',
-    //   key: 'legalPersonName',
-    //   ellipsis: true,
-    //   width: 120,
-    // },
     {
       title: '联系人姓名',
       dataIndex: 'contactName',
@@ -90,6 +77,13 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       title: '联系人邮箱',
       dataIndex: 'contactEmail',
       key: 'contactEmail',
+      ellipsis: true,
+      width: 180
+    },
+    {
+      title: '联系地址',
+      dataIndex: 'contactAddress',
+      key: 'contactAddress',
       ellipsis: true,
       width: 180
     },
@@ -186,7 +180,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       .validateFields()
       .then((values) => {
         const params = {
-          companyName: values.companyName,
+          loginName: values.loginName,
           createTimeStart: isEmpty(values.createTime) ? 0 : Number(values.createTime[0].format('x')),
           createTimeEnd: isEmpty(values.createTime) ? 0 : Number(values.createTime[1].format('x')),
           approvalStatus: values.approvalStatus === null ? 'any' : values.approvalStatus
@@ -237,7 +231,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
-      content: `确认要${tipTitle}成员 【${record.companyName}】 吗?`,
+      content: `确认要${tipTitle}成员 【${record.loginName}】 吗?`,
       okText: '确认',
       cancelText: '取消',
       onOk: callback
@@ -249,7 +243,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     const params = {
       networkName,
       isValid,
-      companyName: record.companyName
+      loginName: record.loginName
     };
     dispatch({
       type: 'Member/setStatusOfLeagueCompany',
@@ -266,7 +260,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     const params = {
       networkName,
       approvalStatus,
-      companyName: record.companyName
+      loginName: record.loginName
     };
     dispatch({
       type: 'Member/setCompanyApprove',
@@ -292,7 +286,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   // 点击查看详情
   const onClickDetail = (record: EnterpriseMemberSchema) => {
     history.push({
-      pathname: `/about/enterprise-member/${record.companyCertBusinessNumber}`,
+      pathname: `/about/enterprise-member/${record.loginName}`,
       state: record
     });
   };
@@ -311,7 +305,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
           <Form {...formItemLayout} colon={false} form={form}>
             <Row gutter={24}>
               <Col span={8}>
-                <Item label="用户名" name="companyName" initialValue="">
+                <Item label="用户名" name="loginName" initialValue="">
                   <Input placeholder="请输入用户名" />
                 </Item>
               </Col>

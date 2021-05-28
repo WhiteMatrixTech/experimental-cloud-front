@@ -12,7 +12,7 @@ import { DetailViewAttr } from '~/utils/types';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
 breadCrumbItem.push({
   menuName: '我的联盟',
-  menuHref: `/`,
+  menuHref: `/`
 });
 export interface MyLeagueInfoProps {
   User: ConnectState['User'];
@@ -25,41 +25,41 @@ function MyLeagueInfo(props: MyLeagueInfoProps) {
     User,
     dispatch,
     qryLoading = false,
-    MyInfo: { myLeague },
+    MyInfo: { myLeague }
   } = props;
   const { networkName } = User;
 
   const myLeagueInfo: DetailViewAttr[] = [
     {
       label: '联盟名称',
-      value: myLeague && myLeague.leagueName,
+      value: myLeague && myLeague.leagueName
     },
     {
       label: '盟主名称',
-      value: myLeague && myLeague.leaderCompanyName,
+      value: myLeague && myLeague.leaderUserName
     },
     {
       label: '网络名称',
-      value: myLeague && myLeague.networkName,
+      value: myLeague && myLeague.networkName
     },
     {
       label: '网络状态',
-      value: myLeague && myLeague.networkStatus ? NetworkInfo[myLeague.networkStatus] : '',
+      value: myLeague && myLeague.networkStatus ? NetworkInfo[myLeague.networkStatus] : ''
     },
     {
       label: '创建时间',
-      value: myLeague && myLeague.createdTime ? moment(myLeague.createdTime).format('YYYY-MM-DD HH:mm:ss') : '- -',
+      value: myLeague && myLeague.createdTime ? moment(myLeague.createdTime).format('YYYY-MM-DD HH:mm:ss') : '- -'
     },
     {
       label: '联盟描述',
-      value: myLeague && myLeague.description,
-    },
+      value: myLeague && myLeague.description
+    }
   ];
 
   useEffect(() => {
     dispatch({
       type: 'MyInfo/getMyLeagueInfo',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, []);
 
@@ -78,5 +78,5 @@ function MyLeagueInfo(props: MyLeagueInfoProps) {
 export default connect(({ User, MyInfo, loading }: ConnectState) => ({
   User,
   MyInfo,
-  qryLoading: loading.effects['MyInfo/getMyInfoDetail'],
+  qryLoading: loading.effects['MyInfo/getMyInfoDetail']
 }))(MyLeagueInfo);
