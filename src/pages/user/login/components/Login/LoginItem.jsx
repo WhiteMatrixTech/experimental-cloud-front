@@ -1,12 +1,14 @@
+// FIXME: 别的 component 都在  ~/components 目录下，需要转移。
 import { Input, Form } from 'antd';
 import React from 'react';
 import ItemMap from './map';
 import LoginContext from './LoginContext';
 const FormItem = Form.Item;
 
-const getFormItemOptions = ({ onChange, defaultValue, customProps = {}, rules }) => {
+const getFormItemOptions = ({ onChange, defaultValue, customProps = {}, rules, getValueFromEvent }) => {
+  // FIXME: 为什么要这么写， 没什么实际意义。
   const options = {
-    rules: rules || customProps.rules,
+    rules: rules || customProps.rules
   };
 
   if (onChange) {
@@ -15,6 +17,10 @@ const getFormItemOptions = ({ onChange, defaultValue, customProps = {}, rules })
 
   if (defaultValue) {
     options.initialValue = defaultValue;
+  }
+
+  if (getValueFromEvent) {
+    options.getValueFromEvent = getValueFromEvent;
   }
 
   return options;
@@ -32,6 +38,7 @@ const LoginItem = (props) => {
     updateActive,
     type,
     tabUtil,
+    getValueFromEvent,
     ...restProps
   } = props;
 
