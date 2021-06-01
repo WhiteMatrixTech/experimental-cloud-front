@@ -19,7 +19,7 @@ export default function Layouts(props: BasicLayoutComponentProps) {
     return <LeaguePageLayout children={children} pathname={pathname} />;
   } else if (pathname.indexOf('/userForExternal') > -1) {
     return <LoginExternalLayout children={children} pathname={pathname} />;
-  } else if (pathname.indexOf('/user/l') > -1) {
+  } else if (pathname.indexOf('/user/') > -1) {
     return <LoginLayout children={children} pathname={pathname} />;
   } else {
     return <>{children}</>;
