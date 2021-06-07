@@ -46,7 +46,7 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
       type: 'User/common',
       payload: { loginStatus: '', userAndRegister: false }
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={styles.main}>

@@ -1,5 +1,5 @@
 import { Form, Input, Popover, Progress } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { operType } from './index';
 import styles from './index.less';
 const FormItem = Form.Item;
@@ -10,7 +10,13 @@ const passwordStatusMap = {
   poor: <div className={styles.error}>强度：弱</div>
 };
 
-const passwordProgressMap = {
+type ProgressStatus = 'success' | 'normal' | 'exception' | 'active' | undefined;
+
+const passwordProgressMap: {
+  ok: ProgressStatus;
+  pass: ProgressStatus;
+  poor: ProgressStatus;
+} = {
   ok: 'success',
   pass: 'normal',
   poor: 'exception'
@@ -31,7 +37,7 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  const onCheck = async () => {
+  const onCheck = useCallback(async () => {
     try {
       const values = await form.validateFields();
       const stepValue = { ...values };
@@ -39,13 +45,13 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
     } catch (errorInfo) {
       failedToValidate(operType.default);
     }
-  };
+  }, [afterValidate, failedToValidate, form]);
 
   useEffect(() => {
     if (curOper === operType.submit) {
       onCheck();
     }
-  }, [curOper]);
+  }, [curOper, onCheck]);
 
   const getPasswordStatus = () => {
     const value = form.getFieldValue('password');

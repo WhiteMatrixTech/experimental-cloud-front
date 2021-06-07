@@ -155,18 +155,18 @@ function NewRbacConfig(props: NewRbacConfigProps) {
         <Spin spinning={configLoading || resetLoading}>
           <div className={styles['rbac-config-content']}>
             <Row>
-              <Col span={18} className={styles['company-selector']}>
+              <Col span={18} className={styles['role-selector']}>
                 <label>角色名称</label>
                 <Input placeholder="输入角色名称" style={{ width: '40%' }} onChange={onInputRoleName} />
               </Col>
-              <Col span={18} className={styles['company-selector']}>
+              <Col span={18} className={styles['role-selector']}>
                 <label>配置方式</label>
                 <Radio.Group defaultValue={configType} onChange={onChangeConfigType}>
                   <Radio value="FormConfig">表单配置</Radio>
                   <Radio value="InputJson">输入JSON配置</Radio>
                 </Radio.Group>
               </Col>
-              <Col span={24} className={styles['company-selector']}>
+              <Col span={24} className={styles['role-selector']}>
                 <label className={styles['vertical-top-label']}>配置策略</label>
                 {configType === 'InputJson' && (
                   <div className={styles['config-json-textarea']}>

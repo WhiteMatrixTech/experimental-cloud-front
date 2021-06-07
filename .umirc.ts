@@ -22,10 +22,10 @@ export default defineConfig({
     '~/services': resolve(__dirname, './src/services'),
     '~/utils': resolve(__dirname, './src/utils'),
     '~/assets': resolve(__dirname, './src/assets'),
+    '~/locales': resolve(__dirname, './src/locales'),
     public: resolve(__dirname, './public'),
     iconfont: resolve(__dirname, './src/assets/iconfont'),
     themes: resolve(__dirname, './src/themes'),
-    locales: resolve(__dirname, './src/locales'),
     wrappers: resolve(__dirname, './src/pages/wrappers/')
   },
 

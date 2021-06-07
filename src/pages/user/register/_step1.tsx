@@ -32,7 +32,7 @@ const StepOne: React.FC<StepOneProps> = (props) => {
   return (
     <Form form={form} name="UserRegisterStepOne">
       <FormItem
-        initialValue={basicInfo.contactName ? basicInfo.contactName : ''}
+        initialValue={basicInfo.contactName || ''}
         name="contactName"
         rules={[
           {
@@ -53,12 +53,13 @@ const StepOne: React.FC<StepOneProps> = (props) => {
             pattern: /^\d{11}$/,
             message: '手机号格式错误'
           }
-        ]}>
+        ]}
+        initialValue={basicInfo.contactPhone || ''}>
         <Input size="large" placeholder="联系人手机号" />
       </FormItem>
       <FormItem
-        initialValue={basicInfo.companyAddress ? basicInfo.companyAddress : ''}
-        name="companyAddress"
+        initialValue={basicInfo.contactAddress || ''}
+        name="contactAddress"
         rules={[
           {
             required: true,
@@ -67,7 +68,7 @@ const StepOne: React.FC<StepOneProps> = (props) => {
         ]}>
         <Input size="large" placeholder="联系地址" />
       </FormItem>
-      <FormItem initialValue={basicInfo.invitationCode ? basicInfo.invitationCode : ''} name="invitationCode">
+      <FormItem initialValue={basicInfo.invitationCode || ''} name="invitationCode">
         <Input size="large" placeholder="邀请码" />
       </FormItem>
     </Form>

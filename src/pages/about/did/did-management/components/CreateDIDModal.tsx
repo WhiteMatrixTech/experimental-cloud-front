@@ -126,7 +126,7 @@ function CreateDIDModal(props: CreateDIDModalProps) {
           label="附加信息"
           name="additionalAttr"
           initialValue={record ? record.additionalAttributes : ''}
-          tooltip="其他详细信息，例如公司的地址、联系人等; 以JSON格式录入"
+          tooltip="其他详细信息，例如账户的地址、联系人等; 以JSON格式录入"
           rules={[
             {
               validateTrigger: 'submit',

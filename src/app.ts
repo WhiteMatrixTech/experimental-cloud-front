@@ -1,7 +1,6 @@
 import { history } from 'umi';
 import { parse } from 'qs';
 import { InitLocales } from './utils/locales';
-import { getRoutes, RouteProps } from './utils/route';
 import { pageAuthControl } from './utils/menu';
 // import { tree2Arr } from './utils';
 
@@ -25,8 +24,8 @@ export const dva = {
 };
 
 export function render(oldRender: () => void) {
-  const routes = getRoutes();
-  const { pathname, state } = history.location;
+  // const routes = getRoutes();
+  const { pathname } = history.location;
 
   // 404路由控制
   // let isUnknownPage = false;

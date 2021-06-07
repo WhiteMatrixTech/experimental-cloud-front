@@ -1,5 +1,7 @@
 import { COMMON_CN } from './zh-CN/common';
 
-export default {
-  ...COMMON_CN,
+const Locales_CN_JSON = {
+  ...COMMON_CN
 };
+
+export default Locales_CN_JSON;

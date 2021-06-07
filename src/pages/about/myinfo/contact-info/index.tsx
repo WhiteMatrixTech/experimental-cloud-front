@@ -20,7 +20,7 @@ export interface MyContactInfoProps {
   qryLoading: boolean;
   MyInfo: ConnectState['MyInfo'];
 }
-function MyContactInfo(props: MyContactInfoProps) {
+const MyContactInfo: React.FC<MyContactInfoProps> = (props) => {
   const {
     User,
     dispatch,
@@ -30,7 +30,7 @@ function MyContactInfo(props: MyContactInfoProps) {
   const { networkName, userInfo } = User;
 
   const onClickCreate = async () => {
-    // 申请DID之前，公司在网络下必须拥有自己的组织
+    // 申请DID之前，用户在网络下必须拥有自己的组织
     const orgInUse = await dispatch({
       type: 'MyInfo/checkOrgInUse',
       payload: { networkName }
@@ -56,7 +56,7 @@ function MyContactInfo(props: MyContactInfoProps) {
     return userInfo.did || '';
   }, [userInfo]);
 
-  const companyBasicInfo: DetailViewAttr[] = [
+  const userBasicInfo: DetailViewAttr[] = [
     {
       label: '用户名称',
       value: myContactInfo && myContactInfo.loginName
@@ -71,7 +71,7 @@ function MyContactInfo(props: MyContactInfoProps) {
     }
   ];
 
-  const companyContactsInfo: DetailViewAttr[] = [
+  const userContactsInfo: DetailViewAttr[] = [
     {
       label: '联系人姓名',
       value: myContactInfo && myContactInfo.contactName
@@ -95,20 +95,20 @@ function MyContactInfo(props: MyContactInfoProps) {
       type: 'MyInfo/getMyContactInfo',
       payload: { networkName }
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
         <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="基本信息" detailList={companyBasicInfo} />
-          <DetailCard cardTitle="联系人信息" detailList={companyContactsInfo} />
+          <DetailCard cardTitle="基本信息" detailList={userBasicInfo} />
+          <DetailCard cardTitle="联系人信息" detailList={userContactsInfo} />
         </Spin>
       </div>
     </div>
   );
-}
+};
 
 export default injectIntl(
   connect(({ User, MyInfo, DID, loading }: ConnectState) => ({

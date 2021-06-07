@@ -22,7 +22,7 @@ const Login: React.FC<LoginProps> = (props) => {
   const { loginLoading, dispatch, location, User } = props;
   const { loginInfo, loginStatus } = User;
 
-  function handleSubmit() {
+  const handleSubmit = () => {
     form
       .validateFields()
       .then((values) => {
@@ -45,7 +45,7 @@ const Login: React.FC<LoginProps> = (props) => {
         console.log('校验失败:', info);
         // FIXME： 服务器宕机时登录无任何提示，需要加入网络连接中断之类的 Notification
       });
-  }
+  };
 
   const handleUserKeyInput = () => {
     if (inputRef.current) {
@@ -58,7 +58,7 @@ const Login: React.FC<LoginProps> = (props) => {
       type: 'User/common',
       payload: { loginStatus: '', userAndRegister: false }
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={styles.main}>

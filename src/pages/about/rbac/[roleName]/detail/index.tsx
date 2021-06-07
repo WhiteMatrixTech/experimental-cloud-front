@@ -90,7 +90,7 @@ function RbacDetail(props: RbacDetailProps) {
         <Spin spinning={configLoading || resetLoading}>
           <div className={styles['rbac-config-content']}>
             <Row>
-              <Col span={18} className={styles['company-selector']}>
+              <Col span={18} className={styles['role-selector']}>
                 <label>角色名称</label>
                 <Select
                   disabled
@@ -106,7 +106,7 @@ function RbacDetail(props: RbacDetailProps) {
                   ))}
                 </Select>
               </Col>
-              <Col span={24} className={styles['company-selector']}>
+              <Col span={24} className={styles['role-selector']}>
                 <label className={styles['vertical-top-label']}>配置策略</label>
                 <div className={styles['config-list']}>
                   <Form layout="vertical" colon={false} form={form}>
