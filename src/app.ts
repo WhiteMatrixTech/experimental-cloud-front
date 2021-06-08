@@ -1,9 +1,8 @@
 import { history } from 'umi';
 import { parse } from 'qs';
 import { InitLocales } from './utils/locales';
-import { getRoutes, RouteProps } from './utils/route';
 import { pageAuthControl } from './utils/menu';
-import { tree2Arr } from './utils';
+// import { tree2Arr } from './utils';
 
 //初始化国际化语言
 InitLocales();
@@ -25,18 +24,18 @@ export const dva = {
 };
 
 export function render(oldRender: () => void) {
-  const routes = getRoutes();
-  const { pathname, state } = history.location;
+  // const routes = getRoutes();
+  const { pathname } = history.location;
 
   // 404路由控制
-  let isUnknownPage = false;
-  const allRoute = tree2Arr(routes, 'routes');
-  const matchRoute = allRoute.find((item: RouteProps) => item.path === pathname);
-  if (!matchRoute) {
-    isUnknownPage = true;
-  } else if (matchRoute && matchRoute.exact && !state) {
-    isUnknownPage = true;
-  }
+  // let isUnknownPage = false;
+  // const allRoute = tree2Arr(routes, 'routes');
+  // const matchRoute = allRoute.find((item: RouteProps) => item.path === pathname);
+  // if (!matchRoute) {
+  //   isUnknownPage = true;
+  // } else if (matchRoute && matchRoute.exact && !state) {
+  //   isUnknownPage = true;
+  // }
 
   // 403路由控制
   const noAccessSituation = pageAuthControl(pathname);
@@ -45,10 +44,7 @@ export function render(oldRender: () => void) {
   const search = window.location.search ? window.location.search.replace('?', '') : '';
   const { redirect } = parse(search);
 
-  if (isUnknownPage) {
-    history.push('/404');
-    oldRender();
-  } else if (noAccessSituation) {
+  if (noAccessSituation) {
     history.push('/403');
     oldRender();
   } else if (redirect) {

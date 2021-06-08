@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { Button, Steps } from 'antd';
 import { Link, connect, history, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
@@ -9,17 +9,17 @@ import styles from './index.less';
 const { Step } = Steps;
 const steps = [
   {
-    title: '基本信息',
+    title: '基本信息'
   },
   {
-    title: '账户密码',
-  },
+    title: '账户密码'
+  }
 ];
 
 export enum operType {
   default = 'default',
   next = 'next',
-  submit = 'submit',
+  submit = 'submit'
 }
 
 export type RegisterProps = {
@@ -55,27 +55,30 @@ const Register: React.FC<RegisterProps> = (props) => {
     setBasicInfo(basicInfo);
   };
 
-  const afterValidate = (value: any, step: operType) => {
-    if (step === operType.next) {
-      cacheBasicInfo(value);
-      setCurrent(current + 1);
-    } else if (step === operType.submit) {
-      setAccountInfo(value);
-      const params = {
-        ...basicInfo,
-        contactPhone: value.contactPhone,
-        contactEmail: value.contactEmail,
-        loginName: value.loginName,
-        pass: value.password,
-        re_pass: value.confirm,
-      };
-      dispatch({
-        type: 'User/register',
-        payload: params,
-      });
-      setCurOper(operType.default);
-    }
-  };
+  const afterValidate = useCallback(
+    (value: any, step: operType) => {
+      if (step === operType.next) {
+        cacheBasicInfo(value);
+        setCurrent(current + 1);
+      } else if (step === operType.submit) {
+        setAccountInfo(value);
+        const params = {
+          ...basicInfo,
+          contactPhone: value.contactPhone,
+          contactEmail: value.contactEmail,
+          loginName: value.loginName,
+          pass: value.password,
+          re_pass: value.confirm
+        };
+        dispatch({
+          type: 'User/register',
+          payload: params
+        });
+        setCurOper(operType.default);
+      }
+    },
+    [basicInfo, current, dispatch]
+  );
 
   const failedToValidate = (step: operType) => {
     setCurOper(step);
@@ -85,17 +88,19 @@ const Register: React.FC<RegisterProps> = (props) => {
     if (userAndRegister) {
       history.push({
         pathname: '/user/register-result',
-        state: { account: accountInfo.contactEmail },
+        state: { account: accountInfo.contactEmail }
       });
     }
-  }, [userAndRegister]);
+  }, [accountInfo.contactEmail, userAndRegister]);
 
-  const stepsProps = {
-    curOper,
-    basicInfo,
-    failedToValidate,
-    afterValidate: (value: any, step: any) => afterValidate(value, step),
-  };
+  const stepsProps = useMemo(() => {
+    return {
+      curOper,
+      basicInfo,
+      failedToValidate,
+      afterValidate: (value: any, step: any) => afterValidate(value, step)
+    };
+  }, [afterValidate, basicInfo, curOper]);
 
   return (
     <div className={styles.main}>
@@ -132,5 +137,5 @@ const Register: React.FC<RegisterProps> = (props) => {
 
 export default connect(({ User, loading }: ConnectState) => ({
   User,
-  submitting: loading.effects['User/register'],
+  submitting: loading.effects['User/register']
 }))(Register);

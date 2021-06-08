@@ -2,6 +2,8 @@ import * as API from '../services/my-info';
 import { checkOrgInUse } from '../services/contract';
 import type { Reducer, Effect } from 'umi';
 import { NetworkStatus } from '~/utils/networkStatus';
+import { MemberApprovalStatus } from '~/pages/about/enterprise-member/_config';
+import { OrgStatusEnum } from '~/pages/about/organizations/_config';
 
 export type MyLeagueSchema = {
   leagueName: string;
@@ -15,8 +17,7 @@ export type MyLeagueSchema = {
 
 export type MyCompanySchema = {
   companyName: string;
-  //TODO: 使用页面处的枚举
-  approvalStatus: string;
+  approvalStatus: MemberApprovalStatus;
   companyCertBusinessNumber: string;
   legalPersonName: string;
   legalPersonIdCardNumber: string;
@@ -32,8 +33,7 @@ export type MyOrganizationSchema = {
   orgAliasName: string;
   orgMspId: string;
   orgAddress: string;
-  //TODO: 使用页面处的枚举
-  orgStatus: string;
+  orgStatus: OrgStatusEnum;
   companyName: string;
   updatedAt: string;
   orgFullName: string;
@@ -66,7 +66,7 @@ const MyInfoModel: MyInfoModelType = {
   state: {
     myLeague: null, // 我的联盟信息
     myCompany: null, // 我的用户信息
-    myOrgInfo: null, // 我的组织信息
+    myOrgInfo: null // 我的组织信息
   },
 
   effects: {
@@ -77,8 +77,8 @@ const MyInfoModel: MyInfoModelType = {
         yield put({
           type: 'common',
           payload: {
-            myLeague: result,
-          },
+            myLeague: result
+          }
         });
       }
     },
@@ -98,8 +98,8 @@ const MyInfoModel: MyInfoModelType = {
         yield put({
           type: 'common',
           payload: {
-            myCompany: result,
-          },
+            myCompany: result
+          }
         });
       }
     },
@@ -111,18 +111,18 @@ const MyInfoModel: MyInfoModelType = {
         yield put({
           type: 'common',
           payload: {
-            myOrgInfo: result,
-          },
+            myOrgInfo: result
+          }
         });
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default MyInfoModel;

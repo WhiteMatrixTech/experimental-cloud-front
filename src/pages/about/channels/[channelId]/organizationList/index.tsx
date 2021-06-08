@@ -84,7 +84,7 @@ function OrganizationList(props: OrganizationListProps) {
       }
     ];
     return list;
-  }, [userRole, channelId, orgTotalOfChannel, nodeTotalOfChannel]);
+  }, [channelId, orgTotalOfChannel, nodeTotalOfChannel]);
 
   // 获取 通道下的组织
   const getOrgListOfChannel = () => {

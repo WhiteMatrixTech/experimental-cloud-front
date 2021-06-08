@@ -12,20 +12,21 @@ export default defineConfig({
   favicon: '/favicon.png',
 
   antd: {
-    dark: true, // 开启暗色主题
+    dark: true // 开启暗色主题
   },
 
   alias: {
-    public: resolve(__dirname, './public'),
+    '~/pages': resolve(__dirname, './src/pages'),
     '~/components': resolve(__dirname, './src/components'),
     '~/models': resolve(__dirname, './src/models'),
     '~/services': resolve(__dirname, './src/services'),
     '~/utils': resolve(__dirname, './src/utils'),
     '~/assets': resolve(__dirname, './src/assets'),
+    '~/locales': resolve(__dirname, './src/locales'),
+    public: resolve(__dirname, './public'),
     iconfont: resolve(__dirname, './src/assets/iconfont'),
     themes: resolve(__dirname, './src/themes'),
-    locales: resolve(__dirname, './src/locales'),
-    wrappers: resolve(__dirname, './src/pages/wrappers/'),
+    wrappers: resolve(__dirname, './src/pages/wrappers/')
   },
 
   locale: {
@@ -33,11 +34,11 @@ export default defineConfig({
     antd: false,
     title: false,
     baseNavigator: true,
-    baseSeparator: '-',
+    baseSeparator: '-'
   },
 
   externals: {
-    echarts: 'window.echarts',
+    echarts: 'window.echarts'
   },
   scripts: ['https://cdnjs.cloudflare.com/ajax/libs/echarts/5.0.0/echarts.min.js'],
 
@@ -45,8 +46,8 @@ export default defineConfig({
     '/api': {
       target: process.env.API_ENDPOINT || 'http://yzjszjr-chainbaas-api.test.chainide.cn',
       changeOrigin: false,
-      pathRewrite: { '^/api': '' },
-    },
+      pathRewrite: { '^/api': '' }
+    }
   },
 
   // 用于提供给代码中可用的变量
@@ -55,6 +56,6 @@ export default defineConfig({
     'process.env.FABRIC_BAAS_DASHBOARD': process.env.FABRIC_BAAS_DASHBOARD,
     'process.env.RESOURCE_USAGE_DASHBOARD': process.env.RESOURCE_USAGE_DASHBOARD,
     'process.env.CHAIN_IDE_LINK': process.env.CHAIN_IDE_LINK, // ChainIDE地址
-    'process.env.BAAS_BACKEND_LINK': process.env.BAAS_BACKEND_LINK, // BaaS Backend地址
-  },
+    'process.env.BAAS_BACKEND_LINK': process.env.BAAS_BACKEND_LINK // BaaS Backend地址
+  }
 });

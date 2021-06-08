@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, connect, history, Dispatch } from 'umi';
-import { Form } from 'antd';
-import LoginFrom from './components/Login';
+import { Form, Button, Input } from 'antd';
+import { LockTwoTone, UserOutlined } from '@ant-design/icons';
 import { LoginMessage } from '~/components';
 import LoginStatus from '~/utils/loginStatus';
 import { ConnectState } from '~/models/connect';
 import styles from './index.less';
 
-const { UserName, Password, Submit } = LoginFrom;
+const FormItem = Form.Item;
 
 export type LoginProps = {
   loginLoading: boolean;
@@ -18,10 +18,11 @@ export type LoginProps = {
 
 const Login: React.FC<LoginProps> = (props) => {
   const [form] = Form.useForm();
+  const inputRef = useRef<Input | null>(null);
   const { loginLoading, dispatch, location, User } = props;
   const { loginInfo, loginStatus } = User;
 
-  function handleSubmit() {
+  const handleSubmit = () => {
     form
       .validateFields()
       .then((values) => {
@@ -44,58 +45,54 @@ const Login: React.FC<LoginProps> = (props) => {
         console.log('校验失败:', info);
         // FIXME： 服务器宕机时登录无任何提示，需要加入网络连接中断之类的 Notification
       });
-  }
+  };
 
-  // TODO: 用户名输入框回车应该跳到密码输入框，而不是提交表单
-  // function handleUserKeyInput(e) {
-  //   if (e.keyCode === 13) {
-  //     this.refs.passwd.focus();
-  //     return false;
-  //   }
-  // }
-
-  function handleInputTrim(e) {
-    return e.target.value.trim();
-  }
+  const handleUserKeyInput = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
 
   useEffect(() => {
     dispatch({
       type: 'User/common',
       payload: { loginStatus: '', userAndRegister: false }
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={styles.main}>
       <h3>登录</h3>
       {loginStatus === LoginStatus.LOGIN_ERROR && !loginLoading && <LoginMessage content={loginInfo} />}
-      <LoginFrom form={form} onSubmit={handleSubmit}>
-        <UserName
-          // onKeyDown={handleUserKeyInput}
+      <Form form={form}>
+        <FormItem
           name="email"
-          placeholder="邮箱"
-          defaultValue={location?.state?.account}
+          initialValue={location?.state?.account}
           rules={[
             {
               required: true,
               message: '请输入邮箱!'
             }
-          ]}
-          getValueFromEvent={handleInputTrim}
-        />
-        <Password
+          ]}>
+          <Input
+            onPressEnter={handleUserKeyInput}
+            prefix={<UserOutlined className={styles.prefixIcon} />}
+            placeholder="邮箱"
+          />
+        </FormItem>
+        <FormItem
           name="password"
-          placeholder="密码"
           rules={[
             {
               required: true,
               message: '请输入密码！'
             }
-          ]}
-        />
-        <Submit className="" loading={loginLoading}>
+          ]}>
+          <Input ref={inputRef} prefix={<LockTwoTone className={styles.prefixIcon} />} placeholder="密码" />
+        </FormItem>
+        <Button size="large" type="primary" className={styles.submit} onClick={handleSubmit}>
           登录
-        </Submit>
+        </Button>
         <div className={styles.other}>
           <div>
             暂无账号?
@@ -104,7 +101,7 @@ const Login: React.FC<LoginProps> = (props) => {
             </Link>
           </div>
         </div>
-      </LoginFrom>
+      </Form>
     </div>
   );
 };

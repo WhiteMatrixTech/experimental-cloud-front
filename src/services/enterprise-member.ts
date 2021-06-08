@@ -1,6 +1,6 @@
 import { request } from '../utils/request';
 import { AllPaginationParams, BasicApiParams } from '~/utils/types';
-import { MemberApprovalStatus } from '@/pages/about/enterprise-member/_config';
+import { MemberApprovalStatus } from '~/pages/about/enterprise-member/_config';
 /**
  * 查询成员列表
  */
@@ -11,7 +11,7 @@ export type GetMemberListByConditionalQueryParams = {
   approvalStatus: MemberApprovalStatus;
 };
 export async function getPageListOfCompanyMember(
-  params: BasicApiParams & AllPaginationParams & GetMemberListByConditionalQueryParams,
+  params: BasicApiParams & AllPaginationParams & GetMemberListByConditionalQueryParams
 ) {
   return request(`/network/${params.networkName}/enterprises/query`, { method: 'POST', body: params });
 }

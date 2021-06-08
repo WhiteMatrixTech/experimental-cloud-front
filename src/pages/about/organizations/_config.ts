@@ -7,17 +7,17 @@ export const orgStatus = {
   Stopped: { color: ':#E2E9F7', text: '已停用' },
   Deleting: { color: 'orange', text: '删除中' },
   DeletionFailed: { color: 'red', text: '删除失败' },
-  Deleted: { color: 'volcano', text: '已删除' },
+  Deleted: { color: 'volcano', text: '已删除' }
 };
 
-export const orgStatusEnum = {
-  InUse: 'InUse',
-  Creating: 'Creating',
-  CreationFailed: 'CreationFailed',
-  Stopping: 'Stopping',
-  StopFailed: 'StopFailed',
-  Stopped: 'Stopped',
-  Deleting: 'Deleting',
-  DeletionFailed: 'DeletionFailed',
-  Deleted: 'Deleted',
-};
+export enum OrgStatusEnum {
+  InUse = 'InUse',
+  Creating = 'Creating',
+  CreationFailed = 'CreationFailed',
+  Stopping = 'Stopping',
+  StopFailed = 'StopFailed',
+  Stopped = 'Stopped',
+  Deleting = 'Deleting',
+  DeletionFailed = 'DeletionFailed',
+  Deleted = 'Deleted'
+}

@@ -1,26 +1,29 @@
 import React, { useEffect } from 'react';
 import { Button, Result } from 'antd';
-import { Link, connect } from 'umi';
+import { Link, connect, Dispatch, Location } from 'umi';
 import styles from './style.less';
-import { BasicComponentProps, BasicLayoutComponentProps } from '~/utils/types';
 import { ConnectState } from '~/models/connect';
+export interface RegisterResultProps {
+  dispatch: Dispatch;
+  User: ConnectState['User'];
+  location: Location<{ account: string }>;
+}
 
-const RegisterResult: React.FC<BasicComponentProps & BasicLayoutComponentProps> = ({ location, dispatch }) => {
+const RegisterResult: React.FC<RegisterResultProps> = ({ location, dispatch }) => {
   useEffect(() => {
     dispatch({
       type: 'User/common',
-      payload: { userAndRegister: false },
+      payload: { userAndRegister: false }
     });
-  }, []);
+  }, [dispatch]);
 
   const actions = (
     <div className={styles.actions}>
       <Link
         to={{
           pathname: '/user/login',
-          state: { account: location?.state?.account },
-        }}
-      >
+          state: { account: location?.state?.account }
+        }}>
         <Button size="large" type="primary">
           立即登录
         </Button>

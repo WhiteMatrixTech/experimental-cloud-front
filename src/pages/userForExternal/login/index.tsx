@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { Link, connect, history } from 'umi';
-import { Form } from 'antd';
 import { parse } from 'qs';
-import LoginFrom from '@/pages/user/login/components/Login';
+import { Form, Button, Input } from 'antd';
+import { LockTwoTone, UserOutlined } from '@ant-design/icons';
 import { LoginMessage } from '~/components';
 import LoginStatus from '~/utils/loginStatus';
 import { ConnectState } from '~/models/connect';
+import { LoginProps } from '~/pages/user/login';
 import styles from './index.less';
-import { LoginProps } from '@/pages/user/login';
 
-const { UserName, Password, Submit } = LoginFrom;
+const FormItem = Form.Item;
 
 const LoginForExternal: React.FC<LoginProps> = (props) => {
   const [form] = Form.useForm();
@@ -22,7 +22,7 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
       .then((values) => {
         dispatch({
           type: 'User/login',
-          payload: values,
+          payload: values
         }).then((res: { access_token: string }) => {
           if (res) {
             const search = window.location.search ? window.location.search.replace('?', '') : '';
@@ -44,51 +44,53 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
   useEffect(() => {
     dispatch({
       type: 'User/common',
-      payload: { loginStatus: '', userAndRegister: false },
+      payload: { loginStatus: '', userAndRegister: false }
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={styles.main}>
       <h3>登录</h3>
       {loginStatus === LoginStatus.LOGIN_ERROR && !loginLoading && <LoginMessage content={loginInfo} />}
-      <LoginFrom form={form} onSubmit={handleSubmit}>
-        <UserName
+      <Form form={form}>
+        <FormItem
           name="email"
-          placeholder="邮箱"
-          defaultValue={location?.state?.account}
+          initialValue={location?.state?.account}
           rules={[
             {
               required: true,
-              message: '请输入邮箱!',
-            },
-          ]}
-        />
-        <Password
+              message: '请输入邮箱!'
+            }
+          ]}>
+          <Input prefix={<UserOutlined className={styles.prefixIcon} />} placeholder="邮箱" />
+        </FormItem>
+        <FormItem
           name="password"
-          placeholder="密码"
           rules={[
             {
               required: true,
-              message: '请输入密码！',
-            },
-          ]}
-        />
-        <Submit className="" loading={loginLoading}>
+              message: '请输入密码！'
+            }
+          ]}>
+          <Input prefix={<LockTwoTone className={styles.prefixIcon} />} placeholder="密码" />
+        </FormItem>
+        <Button size="large" type="primary" className={styles.submit} onClick={handleSubmit}>
           登录
-        </Submit>
+        </Button>
         <div className={styles.other}>
-          暂无账号?
-          <Link className={styles.register} to="/user/register">
-            立即注册
-          </Link>
+          <div>
+            暂无账号?
+            <Link className={styles.register} to="/user/register">
+              立即注册
+            </Link>
+          </div>
         </div>
-      </LoginFrom>
+      </Form>
     </div>
   );
 };
 
 export default connect(({ User, loading }: ConnectState) => ({
   User,
-  loginLoading: loading.effects['User/login'],
+  loginLoading: loading.effects['User/login']
 }))(LoginForExternal);

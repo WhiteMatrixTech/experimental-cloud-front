@@ -1,33 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Form, Input } from 'antd';
 import { operType } from './index';
 const FormItem = Form.Item;
 
 export type StepOneProps = {
-  curOper: operType,
-  basicInfo: any,
-  failedToValidate: (step: operType) => void,
-  afterValidate: (value: any, step: any) => void,
-}
+  curOper: operType;
+  basicInfo: any;
+  failedToValidate: (step: operType) => void;
+  afterValidate: (value: any, step: any) => void;
+};
 
 const StepOne: React.FC<StepOneProps> = (props) => {
   const { curOper, basicInfo, afterValidate, failedToValidate } = props;
   const [form] = Form.useForm();
 
-  const onCheck = async () => {
+  const onCheck = useCallback(async () => {
     try {
       const values = await form.validateFields();
       afterValidate(values, operType.next);
     } catch (errorInfo) {
       failedToValidate(operType.default);
     }
-  };
+  }, [afterValidate, failedToValidate, form]);
 
   useEffect(() => {
     if (curOper === operType.next) {
       onCheck();
     }
-  }, [curOper]);
+  }, [curOper, onCheck]);
 
   return (
     <Form form={form} name="UserRegisterStepOne">
@@ -37,10 +37,9 @@ const StepOne: React.FC<StepOneProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入用户名称!',
-          },
-        ]}
-      >
+            message: '请输入用户名称!'
+          }
+        ]}>
         <Input size="large" placeholder="用户名称" />
       </FormItem>
       <FormItem
@@ -49,10 +48,9 @@ const StepOne: React.FC<StepOneProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入统一社会信用代码!',
-          },
-        ]}
-      >
+            message: '请输入统一社会信用代码!'
+          }
+        ]}>
         <Input size="large" placeholder="统一社会信用代码" />
       </FormItem>
       <FormItem
@@ -61,10 +59,9 @@ const StepOne: React.FC<StepOneProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入法人代表姓名!',
-          },
-        ]}
-      >
+            message: '请输入法人代表姓名!'
+          }
+        ]}>
         <Input size="large" placeholder="法人代表姓名" />
       </FormItem>
       <FormItem
@@ -73,10 +70,9 @@ const StepOne: React.FC<StepOneProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入联系人姓名!',
-          },
-        ]}
-      >
+            message: '请输入联系人姓名!'
+          }
+        ]}>
         <Input size="large" placeholder="联系人姓名" />
       </FormItem>
       <FormItem
@@ -85,10 +81,9 @@ const StepOne: React.FC<StepOneProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入联系人地址!',
-          },
-        ]}
-      >
+            message: '请输入联系人地址!'
+          }
+        ]}>
         <Input size="large" placeholder="联系地址" />
       </FormItem>
       <FormItem initialValue={basicInfo.invitationCode ? basicInfo.invitationCode : ''} name="invitationCode">

@@ -1,5 +1,5 @@
 import { Form, Input, Popover, Progress } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { operType } from './index';
 import styles from './index.less';
 const FormItem = Form.Item;
@@ -7,21 +7,27 @@ const FormItem = Form.Item;
 const passwordStatusMap = {
   ok: <div className={styles.success}>强度：强</div>,
   pass: <div className={styles.warning}>强度：中</div>,
-  poor: <div className={styles.error}>强度：弱</div>,
+  poor: <div className={styles.error}>强度：弱</div>
 };
 
-const passwordProgressMap = {
+type ProgressStatus = 'success' | 'normal' | 'exception' | 'active' | undefined;
+
+const passwordProgressMap: {
+  ok: ProgressStatus;
+  pass: ProgressStatus;
+  poor: ProgressStatus;
+} = {
   ok: 'success',
   pass: 'normal',
-  poor: 'exception',
+  poor: 'exception'
 };
 
 export type StepTwoProps = {
-  curOper: operType,
-  basicInfo: any,
-  failedToValidate: (step: operType) => void,
-  afterValidate: (value: any, step: any) => void,
-}
+  curOper: operType;
+  basicInfo: any;
+  failedToValidate: (step: operType) => void;
+  afterValidate: (value: any, step: any) => void;
+};
 
 const StepTwo: React.FC<StepTwoProps> = (props) => {
   const { curOper, afterValidate, failedToValidate } = props;
@@ -31,7 +37,7 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
 
   const [form] = Form.useForm();
 
-  const onCheck = async () => {
+  const onCheck = useCallback(async () => {
     try {
       const values = await form.validateFields();
       const stepValue = { ...values };
@@ -39,13 +45,13 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
     } catch (errorInfo) {
       failedToValidate(operType.default);
     }
-  };
+  }, [afterValidate, failedToValidate, form]);
 
   useEffect(() => {
     if (curOper === operType.submit) {
       onCheck();
     }
-  }, [curOper]);
+  }, [curOper, onCheck]);
 
   const getPasswordStatus = () => {
     const value = form.getFieldValue('password');
@@ -119,14 +125,13 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入手机号',
+            message: '请输入手机号'
           },
           {
             pattern: /^\d{11}$/,
-            message: '手机号格式错误',
-          },
-        ]}
-      >
+            message: '手机号格式错误'
+          }
+        ]}>
         <Input size="large" placeholder="联系人手机号" />
       </FormItem>
       <FormItem
@@ -134,14 +139,13 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入邮箱地址!',
+            message: '请输入邮箱地址!'
           },
           {
             type: 'email',
-            message: '邮箱地址格式错误',
-          },
-        ]}
-      >
+            message: '邮箱地址格式错误'
+          }
+        ]}>
         <Input size="large" placeholder="联系人邮箱" />
       </FormItem>
       <FormItem
@@ -149,15 +153,14 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入用户名!',
+            message: '请输入用户名!'
           },
           {
             type: 'string',
             pattern: /^[a-zA-Z0-9\-_]{5,20}$/,
-            message: '用户名不合法, 至少需要5个字符',
-          },
-        ]}
-      >
+            message: '用户名不合法, 至少需要5个字符'
+          }
+        ]}>
         <Input size="large" placeholder="用户名" />
       </FormItem>
       <Popover
@@ -172,36 +175,32 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
           visible && (
             <div
               style={{
-                padding: '4px 0',
-              }}
-            >
+                padding: '4px 0'
+              }}>
               {passwordStatusMap[getPasswordStatus()]}
               {renderPasswordProgress()}
               <div
                 style={{
-                  marginTop: 10,
-                }}
-              >
+                  marginTop: 10
+                }}>
                 请至少输入 6 个字符。请不要使用容易被猜到的密码
               </div>
             </div>
           )
         }
         overlayStyle={{
-          width: 240,
+          width: 240
         }}
         placement="right"
-        visible={visible}
-      >
+        visible={visible}>
         <FormItem
           name="password"
           className={form.getFieldValue('password') && form.getFieldValue('password').length > 0 && styles.password}
           rules={[
             {
-              validator: checkPassword,
-            },
-          ]}
-        >
+              validator: checkPassword
+            }
+          ]}>
           <Input size="large" type="password" placeholder="至少6位密码，区分大小写" />
         </FormItem>
       </Popover>
@@ -210,13 +209,12 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请确认密码!',
+            message: '请确认密码!'
           },
           {
-            validator: checkConfirm,
-          },
-        ]}
-      >
+            validator: checkConfirm
+          }
+        ]}>
         <Input size="large" type="password" placeholder="确认密码" />
       </FormItem>
     </Form>
