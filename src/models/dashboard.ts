@@ -33,6 +33,8 @@ export type DashboardModelType = {
   effects: {
     getNetworkInfo: Effect;
     createNetwork: Effect;
+    stopNetwork: Effect;
+    restartNetwork: Effect;
     deleteNetwork: Effect;
     getBlockList: Effect;
     getTransactionList: Effect;
@@ -73,6 +75,7 @@ const DashboardModel: DashboardModelType = {
         });
       }
     },
+
     *createNetwork({ payload }, { call, put }) {
       const res = yield call(API.createNetwork, payload);
       const { statusCode, result } = res;
@@ -80,10 +83,35 @@ const DashboardModel: DashboardModelType = {
         notification.success({ message: '创建网络请求发起成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '创建网络请求发起成功', top: 64, duration: 3 });
+        notification.error({ message: result.message || '创建网络请求发起失败', top: 64, duration: 3 });
         return false;
       }
     },
+
+    *stopNetwork({ payload }, { call, put }) {
+      const res = yield call(API.stopNetwork, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok' || result.status === 'Starting') {
+        notification.success({ message: '停用网络请求发起成功', top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || '停用网络请求发起失败', top: 64, duration: 3 });
+        return false;
+      }
+    },
+
+    *restartNetwork({ payload }, { call, put }) {
+      const res = yield call(API.restartNetwork, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok' || result.status === 'Starting') {
+        notification.success({ message: '重启网络请求发起成功', top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || '重启网络请求发起失败', top: 64, duration: 3 });
+        return false;
+      }
+    },
+
     *deleteNetwork({ payload }, { call, put }) {
       const res = yield call(API.deleteNetwork, payload);
       const { statusCode, result } = res;
@@ -97,6 +125,7 @@ const DashboardModel: DashboardModelType = {
         notification.error({ message: result.message || '网络删除失败', top: 64, duration: 3 });
       }
     },
+
     *getBlockList({ payload }, { call, put }) {
       const res = yield call(getBlockList, payload);
       const { statusCode, result } = res;
@@ -109,6 +138,7 @@ const DashboardModel: DashboardModelType = {
         });
       }
     },
+
     *getTransactionList({ payload }, { call, put }) {
       const res = yield call(getTransactionList, payload);
       const { statusCode, result } = res;
@@ -121,6 +151,7 @@ const DashboardModel: DashboardModelType = {
         });
       }
     },
+
     *getStaticInfoForAdmin({ payload }, { call, put, all }) {
       const [res1, res2, res3, res4, res5] = yield all([
         call(getBlockTotalDocs, payload),
@@ -158,6 +189,7 @@ const DashboardModel: DashboardModelType = {
         }
       });
     },
+
     *getStaticInfoForMember({ payload }, { call, put, all }) {
       const [res1, res2, res3, res4, res5] = yield all([
         call(getBlockTotalDocs, payload),
