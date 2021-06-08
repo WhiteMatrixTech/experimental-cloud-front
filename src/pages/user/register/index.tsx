@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Button, Steps } from 'antd';
 import { Link, connect, history, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
@@ -55,26 +55,29 @@ const Register: React.FC<RegisterProps> = (props) => {
     setBasicInfo(basicInfo);
   };
 
-  const afterValidate = (value: any, step: operType) => {
-    if (step === operType.next) {
-      cacheBasicInfo(value);
-      setCurrent(current + 1);
-    } else if (step === operType.submit) {
-      setAccountInfo(value);
-      const params = {
-        ...basicInfo,
-        contactEmail: value.contactEmail,
-        loginName: value.loginName,
-        pass: value.password,
-        re_pass: value.confirm
-      };
-      dispatch({
-        type: 'User/register',
-        payload: params
-      });
-      setCurOper(operType.default);
-    }
-  };
+  const afterValidate = useCallback(
+    (value: any, step: operType) => {
+      if (step === operType.next) {
+        cacheBasicInfo(value);
+        setCurrent(current + 1);
+      } else if (step === operType.submit) {
+        setAccountInfo(value);
+        const params = {
+          ...basicInfo,
+          contactEmail: value.contactEmail,
+          loginName: value.loginName,
+          pass: value.password,
+          re_pass: value.confirm
+        };
+        dispatch({
+          type: 'User/register',
+          payload: params
+        });
+        setCurOper(operType.default);
+      }
+    },
+    [basicInfo, current, dispatch]
+  );
 
   const failedToValidate = (step: operType) => {
     setCurOper(step);
@@ -89,12 +92,14 @@ const Register: React.FC<RegisterProps> = (props) => {
     }
   }, [accountInfo.contactEmail, userAndRegister]);
 
-  const stepsProps = {
-    curOper,
-    basicInfo,
-    failedToValidate,
-    afterValidate: (value: any, step: any) => afterValidate(value, step)
-  };
+  const stepsProps = useMemo(() => {
+    return {
+      curOper,
+      basicInfo,
+      failedToValidate,
+      afterValidate: (value: any, step: any) => afterValidate(value, step)
+    };
+  }, [afterValidate, basicInfo, curOper]);
 
   return (
     <div className={styles.main}>

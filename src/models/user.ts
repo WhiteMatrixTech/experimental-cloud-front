@@ -7,11 +7,11 @@ import { NetworkStatus } from '~/utils/networkStatus';
 
 export type UserInfoSchema = {
   loginName: string;
-  did: string;
   exp: number;
   iat: number;
   contactEmail: string;
   role: Roles;
+  did?: string;
 };
 
 export type LeagueSchema = {

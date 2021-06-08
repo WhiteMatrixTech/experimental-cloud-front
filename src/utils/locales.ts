@@ -38,20 +38,20 @@ class Locales {
    * [instance  当前实例]
    * @type {this}
    */
-  static instance: Locales;
+  private static instance: Locales;
   /**
    * [getInstance 获取单例]
    * @method getInstance
    * @return {[type]}    [description]
    */
-  static getInstance() {
+  public static getInstance() {
     if (false === this.instance instanceof this) {
       this.instance = new this();
     }
     return this.instance;
   }
 
-  constructor() {
+  private constructor() {
     const locales = getLocale() || 'zh-CN';
     const cache = createIntlCache();
     const intl = createIntl(

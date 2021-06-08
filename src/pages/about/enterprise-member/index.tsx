@@ -310,7 +310,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
                 </Item>
               </Col>
               <Col span={8}>
-                <Item label="创建时间" name="createTime" initialValue={[]}>
+                <Item label="审批时间" name="createTime" initialValue={[]}>
                   <RangePicker
                     getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
                     style={{ width: '100%' }}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Form, Input } from 'antd';
 import { operType } from './index';
 const FormItem = Form.Item;
@@ -14,20 +14,20 @@ const StepOne: React.FC<StepOneProps> = (props) => {
   const { curOper, basicInfo, afterValidate, failedToValidate } = props;
   const [form] = Form.useForm();
 
-  const onCheck = async () => {
+  const onCheck = useCallback(async () => {
     try {
       const values = await form.validateFields();
       afterValidate(values, operType.next);
     } catch (errorInfo) {
       failedToValidate(operType.default);
     }
-  };
+  }, [afterValidate, failedToValidate, form]);
 
   useEffect(() => {
     if (curOper === operType.next) {
       onCheck();
     }
-  }, [curOper]);
+  }, [curOper, onCheck]);
 
   return (
     <Form form={form} name="UserRegisterStepOne">
