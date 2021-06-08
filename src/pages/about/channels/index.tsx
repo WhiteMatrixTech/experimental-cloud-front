@@ -70,7 +70,8 @@ function ChannelManagement(props: ChannelManagementProps) {
   };
 
   // 点击 查看组织
-  const onViewOrg = (record: ChannelSchema) => {
+  const onViewOrg = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
+    e.preventDefault();
     history.push({
       pathname: `/about/channels/${record.channelId}/organizationList`,
       state: { ...record }
@@ -78,7 +79,8 @@ function ChannelManagement(props: ChannelManagementProps) {
   };
 
   // 点击 查看节点
-  const onViewPeer = (record: ChannelSchema) => {
+  const onViewPeer = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
+    e.preventDefault();
     history.push({
       pathname: `/about/channels/${record.channelId}/nodeList`,
       state: { ...record }
@@ -86,7 +88,8 @@ function ChannelManagement(props: ChannelManagementProps) {
   };
 
   // 点击 查看合约
-  const onViewContract = (record: ChannelSchema) => {
+  const onViewContract = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
+    e.preventDefault();
     history.push({
       pathname: `/about/channels/${record.channelId}/chaincodeList`,
       state: { ...record }
@@ -94,7 +97,8 @@ function ChannelManagement(props: ChannelManagementProps) {
   };
 
   // 点击 查看详情
-  const onViewDetail = (record: ChannelSchema) => {
+  const onViewDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
+    e.preventDefault();
     history.push({
       pathname: `/about/channels/${record.channelId}/channelDetail`,
       state: { ...record }
@@ -176,10 +180,18 @@ function ChannelManagement(props: ChannelManagementProps) {
       width: '22%',
       render: (text, record: ChannelSchema) => (
         <Space size="small">
-          <a onClick={() => onViewOrg(record)}>查看组织</a>
-          <a onClick={() => onViewPeer(record)}>查看节点</a>
-          <a onClick={() => onViewContract(record)}>查看合约</a>
-          <a onClick={() => onViewDetail(record)}>详情</a>
+          <a href={`/about/channels/${record.channelId}/organizationList`} onClick={(e) => onViewOrg(e, record)}>
+            查看组织
+          </a>
+          <a href={`/about/channels/${record.channelId}/nodeList`} onClick={(e) => onViewPeer(e, record)}>
+            查看节点
+          </a>
+          <a href={`/about/channels/${record.channelId}/chaincodeList`} onClick={(e) => onViewContract(e, record)}>
+            查看合约
+          </a>
+          <a href={`/about/channels/${record.channelId}/channelDetail`} onClick={(e) => onViewDetail(e, record)}>
+            详情
+          </a>
         </Space>
       )
     }

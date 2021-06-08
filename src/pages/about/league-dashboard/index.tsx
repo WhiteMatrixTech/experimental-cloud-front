@@ -146,7 +146,8 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   }, [dispatch, networkName]);
 
   // 查看区块详情
-  const onClickBlockDetail = (record: BlockSchema) => {
+  const onClickBlockDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: BlockSchema) => {
+    e.preventDefault();
     dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/block' }
@@ -175,7 +176,8 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   }, [dispatch, networkName]);
 
   // 查看交易详情
-  const onClickTransactionDetail = (record: TransactionSchema) => {
+  const onClickTransactionDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: TransactionSchema) => {
+    e.preventDefault();
     dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/transactions' }
@@ -217,7 +219,9 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       key: 'action',
       render: (text, record: BlockSchema) => (
         <Space size="small">
-          <a onClick={() => onClickBlockDetail(record)}>详情</a>
+          <a href={`/about/block/${record.blockHash}`} onClick={(e) => onClickBlockDetail(e, record)}>
+            详情
+          </a>
         </Space>
       )
     }
@@ -261,9 +265,16 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       render: (text, record: TransactionSchema) => (
         <Space size="small">
           {record.channelId || record.txEndorseMsp ? (
-            <a onClick={() => onClickTransactionDetail(record)}>详情</a>
+            <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickTransactionDetail(e, record)}>
+              详情
+            </a>
           ) : (
-            <a className="a-forbidden-style">详情</a>
+            <a
+              href={`/about/transactions/${record.txId}`}
+              className="a-forbidden-style"
+              onClick={(e) => e.preventDefault()}>
+              详情
+            </a>
           )}
         </Space>
       )

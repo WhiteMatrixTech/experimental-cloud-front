@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Dispatch, history } from 'umi';
+import { BlockSchema, Dispatch, history } from 'umi';
 import { Table, Space } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, SearchBar } from '~/components';
@@ -29,11 +29,11 @@ const Block: React.FC<BlockProps> = (props) => {
   //查询列表的totalDocs
   const getBlockTotalDocs = (): void => {
     const params = {
-      networkName,
+      networkName
     };
     dispatch({
       type: 'Block/getBlockTotalDocs',
-      payload: params,
+      payload: params
     });
   };
   //查询列表current
@@ -43,11 +43,11 @@ const Block: React.FC<BlockProps> = (props) => {
       networkName,
       limit: pageSize,
       offset: offset,
-      ascend: false,
+      ascend: false
     };
     dispatch({
       type: 'Block/getBlockList',
-      payload: params,
+      payload: params
     });
   };
 
@@ -63,11 +63,11 @@ const Block: React.FC<BlockProps> = (props) => {
   const onSearchList = (): void => {
     const params = {
       networkName,
-      blockHash,
+      blockHash
     };
     dispatch({
       type: 'Block/onSearch',
-      payload: params,
+      payload: params
     });
   };
 
@@ -77,16 +77,13 @@ const Block: React.FC<BlockProps> = (props) => {
   };
 
   // 点击查看详情
-  const onClickDetail = (record: {
-    channelId?: string | undefined;
-    txCount?: number | undefined;
-    blockHash: string;
-  }): void => {
+  const onClickDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: BlockSchema): void => {
+    e.preventDefault();
     history.push({
       pathname: `/about/block/${record.blockHash}`,
       query: {
-        blockHash: record.blockHash,
-      },
+        blockHash: record.blockHash
+      }
     });
   };
 
@@ -96,40 +93,47 @@ const Block: React.FC<BlockProps> = (props) => {
       dataIndex: 'blockHash',
       key: 'blockHash',
       ellipsis: true,
-      width: '20%',
+      width: '20%'
     },
     {
       title: '所属通道',
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '交易数量',
       dataIndex: 'txCount',
       key: 'txCount',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
+        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '操作',
       key: 'action',
-      render: (text, record: { channelId?: string; txCount?: number; blockHash: string }) => (
+      render: (text, record: BlockSchema) => (
         <Space size="small">
           {record.channelId || record.txCount ? (
-            <a onClick={() => onClickDetail(record)}>详情</a>
+            <a href={`/about/block/${record.blockHash}`} onClick={(e) => onClickDetail(e, record)}>
+              详情
+            </a>
           ) : (
-            <a className="a-forbidden-style">详情</a>
+            <a
+              href={`/about/block/${record.blockHash}`}
+              className="a-forbidden-style"
+              onClick={(e) => e.preventDefault()}>
+              详情
+            </a>
           )}{' '}
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   // 页码改变时,或搜索值blockHash=''时重新查询列表
@@ -158,7 +162,7 @@ const Block: React.FC<BlockProps> = (props) => {
             total: blockTotal,
             current: pageNum,
             showSizeChanger: false,
-            position: ['bottomCenter'],
+            position: ['bottomCenter']
           }}
         />
       </div>
@@ -169,5 +173,5 @@ const Block: React.FC<BlockProps> = (props) => {
 export default connect(({ User, Block, loading }: ConnectState) => ({
   User,
   Block,
-  qryLoading: loading.effects['Block/getBlockList'],
+  qryLoading: loading.effects['Block/getBlockList']
 }))(Block);
