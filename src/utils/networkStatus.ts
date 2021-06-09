@@ -8,8 +8,9 @@ export enum NetworkStatus {
   AddPeerFailed = 'AddPeerFailed',
   OrgJoinChannelFailed = 'OrgJoinChannelFailed',
   UnknownError = 'UnknownError',
-  NotExist = 'NotExist'
-};
+  NotExist = 'NotExist',
+  Stopped = 'Stopped'
+}
 
 export const NetworkInfo = {
   [NetworkStatus.Running]: '运行中',
@@ -22,4 +23,5 @@ export const NetworkInfo = {
   [NetworkStatus.OrgJoinChannelFailed]: '组织加入通道失败',
   [NetworkStatus.UnknownError]: '发生未知错误',
   [NetworkStatus.NotExist]: '网络不存在',
+  [NetworkStatus.Stopped]: '已停用'
 };

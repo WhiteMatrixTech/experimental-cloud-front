@@ -69,7 +69,8 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
     getCompileJobList();
   };
 
-  const onViewJobLog = (record: GitBuildRepoTask) => {
+  const onViewJobLog = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: GitBuildRepoTask) => {
+    e.preventDefault();
     history.push({
       pathname: `/common/block-compile/package/job-logs/${record.buildJobId}`,
       state: {
@@ -122,7 +123,11 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       key: 'action',
       render: (text, record: GitBuildRepoTask) => (
         <Space size="small">
-          <a onClick={() => onViewJobLog(record)}>查看日志</a>
+          <a
+            href={`/common/block-compile/package/job-logs/${record.buildJobId}`}
+            onClick={(e) => onViewJobLog(e, record)}>
+            查看日志
+          </a>
         </Space>
       )
     }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Dispatch, history } from 'umi';
+import { Dispatch, history, TransactionSchema } from 'umi';
 import { Table, Space } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, SearchBar } from '~/components';
@@ -28,11 +28,11 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
 
   const getTransactionTotalDocs = () => {
     const params = {
-      networkName,
+      networkName
     };
     dispatch({
       type: 'Transactions/getTransactionTotalDocs',
-      payload: params,
+      payload: params
     });
   };
   // 查询列表
@@ -42,11 +42,11 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       networkName,
       limit: pageSize,
       offset: offset,
-      ascend: false,
+      ascend: false
     };
     dispatch({
       type: 'Transactions/getTransactionList',
-      payload: params,
+      payload: params
     });
   };
   // 搜索
@@ -60,11 +60,11 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   const onSearchList = (): void => {
     const params = {
       networkName,
-      txId,
+      txId
     };
     dispatch({
       type: 'Transactions/onSearch',
-      payload: params,
+      payload: params
     });
   };
   // 翻页
@@ -73,12 +73,13 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   };
 
   // 点击查看详情
-  const onClickDetail = (record: { channelId: string; txMsp: string; txId: string }): void => {
+  const onClickDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: TransactionSchema): void => {
+    e.preventDefault();
     history.push({
       pathname: `/about/transactions/${record.txId}`,
       query: {
-        channelId: record.txId,
-      },
+        channelId: record.txId
+      }
     });
   };
   const columns: ColumnsType<any> = [
@@ -87,47 +88,54 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       dataIndex: 'txId',
       key: 'txId',
       ellipsis: true,
-      width: '20%',
+      width: '20%'
     },
     {
       title: '所属通道',
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '交易组织',
       dataIndex: 'txMsp',
       key: 'txMsp',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '合约名称',
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
+        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '操作',
       //dataIndex:'action'
       key: 'action',
-      render: (text, record?: { channelId: string; txMsp: string; txId: string }) => (
+      render: (text, record: TransactionSchema) => (
         <Space size="small">
-          {(record && record.channelId) || (record && record.txMsp) ? (
-            <a onClick={() => onClickDetail(record)}>详情</a>
+          {record.channelId || record.txMsp ? (
+            <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickDetail(e, record)}>
+              详情
+            </a>
           ) : (
-            <a className="a-forbidden-style">详情</a>
+            <a
+              href={`/about/transactions/${record.txId}`}
+              className="a-forbidden-style"
+              onClick={(e) => e.preventDefault()}>
+              详情
+            </a>
           )}
         </Space>
-      ),
-    },
+      )
+    }
   ];
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
@@ -155,7 +163,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
             total: transactionTotal,
             current: pageNum,
             showSizeChanger: false,
-            position: ['bottomCenter'],
+            position: ['bottomCenter']
           }}
         />
       </div>
@@ -167,5 +175,5 @@ export default connect(({ User, Layout, Transactions, loading }: ConnectState) =
   User,
   Layout,
   Transactions,
-  qryLoading: loading.effects['Transactions/getTransactionList'],
+  qryLoading: loading.effects['Transactions/getTransactionList']
 }))(Transactions);

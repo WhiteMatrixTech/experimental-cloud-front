@@ -30,6 +30,14 @@ export async function createNetwork(params: CreateNetworkRequest) {
   return request(`/network/${params.networkName}/createNetwork`, { method: 'POST', body: params });
 }
 
+export async function stopNetwork(params: CreateNetworkRequest) {
+  return request(`/network/${params.networkName}/stopNetwork`, { method: 'POST', body: params });
+}
+
+export async function restartNetwork(params: CreateNetworkRequest) {
+  return request(`/network/${params.networkName}/restartNetwork`, { method: 'POST', body: params });
+}
+
 /**
  * 删除网络
  */

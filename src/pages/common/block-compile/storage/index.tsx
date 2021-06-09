@@ -94,7 +94,11 @@ function CustomImage(props: CustomImageProps) {
       key: 'operation',
       render: (_: string, record: ImageDetail) => (
         <Space size="small">
-          {OperationalRole.includes(userInfo.role) && <a onClick={() => onClickDelete(record)}>删除</a>}
+          {OperationalRole.includes(userInfo.role) && (
+            <span role="button" className="table-action-span" onClick={() => onClickDelete(record)}>
+              删除
+            </span>
+          )}
         </Space>
       )
     }

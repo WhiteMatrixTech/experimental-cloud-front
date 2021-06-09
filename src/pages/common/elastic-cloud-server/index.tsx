@@ -16,7 +16,7 @@ export interface ServersManagementProps {
   qryLoading: boolean;
   ElasticServer: ConnectState['ElasticServer'];
 }
-function ServersManagement(props: ServersManagementProps) {
+const ServersManagement: React.FC<ServersManagementProps> = (props) => {
   const { dispatch, qryLoading = false } = props;
   const { serverList, serverTotal } = props.ElasticServer;
   const [columns, setColumns] = useState<ColumnsType<any>>([]);
@@ -73,14 +73,16 @@ function ServersManagement(props: ServersManagementProps) {
     setCreateServerVisible(true);
   };
 
-  const onViewPerformance = (record: ElasticServerSchema) => {
+  const onViewPerformance = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ElasticServerSchema) => {
+    e.preventDefault();
     history.push({
       pathname: `/common/elastic-cloud-server/${record.serverName}/server-performance`,
       state: { ...record }
     });
   };
 
-  const onViewNode = (record: ElasticServerSchema) => {
+  const onViewNode = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ElasticServerSchema) => {
+    e.preventDefault();
     history.push({
       pathname: `/common/elastic-cloud-server/${record.serverName}/resource-usage`,
       state: { ...record }
@@ -101,10 +103,18 @@ function ServersManagement(props: ServersManagementProps) {
     return (
       <Menu>
         <Menu.Item>
-          <a onClick={() => onViewNode(record)}>实例数据</a>
+          <a
+            href={`/common/elastic-cloud-server/${record.serverName}/resource-usage`}
+            onClick={(e) => onViewNode(e, record)}>
+            实例数据
+          </a>
         </Menu.Item>
         <Menu.Item>
-          <a onClick={() => onViewPerformance(record)}>资源使用情况</a>
+          <a
+            href={`/common/elastic-cloud-server/${record.serverName}/server-performance`}
+            onClick={(e) => onViewPerformance(e, record)}>
+            资源使用情况
+          </a>
         </Menu.Item>
       </Menu>
     );
@@ -162,12 +172,16 @@ function ServersManagement(props: ServersManagementProps) {
         width: '12%',
         render: (_: string, record: ElasticServerSchema) => (
           <Space size="small">
-            <a onClick={() => onClickModifyServer(record)}>编辑</a>
-            <a onClick={() => onClickDelete(record)}>删除</a>
+            <span role="button" className="table-action-span" onClick={() => onClickModifyServer(record)}>
+              编辑
+            </span>
+            <span role="button" className="table-action-span" onClick={() => onClickDelete(record)}>
+              删除
+            </span>
             <Dropdown overlay={renderMenu(record)} trigger={['click']}>
-              <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+              <span role="button" className="table-action-span" onClick={(e) => e.preventDefault()}>
                 更多 <DownOutlined />
-              </a>
+              </span>
             </Dropdown>
           </Space>
         )
@@ -214,7 +228,7 @@ function ServersManagement(props: ServersManagementProps) {
       )}
     </div>
   );
-}
+};
 
 export default connect(({ User, Layout, ElasticServer, loading }: ConnectState) => ({
   User,

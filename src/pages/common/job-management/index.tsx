@@ -54,7 +54,8 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
     setPageNum(pageInfo.current);
   };
 
-  const onViewJobLog = (record: JobSchema) => {
+  const onViewJobLog = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: JobSchema) => {
+    e.preventDefault();
     history.push({
       pathname: `/common/job-management/job-logs/${record.jobId}`,
       state: { ...record }
@@ -91,7 +92,9 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       key: 'action',
       render: (text, record: JobSchema) => (
         <Space size="small">
-          <a onClick={() => onViewJobLog(record)}>查看日志</a>
+          <a href={`/common/job-management/job-logs/${record.jobId}`} onClick={(e) => onViewJobLog(e, record)}>
+            查看日志
+          </a>
         </Space>
       )
     }

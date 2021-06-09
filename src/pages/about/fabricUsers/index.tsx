@@ -29,14 +29,13 @@ export interface FabricRoleManagementProps {
   User: ConnectState['User'];
   FabricRole: ConnectState['FabricRole'];
 }
-function FabricRoleManagement(props: FabricRoleManagementProps) {
+const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
   const { dispatch, qryLoading = false } = props;
   const { orgList } = props.Organization;
-  const { networkName, userRole } = props.User;
+  const { networkName } = props.User;
   const { fabricRoleList, fabricRoleTotal, myOrgInfo } = props.FabricRole;
 
   const [form] = Form.useForm();
-  const [columns, setColumns] = useState<ColumnsType<any>>([]);
   const [pageNum, setPageNum] = useState(1);
   const [searchParams, setSearchParams] = useState({ orgName: '' });
 
@@ -77,7 +76,8 @@ function FabricRoleManagement(props: FabricRoleManagementProps) {
     setCreateModalVisible(false);
   };
 
-  const onDownLoadSDK = (record: FabricRoleSchema) => {
+  const onDownLoadSDK = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: FabricRoleSchema) => {
+    e.preventDefault();
     // token校验
     const accessToken = localStorage.getItem('accessToken');
     const roleToken = localStorage.getItem('roleToken');
@@ -123,57 +123,57 @@ function FabricRoleManagement(props: FabricRoleManagementProps) {
     setSearchParams({ orgName: '' });
   };
 
+  const columns: ColumnsType<any> = [
+    {
+      title: 'Fabric角色名',
+      dataIndex: 'userId',
+      key: 'userId',
+      ellipsis: true
+    },
+    {
+      title: '角色类型',
+      dataIndex: 'explorerRole',
+      key: 'explorerRole'
+    },
+    {
+      title: '所属组织',
+      dataIndex: 'orgName',
+      key: 'orgName',
+      ellipsis: true
+    },
+    {
+      title: '属性集',
+      dataIndex: 'attrs',
+      key: 'attrs',
+      ellipsis: true
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
+      render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (_: any, record: FabricRoleSchema) => (
+        <Space size="small">
+          <a
+            href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRole/${record.orgName}/${record.userId}/getUserCcp`}
+            onClick={(e) => onDownLoadSDK(e, record)}>
+            下载SDK配置
+          </a>
+        </Space>
+      )
+    }
+  ];
+
   useEffect(() => {
     dispatch({
       type: 'Organization/getOrgList',
       payload: { networkName }
     });
   }, []);
-
-  // 用户身份改变时，表格展示改变
-  useEffect(() => {
-    const data: ColumnsType<any> = [
-      {
-        title: 'Fabric角色名',
-        dataIndex: 'userId',
-        key: 'userId',
-        ellipsis: true
-      },
-      {
-        title: '角色类型',
-        dataIndex: 'explorerRole',
-        key: 'explorerRole'
-      },
-      {
-        title: '所属组织',
-        dataIndex: 'orgName',
-        key: 'orgName',
-        ellipsis: true
-      },
-      {
-        title: '属性集',
-        dataIndex: 'attrs',
-        key: 'attrs',
-        ellipsis: true
-      },
-      {
-        title: '创建时间',
-        dataIndex: 'updatedAt',
-        key: 'updatedAt',
-        render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss')
-      },
-      {
-        title: '操作',
-        key: 'action',
-        render: (_: any, record: FabricRoleSchema) => (
-          <Space size="small">
-            <a onClick={() => onDownLoadSDK(record)}>下载SDK配置</a>
-          </Space>
-        )
-      }
-    ];
-    setColumns(data);
-  }, [userRole]);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
@@ -247,7 +247,7 @@ function FabricRoleManagement(props: FabricRoleManagementProps) {
       )}
     </div>
   );
-}
+};
 
 export default connect(({ User, Organization, Layout, FabricRole, loading }: ConnectState) => ({
   User,

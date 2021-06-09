@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Dispatch, history } from 'umi';
+import { Dispatch, history, TransactionSchema } from 'umi';
 import { Table, Space, Row, Col, Spin } from 'antd';
 import { Breadcrumb } from '~/components';
 import baseConfig from '~/utils/config';
@@ -13,7 +13,7 @@ import { DetailViewAttr } from '~/utils/types';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 breadCrumbItem.push({
   menuName: '区块详情',
-  menuHref: `/`,
+  menuHref: `/`
 });
 
 export interface BlockDetailProps {
@@ -26,12 +26,12 @@ export interface BlockDetailProps {
 
 const BlockDetail: React.FC<BlockDetailProps> = ({
   match: {
-    params: { blockHash },
+    params: { blockHash }
   },
   User,
   Block,
   qryLoading = false,
-  dispatch,
+  dispatch
 }) => {
   const { networkName } = User;
   const { blockDetail, transactionList, transactionTotal } = Block;
@@ -44,46 +44,53 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
       dataIndex: 'txId',
       key: 'txId',
       ellipsis: true,
-      width: '20%',
+      width: '20%'
     },
     {
       title: '所属通道',
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '交易组织',
       dataIndex: 'txMsp',
       key: 'txMsp',
-      render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '合约名称',
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>,
+      render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text: string) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>,
+        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '操作',
       key: 'action',
-      render: (text: string, record: { channelId?: string; txMsp?: string; txId?: string }) => (
+      render: (text: string, record: TransactionSchema) => (
         <Space size="small">
           {record.channelId || record.txMsp ? (
-            <a onClick={() => onClickDetail(record)}>详情</a>
+            <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickDetail(e, record)}>
+              详情
+            </a>
           ) : (
-            <a className="a-forbidden-style">详情</a>
+            <a
+              href={`/about/transactions/${record.txId}`}
+              className="a-forbidden-style"
+              onClick={(e) => e.preventDefault()}>
+              详情
+            </a>
           )}
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   // 查询交易列表
@@ -94,11 +101,11 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
       from: Number(moment(new Date()).format('x')),
       offset: (pageNum - 1) * pageSize,
       limit: pageSize,
-      ascend: false,
+      ascend: false
     };
     dispatch({
       type: 'Block/getTransactionList',
-      payload: params,
+      payload: params
     });
   };
 
@@ -108,30 +115,31 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
   };
 
   // 点击查看交易详情
-  const onClickDetail = (record: { channelId?: string | undefined; txMsp?: string | undefined; txId: string }) => {
+  const onClickDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: TransactionSchema) => {
+    e.preventDefault();
     dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: '/about/transactions' },
+      payload: { selectedMenu: '/about/transactions' }
     });
     history.push({
       pathname: `/about/transactions/${record.txId}`,
       query: {
-        channelId: record.txId,
-      },
+        channelId: record.txId
+      }
     });
   };
 
   useEffect(() => {
     dispatch({
       type: 'Block/getBlockDetail',
-      payload: { blockHash, networkName },
+      payload: { blockHash, networkName }
     });
   }, []);
 
   useEffect(() => {
     dispatch({
       type: 'Block/getTxCountByBlockHash',
-      payload: { blockHash, networkName },
+      payload: { blockHash, networkName }
     });
   }, []);
 
@@ -144,24 +152,24 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
       return [
         {
           label: '当前哈希值',
-          value: blockDetail.blockHash,
+          value: blockDetail.blockHash
         },
         {
           label: '前序哈希值',
-          value: blockDetail.previousHash,
+          value: blockDetail.previousHash
         },
         {
           label: '交易笔数',
-          value: blockDetail.txCount,
+          value: blockDetail.txCount
         },
         {
           label: '生成时间',
-          value: moment(blockDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+          value: moment(blockDetail.createdAt).format('YYYY-MM-DD HH:mm:ss')
         },
         {
           label: '所属通道',
-          value: blockDetail.channelId,
-        },
+          value: blockDetail.channelId
+        }
       ];
     }
     return [];
@@ -181,9 +189,8 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
                 <Row
                   gutter={[
                     { xs: 8, sm: 16, md: 24, lg: 32 },
-                    { xs: 8, sm: 16, md: 24, lg: 32 },
-                  ]}
-                >
+                    { xs: 8, sm: 16, md: 24, lg: 32 }
+                  ]}>
                   {detailList.map((item) => (
                     <Fragment key={item.label}>
                       <Col className={styles['gutter-row-label']} span={3}>
@@ -208,7 +215,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
                 pageSize,
                 total: transactionTotal,
                 current: pageNum,
-                position: ['bottomCenter'],
+                position: ['bottomCenter']
               }}
             />
           </div>
@@ -223,5 +230,5 @@ export default connect(({ User, Layout, Block, loading }: ConnectState) => ({
   Layout,
   Block,
   qryLoading: loading.effects['Block/getBlockDetail'] || loading.effects['Block/getTransactionList'],
-  qryListLoading: loading.effects['Block/getTransactionList'],
+  qryListLoading: loading.effects['Block/getTransactionList']
 }))(BlockDetail);

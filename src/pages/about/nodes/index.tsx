@@ -24,7 +24,7 @@ export interface NodeManagementProps {
   Peer: ConnectState['Peer'];
 }
 
-function NodeManagement(props: NodeManagementProps) {
+const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   const { dispatch, qryLoading = false, User } = props;
   const { networkName, userRole } = User;
   const { nodeList, nodeTotal } = props.Peer;
@@ -38,11 +38,11 @@ function NodeManagement(props: NodeManagementProps) {
   // 获取节点列表
   const getNodeList = () => {
     const params = {
-      networkName,
+      networkName
     };
     dispatch({
       type: 'Peer/getNodeList',
-      payload: params,
+      payload: params
     });
   };
 
@@ -67,21 +67,22 @@ function NodeManagement(props: NodeManagementProps) {
     setSshModalVisible(true);
   };
 
-  const onDownLoadCertificate = (record: PeerSchema) => {
+  const onDownLoadCertificate = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: PeerSchema) => {
+    e.preventDefault();
     // token校验
     const accessToken = localStorage.getItem('accessToken');
     const roleToken = localStorage.getItem('roleToken');
     let headers = {
       'Content-Type': 'text/plain',
       Authorization: `Bearer ${accessToken}`,
-      RoleAuth: roleToken,
+      RoleAuth: roleToken
     };
 
     request(`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`, {
       headers,
       mode: 'cors',
       method: 'GET',
-      responseType: 'blob',
+      responseType: 'blob'
     }).then((res: any) => {
       const blob = new Blob([res]);
       saveAs(blob, `${networkName}.pem`);
@@ -95,19 +96,19 @@ function NodeManagement(props: NodeManagementProps) {
         title: '节点名称',
         dataIndex: 'nodeName',
         key: 'nodeName',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '节点别名',
         dataIndex: 'nodeAliasName',
         key: 'nodeAliasName',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '节点全名',
         dataIndex: 'nodeFullName',
         key: 'nodeFullName',
-        ellipsis: true,
+        ellipsis: true
       },
       {
         title: '状态',
@@ -122,33 +123,41 @@ function NodeManagement(props: NodeManagementProps) {
             />
           ) : (
             ''
-          ),
+          )
       },
       {
         title: '更新时间',
         dataIndex: 'updatedAt',
         key: 'updatedAt',
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
       },
       {
         title: '操作',
         key: 'action',
         render: (_, record: PeerSchema) => (
           <Space size="small">
-            {userRole === Roles.NetworkAdmin && <a onClick={() => onDownLoadCertificate(record)}>下载证书</a>}
+            {userRole === Roles.NetworkAdmin && (
+              <a
+                href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`}
+                onClick={(e) => onDownLoadCertificate(e, record)}>
+                下载证书
+              </a>
+            )}
             {availableNodeStatus.includes(record.nodeStatus) && (
-              <a onClick={() => onClickGetSSH(record)}>获取ssh命令</a>
+              <span role="button" className="table-action-span" onClick={() => onClickGetSSH(record)}>
+                获取ssh命令
+              </span>
             )}
           </Space>
-        ),
-      },
+        )
+      }
     ];
     if (userRole === Roles.NetworkAdmin) {
       const insertColumn = {
         title: '所属组织',
         dataIndex: 'orgName',
         key: 'orgName',
-        ellipsis: true,
+        ellipsis: true
       };
       data.splice(3, 0, insertColumn);
     }
@@ -180,7 +189,7 @@ function NodeManagement(props: NodeManagementProps) {
             total: nodeTotal,
             current: pageNum,
             showSizeChanger: false,
-            position: ['bottomCenter'],
+            position: ['bottomCenter']
           }}
         />
       </div>
@@ -190,11 +199,11 @@ function NodeManagement(props: NodeManagementProps) {
       {sshModalVisible && <SSHCommand nodeRecord={nodeRecord} visible={sshModalVisible} onCancel={onCloseModal} />}
     </div>
   );
-}
+};
 
 export default connect(({ User, Layout, Peer, loading }: ConnectState) => ({
   User,
   Layout,
   Peer,
-  qryLoading: loading.effects['Peer/getNodeList'],
+  qryLoading: loading.effects['Peer/getNodeList']
 }))(NodeManagement);

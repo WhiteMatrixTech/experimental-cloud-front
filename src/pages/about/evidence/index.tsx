@@ -33,42 +33,45 @@ function EvidenceDataList(props: EvidenceDataListProps) {
       dataIndex: 'evidenceHash',
       key: 'evidenceHash',
       ellipsis: true,
-      width: '20%',
+      width: '20%'
     },
     {
       title: '所属通道',
       dataIndex: 'channelId',
-      key: 'channelId',
+      key: 'channelId'
     },
     {
       title: '创建用户',
       dataIndex: 'companyName',
-      key: 'companyName',
+      key: 'companyName'
     },
     {
       title: '上链时间',
       dataIndex: 'updatedAt',
       key: 'updatedAt',
-      render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
+      render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '')
     },
     {
       title: '操作',
       key: 'action',
       render: (text, record: EvidenceSchema) => (
         <Space size="small">
-          <a onClick={() => onClickDetail(record)}>详情</a>
+          <a href={`/about/Evidence/${record.evidenceHash}`} onClick={(e) => onClickDetail(e, record)}>
+            详情
+          </a>
         </Space>
-      ),
-    },
+      )
+    }
   ];
   // 点击查看详情
-  const onClickDetail = (record: EvidenceSchema) => {
+  const onClickDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: EvidenceSchema) => {
+    e.preventDefault();
     history.push({
       pathname: `/about/Evidence/${record.evidenceHash}`,
       query: {
         evidenceHash: record.evidenceHash,
-        channelId: record.channelId,
-      },
+        channelId: record.channelId
+      }
     });
   };
 
@@ -94,28 +97,28 @@ function EvidenceDataList(props: EvidenceDataListProps) {
       limit: pageSize,
       offset: offset,
       ascend: false,
-      from: Number(moment(new Date()).format('x')),
+      from: Number(moment(new Date()).format('x'))
     };
     if (evidenceHash) {
       dispatch({
         type: 'Evidence/getEvidenceDataByHash',
-        payload: { networkName, evidenceHash },
+        payload: { networkName, evidenceHash }
       });
       return;
     }
     dispatch({
       type: 'Evidence/getEvidenceDataList',
-      payload: params,
+      payload: params
     });
   };
 
   const getEvidenceTotalDocs = () => {
     const params = {
-      networkName,
+      networkName
     };
     dispatch({
       type: 'Evidence/getEvidenceTotalDocs',
-      payload: params,
+      payload: params
     });
   };
 
@@ -156,7 +159,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
             total: evidenceDataTotal,
             current: pageNum,
             showSizeChanger: false,
-            position: ['bottomCenter'],
+            position: ['bottomCenter']
           }}
         />
       </div>
@@ -168,5 +171,5 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 export default connect(({ User, Evidence, loading }: ConnectState) => ({
   User,
   Evidence,
-  qryLoading: loading.effects['Evidence/getEvidenceDataList'] || loading.effects['Evidence/getEvidenceDataByHash'],
+  qryLoading: loading.effects['Evidence/getEvidenceDataList'] || loading.effects['Evidence/getEvidenceDataByHash']
 }))(EvidenceDataList);

@@ -48,13 +48,18 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
       key: 'action',
       render: (_: any, record: UserInfo) => (
         <Space size="small">
-          <a onClick={() => onClickConfig(record)}>配置访问角色</a>
+          <a
+            href={`/common/user-role-management/user-roles/${record.companyName}`}
+            onClick={(e) => onClickConfig(e, record)}>
+            配置访问角色
+          </a>
         </Space>
       )
     }
   ];
 
-  const onClickConfig = async (record: UserInfo) => {
+  const onClickConfig = async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: UserInfo) => {
+    e.preventDefault();
     await dispatch({
       type: 'UserRole/getRoleNameList',
       payload: {}

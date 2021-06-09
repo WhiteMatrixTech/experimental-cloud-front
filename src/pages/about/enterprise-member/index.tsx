@@ -134,18 +134,32 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
         <Space size="small">
           {record.approvalStatus === 'pending' && (
             <>
-              <a onClick={() => onClickToConfirm(record, 'agree')}>通过</a>
-              <a onClick={() => onClickToConfirm(record, 'reject')}>驳回</a>
+              <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'agree')}>
+                通过
+              </span>
+              <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'reject')}>
+                驳回
+              </span>
             </>
           )}
           {record.isValid === 'valid' && record.approvalStatus === 'approved' && (
-            <a onClick={() => onClickToConfirm(record, 'invalidate')}>停用</a>
+            <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'invalidate')}>
+              停用
+            </span>
           )}
           {record.isValid === 'invalid' && record.approvalStatus === 'approved' && (
-            <a onClick={() => onClickToConfirm(record, 'validate')}>启用</a>
+            <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'validate')}>
+              启用
+            </span>
           )}
-          <a onClick={() => onClickRbacConfig(record)}>配置访问权限</a>
-          <a onClick={() => onClickDetail(record)}>详情</a>
+          <span role="button" className="table-action-span" onClick={() => onClickRbacConfig(record)}>
+            配置访问权限
+          </span>
+          <a
+            href={`/about/enterprise-member/${record.companyCertBusinessNumber}`}
+            onClick={(e) => onClickDetail(e, record)}>
+            详情
+          </a>
         </Space>
       )
     }
@@ -196,7 +210,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       .catch((info) => {
         console.log('校验失败:', info);
       });
-  }, []);
+  }, [form]);
 
   // 重置
   const resetForm = () => {
@@ -213,7 +227,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   // 点击操作按钮, 进行二次确认
   const onClickToConfirm = (record: EnterpriseMemberSchema, type: string) => {
     let tipTitle = '';
-    let callback = null;
+    let callback = () => {};
     switch (type) {
       case 'validate':
         tipTitle = '启用';
@@ -290,7 +304,8 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   };
 
   // 点击查看详情
-  const onClickDetail = (record: EnterpriseMemberSchema) => {
+  const onClickDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: EnterpriseMemberSchema) => {
+    e.preventDefault();
     history.push({
       pathname: `/about/enterprise-member/${record.companyCertBusinessNumber}`,
       state: record
