@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Spin, Table, Space, Col, Row, Button, message } from 'antd';
+import { Spin, Table, Space, Col, Row, Button, message, Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import { BlockSchema, Dispatch, history, TransactionSchema } from 'umi';
 import moment from 'moment';
@@ -20,11 +21,22 @@ export interface LeagueDashboardProps {
   dispatch: Dispatch;
   qryBlockLoading: boolean;
   qryNetworkLoading: boolean;
+  stopNetworkLoading: boolean;
+  restartNetworkLoading: boolean;
   qryTransactionLoading: boolean;
   ElasticServer: ConnectState['ElasticServer'];
 }
 const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
-  const { Dashboard, User, dispatch, qryBlockLoading, qryNetworkLoading = false, qryTransactionLoading } = props;
+  const {
+    User,
+    dispatch,
+    Dashboard,
+    qryBlockLoading,
+    qryNetworkLoading = false,
+    stopNetworkLoading = false,
+    restartNetworkLoading = false,
+    qryTransactionLoading
+  } = props;
   const { leagueName, networkName, userRole } = User;
   const { serverTotal } = props.ElasticServer;
   const { networkStatusInfo, transactionList, blockList, channelTotal } = Dashboard;
@@ -106,11 +118,21 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   }, [dispatch, networkName]);
 
   const onStopNetwork = useCallback(() => {
-    dispatch({
-      type: 'Dashboard/stopNetwork',
-      payload: {
-        networkName: networkName
-      }
+    const confirm = () => {
+      dispatch({
+        type: 'Dashboard/stopNetwork',
+        payload: {
+          networkName: networkName
+        }
+      });
+    };
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: `确认要停用网络 【${networkName}】 吗?`,
+      okText: '确认',
+      cancelText: '取消',
+      onOk: confirm
     });
   }, [dispatch, networkName]);
 
@@ -319,15 +341,16 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
                 </a>
               </>
             );
-          } else {
-            btnShowInitValue.extraButton = (
-              <Col span={8}>
-                <Button type="primary" onClick={onStopNetwork}>
-                  停用网络
-                </Button>
-              </Col>
-            );
           }
+          // } else {
+          //   btnShowInitValue.extraButton = (
+          //     <Col span={8}>
+          //       <Button type="primary" onClick={onStopNetwork}>
+          //         停用网络
+          //       </Button>
+          //     </Col>
+          //   );
+          // }
           break;
         default:
           break;
@@ -370,7 +393,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
-        <Spin spinning={qryNetworkLoading}>
+        <Spin spinning={qryNetworkLoading || stopNetworkLoading || restartNetworkLoading}>
           <div className={style['league-basic-info']}>
             <Row>
               <Col span={8}>
@@ -426,5 +449,7 @@ export default connect(({ Layout, Dashboard, ElasticServer, User, loading }: Con
   ElasticServer,
   qryBlockLoading: loading.effects['Dashboard/getBlockList'],
   qryNetworkLoading: loading.effects['Dashboard/getNetworkInfo'],
+  stopNetworkLoading: loading.effects['Dashboard/stopNetwork'],
+  restartNetworkLoading: loading.effects['Dashboard/restartNetwork'],
   qryTransactionLoading: loading.effects['Dashboard/getTransactionList']
 }))(LeagueDashboard);

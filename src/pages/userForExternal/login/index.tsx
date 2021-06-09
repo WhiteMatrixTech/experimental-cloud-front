@@ -72,7 +72,7 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
               message: '请输入密码！'
             }
           ]}>
-          <Input prefix={<LockTwoTone className={styles.prefixIcon} />} placeholder="密码" />
+          <Input.Password prefix={<LockTwoTone className={styles.prefixIcon} />} placeholder="密码" />
         </FormItem>
         <Button size="large" type="primary" className={styles.submit} onClick={handleSubmit}>
           登录
