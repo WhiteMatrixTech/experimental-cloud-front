@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { ChainCodeSchema, Dispatch, history } from 'umi';
@@ -124,7 +123,8 @@ const MyContract: React.FC<MyContractProps> = (props) => {
     setEditModalVisible(true);
   };
 
-  const onDownLoadContract = (record: ChainCodeSchema) => {
+  const onDownLoadContract = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChainCodeSchema) => {
+    e.preventDefault();
     const { networkName } = props.User;
     const accessToken = localStorage.getItem('accessToken');
     const roleToken = localStorage.getItem('roleToken');
@@ -206,7 +206,8 @@ const MyContract: React.FC<MyContractProps> = (props) => {
   };
 
   // 查看合约详情
-  const onClickDetail = (record: ChainCodeSchema) => {
+  const onClickDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChainCodeSchema) => {
+    e.preventDefault();
     history.push({
       pathname: `/about/contract/contractDetail/${record.chainCodeName}`,
       state: record
@@ -261,26 +262,51 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       render: (_, record) => (
         // 非当前合约组织成员不可操作
         <Space size="small">
-          {record.canDownload && <a onClick={() => onDownLoadContract(record)}>下载合约</a>}
+          {record.canDownload && (
+            <a
+              href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`}
+              onClick={(e) => onDownLoadContract(e, record)}>
+              下载合约
+            </a>
+          )}
           {VerifyStatusList.includes(record.chainCodeStatus) && userRole === Roles.NetworkAdmin && (
-            <a onClick={() => onClickApprove(record)}>审核</a>
+            <span role="button" className="table-action-span" onClick={() => onClickApprove(record)}>
+              审核
+            </span>
           )}
           {record.chainCodeStatus === ChainCodeStatus.Verified && record.createdAt && (
-            <a onClick={() => onClickToConfirm(record, 'install')}>安装</a>
+            <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'install')}>
+              安装
+            </span>
           )}
           {record.chainCodeStatus === ChainCodeStatus.Installed && record.createdAt && (
-            <a onClick={() => onClickToConfirm(record, 'approve')}>发布</a>
+            <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'approve')}>
+              发布
+            </span>
           )}
           {UpdateStatusList.includes(record.chainCodeStatus) && record.createdAt && (
-            <a onClick={() => onClickUpgrade(record)}>升级</a>
+            <span role="button" className="table-action-span" onClick={() => onClickUpgrade(record)}>
+              升级
+            </span>
           )}
           {record.chainCodeStatus === ChainCodeStatus.Approved && record.canInvoke && (
-            <a onClick={() => onClickInvoke(record)}>调用</a>
+            <span role="button" className="table-action-span" onClick={() => onClickInvoke(record)}>
+              调用
+            </span>
           )}
           {record.createdAt || record.createOrgName ? (
-            <a onClick={() => onClickDetail(record)}>详情</a>
+            <a
+              href={`/about/contract/contractDetail/${record.chainCodeName}`}
+              onClick={(e) => onClickDetail(e, record)}>
+              详情
+            </a>
           ) : (
-            <a className="a-forbidden-style">详情</a>
+            <a
+              href={`/about/contract/contractDetail/${record.chainCodeName}`}
+              onClick={(e) => e.preventDefault()}
+              className="a-forbidden-style">
+              详情
+            </a>
           )}
         </Space>
       )

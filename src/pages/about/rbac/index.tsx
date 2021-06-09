@@ -16,7 +16,7 @@ export interface RbacConfigProps {
   dispatch: Dispatch;
   User: ConnectState['User'];
 }
-function RbacConfig(props: RbacConfigProps) {
+const RbacConfig: React.FC<RbacConfigProps> = (props) => {
   const { RBAC, qryLoading, dispatch, User } = props;
   const { networkName } = User;
   const { roleList } = RBAC;
@@ -48,8 +48,14 @@ function RbacConfig(props: RbacConfigProps) {
       key: 'action',
       render: (text, record: RbacRole) => (
         <Space size="small">
-          {!DisabledRole.includes(record.roleName) && <a onClick={() => onClickRbacConfig(record)}>配置</a>}
-          <a onClick={() => onClickRbacDetail(record)}>详情</a>
+          {!DisabledRole.includes(record.roleName) && (
+            <a href={`/about/rbac/${record.roleName}/config`} onClick={(e) => onClickRbacConfig(e, record)}>
+              配置
+            </a>
+          )}
+          <a href={`/about/rbac/${record.roleName}/detail`} onClick={(e) => onClickRbacDetail(e, record)}>
+            详情
+          </a>
         </Space>
       )
     }
@@ -83,7 +89,8 @@ function RbacConfig(props: RbacConfigProps) {
     });
   };
 
-  const onClickRbacConfig = (record: RbacRole) => {
+  const onClickRbacConfig = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: RbacRole) => {
+    e.preventDefault();
     history.push({
       pathname: `/about/rbac/${record.roleName}/config`,
       state: {
@@ -92,7 +99,8 @@ function RbacConfig(props: RbacConfigProps) {
     });
   };
 
-  const onClickRbacDetail = (record: RbacRole) => {
+  const onClickRbacDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: RbacRole) => {
+    e.preventDefault();
     history.push({
       pathname: `/about/rbac/${record.roleName}/detail`,
       state: {
@@ -131,7 +139,7 @@ function RbacConfig(props: RbacConfigProps) {
       </div>
     </div>
   );
-}
+};
 
 export default connect(({ User, Layout, RBAC, loading }: ConnectState) => ({
   User,
