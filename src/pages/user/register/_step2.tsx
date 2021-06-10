@@ -2,12 +2,25 @@ import { Form, Input, Popover, Progress } from 'antd';
 import React, { useEffect, useState, useCallback } from 'react';
 import { operType } from './index';
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 const FormItem = Form.Item;
 
 const passwordStatusMap = {
-  ok: <div className={styles.success}>强度：强</div>,
-  pass: <div className={styles.warning}>强度：中</div>,
-  poor: <div className={styles.error}>强度：弱</div>
+  ok: (
+    <div className={styles.success}>
+      {Intl.formatMessage('BASS_REGISTER_SAFETY')}：{Intl.formatMessage('BASS_REGISTER_SAFETY_LEVEL1')}
+    </div>
+  ),
+  pass: (
+    <div className={styles.warning}>
+      {Intl.formatMessage('BASS_REGISTER_SAFETY')}：{Intl.formatMessage('BASS_REGISTER_SAFETY_LEVEL2')}
+    </div>
+  ),
+  poor: (
+    <div className={styles.error}>
+      {Intl.formatMessage('BASS_REGISTER_SAFETY')}：{Intl.formatMessage('BASS_REGISTER_SAFETY_LEVEL3')}
+    </div>
+  )
 };
 
 type ProgressStatus = 'success' | 'normal' | 'exception' | 'active' | undefined;
@@ -71,7 +84,7 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
     const promise = Promise;
 
     if (value && value !== form.getFieldValue('password')) {
-      return promise.reject('两次输入的密码不匹配');
+      return promise.reject(Intl.formatMessage('BASS_REGISTER_PASSWORD_NO_MATCH'));
     }
 
     return promise.resolve();
@@ -82,7 +95,7 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
 
     if (!value) {
       setVisible(!!value);
-      return promise.reject('请输入密码');
+      return promise.reject(Intl.formatMessage('BASS_FABRIC_INPUT_PASSWORD'));
     } // 有值的情况
 
     if (!visible) {
@@ -125,50 +138,49 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入手机号'
+            message: Intl.formatMessage('BASS_USER_INFO_INPUT_CONTACT_PHONE')
           },
           {
             pattern: /^\d{11}$/,
-            message: '手机号格式错误'
+            message: Intl.formatMessage('BASS_USER_INFO_PHONE_FORMAT_WRONG')
           }
         ]}>
-        <Input size="middle" placeholder="联系人手机号" />
+        <Input size="middle" placeholder={Intl.formatMessage('BASS_USER_INFO_CONTACT_PHONE')} />
       </FormItem>
       <FormItem
         name="contactEmail"
         rules={[
           {
             required: true,
-            message: '请输入邮箱地址!'
+            message: Intl.formatMessage('BASS_USER_INFO_CONTACT_EMAIL_ADDRESS')
           },
           {
             type: 'email',
-            message: '邮箱地址格式错误'
+            message: Intl.formatMessage('BASS_USER_INFO_CONTACT_EMAIL_ADDRESS_FORMAT_WRONG')
           }
         ]}>
-        <Input size="middle" placeholder="联系人邮箱" />
+        <Input size="middle" placeholder={Intl.formatMessage('BASS_USER_INFO_CONTACT_EMAIL')} />
       </FormItem>
       <FormItem
         name="loginName"
         rules={[
           {
             required: true,
-            message: '请输入用户名!'
+            message: Intl.formatMessage('BASS_USER_INFO_INPUT_USER_NAME')
           },
           {
             type: 'string',
             pattern: /^[a-zA-Z0-9\-_]{5,20}$/,
-            message: '用户名不合法, 至少需要5个字符'
+            message: Intl.formatMessage('BASS_USER_INFO_INPUT_USER_NAME_LENGTH')
           }
         ]}>
-        <Input size="middle" placeholder="用户名" />
+        <Input size="middle" placeholder={Intl.formatMessage('BASS_USER_INFO_USER_NAME')} />
       </FormItem>
       <Popover
         getPopupContainer={(node) => {
           if (node && node.parentNode) {
             return node.parentNode;
           }
-
           return node;
         }}
         content={
@@ -183,7 +195,7 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
                 style={{
                   marginTop: 10
                 }}>
-                请至少输入 6 个字符。请不要使用容易被猜到的密码
+                {Intl.formatMessage('BASS_REGISTER_PASSWORD_LENGTH')}
               </div>
             </div>
           )
@@ -201,7 +213,7 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
               validator: checkPassword
             }
           ]}>
-          <Input size="middle" type="password" placeholder="至少6位密码，区分大小写" />
+          <Input size="middle" type="password" placeholder={Intl.formatMessage('BASS_REGISTER_PASSWORD_NUMBER')} />
         </FormItem>
       </Popover>
       <FormItem
@@ -209,13 +221,13 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请确认密码!'
+            message: Intl.formatMessage('BASS_FABRIC_INPUT_PASSWORD')
           },
           {
             validator: checkConfirm
           }
         ]}>
-        <Input size="middle" type="password" placeholder="确认密码" />
+        <Input size="middle" type="password" placeholder={Intl.formatMessage('BASS_FABRIC_CONFIRM_PASSWORD')} />
       </FormItem>
     </Form>
   );

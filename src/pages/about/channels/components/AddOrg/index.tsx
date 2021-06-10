@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
-import { Select, Form, Button, Modal } from 'antd';
+import { Select, Form, Button, Modal, notification } from 'antd';
 import { Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { OrganizationSchema } from '~/models/organization';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -59,8 +60,20 @@ function AddOrg(props: AddOrgProps) {
           type: 'Channel/addOrgForChannel',
           payload: { networkName, channelId, orgName: values.peerOrgNames }
         });
-        if (res) {
+        const { statusCode, result } = res;
+        if (statusCode === 'ok') {
           onCancel();
+          notification.success({
+            message: Intl.formatMessage('BASS_NOTIFICATION_CHANNEL_ADD_ORGANIZATION_SUCCESS'),
+            top: 64,
+            duration: 3
+          });
+        } else {
+          notification.error({
+            message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CHANNEL_ADD_ORGANIZATION_FAILED'),
+            top: 64,
+            duration: 3
+          });
         }
       })
       .catch((info) => {
@@ -72,14 +85,14 @@ function AddOrg(props: AddOrgProps) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '添加组织',
+    title: Intl.formatMessage('BASS_ORGANIZATION_ADD'),
     onCancel: onCancel,
     footer: [
       <Button key="cancel" onClick={onCancel}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="submit" onClick={handleSubmit} type="primary" loading={addLoading}>
-        提交
+        {Intl.formatMessage('BASS_COMMON_SUBMIT')}
       </Button>
     ]
   };
@@ -88,15 +101,18 @@ function AddOrg(props: AddOrgProps) {
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
         <Item
-          label="组织名称"
+          label={Intl.formatMessage('BASS_ORGANIZATION_NAME')}
           name="peerOrgNames"
           rules={[
             {
               required: true,
-              message: '请选择组织'
+              message: Intl.formatMessage('BASS_FABRIC_SELECT_ORGANIZATION_NAME')
             }
           ]}>
-          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择组织">
+          <Select
+            allowClear
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder={Intl.formatMessage('BASS_FABRIC_SELECT_ORGANIZATION_NAME')}>
             {optionalOrgList.map((item) => (
               <Option key={item.orgName} value={item.orgName}>
                 {item.orgName}

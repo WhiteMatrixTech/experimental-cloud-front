@@ -11,13 +11,14 @@ import styles from './index.less';
 import { Dispatch, Location, RbacRole } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { configValueState } from '../../_config';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const { Option } = Select;
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/rbac');
 breadCrumbItem.push({
-  menuName: '角色策略详情',
+  menuName: Intl.formatMessage('BASS_RBAC_CHARACTER_STRATEGY_DETAILS'),
   menuHref: `/`
 });
 export interface RbacDetailProps {
@@ -91,12 +92,12 @@ function RbacDetail(props: RbacDetailProps) {
           <div className={styles['rbac-config-content']}>
             <Row>
               <Col span={18} className={styles['company-selector']}>
-                <label>角色名称</label>
+                <label>{Intl.formatMessage('BASS_RBAC_ROLE_NAME')}</label>
                 <Select
                   disabled
                   allowClear
                   value={location.state?.roleName}
-                  placeholder="选择角色"
+                  placeholder={Intl.formatMessage('BASS_RBAC_SELECT_ROLE_NAME')}
                   style={{ width: '40%' }}
                   getPopupContainer={(triggerNode) => triggerNode.parentNode}>
                   {roleNameList.map((role) => (
@@ -107,7 +108,9 @@ function RbacDetail(props: RbacDetailProps) {
                 </Select>
               </Col>
               <Col span={24} className={styles['company-selector']}>
-                <label className={styles['vertical-top-label']}>配置策略</label>
+                <label className={styles['vertical-top-label']}>
+                  {Intl.formatMessage('BASS_RBAC_CONFIGURATION_STRATEGY')}
+                </label>
                 <div className={styles['config-list']}>
                   <Form layout="vertical" colon={false} form={form}>
                     <Row justify="center">
@@ -116,16 +119,18 @@ function RbacDetail(props: RbacDetailProps) {
                           label={
                             <>
                               <CaretDownOutlined />
-                              <span className={styles['form-label']}>区块信息</span>
+                              <span className={styles['form-label']}>
+                                {Intl.formatMessage('BASS_RBAC_BLOCK_INFORMATION')}
+                              </span>
                             </>
                           }
                           name="BlockInfo">
                           <Radio.Group disabled>
                             <Radio className={styles.radio} value="All">
-                              可查看网络下所有区块
+                              {Intl.formatMessage('BASS_RBAC_CAN_BE_VIEW_BLOCKS')}
                             </Radio>
                             <Radio className={styles.radio} value="None">
-                              不能查看区块信息
+                              {Intl.formatMessage('BASS_RBAC_CANNOT_BE_VIEW_BLOCKS')}
                             </Radio>
                           </Radio.Group>
                         </Item>
@@ -135,19 +140,21 @@ function RbacDetail(props: RbacDetailProps) {
                           label={
                             <>
                               <CaretDownOutlined />
-                              <span className={styles['form-label']}>交易信息</span>
+                              <span className={styles['form-label']}>
+                                {Intl.formatMessage('BASS_RBAC_TRANSACTION_INFORMATION')}
+                              </span>
                             </>
                           }
                           name="Transaction">
                           <Radio.Group disabled>
                             <Radio className={styles.radio} value="All">
-                              可查看网络下所有交易
+                              {Intl.formatMessage('BASS_RBAC_CAN_BE_VIEW_TRANSACTION')}
                             </Radio>
                             <Radio className={styles.radio} value="Own">
-                              只能查看自己创建的交易
+                              {Intl.formatMessage('BASS_RBAC_YOU_HAVE_CREATED_TRANSACTIONS')}
                             </Radio>
                             <Radio className={styles.radio} value="None">
-                              不能查看网络下的交易（不推荐）
+                              {Intl.formatMessage('BASS_RBAC_CANNOT_BE_VIEW_TRANSACTION')}
                             </Radio>
                           </Radio.Group>
                         </Item>
@@ -157,19 +164,19 @@ function RbacDetail(props: RbacDetailProps) {
                           label={
                             <>
                               <CaretDownOutlined />
-                              <span className={styles['form-label']}>合约（查看）</span>
+                              <span className={styles['form-label']}>{Intl.formatMessage('BASS_RBAC_CONTRACT')}</span>
                             </>
                           }
                           name="viewChaincode">
                           <Radio.Group disabled>
                             <Radio className={styles.radio} value="All">
-                              可查看网络下所有合约（不推荐）
+                              {Intl.formatMessage('BASS_RBAC_CAN_BE_VIEW_CONTRACT')}
                             </Radio>
                             <Radio className={styles.radio} value="InChannel">
-                              只能查看组织所属通道下的合约
+                              {Intl.formatMessage('BASS_RBAC_VIEW_CONTRACT_IN_CHANNELS')}
                             </Radio>
                             <Radio className={styles.radio} value="Own">
-                              只能查看自己创建的合约
+                              {Intl.formatMessage('BASS_RBAC_CAN_BE_VIEW_CONTRACT_BY_YOURSELF')}
                             </Radio>
                           </Radio.Group>
                         </Item>
@@ -179,18 +186,20 @@ function RbacDetail(props: RbacDetailProps) {
                           label={
                             <>
                               <CaretDownOutlined />
-                              <span className={styles['form-label']}>合约（下载）</span>
+                              <span className={styles['form-label']}>
+                                {Intl.formatMessage('BASS_RBAC_DOWNLOAD_CONTRACT')}
+                              </span>
                             </>
                           }
                           name="downloadChaincode">
                           <Radio.Group disabled>
                             {viewChaincode !== 'Own' && (
                               <Radio className={styles.radio} value="InChannel">
-                                可下载通道下的所有合约
+                                {Intl.formatMessage('BASS_RBAC_DOWNLOAD_CONTRACT_IN_CHANNEL')}
                               </Radio>
                             )}
                             <Radio className={styles.radio} value="Own">
-                              只可下载自己创建的合约
+                              {Intl.formatMessage('BASS_RBAC_DOWNLOAD_CONTRACT_BY_YOURSELF_CREATED')}
                             </Radio>
                           </Radio.Group>
                         </Item>
@@ -200,7 +209,9 @@ function RbacDetail(props: RbacDetailProps) {
                           label={
                             <>
                               <CaretDownOutlined />
-                              <span className={styles['form-label']}>合约（调用）</span>
+                              <span className={styles['form-label']}>
+                                {Intl.formatMessage('BASS_RBAC_USE_CONTRACT')}
+                              </span>
                             </>
                           }
                           className={invokeChaincodeCustom === 'Custom' ? styles['inline-form-item'] : ''}
@@ -208,11 +219,11 @@ function RbacDetail(props: RbacDetailProps) {
                           <Radio.Group disabled>
                             {viewChaincode !== 'Own' && (
                               <Radio className={styles.radio} value="InChannel">
-                                可调用通道下安装合约
+                                {Intl.formatMessage('BASS_RBAC_USE_CONTRACT_IN_CHANNEL')}
                               </Radio>
                             )}
                             <Radio className={styles.radio} value="None">
-                              禁止调用合约
+                              {Intl.formatMessage('BASS_RBAC_PROHIBITION_CONTRACT')}
                             </Radio>
                             {/* <Radio className={styles.radio} value="Custom">
                                 自定义可调用的合约
@@ -227,21 +238,22 @@ function RbacDetail(props: RbacDetailProps) {
                             rules={[
                               {
                                 required: true,
-                                message: '请选择合约'
+                                message: Intl.formatMessage('BASS_RBAC_SELECT_CONTRACT')
                               }
                             ]}>
                             <Select
                               disabled
                               allowClear
                               mode="multiple"
-                              placeholder="请选择合约"
+                              placeholder={Intl.formatMessage('BASS_RBAC_SELECT_CONTRACT')}
                               className={styles['inline-select']}
                               getPopupContainer={(triggerNode) => triggerNode.parentNode}>
                               {chaincodeList.map((chaincode) => (
                                 <Option
                                   key={`${chaincode.channelId}-${chaincode.chainCodeName}`}
                                   value={chaincode.chainCodeName}>
-                                  {`通道: ${chaincode.channelId} - 合约: ${chaincode.chainCodeName}`}
+                                  {`${Intl.formatMessage('BASS_CONSORTIUM_CHANNEL')}: ${chaincode.channelId
+                                    } - ${Intl.formatMessage('BASS_CONSORTIUM_CONTRACT')}: ${chaincode.chainCodeName}`}
                                 </Option>
                               ))}
                             </Select>

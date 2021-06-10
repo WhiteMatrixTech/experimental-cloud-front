@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Dispatch, history, Location } from 'umi';
-import { Table, Button, Badge, Space } from 'antd';
+import { Dispatch, history, Location, getLocale } from 'umi';
+import { Table, Button, Badge, Space, Divider } from 'antd';
 import { Breadcrumb } from '~/components';
 import CreateChannelModal from './components/CreateChannelModal';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
@@ -12,6 +12,7 @@ import { ChannelStatus } from './_config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { ChannelSchema } from '~/models/channel';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 
@@ -23,6 +24,7 @@ export interface ChannelManagementProps {
   location: Location<ChannelSchema>;
 }
 function ChannelManagement(props: ChannelManagementProps) {
+  const locales = getLocale();
   const { dispatch, qryLoading = false, location, User, Channel } = props;
   const { networkName, userRole } = User;
   const { channelList, channelTotal } = Channel;
@@ -105,71 +107,77 @@ function ChannelManagement(props: ChannelManagementProps) {
     });
   };
 
-  const columns: ColumnsType<any> = [
-    {
-      title: '通道名称',
-      dataIndex: 'channelId',
-      key: 'channelId'
-    },
-    {
-      title: '通道别名',
-      dataIndex: 'channelAliasName',
-      key: 'channelAliasName'
-    },
-    {
-      title: '通道状态',
-      dataIndex: 'channelStatus',
-      key: 'channelStatus',
-      render: (text) =>
-        text ? (
-          <Badge
-            color={ChannelStatus[text].color}
-            text={ChannelStatus[text].text}
-            style={{ color: ChannelStatus[text].color }}
-          />
-        ) : (
-          ''
+  const columns: ColumnsType<any> = useMemo(() => {
+    return [
+      {
+        title: Intl.formatMessage('BASS_CHANNEL_NAME'),
+        dataIndex: 'channelId',
+        key: 'channelId'
+      },
+      {
+        title: Intl.formatMessage('BASS_CHANNEL_ALIAS'),
+        dataIndex: 'channelAliasName',
+        key: 'channelAliasName'
+      },
+      {
+        title: Intl.formatMessage('BASS_CHANNEL_STATUS'),
+        dataIndex: 'channelStatus',
+        key: 'channelStatus',
+        render: (text) =>
+          text ? (
+            <Badge
+              color={ChannelStatus[text].color}
+              text={ChannelStatus[text].text}
+              style={{ color: ChannelStatus[text].color }}
+            />
+          ) : (
+            ''
+          )
+      },
+      {
+        title: Intl.formatMessage('BASS_CHANNEL_DESCRIBE'),
+        dataIndex: 'channelDesc',
+        key: 'channelDesc',
+        ellipsis: true
+      },
+      {
+        title: Intl.formatMessage('BASS_CHANNEL_CREATOR'),
+        dataIndex: 'createUser',
+        key: 'createUser'
+      },
+      {
+        title: Intl.formatMessage('BASS_COMMON_CREATE_TIME'),
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      },
+      {
+        title: Intl.formatMessage('BASS_COMMON_OPERATION'),
+        key: 'action',
+        width: locales === 'en-US' ? '350px' : '22%',
+        fixed: 'right',
+        render: (text, record: ChannelSchema) => (
+          <Space size="small">
+            <a href={`/about/channels/${record.channelId}/organizationList`} onClick={(e) => onViewOrg(e, record)}>
+              {Intl.formatMessage('BASS_CHANNEL_ORGANIZATION')}
+            </a>
+            <Divider type="vertical" />
+            <a href={`/about/channels/${record.channelId}/nodeList`} onClick={(e) => onViewPeer(e, record)}>
+              {Intl.formatMessage('BASS_CHANNEL_NODE')}
+            </a>
+            <Divider type="vertical" />
+            <a href={`/about/channels/${record.channelId}/chaincodeList`} onClick={(e) => onViewContract(e, record)}>
+              {Intl.formatMessage('BASS_CHANNEL_CONTRACT')}
+            </a>
+            <Divider type="vertical" />
+            <a href={`/about/channels/${record.channelId}/channelDetail`} onClick={(e) => onViewDetail(e, record)}>
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
+            </a>
+          </Space>
         )
-    },
-    {
-      title: '通道描述',
-      dataIndex: 'channelDesc',
-      key: 'channelDesc',
-      ellipsis: true
-    },
-    {
-      title: '创建者',
-      dataIndex: 'createUser',
-      key: 'createUser'
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
-    },
-    {
-      title: '操作',
-      key: 'action',
-      width: '22%',
-      render: (text, record: ChannelSchema) => (
-        <Space size="small">
-          <a href={`/about/channels/${record.channelId}/organizationList`} onClick={(e) => onViewOrg(e, record)}>
-            查看组织
-          </a>
-          <a href={`/about/channels/${record.channelId}/nodeList`} onClick={(e) => onViewPeer(e, record)}>
-            查看节点
-          </a>
-          <a href={`/about/channels/${record.channelId}/chaincodeList`} onClick={(e) => onViewContract(e, record)}>
-            查看合约
-          </a>
-          <a href={`/about/channels/${record.channelId}/channelDetail`} onClick={(e) => onViewDetail(e, record)}>
-            详情
-          </a>
-        </Space>
-      )
-    }
-  ];
+      }
+    ]
+  }, [locales]);
 
   useEffect(() => {
     if (location?.state?.openModal) {
@@ -184,7 +192,7 @@ function ChannelManagement(props: ChannelManagementProps) {
         {userRole === Roles.NetworkAdmin && (
           <div className="table-header-btn-wrapper">
             <Button type="primary" onClick={onClickCreateChannel}>
-              创建通道
+              {Intl.formatMessage('BASS_CHANNEL_CREATE')}
             </Button>
           </div>
         )}
@@ -194,6 +202,7 @@ function ChannelManagement(props: ChannelManagementProps) {
           columns={columns}
           dataSource={channelList}
           onChange={onPageChange}
+          scroll={{ x: 1300 }}
           pagination={{
             pageSize,
             total: channelTotal,

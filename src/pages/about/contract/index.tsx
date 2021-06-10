@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { ChainCodeSchema, Dispatch, history } from 'umi';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
-import { Table, Space, Badge, Modal, Button, message, Spin } from 'antd';
+import { Table, Space, Badge, Modal, Button, message, Spin, Divider, notification } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { Breadcrumb } from '~/components';
@@ -16,6 +16,8 @@ import { Roles } from '~/utils/roles';
 import { chainCodeStatusInfo, ChainCodeStatus, VerifyStatusList, UpdateStatusList } from './_config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
+
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 
 const pageSize = baseConfig.pageSize;
@@ -69,11 +71,11 @@ const MyContract: React.FC<MyContractProps> = (props) => {
     let callback = null;
     switch (type) {
       case 'install':
-        tipTitle = '安装';
+        tipTitle = Intl.formatMessage('BASS_CONTRACT_INSTALL');
         callback = () => installContract(record);
         break;
       case 'approve':
-        tipTitle = '发布';
+        tipTitle = Intl.formatMessage('BASS_CONTRACT_PUBLISH');
         callback = () => onClickRelease(record);
         break;
       default:
@@ -82,9 +84,12 @@ const MyContract: React.FC<MyContractProps> = (props) => {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
-      content: `确认要${tipTitle}合约 【${record.chainCodeName}】 吗?`,
-      okText: '确认',
-      cancelText: '取消',
+      content: Intl.formatMessage('BASS_CONFIRM_CONTRACT_MODAL_CONTENT', {
+        tipTitle: tipTitle,
+        chainCodeName: record.chainCodeName
+      }),
+      okText: Intl.formatMessage('BASS_COMMON_CONFIRM'),
+      cancelText: Intl.formatMessage('BASS_COMMON_CANCEL'),
       onOk: callback
     });
   };
@@ -107,7 +112,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
   const onClickAdd = () => {
     const { userOrgInuse } = props.Contract;
     if (!userOrgInuse) {
-      message.warn('请先在【组织管理】中添加您的组织，并确保您的组织在使用中');
+      message.warn(Intl.formatMessage('BASS_CONTRACT_MESSAGE_WARN_ADD_CONTRACT'));
       return;
     }
     setOperateType('new');
@@ -176,8 +181,20 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       type: 'Contract/releaseContract',
       payload: params
     });
-    if (res) {
+    const { statusCode, result } = res;
+    if (statusCode === 'ok') {
       getChainCodeList();
+      notification.success({
+        message: Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_PUBLISH_SUCCESS'),
+        top: 64,
+        duration: 3
+      });
+    } else {
+      notification.error({
+        message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_PUBLISH_FAILED'),
+        top: 64,
+        duration: 3
+      });
     }
   };
 
@@ -191,8 +208,20 @@ const MyContract: React.FC<MyContractProps> = (props) => {
         networkName: props.User.networkName
       }
     });
-    if (res) {
+    const { statusCode, result } = res;
+    if (statusCode === 'ok') {
       getChainCodeList();
+      notification.success({
+        message: Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_INSTALL_SUCCESS'),
+        top: 64,
+        duration: 3
+      });
+    } else {
+      notification.error({
+        message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_INSTALL_FAILED'),
+        top: 64,
+        duration: 3
+      });
     }
   };
 
@@ -207,32 +236,39 @@ const MyContract: React.FC<MyContractProps> = (props) => {
 
   const columns: ColumnsType<any> = [
     {
-      title: '合约名称',
+      title: Intl.formatMessage('BASS_CONTRACT_NAME'),
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '所属通道',
+      title: Intl.formatMessage('BASS_COMMON_CHANNEL'),
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '所属组织',
+      title: Intl.formatMessage('BASS_COMMON_ORGANIZATION'),
       dataIndex: 'createOrgName',
       key: 'createOrgName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '创建时间',
+      title: Intl.formatMessage('BASS_COMMON_CREATE_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+        text ? (
+          moment(text).format('YYYY-MM-DD HH:mm:ss')
+        ) : (
+          <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
+        )
     },
     {
-      title: '状态',
+      title: Intl.formatMessage('BASS_COMMON_STATUS'),
       dataIndex: 'chainCodeStatus',
       key: 'chainCodeStatus',
       render: (text) =>
@@ -243,60 +279,79 @@ const MyContract: React.FC<MyContractProps> = (props) => {
             style={{ color: chainCodeStatusInfo[text].color }}
           />
         ) : (
-          <span className="a-forbidden-style">信息访问受限</span>
+          <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
         )
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
-      width: '20%',
+      width: '320px',
+      fixed: 'right',
       render: (_, record) => (
         // 非当前合约组织成员不可操作
         <Space size="small">
           {record.canDownload && (
-            <a
-              href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`}
-              onClick={(e) => onDownLoadContract(e, record)}>
-              下载合约
-            </a>
+            <div>
+              <a
+                href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`}
+                onClick={(e) => onDownLoadContract(e, record)}>
+                {Intl.formatMessage('BASS_CONTRACT_DOWNLOAD_CONTRACTS')}
+              </a>
+              <Divider type="vertical" />
+            </div>
           )}
           {VerifyStatusList.includes(record.chainCodeStatus) && userRole === Roles.NetworkAdmin && (
-            <span role="button" className="table-action-span" onClick={() => onClickApprove(record)}>
-              审核
-            </span>
+            <div>
+              <span role="button" className="table-action-span" onClick={() => onClickApprove(record)}>
+                {Intl.formatMessage('BASS_CONTRACT_REVIEW')}
+              </span>
+              <Divider type="vertical" />
+            </div>
           )}
           {record.chainCodeStatus === ChainCodeStatus.Verified && record.createdAt && (
-            <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'install')}>
-              安装
-            </span>
+            <div>
+              <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'install')}>
+                {Intl.formatMessage('BASS_CONTRACT_INSTALL')}
+              </span>
+              <Divider type="vertical" />
+            </div>
           )}
           {record.chainCodeStatus === ChainCodeStatus.Installed && record.createdAt && (
-            <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'approve')}>
-              发布
-            </span>
+            <div>
+              <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'approve')}>
+                {Intl.formatMessage('BASS_CONTRACT_PUBLISH')}
+              </span>
+              <Divider type="vertical" />
+            </div>
           )}
           {UpdateStatusList.includes(record.chainCodeStatus) && record.createdAt && (
-            <span role="button" className="table-action-span" onClick={() => onClickUpgrade(record)}>
-              升级
-            </span>
+            <div>
+              <span role="button" className="table-action-span" onClick={() => onClickUpgrade(record)}>
+                {Intl.formatMessage('BASS_CONTRACT_UPGRADE')}
+              </span>
+              <Divider type="vertical" />
+            </div>
           )}
           {record.chainCodeStatus === ChainCodeStatus.Approved && record.canInvoke && (
-            <span role="button" className="table-action-span" onClick={() => onClickInvoke(record)}>
-              调用
-            </span>
+            <div>
+              <span role="button" className="table-action-span" onClick={() => onClickInvoke(record)}>
+                {Intl.formatMessage('BASS_CONTRACT_CALL')}
+              </span>
+              <Divider type="vertical" />
+            </div>
           )}
           {record.createdAt || record.createOrgName ? (
             <a
               href={`/about/contract/contractDetail/${record.chainCodeName}`}
               onClick={(e) => onClickDetail(e, record)}>
-              详情
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
             </a>
           ) : (
             <a
               href={`/about/contract/contractDetail/${record.chainCodeName}`}
               onClick={(e) => e.preventDefault()}
               className="a-forbidden-style">
-              详情
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
             </a>
           )}
         </Space>
@@ -314,12 +369,12 @@ const MyContract: React.FC<MyContractProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Spin spinning={downloading} tip="下载中...">
+      <Spin spinning={downloading} tip={Intl.formatMessage('BASS_CONTRACT_SPIN_TIP_VALUE')}>
         <Breadcrumb breadCrumbItem={breadCrumbItem} />
         <div className="page-content page-content-shadow table-wrapper">
           <div className="table-header-btn-wrapper">
             <Button type="primary" onClick={onClickAdd}>
-              创建合约
+              {Intl.formatMessage('BASS_CONTRACT_CREATE_CONTRACT')}
             </Button>
           </div>
           <Table

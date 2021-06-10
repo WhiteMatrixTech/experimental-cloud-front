@@ -5,6 +5,7 @@ import { normFile, handleBeforeUpload } from './_func';
 import { ConnectState } from '~/models/connect';
 import { ChainCodeSchema } from '~/models/contract';
 import { Dispatch } from 'umi';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -12,17 +13,17 @@ const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
 
 const modalTitle = {
-  new: '新增合约',
-  modify: '修改合约',
-  upgrade: '升级合约',
+  new: Intl.formatMessage('BASS_CONTRACT_ADD_CONTRACT'),
+  modify: Intl.formatMessage('BASS_CONTRACT_MODIFY'),
+  upgrade: Intl.formatMessage('BASS_contract_UPGRADE')
 };
 export interface EditContractProps {
   visible: boolean;
@@ -46,7 +47,7 @@ function EditContract(props: EditContractProps) {
   const handleSubmit = () => {
     form
       .validateFields()
-      .then((values: any) => {
+      .then(async (values: any) => {
         values.chainCodePackageMetaData = fileJson;
         const { upload, ...rest } = values;
         const params = rest;
@@ -56,26 +57,48 @@ function EditContract(props: EditContractProps) {
         params.networkName = networkName;
         params.endorsementPolicy = {
           policyType: 'Default',
-          orgsToApprove: [],
+          orgsToApprove: []
         };
         if (operateType === 'new') {
-          dispatch({
+          const res = await dispatch({
             type: 'Contract/addContract',
-            payload: params,
-          }).then((res: any) => {
-            if (res) {
-              onCancel(true);
-            }
+            payload: params
           });
+          const { statusCode, result } = res;
+          if (statusCode === 'ok') {
+            onCancel(true);
+            notification.success({
+              message: Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_ADD_SUCCESS'),
+              top: 64,
+              duration: 3
+            });
+          } else {
+            notification.error({
+              message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_ADD_FAILED'),
+              top: 64,
+              duration: 3
+            });
+          }
         } else {
-          dispatch({
+          let res = await dispatch({
             type: 'Contract/upgradeContract',
-            payload: params,
-          }).then((res: any) => {
-            if (res) {
-              onCancel(true);
-            }
+            payload: params
           });
+          const { statusCode, result } = res;
+          if (statusCode === 'ok') {
+            onCancel(true);
+            notification.success({
+              message: Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_UPGRADE_SUCCESS'),
+              top: 64,
+              duration: 3
+            });
+          } else {
+            notification.error({
+              message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_UPGRADE_FAILED'),
+              top: 64,
+              duration: 3
+            });
+          }
         }
       })
       .catch((info: any) => {
@@ -90,7 +113,7 @@ function EditContract(props: EditContractProps) {
   const onChangeChannel = (value: any) => {
     dispatch({
       type: 'Contract/getOrgListWithChannel',
-      payload: { networkName, channelId: value },
+      payload: { networkName, channelId: value }
     });
     form.setFieldsValue({ endorsementOrgName: null });
   };
@@ -98,7 +121,7 @@ function EditContract(props: EditContractProps) {
   useEffect(() => {
     dispatch({
       type: 'Contract/getChannelListByOrg',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, [dispatch, networkName]);
 
@@ -113,7 +136,7 @@ function EditContract(props: EditContractProps) {
     beforeUpload: handleBeforeUpload,
     headers: {
       Authorization: `Bearer ${accessToken}`,
-      RoleAuth: roleToken,
+      RoleAuth: roleToken
     },
     onChange(info: { file: { status: string; name: any; response: React.SetStateAction<null> } }) {
       if (info.file.status === 'done') {
@@ -121,23 +144,25 @@ function EditContract(props: EditContractProps) {
         setFileJson(info.file.response);
       } else if (info.file.status === 'error') {
         notification.error({
-          message: info.file.response ? info.file.response.message : '合约上传出错',
+          message: info.file.response
+            ? info.file.response.message
+            : Intl.formatMessage('BASS_CONTRACT_NOTIFICATION_ERROR_UPLOAD_CONTRACT'),
           top: 64,
-          duration: 3,
+          duration: 3
         });
         setFileJson(null);
       }
-    },
+    }
   };
 
   const checkChaincodeVersion = (_: any, value: number) => {
     const promise = Promise; // 没有值的情况
 
     if (!value) {
-      return promise.reject('请输入合约版本');
+      return promise.reject(Intl.formatMessage('BASS_CONTRACT_INPUT_CONTRACT_VERSION'));
     } // 有值的情况
     if (editParams && editParams.chainCodeVersion && Number(editParams.chainCodeVersion) >= value) {
-      return promise.reject('请输入新的合约版本');
+      return promise.reject(Intl.formatMessage('BASS_CONTRACT_INPUT_NEW_CONTRACT_VERSION'));
     }
     return promise.resolve();
   };
@@ -150,41 +175,45 @@ function EditContract(props: EditContractProps) {
     onCancel: onCancel,
     footer: [
       <Button key="cancel" onClick={onCancel}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="submit" loading={btnLoading} onClick={handleSubmit} disabled={!fileJson} type="primary">
-        提交
-      </Button>,
-    ],
+        {Intl.formatMessage('BASS_COMMON_SUBMIT')}
+      </Button>
+    ]
   };
 
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
-        <Item label="上传方式">本地上传</Item>
-        <Item name="upload" label="本地合约" valuePropName="fileList" getValueFromEvent={normFile}>
+        <Item label={Intl.formatMessage('BASS_CONTRACT_UPLOAD_METHOD')}>
+          {Intl.formatMessage('BASS_CONTRACT_LOCAL_UPLOAD')}
+        </Item>
+        <Item
+          name="upload"
+          label={Intl.formatMessage('BASS_CONTRACT_LOCAL_CONTRACTS')}
+          valuePropName="fileList"
+          getValueFromEvent={normFile}>
           <Upload {...uploadProps}>
-            <Button type="primary">上传合约</Button>
+            <Button type="primary">{Intl.formatMessage('BASS_CONTRACT_UPLOAD_CONTRACT')}</Button>
           </Upload>
         </Item>
         <Item
-          label="所属通道"
+          label={Intl.formatMessage('BASS_COMMON_CHANNEL')}
           name="channelId"
           initialValue={editParams && editParams.channelId}
           rules={[
             {
               required: true,
-              message: '请选择通道',
-            },
-          ]}
-        >
+              message: Intl.formatMessage('BASS_COMMON_SELECT_CHANNEL')
+            }
+          ]}>
           <Select
             allowClear
             getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
             disabled={operateType !== 'new'}
             onChange={onChangeChannel}
-            placeholder="请选择通道"
-          >
+            placeholder={Intl.formatMessage('BASS_COMMON_SELECT_CHANNEL')}>
             {myChannelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
@@ -193,69 +222,70 @@ function EditContract(props: EditContractProps) {
           </Select>
         </Item>
         <Item
-          label="合约名称"
+          label={Intl.formatMessage('BASS_CONTRACT_NAME')}
           name="chainCodeName"
           initialValue={editParams && editParams.chainCodeName}
           rules={[
             {
               required: true,
-              message: '请输入合约名称',
-            },
-          ]}
-        >
-          <Input placeholder="请输入合约名称" disabled={operateType !== 'new'} />
+              message: Intl.formatMessage('BASS_CONTRACT_SELECT_CONTRACT_NAME')
+            }
+          ]}>
+          <Input
+            placeholder={Intl.formatMessage('BASS_CONTRACT_INPUT_CONTRACT_NAME')}
+            disabled={operateType !== 'new'}
+          />
         </Item>
-        {operateType !== 'new' && <Item label="当前版本">{editParams && editParams.chainCodeVersion}</Item>}
+        {operateType !== 'new' && (
+          <Item label={Intl.formatMessage('BASS_CONTRACT_VERSION')}>{editParams && editParams.chainCodeVersion}</Item>
+        )}
         <Item
-          label="合约版本"
+          label={Intl.formatMessage('BASS_CONTRACT_CONTRACT_VERSION')}
           name="chainCodeVersion"
           initialValue=""
           rules={[
             {
               validateTrigger: 'submit',
-              validator: checkChaincodeVersion,
-            },
-          ]}
-        >
-          <Input type="number" step={0.1} placeholder="请输入合约版本" />
+              validator: checkChaincodeVersion
+            }
+          ]}>
+          <Input type="number" step={0.1} placeholder={Intl.formatMessage('BASS_CONTRACT_INPUT_CONTRACT_VERSION')} />
         </Item>
         <Item
-          label="是否初始化"
+          label={Intl.formatMessage('BASS_CONTRACT_INITIALIZE_OR_NOT')}
           name="initRequired"
           initialValue={false}
           valuePropName="checked"
           rules={[
             {
               required: true,
-              message: '请选择是否需要初始化',
-            },
-          ]}
-        >
+              message: Intl.formatMessage('BASS_CONTRACT_SELECT_INITIALIZE_OR_NOT')
+            }
+          ]}>
           <Switch onChange={onChangeInit} />
         </Item>
         {initRequired && (
           <Item
-            label="参数列表"
+            label={Intl.formatMessage('BASS_CONTRACT_PARAMETER_LIST')}
             name="initArgs"
             initialValue=""
             rules={[
               {
                 required: true,
-                message: '请输入参数列表',
+                message: Intl.formatMessage('BASS_CONTRACT_INPUT_PARAMETER_LIST')
               },
               {
                 min: 1,
                 max: 1000,
                 type: 'string',
-                message: '参数由1~1000位组成',
-              },
-            ]}
-          >
-            <TextArea placeholder="请输入参数列表" />
+                message: Intl.formatMessage('BASS_CONTRACT_PARAMETER_LIST_NUMBER')
+              }
+            ]}>
+            <TextArea placeholder={Intl.formatMessage('BASS_CONTRACT_INPUT_PARAMETER_LIST')} />
           </Item>
         )}
         <Item
-          label="合约描述"
+          label={Intl.formatMessage('BASS_CONTRACT_DESCRIPTION')}
           name="description"
           initialValue=""
           rules={[
@@ -263,11 +293,10 @@ function EditContract(props: EditContractProps) {
               min: 1,
               max: 100,
               type: 'string',
-              message: '合约描述由0~100个字符组成',
-            },
-          ]}
-        >
-          <TextArea placeholder="请输入合约描述" />
+              message: Intl.formatMessage('BASS_CONTRACT_DESCRIPTION_NUMBER')
+            }
+          ]}>
+          <TextArea placeholder={Intl.formatMessage('BASS_CONTRACT_INPUT_DESCRIPTION')} />
         </Item>
       </Form>
     </Modal>
@@ -277,5 +306,5 @@ function EditContract(props: EditContractProps) {
 export default connect(({ Contract, User, loading }: ConnectState) => ({
   Contract,
   User,
-  btnLoading: loading.effects['Contract/addContract'] || loading.effects['Contract/upgradeContract'],
+  btnLoading: loading.effects['Contract/addContract'] || loading.effects['Contract/upgradeContract']
 }))(EditContract);

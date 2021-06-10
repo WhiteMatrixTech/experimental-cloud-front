@@ -1,5 +1,4 @@
 import * as API from '../services/block-chain-compile';
-import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 import { JobCategory, JobStatus } from '~/pages/common/job-management/_config';
 import { ConnectState } from './connect';
@@ -108,15 +107,7 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
     },
 
     *oneKeyCompile({ payload }, { call, put }) {
-      const res = yield call(API.oneKeyCompileApi, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        notification.success({ message: result.message || '一键编译请求发起成功', top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || '一键编译请求发起失败', top: 64, duration: 3 });
-        return false;
-      }
+      return yield call(API.oneKeyCompileApi, payload);
     },
 
     *getJobList({ payload }, { call, put, select }) {

@@ -1,0 +1,28 @@
+export const CHANNEL_US = {
+  BASS_CHANNEL_MANAGEMENT: 'Channel Management',
+  BASS_CHANNEL_NAME: 'Channel Name',
+  BASS_CHANNEL_INPUT_NAME: 'Please input the channel name',
+  BASS_CHANNEL_NAME_LENGTH:
+    'The channel name must consist of 4-20 lowercase letters or numbers, beginning with a letter',
+  BASS_CHANNEL_INPUT_ALIAS: 'Please enter the channel alias',
+  BASS_CHANNEL_ALIAS_LENGTH: 'The channel alias must be a combination of 1 to 50 digit alphabet and Chinese characters',
+  BASS_CHANNEL_ALIAS: 'Channel Alias',
+  BASS_CHANNEL_STATUS: 'Channel Status',
+  BASS_CHANNEL_DESCRIBE: 'Channel Description',
+  BASS_CHANNEL_INPUT_DESCRIBE: 'Please input the channel describe',
+  BASS_CHANNEL_DESCRIBE_LENGTH: 'The channel description consists of 0 to 300 characters',
+  BASS_CHANNEL_CREATOR: 'Creator',
+  BASS_CHANNEL_VIEW_ORGANIZATION: 'View Organizations',
+  BASS_CHANNEL_VIEW_NODE: 'View Nodes',
+  BASS_CHANNEL_VIEW_CONTRACT: 'View Contracts',
+  BASS_CHANNEL_NUMBER_OF_ORGANIZATION: 'Organization Total',
+  BASS_CHANNEL_TOTAL_NUMBER_OF_NODES: 'Node Total',
+  BASS_CHANNEL_ID: 'Channel ID',
+  BASS_CHANNEL_ORGANIZATION: 'Organization',
+  BASS_CHANNEL_NODE: 'Node',
+  BASS_CHANNEL_BLOCK: 'Block',
+  BASS_CHANNEL_TRANSACTIONS: 'Transactions',
+  BASS_CHANNEL_CONTRACT: 'Contract',
+  BASS_CHANNEL_CREATE: 'Create Channel',
+  BASS_CHANNEL_DESCRIPTION: 'Details'
+};

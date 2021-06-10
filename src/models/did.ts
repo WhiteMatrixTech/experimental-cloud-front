@@ -1,6 +1,7 @@
 import * as API from '../services/did';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
+import { formatMessage } from 'umi';
 
 export type DidSchema = {
   did: string;
@@ -38,7 +39,7 @@ const DIDModel: DIDModelType = {
     didList: [],
     didTotal: 0,
 
-    didDetail: null,
+    didDetail: null
   },
 
   effects: {
@@ -50,11 +51,15 @@ const DIDModel: DIDModelType = {
           type: 'common',
           payload: {
             didList: result.records || [],
-            didTotal: result.records ? result.records.length : 0,
-          },
+            didTotal: result.records ? result.records.length : 0
+          }
         });
       } else {
-        notification.error({ message: result.message || 'DID查询失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DID_QUERY_FAILED' }),
+          top: 64,
+          duration: 3
+        });
       }
     },
 
@@ -67,11 +72,15 @@ const DIDModel: DIDModelType = {
           payload: {
             didDetail: result,
             didList: [result],
-            didTotal: 1,
-          },
+            didTotal: 1
+          }
         });
       } else {
-        notification.error({ message: result.message || 'DID查询失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DID_QUERY_FAILED' }),
+          top: 64,
+          duration: 3
+        });
       }
     },
 
@@ -79,13 +88,25 @@ const DIDModel: DIDModelType = {
       const res = yield call(API.createDID, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || 'DID创建成功, 请重新登录以获取DID', top: 64, duration: 3 });
+        notification.success({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DID_NEW_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
         if (result.message && result.message.indexOf('didchannel') > -1) {
-          notification.error({ message: '请在【通道管理中】创建一个didchannel', top: 64, duration: 3 });
+          notification.error({
+            message: formatMessage({ id: 'BASS_NOTIFICATION_DID_CREATE_DIDCHANNEL' }),
+            top: 64,
+            duration: 3
+          });
         } else {
-          notification.error({ message: result.message || 'DID创建失败', top: 64, duration: 3 });
+          notification.error({
+            message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DID_CREATED_FAILED' }),
+            top: 64,
+            duration: 3
+          });
         }
         return false;
       }
@@ -95,10 +116,18 @@ const DIDModel: DIDModelType = {
       const res = yield call(API.modifyDID, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '修改DID成功', top: 64, duration: 3 });
+        notification.success({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DID_MODIFY_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '修改DID失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DID_MODIFY_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -107,20 +136,28 @@ const DIDModel: DIDModelType = {
       const res = yield call(API.deleteDID, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '删除DID成功', top: 64, duration: 3 });
+        notification.success({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DID_DELETE_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '删除DID失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DID_DELETE_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default DIDModel;

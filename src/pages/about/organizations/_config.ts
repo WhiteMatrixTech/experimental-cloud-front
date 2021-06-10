@@ -1,13 +1,15 @@
+import { Intl } from '~/utils/locales';
+
 export const orgStatus = {
-  InUse: { color: 'green', text: '使用中' },
-  Creating: { color: 'orange', text: '创建中' },
-  CreationFailed: { color: 'red', text: '创建失败' },
-  Stopping: { color: 'orange', text: '停用中' },
-  StopFailed: { color: 'red', text: '停用失败' },
-  Stopped: { color: ':#E2E9F7', text: '已停用' },
-  Deleting: { color: 'orange', text: '删除中' },
-  DeletionFailed: { color: 'red', text: '删除失败' },
-  Deleted: { color: 'volcano', text: '已删除' }
+  InUse: { color: 'green', text: Intl.formatMessage('BASS_NODE_INUSE') },
+  Creating: { color: 'orange', text: Intl.formatMessage('BASS_NODE_CREATE_IN_PROGRESS') },
+  CreationFailed: { color: 'red', text: Intl.formatMessage('BASS_NODE_CREATE_FAILED') },
+  Stopping: { color: 'orange', text: Intl.formatMessage('BASS_NODE_BEING_DEACTIVATED') },
+  StopFailed: { color: 'red', text: Intl.formatMessage('BASS_NODE_DEACTIVATION_FAILED') },
+  Stopped: { color: ':#E2E9F7', text: Intl.formatMessage('BASS_NODE_DEACTIVATED') },
+  Deleting: { color: 'orange', text: Intl.formatMessage('BASS_NODE_BEING_REMOVED') },
+  DeletionFailed: { color: 'red', text: Intl.formatMessage('BASS_NODE_DELETED_FAILED') },
+  Deleted: { color: 'volcano', text: Intl.formatMessage('BASS_NODE_DELETED') }
 };
 
 export enum OrgStatusEnum {

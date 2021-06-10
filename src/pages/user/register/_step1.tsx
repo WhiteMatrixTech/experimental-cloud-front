@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { Form, Input } from 'antd';
 import { operType } from './index';
+import { Intl } from '~/utils/locales';
 const FormItem = Form.Item;
 
 export type StepOneProps = {
@@ -37,10 +38,10 @@ const StepOne: React.FC<StepOneProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入用户名称!'
+            message: Intl.formatMessage('BASS_USER_INFO_INPUT_USER_NAME')
           }
         ]}>
-        <Input size="middle" placeholder="用户名称" />
+        <Input size="middle" placeholder={Intl.formatMessage('BASS_USER_INFO_USER_NAME')} />
       </FormItem>
       <FormItem
         initialValue={basicInfo.companyCertBusinessNumber ? basicInfo.companyCertBusinessNumber : ''}
@@ -48,10 +49,10 @@ const StepOne: React.FC<StepOneProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入统一社会信用代码!'
+            message: Intl.formatMessage('BASS_USER_INFO_UNIFIED_CODE')
           }
         ]}>
-        <Input size="middle" placeholder="统一社会信用代码" />
+        <Input size="middle" placeholder={Intl.formatMessage('BASS_USER_INFO_UNIFIED_CODE')} />
       </FormItem>
       <FormItem
         initialValue={basicInfo.legalPersonName ? basicInfo.legalPersonName : ''}
@@ -59,10 +60,10 @@ const StepOne: React.FC<StepOneProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入法人代表姓名!'
+            message: Intl.formatMessage('BASS_USER_INFO_LEGAL_NAME')
           }
         ]}>
-        <Input size="middle" placeholder="法人代表姓名" />
+        <Input size="middle" placeholder={Intl.formatMessage('BASS_USER_INFO_LEGAL_NAME')} />
       </FormItem>
       <FormItem
         initialValue={basicInfo.contactName ? basicInfo.contactName : ''}
@@ -70,10 +71,10 @@ const StepOne: React.FC<StepOneProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入联系人姓名!'
+            message: Intl.formatMessage('BASS_USER_INFO_INPUT_CONTACT_PERSON_NAME')
           }
         ]}>
-        <Input size="middle" placeholder="联系人姓名" />
+        <Input size="middle" placeholder={Intl.formatMessage('BASS_USER_INFO_INPUT_CONTACT_PERSON_NAME')} />
       </FormItem>
       <FormItem
         initialValue={basicInfo.companyAddress ? basicInfo.companyAddress : ''}
@@ -81,13 +82,13 @@ const StepOne: React.FC<StepOneProps> = (props) => {
         rules={[
           {
             required: true,
-            message: '请输入联系人地址!'
+            message: Intl.formatMessage('BASS_USER_INFO_INPUT_CONTACT_ADDRESS')
           }
         ]}>
-        <Input size="middle" placeholder="联系地址" />
+        <Input size="middle" placeholder={Intl.formatMessage('BASS_USER_INFO_INPUT_CONTACT_ADDRESS')} />
       </FormItem>
       <FormItem initialValue={basicInfo.invitationCode ? basicInfo.invitationCode : ''} name="invitationCode">
-        <Input size="middle" placeholder="邀请码" />
+        <Input size="middle" placeholder={Intl.formatMessage('BASS_REGISTER_INVITATION_CODE')} />
       </FormItem>
     </Form>
   );

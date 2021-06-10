@@ -10,6 +10,7 @@ import { Roles } from '~/utils/roles';
 import { NetworkStatus } from '~/utils/networkStatus';
 import { ConnectState } from '~/models/connect';
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 
 const { SubMenu } = Menu;
 
@@ -36,7 +37,10 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
       unavailableNetworkStatus.includes(networkStatusInfo.networkStatus) &&
       !availableMenu.includes(menu.menuHref)
     ) {
-      const warnMes = userRole === Roles.NetworkAdmin ? '请先创建网络' : '请等待盟主创建网络';
+      const warnMes =
+        userRole === Roles.NetworkAdmin
+          ? Intl.formatMessage('BASS_MENU_PLEASE_CREATE_NETWORK')
+          : Intl.formatMessage('BASS_MENU_WAITING_CONSORTIUM_MASTER_CREATE_NETWORK');
       message.warn(warnMes);
       return;
     }
@@ -44,7 +48,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
       history.push(menu.menuHref);
       dispatch({
         type: 'Layout/common',
-        payload: { selectedMenu: menu.menuHref },
+        payload: { selectedMenu: menu.menuHref }
       });
       localStorage.setItem('selectedMenu', menu.menuHref);
     }
@@ -60,7 +64,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
     }
     if (isEmpty(item.subMenus)) {
       return (
-        <Menu.Item key={item.menuHref} onClick={() => hashChange(item)}>
+        <Menu.Item key={item.menuHref} title={item.menuName} onClick={() => hashChange(item)}>
           <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
           <span>{item.menuName}</span>
         </Menu.Item>
@@ -74,14 +78,13 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
               <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
               <span>{item.menuName}</span>
             </div>
-          }
-        >
+          }>
           {item.subMenus.map((subItem) => {
             if (!item.accessRole.includes(userRole)) {
               return '';
             }
             return (
-              <Menu.Item key={subItem.menuHref} onClick={() => hashChange(subItem)}>
+              <Menu.Item key={subItem.menuHref} title={item.menuName} onClick={() => hashChange(subItem)}>
                 <span style={{ paddingLeft: '8px' }}>{subItem.menuName}</span>
               </Menu.Item>
             );
@@ -108,8 +111,8 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
     dispatch({
       type: 'Dashboard/getNetworkInfo',
       payload: {
-        networkName: networkName,
-      },
+        networkName: networkName
+      }
     });
   }, [dispatch, networkName]);
 
@@ -125,5 +128,5 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
 export default connect(({ Layout, User, Dashboard }: ConnectState) => ({
   Layout,
   User,
-  Dashboard,
+  Dashboard
 }))(NetworkPortalMenu);

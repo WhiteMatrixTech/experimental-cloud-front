@@ -6,6 +6,7 @@ import styles from './CreateNetworkModal.less';
 import { Dispatch, ImageDetail } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { CreateNodeInfo } from '~/services/dashboard';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -42,7 +43,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
       .validateFields()
       .then((values) => {
         if (values.networkTemplate === 'default' && !values.initPeerInfo) {
-          message.warn('请添加节点信息');
+          message.warn(Intl.formatMessage('BASS_NODE_ADD_NODE_INFORMATION'));
           return;
         }
         const params = spliceFormValues(values, values.networkTemplate);
@@ -89,7 +90,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
         onCancel(true);
       }
     } catch (e) {
-      message.warn('请输入标准JSON数据');
+      message.warn(Intl.formatMessage('BASS_NODE_INPUT_JSON_DATA'));
     }
   }, [dispatch, imageList, onCancel]);
 
@@ -105,31 +106,35 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
     if (curOper === operType.next) {
       return [
         <Button key="cancel" onClick={onCancel}>
-          取消
+          {Intl.formatMessage('BASS_COMMON_CANCEL')}
         </Button>,
         <Button key="prev" onClick={prev}>
-          上一步
+          {Intl.formatMessage('BASS_CONTRACT_PREVIOUS_STEP')}
         </Button>,
         <Button key="submit" onClick={createNetwork} type="primary" loading={createLoading}>
-          创建
+          {Intl.formatMessage('BASS_CONTRACT_CREATE_NETWORK')}
         </Button>
       ];
     }
     return [
       <Button key="cancel" onClick={onCancel}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="next" onClick={next} type="primary">
-        下一步
+        {Intl.formatMessage('BASS_CONTRACT_NEXT_STEP')}
       </Button>
     ];
   }, [createLoading, createNetwork, curOper, next, onCancel, prev]);
 
   const modalTitle = useMemo(() => {
     if (curOper === operType.next) {
-      return '创建网络 --- 确认信息';
+      return (
+        Intl.formatMessage('BASS_CONTRACT_CREATE_NETWORK') + '---' + Intl.formatMessage('BASS_COMMON_BASIC_INFORMATION')
+      );
     }
-    return '创建网络 --- 基本信息';
+    return (
+      Intl.formatMessage('BASS_CONTRACT_CREATE_NETWORK') + '---' + Intl.formatMessage('BASS_COMMON_BASIC_INFORMATION')
+    );
   }, [curOper]);
 
   useEffect(() => {

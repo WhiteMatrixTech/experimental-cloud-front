@@ -6,6 +6,7 @@ import { ConnectState } from '~/models/connect';
 import { UserInfo } from '~/models/user-role';
 import { Breadcrumb } from '~/components';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/user-role-management', false);
 
@@ -22,36 +23,36 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
   const [pageNum, setPageNum] = useState(1);
   const columns = [
     {
-      title: '用户名',
+      title: Intl.formatMessage('BASS_USER_INFO_USER_NAME'),
       dataIndex: 'companyName',
       key: 'companyName',
       ellipsis: true
     },
     {
-      title: '联系邮箱',
+      title: Intl.formatMessage('BASS_USER_INFO_CONTACT_EMAIL'),
       dataIndex: 'contactEmail',
       key: 'contactEmail'
     },
     {
-      title: '联系人',
+      title: Intl.formatMessage('BASS_USER_INFO_CONTACT_PERSON_NAME'),
       dataIndex: 'contactName',
       key: 'contactName'
     },
     {
-      title: '注册角色',
+      title: Intl.formatMessage('BASS_RBAC_REGISTER_ROLE'),
       dataIndex: 'role',
       key: 'role',
       render: (text: string) => <span>{RolesMapNames[text]}</span>
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (_: any, record: UserInfo) => (
         <Space size="small">
           <a
             href={`/common/user-role-management/user-roles/${record.companyName}`}
             onClick={(e) => onClickConfig(e, record)}>
-            配置访问角色
+            {Intl.formatMessage('BASS_MEMBER_MANAGEMENT_CONFIG_ACCESS_ROLE')}
           </a>
         </Space>
       )

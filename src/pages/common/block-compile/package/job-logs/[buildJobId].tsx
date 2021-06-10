@@ -6,6 +6,7 @@ import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, JobSchema, Location } from 'umi';
+import { Intl } from '~/utils/locales';
 
 const AU = require('ansi_up');
 const ansi_up = new AU.default();
@@ -13,12 +14,12 @@ const ansi_up = new AU.default();
 let breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem = breadCrumbItem.concat([
   {
-    menuName: '一键编译',
+    menuName: Intl.formatMessage('BASS_ONE_KEY_COMPILE'),
     menuHref: `/common/block-compile/package`,
     isLeftMenu: true
   },
   {
-    menuName: '任务日志',
+    menuName: Intl.formatMessage('BASS_TASK_MANAGEMENT_LOG'),
     menuHref: `/`
   }
 ]);
@@ -46,19 +47,19 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
   const detailList = useMemo(() => {
     return [
       {
-        label: '任务ID',
+        label: Intl.formatMessage('BASS_TASK_MANAGEMENT_ID'),
         value: location?.state?.jobId || ''
       },
       {
-        label: '任务名称',
+        label: Intl.formatMessage('BASS_TASK_MANAGEMENT_NAME'),
         value: location?.state?.jobName || ''
       },
       {
-        label: '任务状态',
+        label: Intl.formatMessage('BASS_TASK_MANAGEMENT_STATUS'),
         value: location?.state?.status || ''
       },
       {
-        label: '任务信息',
+        label: Intl.formatMessage('BASS_TASK_MANAGEMENT_LOG'),
         value: location?.state?.message ? JSON.stringify(location?.state?.message) : ''
       }
     ];
@@ -83,10 +84,12 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
         <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="基本信息" detailList={detailList} />
+          <DetailCard cardTitle={Intl.formatMessage('BASS_COMMON_BASIC_INFORMATION')} detailList={detailList} />
           <div className={styles['detail-card-wrapper']}>
             <div className={styles['detail-card-title']}>
-              <span className={styles['detail-title-content']}>日志信息</span>
+              <span className={styles['detail-title-content']}>
+                {Intl.formatMessage('BASS_TASK_MANAGEMENT_LOG_INFORMATION')}
+              </span>
             </div>
             <div id="job-logs" className={styles['detail-info-wrapper']}></div>
           </div>

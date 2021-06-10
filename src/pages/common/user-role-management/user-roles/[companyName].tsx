@@ -6,6 +6,7 @@ import { RolesMapNames } from '~/utils/roles';
 import { Breadcrumb } from '~/components';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -20,7 +21,7 @@ const formItemLayout = {
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/user-role-management');
 breadCrumbItem.push({
-  menuName: '配置用户角色',
+  menuName: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_CONFIG_USE_ROLE'),
   menuHref: `/`
 });
 
@@ -88,13 +89,19 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
             <Form {...formItemLayout} form={form}>
               <Row justify="center" gutter={[24, 24]}>
                 <Col span={8}>
-                  <Item label="用户名" name="companyName" initialValue={companyName}>
-                    <Input disabled placeholder="用户名" />
+                  <Item
+                    label={Intl.formatMessage('BASS_ELASTIC_CLOUD_USERNAME')}
+                    name="companyName"
+                    initialValue={companyName}>
+                    <Input disabled placeholder={Intl.formatMessage('BASS_ELASTIC_CLOUD_USERNAME')} />
                   </Item>
                 </Col>
                 <Col span={8}>
-                  <Item label="注册角色" name="role" initialValue={RolesMapNames[location.state?.role]}>
-                    <Input disabled placeholder="注册角色" />
+                  <Item
+                    label={Intl.formatMessage('BASS_RBAC_REGISTER_ROLE')}
+                    name="role"
+                    initialValue={RolesMapNames[location.state?.role]}>
+                    <Input disabled placeholder={Intl.formatMessage('BASS_RBAC_REGISTER_ROLE')} />
                   </Item>
                 </Col>
               </Row>
@@ -106,18 +113,21 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
                         <Row justify="center" gutter={[24, 24]}>
                           <Col span={8}>
                             <Item
-                              label="网络名称"
+                              label={Intl.formatMessage('BASS_USER_INFO_NETWORK_NAME')}
                               name={[key, 'networkName']}
                               initialValue={role.networkName}
                               fieldKey={[key, 'networkName']}>
-                              <Input disabled placeholder="网络名称" />
+                              <Input disabled placeholder={Intl.formatMessage('BASS_USER_INFO_NETWORK_NAME')} />
                             </Item>
                           </Col>
                           <Col span={8}>
-                            <Item label="角色名称" name={[key, 'roleName']} fieldKey={[key, 'roleName']}>
+                            <Item
+                              label={Intl.formatMessage('BASS_RBAC_ROLE_NAME')}
+                              name={[key, 'roleName']}
+                              fieldKey={[key, 'roleName']}>
                               <Select
                                 allowClear={true}
-                                placeholder="选择角色"
+                                placeholder={Intl.formatMessage('BASS_RBAC_SELECT_ROLE_NAME')}
                                 style={{ width: '100%' }}
                                 getPopupContainer={(triggerNode) => triggerNode.parentNode}>
                                 {roleNameList.map((item) => (
@@ -139,10 +149,10 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
               <Col span={8} offset={8} className={styles['button-wrapper']}>
                 <Space>
                   <Button key="submit" type="primary" onClick={onSubmit}>
-                    提交
+                    {Intl.formatMessage('BASS_COMMON_SUBMIT')}
                   </Button>
                   <Button key="back" onClick={onClickGoBack}>
-                    返回
+                    {Intl.formatMessage('BASS_USER_INFO_RETURN')}
                   </Button>
                 </Space>
               </Col>

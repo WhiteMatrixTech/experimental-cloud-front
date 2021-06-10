@@ -6,6 +6,7 @@ import { NetworkPortalMenu, ServicesDrawer, TopHeader } from '~/components';
 import { ModalFuncProps } from 'antd/lib/modal';
 import { ConnectState } from '~/models/connect';
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 
 export type NetworkPortalLayoutProps = {
   children: JSX.Element;
@@ -23,10 +24,10 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
       localStorage.setItem('newAccountLogin', 'true');
       Modal.confirm({
         title: 'Confirm',
-        content: '你的账号已被登出',
-        okText: '重新登录',
+        content: Intl.formatMessage('BASS_LOGON_YOUR_ACCOUNT_HAS_BEEN_LOGIN'),
+        okText: Intl.formatMessage('BASS_LOGIN_AGAIN'),
         onOk: onOk,
-        cancelButtonProps: { disabled: true },
+        cancelButtonProps: { disabled: true }
       });
     }
   }, []);
@@ -48,10 +49,10 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
     };
     if (localStorage.getItem('newAccountLogin')) {
       modal = Modal.confirm({
-        title: '你的账号已被登出',
-        okText: '重新登录',
+        title: Intl.formatMessage('BASS_LOGON_YOUR_ACCOUNT_HAS_BEEN_LOGIN'),
+        okText: Intl.formatMessage('BASS_LOGIN_AGAIN'),
         onOk: onOk,
-        cancelButtonProps: { disabled: true },
+        cancelButtonProps: { disabled: true }
       });
     }
     return () => {
@@ -80,5 +81,5 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
 }
 
 export default connect(({ Layout }: ConnectState) => ({
-  Layout,
+  Layout
 }))(NetworkPortalLayout);

@@ -8,6 +8,7 @@ import baseConfig from '~/utils/config';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 
@@ -88,46 +89,46 @@ const Block: React.FC<BlockProps> = (props) => {
 
   const columns: ColumnsType<any> = [
     {
-      title: '区块HASH',
+      title: Intl.formatMessage('BASS_BLOCK_BLOCKCHAIN'),
       dataIndex: 'blockHash',
       key: 'blockHash',
       ellipsis: true,
       width: '20%'
     },
     {
-      title: '所属通道',
+      title: Intl.formatMessage('BASS_COMMON_CHANNEL'),
       dataIndex: 'channelId',
       key: 'channelId',
       render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
-      title: '交易数量',
+      title: Intl.formatMessage('BASS_BLOCK_NUMBER_OF_TRANSACTION'),
       dataIndex: 'txCount',
       key: 'txCount',
       render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
-      title: '生成时间',
+      title: Intl.formatMessage('BASS_COMMON_GENERATED_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
         text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (text, record: BlockSchema) => (
         <Space size="small">
           {record.channelId || record.txCount ? (
             <a href={`/about/block/${record.blockHash}`} onClick={(e) => onClickDetail(e, record)}>
-              详情
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
             </a>
           ) : (
             <a
               href={`/about/block/${record.blockHash}`}
               className="a-forbidden-style"
               onClick={(e) => e.preventDefault()}>
-              详情
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
             </a>
           )}{' '}
         </Space>
@@ -149,7 +150,7 @@ const Block: React.FC<BlockProps> = (props) => {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow table-wrapper">
-        <SearchBar placeholder="区块HASH" onSearch={onSearch} />
+        <SearchBar placeholder={Intl.formatMessage('BASS_BLOCK_BLOCK_HASH')} onSearch={onSearch} />
         <Table
           rowKey="blockHash"
           columns={columns}

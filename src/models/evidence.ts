@@ -1,6 +1,7 @@
 import * as API from '../services/evidence';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
+import { formatMessage } from 'umi';
 
 export type EvidenceSchema = {
   evidenceHash: string;
@@ -39,7 +40,7 @@ const EvidenceModel: EvidenceModelType = {
   state: {
     evidenceDataList: [], // 已存证上链列表
     evidenceDataDetail: null, //存证的详情
-    evidenceDataTotal: 0,
+    evidenceDataTotal: 0
   },
 
   effects: {
@@ -50,8 +51,8 @@ const EvidenceModel: EvidenceModelType = {
         yield put({
           type: 'common',
           payload: {
-            evidenceDataList: result.items,
-          },
+            evidenceDataList: result.items
+          }
         });
       }
     },
@@ -63,8 +64,8 @@ const EvidenceModel: EvidenceModelType = {
           type: 'common',
           payload: {
             evidenceDataList: result,
-            evidenceDataTotal: result.length,
-          },
+            evidenceDataTotal: result.length
+          }
         });
       }
     },
@@ -75,8 +76,8 @@ const EvidenceModel: EvidenceModelType = {
         yield put({
           type: 'common',
           payload: {
-            evidenceDataDetail: result,
-          },
+            evidenceDataDetail: result
+          }
         });
       }
     },
@@ -87,8 +88,8 @@ const EvidenceModel: EvidenceModelType = {
         yield put({
           type: 'common',
           payload: {
-            evidenceDataTotal: result.count,
-          },
+            evidenceDataTotal: result.count
+          }
         });
       }
     },
@@ -96,20 +97,28 @@ const EvidenceModel: EvidenceModelType = {
       const res = yield call(API.evidenceOnChain, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: '存证上链成功', top: 64, duration: 3 });
+        notification.success({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_EVIDENCE_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '存证上链失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_EVIDENCE_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default EvidenceModel;

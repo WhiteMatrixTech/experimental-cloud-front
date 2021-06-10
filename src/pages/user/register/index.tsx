@@ -5,14 +5,15 @@ import { ConnectState } from '~/models/connect';
 import StepOne from './_step1';
 import StepTwo from './_step2';
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 
 const { Step } = Steps;
 const steps = [
   {
-    title: '基本信息'
+    title: Intl.formatMessage('BASS_COMMON_BASIC_INFORMATION')
   },
   {
-    title: '账户密码'
+    title: Intl.formatMessage('BASS_REGISTER_ACCOUNT_PASSWORD')
   }
 ];
 
@@ -104,7 +105,7 @@ const Register: React.FC<RegisterProps> = (props) => {
 
   return (
     <div className={styles.main}>
-      <h3>注册</h3>
+      <h3>{Intl.formatMessage('BASS_REGISTER')}</h3>
       <Steps className={styles.step} current={current}>
         {steps.map((item) => (
           <Step key={item.title} title={item.title} />
@@ -114,21 +115,21 @@ const Register: React.FC<RegisterProps> = (props) => {
       <div className={styles.operate}>
         {current === 0 && (
           <Button size="middle" className={styles.next} type="primary" onClick={next}>
-            下一步
+            {Intl.formatMessage('BASS_CONTRACT_NEXT_STEP')}
           </Button>
         )}
         {current === 1 && (
           <Button size="middle" className={styles.prev} onClick={prev}>
-            上一步
+            {Intl.formatMessage('BASS_CONTRACT_NEXT_STEP')}
           </Button>
         )}
         {current === 1 && (
           <Button size="middle" loading={submitting} className={styles.submit} type="primary" onClick={register}>
-            注册
+            {Intl.formatMessage('BASS_REGISTER')}
           </Button>
         )}
         <Link className={styles.login} to="/user/login">
-          使用已有账户登录
+          {Intl.formatMessage('BASS_REGISTER_SING_IN_WITH_AN_EXISTING_ACCOUNT')}
         </Link>
       </div>
     </div>

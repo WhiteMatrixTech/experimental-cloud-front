@@ -6,6 +6,7 @@ import { LoginMessage } from '~/components';
 import LoginStatus from '~/utils/loginStatus';
 import { ConnectState } from '~/models/connect';
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 
 const FormItem = Form.Item;
 
@@ -62,7 +63,7 @@ const Login: React.FC<LoginProps> = (props) => {
 
   return (
     <div className={styles.main}>
-      <h3>登录</h3>
+      <h3>{Intl.formatMessage('BASS_LOGIN')}</h3>
       {loginStatus === LoginStatus.LOGIN_ERROR && !loginLoading && <LoginMessage content={loginInfo} />}
       <Form form={form}>
         <FormItem
@@ -71,13 +72,13 @@ const Login: React.FC<LoginProps> = (props) => {
           rules={[
             {
               required: true,
-              message: '请输入邮箱!'
+              message: Intl.formatMessage('BASS_INPUT_EMAIL')
             }
           ]}>
           <Input
             onPressEnter={handleUserKeyInput}
             prefix={<UserOutlined className={styles.prefixIcon} />}
-            placeholder="邮箱"
+            placeholder={Intl.formatMessage('BASS_LOGIN_INPUT_EMAIL')}
           />
         </FormItem>
         <FormItem
@@ -85,19 +86,19 @@ const Login: React.FC<LoginProps> = (props) => {
           rules={[
             {
               required: true,
-              message: '请输入密码！'
+              message: Intl.formatMessage('BASS_FABRIC_PASSWORD')
             }
           ]}>
           <Input.Password ref={inputRef} prefix={<LockTwoTone className={styles.prefixIcon} />} placeholder="密码" />
         </FormItem>
         <Button size="middle" type="primary" htmlType="submit" className={styles.submit} onClick={handleSubmit}>
-          登录
+          {Intl.formatMessage('BASS_LOGIN')}
         </Button>
         <div className={styles.other}>
           <div>
-            暂无账号?
+            {Intl.formatMessage('BASS_LOGIN_NO_ACCOUNT')}?
             <Link className={styles.register} to="/user/register">
-              立即注册
+              {Intl.formatMessage('BASS_LOGIN_REGISTER_ACCOUNT')}
             </Link>
           </div>
         </div>

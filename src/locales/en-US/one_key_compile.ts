@@ -1,0 +1,20 @@
+export const ONE_KEY_COMPILE_US = {
+  BASS_ONE_KEY_COMPILE_BLOCK: 'Blockchain Compilation',
+  BASS_ONE_KEY_COMPILE: 'One Key Compilation',
+  BASS_ONE_KEY_COMPILE_REPOSITORY_ADDRESS: 'Repository Address',
+  BASS_ONE_KEY_COMPILE_BRANCH_NAME: 'Branch Name',
+  BASS_ONE_KEY_COMPILE_PLEASE_SELECT_COMPILE_IMAGE: 'Please select the compiled image',
+  BASS_ONE_KEY_COMPILE_INPUT_CUSTOM_IMAGE_ADDRESS: 'Please input the compiled image address',
+  BASS_ONE_KEY_COMPILE_SELECT_COMPILE_IMAGE: 'select a compiled image',
+  BASS_ONE_KEY_INPUT_COMPILE_COMMANDS: 'Please input the compile commands',
+  BASS_ONE_KEY_COMPILE_IMAGE: 'Compile Image',
+  BASS_ONE_KEY_COMPILE_CUSTOM: 'Custom',
+  BASS_ONE_KEY_COMPILE_COMMANDS: 'Compile Commands',
+  BASS_ONE_KEY_COMPILE_INPUT_REPOSITORY_ADDRESS: 'Please input the repository address',
+  BASS_ONE_KEY_COMPILE_INPUT_BRANCH_NAME: 'Please input a branch name',
+  BASS_ONE_KEY_COMPILE_SYSTEM_IMAGE: 'System image',
+  BASS_ONE_KEY_COMPILE_SELECT_IMAGE: 'Custom selection of compiled images',
+  BASS_ONE_KEY_COMPILE_ENTER_COMMAND: 'Input the compile command',
+  BASS_ONE_KEY_COMPILE_LINE_BREAK: 'Line Breaks',
+  BASS_ONE_KEY_COMPILE_LOADING_MORE: 'Loading More'
+};

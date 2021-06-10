@@ -8,6 +8,7 @@ import { ConnectState } from '~/models/connect';
 import { Roles } from '~/utils/roles';
 import { getDifferenceSet } from '~/utils';
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 
 const AdminRole = [Roles.Admin, Roles.SuperUser];
 
@@ -128,7 +129,7 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   return (
     <div className={styles.main}>
       <div>
-        <h3>加入联盟</h3>
+        <h3>{Intl.formatMessage('BASS_CONSORTIUM_JOIN')}</h3>
         <Spin spinning={joinLoading}>
           <Row gutter={16} className={styles['league-wrapper']}>
             {getOptionLeagueListFromPage.map((league, i: number) => (
@@ -137,7 +138,9 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
               </Col>
             ))}
           </Row>
-          {getOptionalNetwork.length === 0 && <Empty description="暂无联盟可加入" />}
+          {getOptionalNetwork.length === 0 && (
+            <Empty description={Intl.formatMessage('BASS_CONSORTIUM_NO_CONSORTIUM_TO_JOIN')} />
+          )}
           {getOptionalNetwork.length > 8 && (
             <Pagination
               showSizeChanger={false}
@@ -145,7 +148,7 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
               pageSize={8}
               total={getOptionalNetwork.length}
               onChange={onOptionLeaguePageChange}
-              showTotal={(total) => `共 ${total} 条`}
+              showTotal={(total) => Intl.formatMessage('BASS_CONSORTIUM_PAGINATION_TOTAL', { total })}
               style={{ textAlign: 'center' }}
             />
           )}
@@ -153,20 +156,20 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
       </div>
       <Divider />
       <div>
-        <h3>我的联盟</h3>
+        <h3>{Intl.formatMessage('BASS_CONTRACT_MY_CONSORTIUM')}</h3>
         {isAdminWithEmpty && (
-          <Empty description="暂无联盟">
+          <Empty description={Intl.formatMessage('BASS_CONTRACT_MY_CONSORTIUM')}>
             <Button type="primary" onClick={onClickNew}>
-              立即创建
+              {Intl.formatMessage('BASS_CONTRACT_CREATE_NOW_NETWORK')}
             </Button>
           </Empty>
         )}
-        {notAdminWithEmpty && <Empty description="暂无联盟" />}
+        {notAdminWithEmpty && <Empty description={Intl.formatMessage('BASS_CONSORTIUM_NO_CONSORTIUM')} />}
         <Row gutter={16} className={styles['league-wrapper']}>
           {isAdminNotEmpty && (
             <Col span={6}>
               <Button type="dashed" className={styles.newButton} onClick={onClickNew}>
-                <PlusOutlined /> 新增联盟
+                <PlusOutlined /> {Intl.formatMessage('BASS_CONSORTIUM_ADD_CONSORTIUM')}
               </Button>
             </Col>
           )}
@@ -183,7 +186,7 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
             pageSize={7}
             total={myNetworkList.length}
             onChange={onMyLeaguePageChange}
-            showTotal={(total) => `共 ${total} 条`}
+            showTotal={(total) => Intl.formatMessage('BASS_CONSORTIUM_PAGINATION_TOTAL', { total })}
             style={{ textAlign: 'center' }}
           />
         )}

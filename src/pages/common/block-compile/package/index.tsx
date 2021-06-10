@@ -10,10 +10,11 @@ import { GitBuildRepoTask } from '~/models/block-chain-compile';
 import { ColumnsType } from 'antd/lib/table';
 import baseConfig from '~/utils/config';
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem.push({
-  menuName: '一键编译',
+  menuName: Intl.formatMessage('BASS_ONE_KEY_COMPILE'),
   menuHref: `/`
 });
 
@@ -82,50 +83,50 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 
   const columns: ColumnsType<any> = [
     {
-      title: '仓库地址',
+      title: Intl.formatMessage('BASS_ONE_KEY_COMPILE_REPOSITORY_ADDRESS'),
       dataIndex: 'gitRepoUrl',
       key: 'gitRepoUrl',
       ellipsis: true
     },
     {
-      title: '分支名',
+      title: Intl.formatMessage('BASS_ONE_KEY_COMPILE_BRANCH_NAME'),
       dataIndex: 'branch',
       key: 'branch',
       ellipsis: true
     },
     {
-      title: '编译镜像',
+      title: Intl.formatMessage('BASS_ONE_KEY_COMPILE_IMAGE'),
       dataIndex: 'buildEnvImage',
       key: 'buildEnvImage',
       ellipsis: true
     },
     {
-      title: '编译命令',
+      title: Intl.formatMessage('BASS_ONE_KEY_COMPILE_COMMANDS'),
       dataIndex: 'buildCommands',
       key: 'buildCommands',
       ellipsis: true
     },
     {
-      title: '任务ID',
+      title: Intl.formatMessage('BASS_TASK_MANAGEMENT_ID'),
       dataIndex: 'buildJobId',
       key: 'buildJobId',
       ellipsis: true
     },
     {
-      title: '任务状态',
+      title: Intl.formatMessage('BASS_TASK_MANAGEMENT_STATUS'),
       dataIndex: 'buildJobStatus',
       key: 'buildJobStatus',
       ellipsis: true
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (text, record: GitBuildRepoTask) => (
         <Space size="small">
           <a
             href={`/common/block-compile/package/job-logs/${record.buildJobId}`}
             onClick={(e) => onViewJobLog(e, record)}>
-            查看日志
+            {Intl.formatMessage('BASS_TASK_MANAGEMENT_VIEW_LOG')}
           </a>
         </Space>
       )
@@ -151,7 +152,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       <div className="page-content page-content-shadow table-wrapper">
         <div className="table-header-btn-wrapper">
           <Button type="primary" onClick={onClickOneKeyCompile}>
-            一键编译
+            {Intl.formatMessage('BASS_ONE_KEY_COMPILE')}
           </Button>
         </div>
         <Table
@@ -164,9 +165,9 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
           pagination={false}
         />
         {moreBtnVisible && (
-          <div className={styles.jobListMore}>
+          <div className={styles['load-more']}>
             <button className={styles.btn} onClick={getMoreCompileJobList}>
-              加载更多
+              {Intl.formatMessage('BASS_ONE_KEY_COMPILE_LOADING_MORE')}
             </button>
           </div>
         )}

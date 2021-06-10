@@ -1,4 +1,5 @@
 import { notification } from 'antd';
+import { Intl } from '~/utils/locales';
 
 export const normFile = (e: any) => {
   if (Array.isArray(e)) {
@@ -11,7 +12,11 @@ export const normFile = (e: any) => {
 export const handleBeforeUpload = (file: any, beforeUploadList: any[]) => {
   const biggerThanMaxSize = beforeUploadList.some((innerItem) => innerItem.size > 1024 * 1024 * 1024 * 5);
   if (biggerThanMaxSize) {
-    notification.error({ message: '合约文件大小不能超过5M', top: 64, duration: 3 });
+    notification.error({
+      message: Intl.formatMessage('BASS_CONTRACT_NOTIFICATION_ERROR_UPLOAD'),
+      top: 64,
+      duration: 3
+    });
     return false;
   }
   return true;

@@ -2,6 +2,7 @@ import * as API from '../services/rbac';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 import { ChainCodeIndex, UserAccessPolicy } from '~/pages/about/rbac/_config';
+import { formatMessage } from 'umi';
 
 export type RbacRole = {
   roleName: string;
@@ -12,7 +13,7 @@ export type RBACModelState = {
   roleList: Array<RbacRole>;
   roleNameList: Array<string>;
   chaincodeList: Array<ChainCodeIndex>;
-  rbacPolicy: RbacRole | null;
+  rbacPolicy: RbacRole | object;
 };
 
 export type RBACModelType = {
@@ -39,7 +40,7 @@ const RBACModel: RBACModelType = {
     roleList: [], // 角色列表
     roleNameList: [], // 角色名列表
     chaincodeList: [], // 合约列表
-    rbacPolicy: null,
+    rbacPolicy: {}
   },
 
   effects: {
@@ -50,8 +51,8 @@ const RBACModel: RBACModelType = {
         yield put({
           type: 'common',
           payload: {
-            roleList: result,
-          },
+            roleList: result
+          }
         });
         return result;
       }
@@ -64,8 +65,8 @@ const RBACModel: RBACModelType = {
         yield put({
           type: 'common',
           payload: {
-            roleNameList: result,
-          },
+            roleNameList: result
+          }
         });
         return result;
       }
@@ -78,8 +79,8 @@ const RBACModel: RBACModelType = {
         yield put({
           type: 'common',
           payload: {
-            chaincodeList: result,
-          },
+            chaincodeList: result
+          }
         });
       }
     },
@@ -91,8 +92,8 @@ const RBACModel: RBACModelType = {
         yield put({
           type: 'common',
           payload: {
-            chaincodeList: result,
-          },
+            chaincodeList: result
+          }
         });
       }
     },
@@ -104,8 +105,8 @@ const RBACModel: RBACModelType = {
         yield put({
           type: 'common',
           payload: {
-            rbacPolicy: result,
-          },
+            rbacPolicy: result
+          }
         });
       }
     },
@@ -114,10 +115,18 @@ const RBACModel: RBACModelType = {
       const res = yield call(API.setConfig, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '配置角色访问策略成功', top: 64, duration: 3 });
+        notification.success({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_RBAC_CONFIGURE_ROLE_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '配置角色访问策略失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_RBAC_CONFIGURE_ROLE_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -126,20 +135,28 @@ const RBACModel: RBACModelType = {
       const res = yield call(API.setConfigByJson, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '配置角色访问策略成功', top: 64, duration: 3 });
+        notification.success({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_RBAC_CONFIGURE_ROLE_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '配置角色访问策略失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_RBAC_CONFIGURE_ROLE_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default RBACModel;

@@ -4,6 +4,7 @@ import { history, useLocation } from 'umi';
 import { Breadcrumb as AntBreadcrumb } from 'antd';
 
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 
 interface BreadcrumbProps {
   menuHref: string;
@@ -31,14 +32,18 @@ const Breadcrumb: React.FC<IProps> = (props) => {
     if (breadCrumbInfo.withQueryParams) {
       history.push({
         pathname: breadCrumbInfo.menuHref,
-        query: breadCrumbInfo.query,
+        query: breadCrumbInfo.query
       });
     }
   };
 
-  const indexMenuName = useMemo(() => (location.pathname.indexOf('common') > -1 ? '通用' : '网络'), [
-    location.pathname,
-  ]);
+  const indexMenuName = useMemo(
+    () =>
+      location.pathname.indexOf('common') > -1
+        ? Intl.formatMessage('BASS_SERVICE_LIST_GENERAL')
+        : Intl.formatMessage('BASS_COMMON_NETWORK'),
+    [location.pathname]
+  );
 
   return (
     <div className={classnames(styles.breadcrumb, className)} style={style}>

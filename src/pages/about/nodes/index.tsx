@@ -4,7 +4,7 @@ import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Breadcrumb } from '~/components';
-import { Table, Button, Badge, Space } from 'antd';
+import { Table, Button, Badge, Space, Divider } from 'antd';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import CreateNodeModal from './components/CreateNodeModal';
 import SSHCommand from './components/SSHCommand';
@@ -14,6 +14,7 @@ import { peerStatus, availableNodeStatus } from './_config';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/nodes');
 
@@ -96,25 +97,25 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   useEffect(() => {
     const data: ColumnsType<any> = [
       {
-        title: '节点名称',
+        title: Intl.formatMessage('BASS_NODE_NAME'),
         dataIndex: 'nodeName',
         key: 'nodeName',
         ellipsis: true
       },
       {
-        title: '节点别名',
+        title: Intl.formatMessage('BASS_NODE_ALIAS'),
         dataIndex: 'nodeAliasName',
         key: 'nodeAliasName',
         ellipsis: true
       },
       {
-        title: '节点全名',
+        title: Intl.formatMessage('BASS_NODE_FULL_NAME_OF_NODE'),
         dataIndex: 'nodeFullName',
         key: 'nodeFullName',
         ellipsis: true
       },
       {
-        title: '状态',
+        title: Intl.formatMessage('BASS_COMMON_STATUS'),
         dataIndex: 'nodeStatus',
         key: 'nodeStatus',
         render: (text) =>
@@ -129,13 +130,13 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
           )
       },
       {
-        title: '更新时间',
+        title: Intl.formatMessage('BASS_NODE_UPDATE_TIME'),
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
       },
       {
-        title: '操作',
+        title: Intl.formatMessage('BASS_COMMON_OPERATION'),
         key: 'action',
         render: (_, record: PeerSchema) => (
           <Space size="small">
@@ -143,12 +144,13 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
               <a
                 href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`}
                 onClick={(e) => onDownLoadCertificate(e, record)}>
-                下载证书
+                {Intl.formatMessage('BASS_NODE_DOWNLOAD_CERTIFICATES')}
               </a>
             )}
+            <Divider type="vertical" />
             {availableNodeStatus.includes(record.nodeStatus) && (
               <span role="button" className="table-action-span" onClick={() => onClickGetSSH(record)}>
-                获取ssh命令
+                {Intl.formatMessage('BASS_NODE_GET_SSH_COMMANDS')}
               </span>
             )}
           </Space>
@@ -157,7 +159,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
     ];
     if (userRole === Roles.NetworkAdmin) {
       const insertColumn = {
-        title: '所属组织',
+        title: Intl.formatMessage('BASS_COMMON_ORGANIZATION'),
         dataIndex: 'orgName',
         key: 'orgName',
         ellipsis: true
@@ -178,7 +180,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
       <div className="page-content page-content-shadow table-wrapper">
         <div className="table-header-btn-wrapper">
           <Button type="primary" onClick={onClickCreateNode}>
-            创建节点
+            {Intl.formatMessage('BASS_NODE_CREATE_NODE')}
           </Button>
         </div>
         <Table

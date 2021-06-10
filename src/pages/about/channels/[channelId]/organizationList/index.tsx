@@ -11,36 +11,37 @@ import { ColumnsType } from 'antd/lib/table';
 import { ChannelSchema, Dispatch, Location } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { DetailViewAttr } from '~/utils/types';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
-  menuName: '查看组织',
+  menuName: Intl.formatMessage('BASS_CHANNEL_VIEW_ORGANIZATION'),
   menuHref: `/`
 });
 
 const columns: ColumnsType<any> = [
   {
-    title: '组织名称',
+    title: Intl.formatMessage('BASS_ORGANIZATION_NAME'),
     dataIndex: 'orgName',
     key: 'orgName'
   },
   {
-    title: '组织别名',
+    title: Intl.formatMessage('BASS_ORGANIZATION_ALIAS'),
     dataIndex: 'orgAliasName',
     key: 'orgAliasName'
   },
   {
-    title: '组织MSPID',
+    title: Intl.formatMessage('BASS_ORGANIZATION_MSPID'),
     dataIndex: 'orgMspId',
     key: 'orgMspId'
   },
   {
-    title: '所属用户',
+    title: Intl.formatMessage('BASS_ORGANIZATION_USER'),
     dataIndex: 'companyName',
     key: 'companyName'
   },
   {
-    title: '组织地址',
+    title: Intl.formatMessage('BASS_ORGANIZATION_ADDRESS'),
     dataIndex: 'orgAddress',
     key: 'orgAddress'
   }
@@ -71,15 +72,15 @@ function OrganizationList(props: OrganizationListProps) {
   const channelInfoList = useMemo(() => {
     const list: DetailViewAttr[] = [
       {
-        label: '通道名称',
+        label: Intl.formatMessage('BASS_CHANNEL_NAME'),
         value: channelId
       },
       {
-        label: '组织数量',
+        label: Intl.formatMessage('BASS_CHANNEL_NUMBER_OF_ORGANIZATION'),
         value: orgTotalOfChannel
       },
       {
-        label: '节点总数',
+        label: Intl.formatMessage('BASS_CHANNEL_TOTAL_NUMBER_OF_NODES'),
         value: nodeTotalOfChannel
       }
     ];
@@ -125,7 +126,7 @@ function OrganizationList(props: OrganizationListProps) {
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
         <DetailCard
-          cardTitle="基本信息"
+          cardTitle={Intl.formatMessage('BASS_COMMON_BASIC_INFORMATION')}
           detailList={channelInfoList}
           boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"
           columnsNum={2}
@@ -134,7 +135,7 @@ function OrganizationList(props: OrganizationListProps) {
           {showAddOrg && (
             <div className="table-header-btn-wrapper">
               <Button type="primary" onClick={onClickAddOrg}>
-                添加组织
+                {Intl.formatMessage('BASS_ORGANIZATION_ADD')}
               </Button>
             </div>
           )}
