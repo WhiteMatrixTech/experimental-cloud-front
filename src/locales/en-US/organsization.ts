@@ -1,0 +1,13 @@
+export const ORGANSIZATION_US = {
+  BASS_ORGANSIZATION_MANAGEMENT: 'Organizational management',
+  BASS_ORGANSIZATION_NAME: 'Organisation name',
+  BASS_ORGANSIZATION_ALIAS: 'Organization alias',
+  BASS_ORGANSIZATION_MSPID: 'Organisation SMPID',
+  BASS_ORGANSIZATION_USER: 'User',
+  BASS_ORGANSIZATION_ADDRESS: 'Organizational address',
+  BASS_ORGANSIZATION_CURRENT_STATUS: 'Current status',
+  BASS_ORGANSIZATION_INITIALIZE_NODE_NAME: 'Initialize node name',
+  BASS_ORGANSIZATION_INITIALIZE_NODE_ALIASES: 'Initialize node aliases',
+  BASS_ORGANSIZATION_SERVERS: 'Servers',
+  BASS_ORGANSIZATION_STATUS: 'Organizational status'
+};

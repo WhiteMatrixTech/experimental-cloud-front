@@ -1,0 +1,20 @@
+export const CHANNEL_US = {
+  BASS_CHANNEL_Managment: 'Channel management',
+  BASS_CHANNEL_NAME: 'Channel name',
+  BASS_CHANNEL_ALIAS: 'Channel alias',
+  BASS_CHANNEL_STATUS: 'Channel status',
+  BASS_CHANNEL_DESCRIBE: 'Channel Describe',
+  BASS_CHANNEL_CREATOR: 'creator',
+  BASS_CHANNEL_VIEW_ORGANIZATION: 'View organization',
+  BASS_CHANNEL_VIEW_NODE: 'View node',
+  BASS_CHANNEL_VIEW_CONTRACT: 'View contract',
+  BASS_CHANNEL_BASIC_INFORMACTION: 'Basic information',
+  BASS_CHANNEL_NUMBER_OF_ORGANIZATION: 'Organization Total',
+  BASS_CHANNEL_TOTAL_NUMBER_OF_NODES: 'Node Total',
+  BASS_CHANNEL_ID: 'Channel ID',
+  BASS_CHANNEL_ORGANISATION: 'Organisation',
+  BASS_CHANNEL_NODE: 'Node',
+  BASS_CHANNEL_BLOCK: 'Block',
+  BASS_CHANNEL_TRANSACTIONS: 'Transactions',
+  BASS_CHANNEL_CONTRACT: 'Contract'
+};

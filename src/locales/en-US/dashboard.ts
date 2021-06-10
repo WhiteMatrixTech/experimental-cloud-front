@@ -1,0 +1,9 @@
+export const DASHBOARD_US = {
+  BASS_DASHBOARD: 'Dashboard',
+  BASS_DASHBOARD_TRANSACTION: 'transaction',
+  BASS_DASHBOARD_SUPER_LEDGER: 'Super ledger',
+  BASS_DASHBOARD_GO: 'Go',
+  BASS_DASHBOARD_LEDGER: 'Ledger',
+  BASS_DASHBOARD_SORT_NODE: 'Sort node',
+  BASS_DASHBOARD_CHAINCODE: 'Chaincode'
+};
