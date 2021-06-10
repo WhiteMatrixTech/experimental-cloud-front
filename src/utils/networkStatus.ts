@@ -25,3 +25,8 @@ export const NetworkInfo = {
   [NetworkStatus.NotExist]: '网络不存在',
   [NetworkStatus.Stopped]: '已停用'
 };
+
+export enum StopOrRestart {
+  Stop = 'stop',
+  Restart = 'restart'
+}

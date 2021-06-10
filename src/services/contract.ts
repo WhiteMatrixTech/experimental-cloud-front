@@ -1,7 +1,7 @@
 import { request } from '../utils/request';
 import { ChainCodeSchema } from 'umi';
 import { AllPaginationParams, BasicApiParams } from '~/utils/types';
-import { ChainCodeStatus } from '@/pages/about/contract/_config';
+import { ChainCodeStatus } from '~/pages/about/contract/_config';
 
 /**
  * 创建合约
@@ -17,7 +17,7 @@ export async function verifyContract(
   params: BasicApiParams & {
     chainCodeName: string;
     VerifyStatus: ChainCodeStatus;
-  },
+  }
 ) {
   return request(`/network/${params.networkName}/chainCodes/verifyChainCode`, { method: 'POST', body: params });
 }

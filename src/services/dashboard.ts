@@ -31,16 +31,16 @@ export async function createNetwork(params: CreateNetworkRequest) {
 }
 
 export async function stopNetwork(params: CreateNetworkRequest) {
-  return request(`/network/${params.networkName}/stopNetwork`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/stopOrRestart`, { method: 'GET', body: params });
 }
 
 export async function restartNetwork(params: CreateNetworkRequest) {
-  return request(`/network/${params.networkName}/restartNetwork`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/stopOrRestart`, { method: 'GET', body: params });
 }
 
 /**
  * 删除网络
  */
-export async function deleteNetwork() {
-  return request(`/deleteNetwork`);
+export async function deleteNetwork(params: CreateNetworkRequest) {
+  return request(`/network/${params.networkName}/delete`, { method: 'GET', body: params });
 }

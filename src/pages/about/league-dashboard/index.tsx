@@ -7,7 +7,7 @@ import moment from 'moment';
 import { Roles } from '~/utils/roles';
 import { StatisticsCard, Breadcrumb } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import { NetworkStatus, NetworkInfo } from '~/utils/networkStatus';
+import { NetworkStatus, NetworkInfo, StopOrRestart } from '~/utils/networkStatus';
 import CreateNetworkModal from './components/CreateNetworkModal';
 import config from '~/utils/config';
 import style from './index.less';
@@ -112,7 +112,8 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     dispatch({
       type: 'Dashboard/restartNetwork',
       payload: {
-        networkName: networkName
+        networkName,
+        cmd: StopOrRestart.Restart
       }
     });
   }, [dispatch, networkName]);
@@ -122,7 +123,8 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       dispatch({
         type: 'Dashboard/stopNetwork',
         payload: {
-          networkName: networkName
+          networkName,
+          cmd: StopOrRestart.Stop
         }
       });
     };
@@ -341,16 +343,15 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
                 </a>
               </>
             );
+          } else {
+            btnShowInitValue.extraButton = (
+              <Col span={8}>
+                <Button type="primary" onClick={onStopNetwork}>
+                  停用网络
+                </Button>
+              </Col>
+            );
           }
-          // } else {
-          //   btnShowInitValue.extraButton = (
-          //     <Col span={8}>
-          //       <Button type="primary" onClick={onStopNetwork}>
-          //         停用网络
-          //       </Button>
-          //     </Col>
-          //   );
-          // }
           break;
         default:
           break;
