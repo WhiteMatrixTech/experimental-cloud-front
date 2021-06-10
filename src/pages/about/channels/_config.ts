@@ -1,3 +1,4 @@
+import { Intl } from '~/utils/locales';
 export interface ChannelStatusMapAttr {
   InUse: string;
   Creating: string;
@@ -19,18 +20,18 @@ export const ChannelStatusMap: ChannelStatusMapAttr = {
   Stopped: 'Stopped',
   Deleting: 'Deleting',
   DeletionFailed: 'DeletionFailed',
-  Deleted: 'Deleted',
+  Deleted: 'Deleted'
 };
 
 export const ChannelStatus = {
   // 通道状态
-  [ChannelStatusMap.InUse]: { color: 'green', text: '使用中' },
-  [ChannelStatusMap.Creating]: { color: 'orange', text: '创建中' },
-  [ChannelStatusMap.CreationFailed]: { color: 'red', text: '创建失败' },
-  [ChannelStatusMap.Stopping]: { color: 'orange', text: '停用中' },
-  [ChannelStatusMap.StopFailed]: { color: 'red', text: '停用失败' },
-  [ChannelStatusMap.Stopped]: { color: ':#E2E9F7', text: '已停用' },
-  [ChannelStatusMap.Deleting]: { color: 'orange', text: '删除中' },
-  [ChannelStatusMap.DeletionFailed]: { color: 'red', text: '删除失败' },
-  [ChannelStatusMap.Deleted]: { color: 'volcano', text: '已删除' },
+  [ChannelStatusMap.InUse]: { color: 'green', text: Intl.formatMessage('BASS_NODE_INUSE') },
+  [ChannelStatusMap.Creating]: { color: 'orange', text: Intl.formatMessage('BASS_NODE_CREATE_IN_PROGRESS') },
+  [ChannelStatusMap.CreationFailed]: { color: 'red', text: Intl.formatMessage('BASS_NODE_CREATE_FAILED') },
+  [ChannelStatusMap.Stopping]: { color: 'orange', text: Intl.formatMessage('BASS_NODE_BEING_DEACTIVATED') },
+  [ChannelStatusMap.StopFailed]: { color: 'red', text: Intl.formatMessage('BASS_NODE_DEACTIVATION_FAILED') },
+  [ChannelStatusMap.Stopped]: { color: ':#E2E9F7', text: Intl.formatMessage('BASS_NODE_DEACTIVATED') },
+  [ChannelStatusMap.Deleting]: { color: 'orange', text: Intl.formatMessage('BASS_NODE_BEING_REMOVED') },
+  [ChannelStatusMap.DeletionFailed]: { color: 'red', text: Intl.formatMessage('BASS_NODE_DELETED_FAILED') },
+  [ChannelStatusMap.Deleted]: { color: 'volcano', text: Intl.formatMessage('BASS_NODE_DELETED') }
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, EnterpriseMemberSchema, history } from 'umi';
-import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button } from 'antd';
+import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button, Divider, notification } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import cs from 'classnames';
 import moment from 'moment';
@@ -14,6 +14,7 @@ import { statusList, validStatus } from './_config';
 import ConfigMemberRole from './components/ConfigMemberRole';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const Option = Select.Option;
@@ -51,7 +52,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
 
   const columns: ColumnsType<any> = [
     {
-      title: '用户名',
+      title: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_USERNAME'),
       dataIndex: 'companyName',
       key: 'companyName',
       ellipsis: true,
@@ -73,28 +74,28 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     //   width: 120,
     // },
     {
-      title: '联系人姓名',
+      title: Intl.formatMessage('BASS_USER_INFO_CONTACT_PERSON_NAME'),
       dataIndex: 'contactName',
       key: 'contactName',
       ellipsis: true,
       width: 120
     },
     {
-      title: '联系人手机号',
+      title: Intl.formatMessage('BASS_USER_INFO_CONTACT_PHONE'),
       dataIndex: 'contactPhone',
       key: 'contactPhone',
       ellipsis: true,
       width: 120
     },
     {
-      title: '联系人邮箱',
+      title: Intl.formatMessage('BASS_USER_INFO_CONTACT_EMAIL'),
       dataIndex: 'contactEmail',
       key: 'contactEmail',
       ellipsis: true,
       width: 180
     },
     {
-      title: '创建时间',
+      title: Intl.formatMessage('BASS_COMMON_CREATE_TIME'),
       dataIndex: 'createTimestamp',
       key: 'createTimestamp',
       render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
@@ -102,7 +103,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       width: 150
     },
     {
-      title: '审批时间',
+      title: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_APPROVAL_TIME'),
       dataIndex: 'approveTime',
       key: 'approveTime',
       render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
@@ -110,7 +111,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       width: 150
     },
     {
-      title: '审批状态',
+      title: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_APPROVAL_STATUS'),
       dataIndex: 'approvalStatus',
       key: 'approvalStatus',
       render: (text) => statusList[text],
@@ -118,7 +119,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       width: 120
     },
     {
-      title: '可用状态',
+      title: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_AVAILABLE_STATUS'),
       dataIndex: 'isValid',
       key: 'isValid',
       render: (text) => validStatus[text],
@@ -126,39 +127,48 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       width: 120
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       fixed: 'right',
-      width: 230,
+      width: '22%',
       render: (text, record: EnterpriseMemberSchema) => (
         <Space size="small">
           {record.approvalStatus === 'pending' && (
             <>
               <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'agree')}>
-                通过
+                {Intl.formatMessage('BASS_CONTRACT_PASSED')}
               </span>
+              <Divider type="vertical" />
               <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'reject')}>
-                驳回
+                {Intl.formatMessage('BASS_CONTRACT_NOT_PASSED')}
               </span>
+              <Divider type="vertical" />
             </>
           )}
           {record.isValid === 'valid' && record.approvalStatus === 'approved' && (
-            <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'invalidate')}>
-              停用
-            </span>
+            <div>
+              <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'invalidate')}>
+                {Intl.formatMessage('BASS_MEMBER_MANAGEMENT_DISABLE')}
+              </span>
+              <Divider type="vertical" />
+            </div>
           )}
           {record.isValid === 'invalid' && record.approvalStatus === 'approved' && (
-            <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'validate')}>
-              启用
-            </span>
+            <div>
+              <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'validate')}>
+                {Intl.formatMessage('BASS_MEMBER_MANAGEMENT_ENABLE')}
+              </span>
+              <Divider type="vertical" />
+            </div>
           )}
           <span role="button" className="table-action-span" onClick={() => onClickRbacConfig(record)}>
-            配置访问权限
+            {Intl.formatMessage('BASS_MEMBER_MANAGEMENT_CONFIG_ACCESS_LIMIT')}
           </span>
+          <Divider type="vertical" />
           <a
             href={`/about/enterprise-member/${record.companyCertBusinessNumber}`}
             onClick={(e) => onClickDetail(e, record)}>
-            详情
+            {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
           </a>
         </Space>
       )
@@ -230,19 +240,19 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     let callback = () => { };
     switch (type) {
       case 'validate':
-        tipTitle = '启用';
+        tipTitle = Intl.formatMessage('BASS_MEMBER_MANAGEMENT_ENABLE');
         callback = () => invalidateMember(record, 'valid');
         break;
       case 'invalidate':
-        tipTitle = '停用';
+        tipTitle = Intl.formatMessage('BASS_MEMBER_MANAGEMENT_DISABLE');
         callback = () => invalidateMember(record, 'invalid');
         break;
       case 'agree':
-        tipTitle = '通过';
+        tipTitle = Intl.formatMessage('BASS_CONTRACT_PASSED');
         callback = () => approvalMember(record, 'approved');
         break;
       case 'reject':
-        tipTitle = '驳回';
+        tipTitle = Intl.formatMessage('BASS_CONTRACT_NOT_PASSED');
         callback = () => approvalMember(record, 'rejected');
         break;
       default:
@@ -251,45 +261,78 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
-      content: `确认要${tipTitle}成员 【${record.companyName}】 吗?`,
-      okText: '确认',
-      cancelText: '取消',
+      content: Intl.formatMessage('BASS_CONFIRM_ENTERPRISE_MEMBER_MODAL_CONTENT', {
+        tipTitle,
+        companyName: record.companyName
+      }),
+      okText: Intl.formatMessage('BASS_COMMON_CONFIRM'),
+      cancelText: Intl.formatMessage('BASS_COMMON_CANCEL'),
       onOk: callback
     });
   };
 
   // 停用 & 启用 用户成员
-  const invalidateMember = (record: EnterpriseMemberSchema, isValid: string) => {
+  const invalidateMember = async (record: EnterpriseMemberSchema, isValid: string) => {
     const params = {
       networkName,
       isValid,
       companyName: record.companyName
     };
-    dispatch({
+    const res = await dispatch({
       type: 'Member/setStatusOfLeagueCompany',
       payload: params
-    }).then((res: any) => {
-      if (res) {
-        getMemberList();
-      }
     });
+    let { statusCode, result } = res;
+    const succMessage =
+      `${isValid === 'invalid'
+        ? Intl.formatMessage('BASS_MEMBER_MANAGEMENT_DISABLE')
+        : Intl.formatMessage('BASS_MEMBER_MANAGEMENT_ENABLE')
+      }  ` + Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_STOP_USE');
+    const failMessage =
+      Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_FAILED') +
+      `${isValid === 'invalid'
+        ? Intl.formatMessage('BASS_MEMBER_MANAGEMENT_DISABLE')
+        : Intl.formatMessage('BASS_MEMBER_MANAGEMENT_ENABLE')
+      }  ` +
+      Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_USER');
+    if (statusCode === 'ok' && result === 1) {
+      getMemberList();
+      notification.success({ message: succMessage, top: 64, duration: 3 });
+    } else {
+      notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+    }
   };
 
   // 通过 & 驳回 用户成员
-  const approvalMember = (record: EnterpriseMemberSchema, approvalStatus: string) => {
+  const approvalMember = async (record: EnterpriseMemberSchema, approvalStatus: string) => {
     const params = {
       networkName,
       approvalStatus,
       companyName: record.companyName
     };
-    dispatch({
+    let res = await dispatch({
       type: 'Member/setCompanyApprove',
       payload: params
-    }).then((res: any) => {
-      if (res) {
-        getMemberList();
-      }
     });
+    const { statusCode, result } = res;
+    const succMessage =
+      `${approvalStatus === 'isValid'
+        ? Intl.formatMessage('BASS_CONTRACT_PASSED')
+        : Intl.formatMessage('BASS_CONTRACT_NOT_PASSED')
+      }  ` + Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_STOP_USE');
+    const failMessage =
+      Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_FAILED') +
+      `${approvalStatus === 'isValid'
+        ? Intl.formatMessage('BASS_CONTRACT_PASSED')
+        : Intl.formatMessage('BASS_CONTRACT_NOT_PASSED')
+      }  ` +
+      Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_USER');
+    if (statusCode === 'ok' && result === 1) {
+      getMemberList();
+      notification.success({ message: succMessage, top: 64, duration: 3 });
+    } else {
+      notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+    }
   };
 
   const onClickRbacConfig = (record: EnterpriseMemberSchema) => {
@@ -326,12 +369,12 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
           <Form {...formItemLayout} colon={false} form={form}>
             <Row gutter={24}>
               <Col span={8}>
-                <Item label="用户名" name="companyName" initialValue="">
-                  <Input placeholder="请输入用户名" />
+                <Item label={Intl.formatMessage('BASS_MEMBER_MANAGEMENT_USERNAME')} name="companyName" initialValue="">
+                  <Input placeholder={Intl.formatMessage('BASS_MEMBER_MANAGEMENT_INPUT_USERNAME')} />
                 </Item>
               </Col>
               <Col span={8}>
-                <Item label="创建时间" name="createTime" initialValue={[]}>
+                <Item label={Intl.formatMessage('BASS_COMMON_CREATE_TIME')} name="createTime" initialValue={[]}>
                   <RangePicker
                     getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
                     style={{ width: '100%' }}
@@ -340,11 +383,14 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
                 </Item>
               </Col>
               <Col span={8}>
-                <Item label="审批状态" name="approvalStatus" initialValue={null}>
+                <Item
+                  label={Intl.formatMessage('BASS_MEMBER_MANAGEMENT_APPROVAL_STATUS')}
+                  name="approvalStatus"
+                  initialValue={null}>
                   <Select
                     allowClear
                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    placeholder="请选择审批状态">
+                    placeholder={Intl.formatMessage('BASS_MEMBER_MANAGEMENT_SELECT_APPROVAL_STATUS')}>
                     {Object.keys(statusList).map((item) => (
                       <Option key={item} value={item}>
                         {statusList[item]}
@@ -355,9 +401,9 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
               </Col>
               <Col span={8} offset={16} style={{ textAlign: 'right' }}>
                 <Space size="middle">
-                  <Button onClick={resetForm}>重置</Button>
+                  <Button onClick={resetForm}>{Intl.formatMessage('BASS_COMMON_RESET')}</Button>
                   <Button type="primary" onClick={onSearch}>
-                    查询
+                    {Intl.formatMessage('BASS_COMMON_QUERY')}
                   </Button>
                 </Space>
               </Col>

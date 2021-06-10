@@ -4,6 +4,7 @@ import { Button, Modal, message } from 'antd';
 import { connect } from 'dva';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
+import { Intl } from '~/utils/locales';
 export interface SSHCommandProps {
   visible: boolean;
   nodeRecord: PeerSchema;
@@ -21,7 +22,7 @@ function SSHCommand(props: SSHCommandProps) {
   useEffect(() => {
     dispatch({
       type: 'Peer/getNodeSSH',
-      payload: { networkName, orgName: nodeRecord.orgName, nodeName: nodeRecord.nodeName },
+      payload: { networkName, orgName: nodeRecord.orgName, nodeName: nodeRecord.nodeName }
     });
   }, [dispatch, networkName, nodeRecord.nodeName, nodeRecord.orgName]);
 
@@ -29,20 +30,23 @@ function SSHCommand(props: SSHCommandProps) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: 'SSH命令',
+    title: Intl.formatMessage('BASS_NODE_SSH_COMMAND'),
     onCancel: onCancel,
     footer: [
-      <CopyToClipboard key={realNodeSSH} text={realNodeSSH} onCopy={() => message.success('节点ssh命令复制成功!')}>
+      <CopyToClipboard
+        key={realNodeSSH}
+        text={realNodeSSH}
+        onCopy={() => message.success(Intl.formatMessage('BASS_NODE_SSH_COMMAND_COPY_SUCCESS'))}>
         <Button key="submit" type="primary">
-          复制
+          {Intl.formatMessage('BASS_NODE_COPY')}
         </Button>
-      </CopyToClipboard>,
-    ],
+      </CopyToClipboard>
+    ]
   };
   return <Modal {...drawerProps}>{realNodeSSH}</Modal>;
 }
 
 export default connect(({ User, Peer, loading }: ConnectState) => ({
   User,
-  Peer,
+  Peer
 }))(SSHCommand);

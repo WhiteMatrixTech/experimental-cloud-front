@@ -9,6 +9,7 @@ import { notification } from 'antd';
 import moment from 'moment';
 import type { Reducer, Effect, BlockSchema, TransactionSchema } from 'umi';
 import { NetworkStatus } from '~/utils/networkStatus';
+import { formatMessage } from 'umi';
 
 export type DashboardModelState = {
   networkStatusInfo: {
@@ -80,10 +81,18 @@ const DashboardModel: DashboardModelType = {
       const res = yield call(API.createNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' || result.status === 'Starting') {
-        notification.success({ message: '创建网络请求发起成功', top: 64, duration: 3 });
+        notification.success({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_DASHBOARD_NEW_NETWORK_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '创建网络请求发起失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DASHBOARD_NEW_NETWORK_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -92,10 +101,18 @@ const DashboardModel: DashboardModelType = {
       const res = yield call(API.stopNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' || result.status === 'Starting') {
-        notification.success({ message: '停用网络请求发起成功', top: 64, duration: 3 });
+        notification.success({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_DASHBOARD_STOP_NETWORK_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '停用网络请求发起失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DASHBOARD_STOP_NETWORK_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -104,10 +121,18 @@ const DashboardModel: DashboardModelType = {
       const res = yield call(API.restartNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' || result.status === 'Starting') {
-        notification.success({ message: '重启网络请求发起成功', top: 64, duration: 3 });
+        notification.success({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_DASHBOARD_RESTART_NETWORK_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '重启网络请求发起失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DASHBOARD_RESTART_NETWORK_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -116,13 +141,21 @@ const DashboardModel: DashboardModelType = {
       const res = yield call(API.deleteNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '网络删除成功', top: 64, duration: 3 });
+        notification.success({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_DASHBOARD_DELETE_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         yield put({
           type: 'getNetworkInfo',
           payload: {}
         });
       } else {
-        notification.error({ message: result.message || '网络删除失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DASHBOARD_DELETE_FAILED' }),
+          top: 64,
+          duration: 3
+        });
       }
     },
 

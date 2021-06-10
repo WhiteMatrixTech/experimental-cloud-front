@@ -9,10 +9,11 @@ import styles from './index.less';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { DetailViewAttr } from '~/utils/types';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 breadCrumbItem.push({
-  menuName: '区块详情',
+  menuName: Intl.formatMessage('BASS_BLOCK_DETAIL'),
   menuHref: `/`
 });
 
@@ -40,52 +41,62 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
 
   const columns = [
     {
-      title: '交易ID',
+      title: Intl.formatMessage('BASS_TRANSACTION_ID'),
       dataIndex: 'txId',
       key: 'txId',
       ellipsis: true,
       width: '20%'
     },
     {
-      title: '所属通道',
+      title: Intl.formatMessage('BASS_COMMON_CHANNEL'),
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text: string) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '交易组织',
+      title: Intl.formatMessage('BASS_TRANSACTION_ORGANIZATION'),
       dataIndex: 'txMsp',
       key: 'txMsp',
-      render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>
+      ellipsis: {
+        showTitle: false
+      },
+      render: (text: string) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '合约名称',
+      title: Intl.formatMessage('BASS_TRANSACTION_CONTRACT_NAME'),
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text: string) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text: string) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '生成时间',
+      title: Intl.formatMessage('BASS_COMMON_GENERATED_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text: string) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+        text ? (
+          moment(text).format('YYYY-MM-DD HH:mm:ss')
+        ) : (
+          <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
+        )
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (text: string, record: TransactionSchema) => (
         <Space size="small">
           {record.channelId || record.txMsp ? (
             <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickDetail(e, record)}>
-              详情
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
             </a>
           ) : (
             <a
               href={`/about/transactions/${record.txId}`}
               className="a-forbidden-style"
               onClick={(e) => e.preventDefault()}>
-              详情
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
             </a>
           )}
         </Space>
@@ -151,23 +162,23 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
     if (blockDetail) {
       return [
         {
-          label: '当前哈希值',
+          label: Intl.formatMessage('BASS_BLOCK_CURRENT_HASH'),
           value: blockDetail.blockHash
         },
         {
-          label: '前序哈希值',
+          label: Intl.formatMessage('BASS_BLOCK_PREORDER_HASH'),
           value: blockDetail.previousHash
         },
         {
-          label: '交易笔数',
+          label: Intl.formatMessage('BASS_BLOCK_NUMBER_OF_TRANSACTION'),
           value: blockDetail.txCount
         },
         {
-          label: '生成时间',
+          label: Intl.formatMessage('BASS_COMMON_GENERATED_TIME'),
           value: moment(blockDetail.createdAt).format('YYYY-MM-DD HH:mm:ss')
         },
         {
-          label: '所属通道',
+          label: Intl.formatMessage('BASS_COMMON_CHANNEL'),
           value: blockDetail.channelId
         }
       ];
@@ -182,7 +193,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
         <div className="page-content">
           <div className={styles['block-detail-wrapper']}>
             <div className={styles['block-detail-title']}>
-              <div>区块信息</div>
+              <div>{Intl.formatMessage('BASS_BLOCK_INFORMATION')}</div>
             </div>
             <div className={styles['block-detail-content']}>
               <div className={styles.blockInfoWrap}>

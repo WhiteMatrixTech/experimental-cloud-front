@@ -7,10 +7,11 @@ import { statusList } from '../../enterprise-member/_config';
 import { injectIntl, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { DetailViewAttr } from '~/utils/types';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
 breadCrumbItem.push({
-  menuName: '我的信息',
+  menuName: Intl.formatMessage('BASS_USER_INFO_MY_INFORMATION'),
   menuHref: `/`
 });
 export interface MyCompanyInfoProps {
@@ -57,34 +58,34 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
 
   const companyBasicInfo: DetailViewAttr[] = [
     {
-      label: '用户名称',
+      label: Intl.formatMessage('BASS_USER_INFO_USER_NAME'),
       value: myCompany && myCompany.companyName
     },
     {
-      label: '当前审批状态',
+      label: Intl.formatMessage('BASS_USER_INFO_CURRENT_APPROVAL_STATUS'),
       value: myCompany && statusList[myCompany.approvalStatus]
-    }
+    },
     // {
-    //   label: '我的DID',
+    //   label: Intl.formatMessage('BASS_USER_INFO_MY_DID'),
     //   value: getDid || ''
     // }
   ];
 
   const companyContactsInfo: DetailViewAttr[] = [
     {
-      label: '联系人姓名',
+      label: Intl.formatMessage('BASS_USER_INFO_CONTACT_PERSON_NAME'),
       value: myCompany && myCompany.contactName
     },
     {
-      label: '联系人电话',
+      label: Intl.formatMessage('BASS_USER_INFO_CONTACT_PHONE'),
       value: myCompany && myCompany.contactPhone
     },
     {
-      label: '联系人邮箱',
+      label: Intl.formatMessage('BASS_USER_INFO_CONTACT_EMAIL'),
       value: myCompany && myCompany.contactEmail
     },
     {
-      label: '联系地址',
+      label: Intl.formatMessage('BASS_USER_INFO_CONTACT_ADDRESS'),
       value: myCompany && myCompany.companyAddress
     }
   ];
@@ -101,8 +102,11 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
         <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="基本信息" detailList={companyBasicInfo} />
-          <DetailCard cardTitle="联系人信息" detailList={companyContactsInfo} />
+          <DetailCard cardTitle={Intl.formatMessage('BASS_COMMON_BASIC_INFORMATION')} detailList={companyBasicInfo} />
+          <DetailCard
+            cardTitle={Intl.formatMessage('BASS_USER_INFO_CONTACT_INFORMATION')}
+            detailList={companyContactsInfo}
+          />
         </Spin>
       </div>
     </div>

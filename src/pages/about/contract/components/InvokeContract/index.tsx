@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import ReactJson from 'react-json-view';
-import { Input, Descriptions, Select, Form, Switch, Button, Modal, Radio, Divider } from 'antd';
+import { Input, Descriptions, Select, Form, Switch, Button, Modal, Radio, Divider, notification } from 'antd';
 import { ChainCodeSchema, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const { Option } = Select;
-
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
 export interface InvokeContractProps {
   visible: boolean;
@@ -38,7 +38,7 @@ function InvokeContract(props: InvokeContractProps) {
       const { invokeType, ...params } = values;
       dispatch({
         type: `Contract/${invokeType}`,
-        payload: params,
+        payload: params
       });
     });
   };
@@ -46,11 +46,11 @@ function InvokeContract(props: InvokeContractProps) {
   useEffect(() => {
     dispatch({
       type: 'Contract/getChannelList',
-      payload: { networkName },
+      payload: { networkName }
     });
     dispatch({
       type: 'Contract/getAllUserId',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, [dispatch, networkName]);
 
@@ -58,38 +58,36 @@ function InvokeContract(props: InvokeContractProps) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '调用合约',
+    title: Intl.formatMessage('BASS_CONTRACT_CALL_CONTRACT'),
     onCancel: onCancel,
     footer: [
       <Button key="cancel" onClick={onCancel}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="submit" loading={invokeLoading} onClick={handleSubmit} type="primary">
-        提交
-      </Button>,
-    ],
+        {Intl.formatMessage('BASS_COMMON_SUBMIT')}
+      </Button>
+    ]
   };
 
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
         <Item
-          label="所属通道"
+          label={Intl.formatMessage('BASS_COMMON_CHANNEL')}
           name="channelId"
           initialValue={editParams && editParams.channelId}
           rules={[
             {
               required: true,
-              message: '请选择通道',
-            },
-          ]}
-        >
+              message: Intl.formatMessage('BASS_COMMON_SELECT_CHANNEL')
+            }
+          ]}>
           <Select
             allowClear
             getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
-            placeholder="请选择通道"
-            disabled
-          >
+            placeholder={Intl.formatMessage('BASS_COMMON_SELECT_CHANNEL')}
+            disabled>
             {channelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
@@ -97,61 +95,59 @@ function InvokeContract(props: InvokeContractProps) {
             ))}
           </Select>
         </Item>
-        <Item label="合约名称" name="chainCodeName" initialValue={editParams && editParams.chainCodeName}>
-          <Input placeholder="请输入合约名称" disabled />
+        <Item
+          label={Intl.formatMessage('BASS_CONTRACT_NAME')}
+          name="chainCodeName"
+          initialValue={editParams && editParams.chainCodeName}>
+          <Input placeholder={Intl.formatMessage('BASS_CONTRACT_INPUT_CONTRACT_NAME')} disabled />
         </Item>
         <Item
-          label="方法名"
+          label={Intl.formatMessage('BASS_CONTRACT_METHOD_NAME')}
           name="methodName"
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请输入方法名',
-            },
-          ]}
-        >
-          <Input placeholder="请输入方法名" />
+              message: Intl.formatMessage('BASS_CONTRACT_INPUT_METHOD_NAME')
+            }
+          ]}>
+          <Input placeholder={Intl.formatMessage('BASS_CONTRACT_INPUT_METHOD_NAME')} />
         </Item>
-        <Item label="参数列表" name="params" initialValue={[]}>
+        <Item label={Intl.formatMessage('BASS_CONTRACT_PARAMETER_LIST')} name="params" initialValue={[]}>
           <Select
             getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
-            placeholder="请输入参数"
+            placeholder={Intl.formatMessage('BASS_CONTRACT_INPUT_PARAMETER_LIST')}
             mode="tags"
-            allowClear
-          ></Select>
+            allowClear></Select>
         </Item>
         <Item
-          label="调用类型"
+          label={Intl.formatMessage('BASS_CONTRACT_CALL_TYPE')}
           name="invokeType"
           initialValue="invokeChainCodeMethod"
           rules={[
             {
               required: true,
-              message: '请选择调用类型',
-            },
-          ]}
-        >
+              message: Intl.formatMessage('BASS_CONTRACT_SELECT_CALL_TYPE')
+            }
+          ]}>
           <Radio.Group>
             <Radio value="invokeChainCodeMethod">invoke</Radio>
             <Radio value="queryChainCodeMethod">query</Radio>
           </Radio.Group>
         </Item>
         <Item
-          label="Fabric角色"
+          label={Intl.formatMessage('BASS_CONTRACT_FABRIC_ROLE')}
           name="userId"
           rules={[
             {
               required: true,
-              message: '请选择fabric角色',
-            },
-          ]}
-        >
+              message: Intl.formatMessage('BASS_CONTRACT_SELECT_FABRIC_ROLE')
+            }
+          ]}>
           <Select
             allowClear
             getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
-            placeholder="请选择fabric角色"
-          >
+            placeholder={Intl.formatMessage('BASS_CONTRACT_SELECT_FABRIC_ROLE')}>
             {allUserId.map((item) => (
               <Option key={item} value={item}>
                 {item}
@@ -160,17 +156,16 @@ function InvokeContract(props: InvokeContractProps) {
           </Select>
         </Item>
         <Item
-          label="是否初始化"
+          label={Intl.formatMessage('BASS_CONTRACT_INITIALIZE_OR_NOT')}
           name="isInit"
           initialValue={true}
           valuePropName="checked"
           rules={[
             {
               required: true,
-              message: '请选择是否需要初始化',
-            },
-          ]}
-        >
+              message: Intl.formatMessage('BASS_CONTRACT_SELECT_INITIALIZE_OR_NOT')
+            }
+          ]}>
           <Switch />
         </Item>
       </Form>
@@ -178,8 +173,15 @@ function InvokeContract(props: InvokeContractProps) {
         <div>
           <Divider />
           <Descriptions bordered column={1} title="">
-            <Descriptions.Item label="合约调用结果">{invokeResult.status}</Descriptions.Item>
-            <Descriptions.Item label={invokeResult.status === 'Failed' ? `失败原因` : `返回数据`}>
+            <Descriptions.Item label={Intl.formatMessage('BASS_CONTRACT_CALL_RESULT')}>
+              {invokeResult.status}
+            </Descriptions.Item>
+            <Descriptions.Item
+              label={
+                invokeResult.status === 'Failed'
+                  ? Intl.formatMessage('BASS_CONTRACT_FAILURE_REASON')
+                  : Intl.formatMessage('BASS_CONTRACT_RETURN_DATA')
+              }>
               <ReactJson name="" src={invokeResult.message} />
             </Descriptions.Item>
           </Descriptions>
@@ -192,5 +194,5 @@ function InvokeContract(props: InvokeContractProps) {
 export default connect(({ Contract, User, loading }: ConnectState) => ({
   Contract,
   User,
-  invokeLoading: loading.effects['Contract/invokeChainCodeMethod'] || loading.effects['Contract/queryChainCodeMethod'],
+  invokeLoading: loading.effects['Contract/invokeChainCodeMethod'] || loading.effects['Contract/queryChainCodeMethod']
 }))(InvokeContract);

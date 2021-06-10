@@ -3,11 +3,12 @@ import { connect } from 'dva';
 import { Button, Modal, Form, Select, Input } from 'antd';
 import { Dispatch, EnterpriseMemberSchema } from 'umi';
 import { ConnectState } from '~/models/connect';
+import { Intl } from '~/utils/locales';
 
 const { Option } = Select;
 const formItemLayout = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 16 },
+  wrapperCol: { span: 16 }
 };
 export interface ConfigMemberRoleProps {
   visible: boolean;
@@ -29,11 +30,11 @@ function ConfigMemberRole(props: ConfigMemberRoleProps) {
   useEffect(() => {
     dispatch({
       type: 'RBAC/getRoleNameList',
-      payload: { networkName },
+      payload: { networkName }
     });
     dispatch({
       type: 'Member/getMemberRole',
-      payload: { networkName, companyName: record?.companyName },
+      payload: { networkName, companyName: record?.companyName }
     });
   }, [dispatch, networkName, record?.companyName]);
 
@@ -49,8 +50,8 @@ function ConfigMemberRole(props: ConfigMemberRoleProps) {
           type: 'Member/setRoleToMember',
           payload: {
             ...values,
-            networkName,
-          },
+            networkName
+          }
         });
         if (res) {
           onCancel();
@@ -65,35 +66,40 @@ function ConfigMemberRole(props: ConfigMemberRoleProps) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '配置访问权限',
+    title: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_CONFIG_ACCESS_ROLE'),
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="submit" loading={setLoading} onClick={handleSubmit} type="primary">
-        配置
-      </Button>,
-    ],
+        {Intl.formatMessage('BASS_MEMBER_MANAGEMENT_CONFIG')}
+      </Button>
+    ]
   };
 
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
-        <Form.Item label="用户名" name="companyName" initialValue={record?.companyName}>
+        <Form.Item
+          label={Intl.formatMessage('BASS_MEMBER_MANAGEMENT_USERNAME')}
+          name="companyName"
+          initialValue={record?.companyName}>
           <Input disabled />
         </Form.Item>
         <Form.Item
-          label="访问角色"
+          label={Intl.formatMessage('BASS_MEMBER_MANAGEMENT_ACCESS_ROLE')}
           name="roleName"
           rules={[
             {
               required: true,
-              message: '请选择访问角色',
-            },
-          ]}
-        >
-          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择访问角色">
+              message: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_SELECT_ACCESS_ROLE')
+            }
+          ]}>
+          <Select
+            allowClear
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder={Intl.formatMessage('BASS_MEMBER_MANAGEMENT_SELECT_ACCESS_ROLE')}>
             {RBAC.roleNameList.map((role) => (
               <Option key={role} value={role}>
                 {role}
@@ -111,5 +117,5 @@ export default connect(({ Contract, User, RBAC, Member, loading }: ConnectState)
   User,
   RBAC,
   Member,
-  setLoading: loading.effects['Member/setRoleToMember'],
+  setLoading: loading.effects['Member/setRoleToMember']
 }))(ConfigMemberRole);

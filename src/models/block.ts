@@ -3,29 +3,29 @@ import { notification } from 'antd';
 import type { Reducer, Effect, TransactionSchema } from 'umi';
 
 export type BlockSchema = {
-  networkName: string, // 网络名
-  number: number, // 区块号
-  dataHash: string, // 数据哈希,
-  previousHash: string, // 前序哈希,
-  txCount: number, // 区块的交易数
-  blockHash: string, // 区块哈希,
-  prevBlockHash: string, // 前序区块哈希,
-  blockSize: number, // 区块大小
-  channelGenesisHash: string, // 通道创世区块哈希,
-  channelId: string, // 通道ID,
-  tip: number, // 末端区块标记
-  createdAt: string,
-  updatedAt: string
-}
+  networkName: string; // 网络名
+  number: number; // 区块号
+  dataHash: string; // 数据哈希,
+  previousHash: string; // 前序哈希,
+  txCount: number; // 区块的交易数
+  blockHash: string; // 区块哈希,
+  prevBlockHash: string; // 前序区块哈希,
+  blockSize: number; // 区块大小
+  channelGenesisHash: string; // 通道创世区块哈希,
+  channelId: string; // 通道ID,
+  tip: number; // 末端区块标记
+  createdAt: string;
+  updatedAt: string;
+};
 
 export type BlockModelState = {
-  blockList: Array<BlockSchema>, // 区块链列表
-  blockTotal: number,
-  blockDetail: BlockSchema | null, // 当前区块详情
+  blockList: Array<BlockSchema>; // 区块链列表
+  blockTotal: number;
+  blockDetail: BlockSchema | null; // 当前区块详情
 
-  transactionList: Array<TransactionSchema>, // 当前区块下的交易列表
-  transactionTotal: number,
-}
+  transactionList: Array<TransactionSchema>; // 当前区块下的交易列表
+  transactionTotal: number;
+};
 
 export type BlockModelType = {
   namespace: 'Block';
@@ -51,7 +51,7 @@ const BlockModel: BlockModelType = {
     blockTotal: 0,
     blockDetail: null,
     transactionList: [],
-    transactionTotal: 0,
+    transactionTotal: 0
   },
 
   effects: {
@@ -62,8 +62,8 @@ const BlockModel: BlockModelType = {
         yield put({
           type: 'common',
           payload: {
-            blockTotal: result.count,
-          },
+            blockTotal: result.count
+          }
         });
       }
     },
@@ -74,8 +74,8 @@ const BlockModel: BlockModelType = {
         yield put({
           type: 'common',
           payload: {
-            blockList: result.items,
-          },
+            blockList: result.items
+          }
         });
       }
     },
@@ -88,8 +88,8 @@ const BlockModel: BlockModelType = {
           payload: {
             blockTotal: 1,
             blockList: [result],
-            blockDetail: result,
-          },
+            blockDetail: result
+          }
         });
       } else {
         yield put({
@@ -97,8 +97,8 @@ const BlockModel: BlockModelType = {
           payload: {
             blockTotal: 0,
             blockList: [],
-            blockDetail: '',
-          },
+            blockDetail: ''
+          }
         });
         notification.error({ message: result.message, top: 64, duration: 3 });
       }
@@ -112,8 +112,8 @@ const BlockModel: BlockModelType = {
           payload: {
             blockTotal: 1,
             blockList: [result],
-            blockDetail: result,
-          },
+            blockDetail: result
+          }
         });
       }
     },
@@ -124,8 +124,8 @@ const BlockModel: BlockModelType = {
         yield put({
           type: 'common',
           payload: {
-            transactionTotal: result.count,
-          },
+            transactionTotal: result.count
+          }
         });
       }
     },
@@ -136,18 +136,18 @@ const BlockModel: BlockModelType = {
         yield put({
           type: 'common',
           payload: {
-            transactionList: result.items,
-          },
+            transactionList: result.items
+          }
         });
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default BlockModel;

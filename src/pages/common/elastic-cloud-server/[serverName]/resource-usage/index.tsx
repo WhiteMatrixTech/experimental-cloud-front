@@ -9,31 +9,32 @@ import { serverPurpose } from '../../_config';
 import { ColumnsType } from 'antd/lib/table';
 import { Dispatch, ElasticServerSchema, Location } from 'umi';
 import { ConnectState } from '~/models/connect';
+import { Intl } from '~/utils/locales';
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');
 breadCrumbItem.push({
-  menuName: '实例数据',
+  menuName: Intl.formatMessage('BASS_ELASTIC_CLOUD_INSTANCE_DATA'),
   menuHref: `/`
 });
 
 const columns: ColumnsType<any> = [
   {
-    title: '实例名称',
+    title: Intl.formatMessage('BASS_ELASTIC_CLOUD_INSTANCE_NAME'),
     dataIndex: 'instanceName',
     key: 'instanceName'
   },
   {
-    title: '实例类型',
+    title: Intl.formatMessage('BASS_ELASTIC_CLOUD_INSTANCE_TYPE'),
     dataIndex: 'instanceType',
     key: 'instanceType'
   },
   {
-    title: '外网IP',
+    title: Intl.formatMessage('BASS_ELASTIC_CLOUD_EXTERNAL_IP'),
     dataIndex: 'publicIpAddress',
     key: 'publicIpAddress',
     ellipsis: true
   },
   {
-    title: '创建时间',
+    title: Intl.formatMessage('BASS_COMMON_CREATE_TIME'),
     dataIndex: 'createdAt',
     key: 'createdAt',
     render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
@@ -84,19 +85,19 @@ function ResourceUsage(props: ResourceUsageProps) {
   const serverInfoList = useMemo(
     () => [
       {
-        label: '服务器名称',
+        label: Intl.formatMessage('BASS_ELASTIC_CLOUD_SERVER_NAME'),
         value: location?.state?.serverName
       },
       {
-        label: '用户名称',
+        label: Intl.formatMessage('BASS_USER_INFO_USER_NAME'),
         value: location?.state?.username
       },
       {
-        label: '用途类型',
+        label: Intl.formatMessage('BASS_ELASTIC_CLOUD_TYPE_OF_USE'),
         value: serverPurpose[location?.state?.serverPurpose]
       },
       {
-        label: '实例总数',
+        label: Intl.formatMessage('BASS_ELASTIC_CLOUD_INSTANCE_TOTAL'),
         value: nodeTotal
       }
     ],
@@ -111,7 +112,11 @@ function ResourceUsage(props: ResourceUsageProps) {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
-        <DetailCard cardTitle="服务器信息" detailList={serverInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
+        <DetailCard
+          cardTitle={Intl.formatMessage('BASS_ELASTIC_CLOUD_SERVER_INFORMATION')}
+          detailList={serverInfoList}
+          boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"
+        />
         <Table
           rowKey="instanceId"
           loading={qryLoading}

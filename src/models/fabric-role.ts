@@ -4,6 +4,7 @@ import { notification } from 'antd';
 import type { Reducer, Effect, OrganizationSchema } from 'umi';
 import { Roles } from '~/utils/roles';
 import { FabricRole } from '~/pages/about/fabricUsers/_config';
+import { formatMessage } from 'umi';
 
 export type FabricRoleSchema = {
   networkName: string; // 网络名称
@@ -92,8 +93,8 @@ const FabricRoleModel: FabricRoleModelType = {
     *createFabricRole({ payload }, { call, put }) {
       const res = yield call(API.createFabricUser, payload);
       const { statusCode, result } = res;
-      const succMessage = `新增Fabric角色成功`;
-      const failMessage = `新增Fabric角色失败`;
+      const succMessage = formatMessage({ id: 'BASS_NOTIFICATION_FABRIC_ROLE_SUCCESS' });
+      const failMessage = formatMessage({ id: 'BASS_NOTIFICATION_FABRIC_ROLE_FAILED' });
       if (statusCode === 'ok' && result) {
         notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
         return true;

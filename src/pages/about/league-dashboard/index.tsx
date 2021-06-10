@@ -13,6 +13,7 @@ import config from '~/utils/config';
 import style from './index.less';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/league-dashboard');
 export interface LeagueDashboardProps {
@@ -45,13 +46,17 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   const statisticsList = useMemo(() => {
     return [
       {
-        label: `${userRole === Roles.NetworkMember ? '已入联盟' : '成员'}`,
+        label: `${
+          userRole === Roles.NetworkMember
+            ? Intl.formatMessage('BASS_CONSORTIUM_JOINED')
+            : Intl.formatMessage('BASS_CONSORTIUM_MEMBER')
+        }`,
         num: Dashboard.memberTotal
       },
-      { label: '通道', num: Dashboard.channelTotal },
-      { label: '合约', num: Dashboard.myContractTotal },
-      { label: '区块', num: Dashboard.blockTotal },
-      { label: '交易', num: Dashboard.transactionTotal }
+      { label: Intl.formatMessage('BASS_CONSORTIUM_CHANNEL'), num: Dashboard.channelTotal },
+      { label: Intl.formatMessage('BASS_CONSORTIUM_CONTRACT'), num: Dashboard.myContractTotal },
+      { label: Intl.formatMessage('BASS_CONSORTIUM_BLOCK'), num: Dashboard.blockTotal },
+      { label: Intl.formatMessage('BASS_CONSORTIUM_TRANSACTIONS'), num: Dashboard.transactionTotal }
     ];
   }, [
     Dashboard.blockTotal,
@@ -102,7 +107,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   // 点击创建网络
   const onCreateNetwork = useCallback(() => {
     if (serverTotal === 0) {
-      message.warn('请先在【弹性云服务器管理中创建服务器】');
+      message.warn(Intl.formatMessage('BASS_CONTRACT_CREATE_NETWORK_MESSAGE_WARN'));
       return;
     }
     setCreateVisible(true);
@@ -131,9 +136,9 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
-      content: `确认要停用网络 【${networkName}】 吗?`,
-      okText: '确认',
-      cancelText: '取消',
+      content: Intl.formatMessage('BASS_CONTRACT_STOP_NETWORK', { networkName }),
+      okText: Intl.formatMessage('BASS_COMMON_CONFIRM'),
+      cancelText: Intl.formatMessage('BASS_COMMON_CANCEL'),
       onOk: confirm
     });
   }, [dispatch, networkName]);
@@ -216,35 +221,35 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
 
   const blockColumns: ColumnsType<any> = [
     {
-      title: '区块HASH',
+      title: Intl.formatMessage('BASS_BLOCK_BLOCK_HASH'),
       dataIndex: 'blockHash',
       key: 'blockHash',
       ellipsis: true,
       width: userRole === Roles.NetworkMember ? '17%' : '20%'
     },
     {
-      title: '所属通道',
+      title: Intl.formatMessage('BASS_COMMON_CHANNEL'),
       dataIndex: 'channelId',
       key: 'channelId'
     },
     {
-      title: '交易数量',
+      title: Intl.formatMessage('BASS_BLOCK_NUMBER_OF_TRANSACTION'),
       dataIndex: 'txCount',
       key: 'txCount'
     },
     {
-      title: '生成时间',
+      title: Intl.formatMessage('BASS_COMMON_GENERATED_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (text, record: BlockSchema) => (
         <Space size="small">
           <a href={`/about/block/${record.blockHash}`} onClick={(e) => onClickBlockDetail(e, record)}>
-            详情
+            {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
           </a>
         </Space>
       )
@@ -252,52 +257,59 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   ];
   const transactionColumns: ColumnsType<any> = [
     {
-      title: '交易ID',
+      title: Intl.formatMessage('BASS_TRANSACTION_ID'),
       dataIndex: 'txId',
       key: 'txId',
       ellipsis: true,
       width: '17%'
     },
     {
-      title: '所属通道',
+      title: Intl.formatMessage('BASS_COMMON_CHANNEL'),
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '交易组织',
+      title: Intl.formatMessage('BASS_TRANSACTION_ORGANIZATION'),
       dataIndex: 'txEndorseMsp',
       key: 'txEndorseMsp',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '合约名称',
+      title: Intl.formatMessage('BASS_TRANSACTION_CONTRACT_NAME'),
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '生成时间',
+      title: Intl.formatMessage('BASS_COMMON_GENERATED_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+        text ? (
+          moment(text).format('YYYY-MM-DD HH:mm:ss')
+        ) : (
+          <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
+        )
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (text, record: TransactionSchema) => (
         <Space size="small">
           {record.channelId || record.txEndorseMsp ? (
             <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickTransactionDetail(e, record)}>
-              详情
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
             </a>
           ) : (
             <a
               href={`/about/transactions/${record.txId}`}
               className="a-forbidden-style"
               onClick={(e) => e.preventDefault()}>
-              详情
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
             </a>
           )}
         </Space>
@@ -319,7 +331,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
           btnShowInitValue.extraButton = (
             <Col span={8}>
               <Button type="primary" onClick={onCreateNetwork}>
-                立即创建
+                {Intl.formatMessage('BASS_CONTRACT_CREATE_NOW_NETWORK')}
               </Button>
             </Col>
           );
@@ -328,7 +340,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
           btnShowInitValue.extraButton = (
             <Col span={8}>
               <Button type="primary" onClick={onRestartNetwork}>
-                重启网络
+                {Intl.formatMessage('BASS_CONTRACT_RESTART_NETWORK')}
               </Button>
             </Col>
           );
@@ -337,9 +349,11 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
           if (channelTotal === 0) {
             btnShowInitValue.createChannelLink = (
               <>
-                <span className={style.description}>，网络中暂无通道，</span>
+                <span className={style.description}>
+                  ，{Intl.formatMessage('BASS_CONTRACT_NO_CHANNEL_IN_NETWORK')}，
+                </span>
                 <a href="/about/channels" onClick={linkToCreateChannel}>
-                  去创建
+                  {Intl.formatMessage('BASS_CONTRACT_GO_CREATE_NETWORK')}
                 </a>
               </>
             );
@@ -347,7 +361,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
             btnShowInitValue.extraButton = (
               <Col span={8}>
                 <Button type="primary" onClick={onStopNetwork}>
-                  停用网络
+                  {Intl.formatMessage('BASS_CONTRACT_STOP_USE_NETWORK')}
                 </Button>
               </Col>
             );
@@ -398,17 +412,17 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
           <div className={style['league-basic-info']}>
             <Row>
               <Col span={8}>
-                <label>联盟名称：</label>
+                <label>{Intl.formatMessage('BASS_CONSORTIUM_NAME')}：</label>
                 <span className={style.description}>{leagueName}</span>
               </Col>
               <Col span={8}>
-                <label>创建时间：</label>
+                <label>{Intl.formatMessage('BASS_COMMON_CREATE_TIME')}：</label>
                 <span className={style.description}>
                   {networkStatusInfo ? moment(networkStatusInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
                 </span>
               </Col>
               <Col span={8}>
-                <label>网络状态: </label>
+                <label>{Intl.formatMessage('BASS_CONSORTIUM_NETWORK_STATUS')}: </label>
                 <span className={style.description}>
                   {networkStatusInfo ? NetworkInfo[networkStatusInfo.networkStatus] : ''}
                 </span>

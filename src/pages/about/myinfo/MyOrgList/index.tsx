@@ -8,11 +8,12 @@ import { orgStatus } from '../../organizations/_config';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 import { DetailViewAttr } from '~/utils/types';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
 breadCrumbItem.push({
-  menuName: '组织信息',
-  menuHref: `/`,
+  menuName: Intl.formatMessage('BASS_ORGANIZATION_INFORMATION'),
+  menuHref: `/`
 });
 export interface MyOrgInfoProps {
   User: ConnectState['User'];
@@ -25,41 +26,41 @@ function MyOrgInfo(props: MyOrgInfoProps) {
     User,
     dispatch,
     qryLoading = false,
-    MyInfo: { myOrgInfo },
+    MyInfo: { myOrgInfo }
   } = props;
   const { networkName } = User;
 
   const myOrgInfoList: DetailViewAttr[] = [
     {
-      label: '组织名称',
-      value: myOrgInfo && myOrgInfo.orgName,
+      label: Intl.formatMessage('BASS_ORGANIZATION_NAME'),
+      value: myOrgInfo && myOrgInfo.orgName
     },
     {
-      label: '组织别名',
-      value: myOrgInfo && myOrgInfo.orgAliasName,
+      label: Intl.formatMessage('BASS_ORGANIZATION_ALIAS'),
+      value: myOrgInfo && myOrgInfo.orgAliasName
     },
     {
-      label: '组织MSP',
-      value: myOrgInfo && myOrgInfo.orgMspId,
+      label: Intl.formatMessage('BASS_ORGANIZATION_MSP'),
+      value: myOrgInfo && myOrgInfo.orgMspId
     },
     {
-      label: '组织地址',
-      value: myOrgInfo && myOrgInfo.orgAddress,
+      label: Intl.formatMessage('BASS_ORGANIZATION_ADDRESS'),
+      value: myOrgInfo && myOrgInfo.orgAddress
     },
     {
-      label: '组织状态',
-      value: myOrgInfo && myOrgInfo.orgStatus ? orgStatus[myOrgInfo.orgStatus].text : '',
+      label: Intl.formatMessage('BASS_ORGANIZATION_STATUS'),
+      value: myOrgInfo && myOrgInfo.orgStatus ? orgStatus[myOrgInfo.orgStatus].text : ''
     },
     {
-      label: '创建时间',
-      value: myOrgInfo && myOrgInfo.createdAt ? moment(myOrgInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -',
-    },
+      label: Intl.formatMessage('BASS_COMMON_CREATE_TIME'),
+      value: myOrgInfo && myOrgInfo.createdAt ? moment(myOrgInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -'
+    }
   ];
 
   useEffect(() => {
     dispatch({
       type: 'MyInfo/getMyOrgInfo',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, [dispatch, networkName]);
 
@@ -68,7 +69,7 @@ function MyOrgInfo(props: MyOrgInfoProps) {
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
         <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="组织信息" detailList={myOrgInfoList} />
+          <DetailCard cardTitle={Intl.formatMessage('BASS_ORGANIZATION_INFORMATION')} detailList={myOrgInfoList} />
         </Spin>
       </div>
     </div>
@@ -78,5 +79,5 @@ function MyOrgInfo(props: MyOrgInfoProps) {
 export default connect(({ User, MyInfo, loading }: ConnectState) => ({
   User,
   MyInfo,
-  qryLoading: loading.effects['MyInfo/getMyInfoDetail'],
+  qryLoading: loading.effects['MyInfo/getMyInfoDetail']
 }))(MyOrgInfo);

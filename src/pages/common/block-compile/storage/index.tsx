@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Button, Modal, Space, Table } from 'antd';
+import { Button, Modal, notification, Space, Table } from 'antd';
 import { connect, Dispatch, ImageDetail } from 'umi';
 import { Breadcrumb } from '~/components';
 import { ConnectState } from '~/models/connect';
@@ -10,10 +10,11 @@ import AddCustomImageModal from './components/AddCustomImageModal';
 import moment from 'moment';
 import { Roles } from '~/utils/roles';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
 breadCrumbItem.push({
-  menuName: '自定义镜像管理',
+  menuName: Intl.formatMessage('BASS_CUSTOM_IMAGE_MANAGEMENT'),
   menuHref: `/`
 });
 
@@ -65,38 +66,38 @@ function CustomImage(props: CustomImageProps) {
   };
 
   const columns: ColumnsType<any> = [
-    { title: '镜像地址', dataIndex: 'imageUrl', key: 'imageUrl', ellipsis: true },
-    { title: '镜像类型', dataIndex: 'imageType', key: 'imageType', ellipsis: true },
-    { title: '镜像ID', dataIndex: '_id', key: '_id', ellipsis: true },
+    { title: Intl.formatMessage('BASS_CUSTOM_IMAGE_ADDRESS'), dataIndex: 'imageUrl', key: 'imageUrl', ellipsis: true },
+    { title: Intl.formatMessage('BASS_CUSTOM_IMAGE_TYPE'), dataIndex: 'imageType', key: 'imageType', ellipsis: true },
+    { title: Intl.formatMessage('BASS_CUSTOM_IMAGE_ID'), dataIndex: '_id', key: '_id', ellipsis: true },
     {
-      title: '注册服务器',
+      title: Intl.formatMessage('BASS_CUSTOM_IMAGE_REGISTER_SERVER'),
       dataIndex: 'registerServer',
       key: 'registerServer',
       ellipsis: true,
       render: (_: string, record: ImageDetail) => record.credential?.registryServer || ''
     },
     {
-      title: '创建时间',
+      title: Intl.formatMessage('BASS_COMMON_CREATE_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       ellipsis: true,
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
-      title: '更新时间',
+      title: Intl.formatMessage('BASS_CUSTOM_IMAGE_CREATION_TIME'),
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       dataIndex: 'operation',
       key: 'operation',
       render: (_: string, record: ImageDetail) => (
         <Space size="small">
           {OperationalRole.includes(userInfo.role) && (
             <span role="button" className="table-action-span" onClick={() => onClickDelete(record)}>
-              删除
+              {Intl.formatMessage('BASS_COMMON_DELETE')}
             </span>
           )}
         </Space>
@@ -108,9 +109,9 @@ function CustomImage(props: CustomImageProps) {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
-      content: `确认要删除此镜像吗?`,
-      okText: '确认',
-      cancelText: '取消',
+      content: Intl.formatMessage('BASS_CONFIRM_DELETE_IMAGE_MODAL_CONTENT'),
+      okText: Intl.formatMessage('BASS_COMMON_CONFIRM'),
+      cancelText: Intl.formatMessage('BASS_COMMON_CANCEL'),
       onOk: async () => {
         const res = await dispatch({
           type: 'CustomImage/deleteCustomImage',
@@ -118,8 +119,20 @@ function CustomImage(props: CustomImageProps) {
             imageId: record._id
           }
         });
-        if (res) {
+        const { statusCode, result } = res;
+        if (statusCode === 'ok' && result.status) {
           getImageList();
+          notification.success({
+            message: Intl.formatMessage('BASS_NOTIFICATION_CUSTOM_IMAGE_DELETE_SUCCESS'),
+            top: 64,
+            duration: 3
+          });
+        } else {
+          notification.error({
+            message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CUSTOM_IMAGE_DELETE_FAILED'),
+            top: 64,
+            duration: 3
+          });
         }
       }
     });
@@ -136,7 +149,7 @@ function CustomImage(props: CustomImageProps) {
         {OperationalRole.includes(userInfo.role) && (
           <div className="table-header-btn-wrapper">
             <Button type="primary" onClick={onClickAddMirrorImage}>
-              添加镜像
+              {Intl.formatMessage('BASS_CUSTOM_IMAGE_ADD')}
             </Button>
           </div>
         )}

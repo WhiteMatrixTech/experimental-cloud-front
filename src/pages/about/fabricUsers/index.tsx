@@ -13,6 +13,7 @@ import styles from './index.less';
 import { Dispatch, FabricRoleSchema } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const Option = Select.Option;
@@ -68,7 +69,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
     if (myOrgInfo && myOrgInfo.orgStatus && myOrgInfo.orgStatus === OrgStatusEnum.InUse) {
       setCreateModalVisible(true);
     } else {
-      message.warn('请先在【组织管理】中添加您的组织，并确保您的组织在使用中');
+      message.warn(Intl.formatMessage('BASS_CONTRACT_MESSAGE_WARN_ADD_CONTRACT'));
     }
   };
 
@@ -125,43 +126,44 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
 
   const columns: ColumnsType<any> = [
     {
-      title: 'Fabric角色名',
+      title: Intl.formatMessage('BASS_FABRIC_CHARACTER_NAME'),
       dataIndex: 'userId',
       key: 'userId',
       ellipsis: true
     },
     {
-      title: '角色类型',
+      title: Intl.formatMessage('BASS_FABRIC_CHARACTER_TYPE'),
       dataIndex: 'explorerRole',
       key: 'explorerRole'
     },
     {
-      title: '所属组织',
+      title: Intl.formatMessage('BASS_COMMON_ORGANIZATION'),
       dataIndex: 'orgName',
       key: 'orgName',
       ellipsis: true
     },
     {
-      title: '属性集',
+      title: Intl.formatMessage('BASS_FABRIC_ATTRIBUTE_SETS'),
       dataIndex: 'attrs',
       key: 'attrs',
       ellipsis: true
     },
     {
-      title: '创建时间',
+      title: Intl.formatMessage('BASS_COMMON_CREATE_TIME'),
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
+      width: 230,
       render: (_: any, record: FabricRoleSchema) => (
         <Space size="small">
           <a
             href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRole/${record.orgName}/${record.userId}/getUserCcp`}
             onClick={(e) => onDownLoadSDK(e, record)}>
-            下载SDK配置
+            {Intl.formatMessage('BASS_FABRIC_DOWNLOAD_SDK_CONFIGURATION')}
           </a>
         </Space>
       )
@@ -195,8 +197,11 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
           <Form {...formItemLayout} colon={false} form={form}>
             <Row gutter={24}>
               <Col span={8}>
-                <Item label="组织名称" name="orgNameSearch" initialValue={null}>
-                  <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择组织">
+                <Item label={Intl.formatMessage('BASS_ORGANIZATION_NAME')} name="orgNameSearch" initialValue={null}>
+                  <Select
+                    allowClear
+                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                    placeholder={Intl.formatMessage('BASS_FABRIC_SELECT_ORGANIZATION_NAME')}>
                     {orgList.map((item) => (
                       <Option key={item.orgName} value={item.orgName}>
                         {item.orgName}
@@ -207,9 +212,9 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
               </Col>
               <Col span={8} offset={8} style={{ textAlign: 'right' }}>
                 <Space size="middle">
-                  <Button onClick={resetForm}>重置</Button>
+                  <Button onClick={resetForm}>{Intl.formatMessage('BASS_COMMON_RESET')}</Button>
                   <Button type="primary" onClick={onSearch}>
-                    查询
+                    {Intl.formatMessage('BASS_COMMON_QUERY')}
                   </Button>
                 </Space>
               </Col>
@@ -219,7 +224,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
         <div className="table-wrapper page-content-shadow">
           <div className={styles['table-header-btn-wrapper']}>
             <Button type="primary" onClick={onClickCreate}>
-              新增Fabric角色
+              {Intl.formatMessage('BASS_FABRIC_NEW_FABRIC_ROLE')}
             </Button>
           </div>
           <Table

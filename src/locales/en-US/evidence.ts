@@ -1,0 +1,16 @@
+export const EVIDENCE_US = {
+  BASS_EVIDENCE_ON_CHAIN: 'Evidence on Chain',
+  BASS_EVIDENCE_HASH: 'HASH',
+  BASS_EVIDENCE_CREATE_USER: 'Create User',
+  BASS_EVIDENCE_TIME_FOR_ON_CHAIN: 'Update Time',
+  BASS_EVIDENCE_DETAIL_OF_ON_CHAIN: 'Details of saving data to the blockchain',
+  BASS_EVIDENCE_DEPOSITED_HASH: 'Deposited Hash',
+  BASS_EVIDENCE_DEPOSITED_USER: 'Deposited User',
+  BASS_EVIDENCE_DEPOSITED_INFORMATION: 'Deposited Information',
+  BASS_EVIDENCE_CHANNEL: 'Channel',
+  BASS_EVIDENCE_DEPOSITED_DATA: 'Deposited Data',
+  BASS_EVIDENCE_INPUT_DEPOSITED_HASH: 'please input the evidence hash',
+  BASS_EVIDENCE_INPUT_DEPOSITED_DATA: 'please input deposited data',
+  BASS_EVIDENCE_NETWORK_NAME: 'Network Name',
+  BASS_EVIDENCE_EVIDENCE_USER: 'Deposited User',
+};

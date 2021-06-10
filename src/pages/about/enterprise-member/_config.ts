@@ -1,3 +1,4 @@
+import { Intl } from '~/utils/locales';
 export enum MemberApprovalStatus {
   Pending = 'pending',
   Approved = 'approved',
@@ -13,14 +14,14 @@ export enum MemberValidStatus {
 
 export const statusList = {
   // 审批状态
-  pending: '未审批',
-  approved: '通过',
-  rejected: '驳回',
+  pending: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_PENDING'),
+  approved: Intl.formatMessage('BASS_CONTRACT_PASSED'),
+  rejected: Intl.formatMessage('BASS_CONTRACT_NOT_PASSED')
 };
 
 export const validStatus = {
   // 可用状态
-  invalid: '停用',
-  valid: '启用',
-  pending: '- -',
+  invalid: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_DISABLE'),
+  valid: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_ENABLE'),
+  pending: '- -'
 };

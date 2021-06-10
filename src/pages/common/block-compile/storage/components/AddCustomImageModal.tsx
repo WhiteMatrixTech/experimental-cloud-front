@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Form, Input, Modal, Select } from 'antd';
+import { Button, Form, Input, Modal, notification, Select } from 'antd';
 import { connect, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { ImageTypeForForm } from '../_config';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 
@@ -36,8 +37,20 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
           type: 'CustomImage/addCustomImage',
           payload: params
         });
-        if (res) {
+        const { statusCode, result } = res;
+        if (statusCode === 'ok' && result.status) {
           onCancel();
+          notification.success({
+            message: Intl.formatMessage('BASS_NOTIFICATION_CUSTOM_IMAGE_ADD_SUCCESS'),
+            top: 64,
+            duration: 3
+          });
+        } else {
+          notification.error({
+            message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CUSTOM_IMAGE_ADD_FAILED'),
+            top: 64,
+            duration: 3
+          });
         }
       })
       .catch((info) => {
@@ -49,14 +62,14 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '添加镜像',
+    title: Intl.formatMessage('BASS_CUSTOM_IMAGE_ADD'),
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="submit" type="primary" onClick={handleSubmit} loading={configLoading}>
-        提交
+        {Intl.formatMessage('BASS_COMMON_SUBMIT')}
       </Button>
     ]
   };
@@ -65,16 +78,16 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
     <Modal {...drawerProps}>
       <Form layout="vertical" form={form}>
         <Item
-          label="镜像地址"
+          label={Intl.formatMessage('BASS_CUSTOM_IMAGE_ADDRESS')}
           name="imageUrl"
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请输入镜像地址'
+              message: Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_ADDRESS')
             }
           ]}>
-          <Input placeholder="输入镜像地址" />
+          <Input placeholder={Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_ADDRESS')} />
         </Item>
         <Item
           name="imageType"
@@ -82,17 +95,17 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
           rules={[
             {
               required: true,
-              message: '请选择镜像类型'
+              message: Intl.formatMessage('BASS_CUSTOM_IMAGE_SELECT_TYPE')
             }
           ]}>
           <Select
             allowClear
-            placeholder="选择镜像类型"
+            placeholder={Intl.formatMessage('BASS_CUSTOM_IMAGE_SELECT_TYPE')}
             options={imageOptions}
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
           />
         </Item>
-        <Item label="编译凭证">
+        <Item label={Intl.formatMessage('BASS_CUSTOM_IMAGE_VOUCHERS')}>
           <Input.Group compact>
             <Item
               name="username"
@@ -101,10 +114,10 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
               rules={[
                 {
                   required: true,
-                  message: '请输入用户名'
+                  message: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_INPUT_USERNAME')
                 }
               ]}>
-              <Input placeholder="输入用户名" />
+              <Input placeholder={Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_USER_NAME')} />
             </Item>
             <Item
               name="password"
@@ -113,10 +126,10 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
               rules={[
                 {
                   required: true,
-                  message: '请输入密码'
+                  message: Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_PASSWORD')
                 }
               ]}>
-              <Input placeholder="输入密码" />
+              <Input placeholder={Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_PASSWORD')} />
             </Item>
             <Item
               name="registryServer"
@@ -125,10 +138,10 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
               rules={[
                 {
                   required: true,
-                  message: '请输入注册服务器'
+                  message: Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_REGISTER_SERVER')
                 }
               ]}>
-              <Input placeholder="输入注册服务器" />
+              <Input placeholder={Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_REGISTER_SERVER')} />
             </Item>
           </Input.Group>
         </Item>

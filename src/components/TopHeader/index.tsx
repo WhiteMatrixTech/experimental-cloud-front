@@ -8,6 +8,7 @@ import { DownOutlined, BarsOutlined } from '@ant-design/icons';
 import { ConnectState } from '~/models/connect';
 import buaaLogo from '~/assets/images/buaa-small.png';
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 
 const { Header } = Layout;
 
@@ -33,7 +34,7 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
   const getUserMenu = () => {
     return (
       <Menu theme="dark" onClick={handleUserMenuClick}>
-        <Menu.Item key="loginOut">退出账号</Menu.Item>
+        <Menu.Item key="loginOut">{Intl.formatMessage('BASS_SERVICE_LIST_LOG_OUT_ACCOUNT')}</Menu.Item>
       </Menu>
     );
   };
@@ -51,11 +52,11 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
   return (
     <Header className={styles.header}>
       <div className={styles['logo-sub']}>
-        <img src={buaaLogo} alt="北京航空大学杭州创新研究院" />
-        <span>欢迎使用区块链应用服务平台</span>
+        <img src={buaaLogo} alt={Intl.formatMessage('BASS_SERVICE_LIST_THEME')} />
+        <span>{Intl.formatMessage('BASS_SERVICE_LIST_PROJECT_NAME')}</span>
         <a className={styles['header-menu-item']} onClick={onClickShowDrawer}>
           <BarsOutlined />
-          <span>服务列表</span>
+          <span>{Intl.formatMessage('BASS_SERVICE_LIST')}</span>
         </a>
       </div>
       <div className={styles['header-right-info']}>

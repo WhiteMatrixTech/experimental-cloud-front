@@ -4,10 +4,11 @@ import { Button, Modal, Form, Select } from 'antd';
 import MonacoEditor from 'react-monaco-editor';
 import { Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
+import { Intl } from '~/utils/locales';
 
 const { Option } = Select;
 const editorOptions = {
-  selectOnLineNumbers: true,
+  selectOnLineNumbers: true
 };
 export interface EvidenceOnChainProps {
   visible: boolean;
@@ -27,7 +28,7 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
   useEffect(() => {
     dispatch({
       type: 'Contract/getChannelList',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, [dispatch, networkName]);
 
@@ -39,8 +40,8 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
           type: 'Evidence/evidenceOnChain',
           payload: {
             ...values,
-            networkName,
-          },
+            networkName
+          }
         });
         if (res) {
           onCancel('refresh');
@@ -55,7 +56,7 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
     const promise = Promise; // 没有值的情况
 
     if (!value) {
-      return promise.reject('请输入存证数据');
+      return promise.reject(Intl.formatMessage('BASS_EVIDENCE_INPUT_DEPOSITED_DATA'));
     } // 有值的情况
 
     return promise.resolve();
@@ -72,33 +73,35 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '存证上链',
+    title: Intl.formatMessage('BASS_EVIDENCE_ON_CHAIN'),
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="submit" loading={addLoading} onClick={handleSubmit} type="primary">
-        提交
-      </Button>,
-    ],
+        {Intl.formatMessage('BASS_COMMON_SUBMIT')}
+      </Button>
+    ]
   };
 
   return (
     <Modal {...drawerProps}>
       <Form layout="vertical" form={form}>
         <Form.Item
-          label="通道"
+          label={Intl.formatMessage('BASS_EVIDENCE_CHANNEL')}
           name="channelId"
           initialValue={null}
           rules={[
             {
               required: true,
-              message: '请选择通道',
-            },
-          ]}
-        >
-          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择通道">
+              message: Intl.formatMessage('BASS_COMMON_SELECT_CHANNEL')
+            }
+          ]}>
+          <Select
+            allowClear
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder={Intl.formatMessage('BASS_COMMON_SELECT_CHANNEL')}>
             {Contract.channelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
@@ -108,16 +111,15 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
         </Form.Item>
         <Form.Item
           required
-          label="存证数据"
+          label={Intl.formatMessage('BASS_EVIDENCE_DEPOSITED_DATA')}
           name="evidenceData"
           initialValue={jsonContent}
           rules={[
             {
               validateTrigger: 'submit',
-              validator: checkJSON,
-            },
-          ]}
-        >
+              validator: checkJSON
+            }
+          ]}>
           <MonacoEditor
             width="100%"
             height="200"
@@ -138,5 +140,5 @@ export default connect(({ Contract, User, Evidence, loading }: ConnectState) => 
   Contract,
   User,
   Evidence,
-  addLoading: loading.effects['Evidence/evidenceOnChain'],
+  addLoading: loading.effects['Evidence/evidenceOnChain']
 }))(EvidenceOnChain);

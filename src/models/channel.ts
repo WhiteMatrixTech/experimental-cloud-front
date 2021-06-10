@@ -1,5 +1,4 @@
 import * as API from '../services/channel';
-import { notification } from 'antd';
 import type {
   Reducer,
   Effect,
@@ -7,7 +6,7 @@ import type {
   TransactionSchema,
   OrganizationSchema,
   PeerSchema,
-  ChainCodeSchema,
+  ChainCodeSchema
 } from 'umi';
 
 export type ChannelSchema = {
@@ -83,21 +82,12 @@ const ChannelModel: ChannelModelType = {
     blockTotalOfChannel: 0,
 
     transactionListOfChannel: [],
-    transactionTotalOfChannel: 0,
+    transactionTotalOfChannel: 0
   },
 
   effects: {
     *createChannel({ payload }, { call, put }) {
-      const res = yield call(API.createChannel, payload);
-      const { statusCode, result } = res;
-      console.log(res, '创建成功！');
-      if (statusCode === 'ok') {
-        notification.success({ message: '通道创建请求发送成功', top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || '通道创建请求发送失败', top: 64, duration: 3 });
-        return false;
-      }
+      return yield call(API.createChannel, payload);
     },
 
     *getChannelList({ payload }, { call, put }) {
@@ -108,21 +98,14 @@ const ChannelModel: ChannelModelType = {
           type: 'common',
           payload: {
             channelList: result,
-            channelTotal: result.length,
-          },
+            channelTotal: result.length
+          }
         });
       }
     },
 
     *addOrgForChannel({ payload }, { call, put }): any {
-      const res = yield call(API.addOrgForChannel, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        notification.success({ message: '添加组织请求发送成功', top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || '添加组织请求发送失败', top: 64, duration: 3 });
-      }
+      return yield call(API.addOrgForChannel, payload);
     },
 
     *getOrgListOfChannel({ payload }, { call, put }) {
@@ -133,8 +116,8 @@ const ChannelModel: ChannelModelType = {
           type: 'common',
           payload: {
             orgListOfChannel: result,
-            orgTotalOfChannel: result.length,
-          },
+            orgTotalOfChannel: result.length
+          }
         });
       }
     },
@@ -147,8 +130,8 @@ const ChannelModel: ChannelModelType = {
           type: 'common',
           payload: {
             nodeListOfChannel: result,
-            nodeTotalOfChannel: result.length,
-          },
+            nodeTotalOfChannel: result.length
+          }
         });
       }
     },
@@ -160,8 +143,8 @@ const ChannelModel: ChannelModelType = {
         yield put({
           type: 'common',
           payload: {
-            contractListOfChannel: result.items,
-          },
+            contractListOfChannel: result.items
+          }
         });
       }
     },
@@ -173,8 +156,8 @@ const ChannelModel: ChannelModelType = {
         yield put({
           type: 'common',
           payload: {
-            contractTotalOfChannel: result.count,
-          },
+            contractTotalOfChannel: result.count
+          }
         });
       }
     },
@@ -186,8 +169,8 @@ const ChannelModel: ChannelModelType = {
         yield put({
           type: 'common',
           payload: {
-            blockListOfChannel: result.items,
-          },
+            blockListOfChannel: result.items
+          }
         });
       }
     },
@@ -199,8 +182,8 @@ const ChannelModel: ChannelModelType = {
         yield put({
           type: 'common',
           payload: {
-            transactionListOfChannel: result.items,
-          },
+            transactionListOfChannel: result.items
+          }
         });
       }
     },
@@ -211,7 +194,7 @@ const ChannelModel: ChannelModelType = {
         call(API.getTransactionsTotalOfChannel, payload),
         call(API.getOrgListOfChannel, payload),
         call(API.getNodeListOfChannel, payload),
-        call(API.getContractTotalOfChannel, payload),
+        call(API.getContractTotalOfChannel, payload)
       ]);
       const blockTotalOfChannel = blockRes.statusCode === 'ok' ? blockRes.result.count : 0;
       const transactionTotalOfChannel = transactionRes.statusCode === 'ok' ? transactionRes.result.count : 0;
@@ -225,17 +208,17 @@ const ChannelModel: ChannelModelType = {
           nodeTotalOfChannel,
           blockTotalOfChannel,
           contractTotalOfChannel,
-          transactionTotalOfChannel,
-        },
+          transactionTotalOfChannel
+        }
       });
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default ChannelModel;
