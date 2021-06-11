@@ -5,7 +5,8 @@ import { notification } from 'antd';
 export enum ImageType {
   CA = 'ca',
   Peer = 'peer',
-  Order = 'order'
+  Order = 'order',
+  CLI = 'cli'
 }
 
 export type ImageCredential = {
