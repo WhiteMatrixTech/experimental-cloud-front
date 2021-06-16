@@ -10,9 +10,10 @@ import { DetailViewAttr } from '~/utils/types';
 import { ConnectState } from '~/models/connect';
 import { ChannelSchema, Dispatch, Location } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
-  menuName: '查看节点',
+  menuName: Intl.formatMessage('BASS_CHANNEL_VIEW_NODE'),
   menuHref: `/`
 });
 export interface NodeListProps {
@@ -36,27 +37,27 @@ function NodeList(props: NodeListProps) {
 
   const columns: ColumnsType<any> = [
     {
-      title: '节点名称',
+      title: Intl.formatMessage('BASS_NODE_NAME'),
       dataIndex: 'nodeName',
       key: 'peerName'
     },
     {
-      title: '节点别名',
+      title: Intl.formatMessage('BASS_NODE_ALIAS'),
       dataIndex: 'nodeAliasName',
       key: 'peerAliasName'
     },
     {
-      title: '节点全名',
+      title: Intl.formatMessage('BASS_NODE_FULL_NAME_OF_NODE'),
       dataIndex: 'nodeFullName',
       key: 'nodeFullName'
     },
     {
-      title: '所属组织',
+      title: Intl.formatMessage('BASS_COMMON_ORGANIZATION'),
       dataIndex: 'orgName',
       key: 'orgName'
     },
     {
-      title: '状态',
+      title: Intl.formatMessage('BASS_COMMON_STATUS'),
       dataIndex: 'nodeStatus',
       key: 'nodeStatus',
       render: (text) =>
@@ -71,7 +72,7 @@ function NodeList(props: NodeListProps) {
         )
     },
     {
-      title: '创建时间',
+      title: Intl.formatMessage('BASS_COMMON_CREATE_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
@@ -113,15 +114,15 @@ function NodeList(props: NodeListProps) {
 
   const channelInfoList: DetailViewAttr[] = [
     {
-      label: '通道名称',
+      label: Intl.formatMessage('BASS_CHANNEL_NAME'),
       value: channelId
     },
     {
-      label: '组织数量',
+      label: Intl.formatMessage('BASS_CHANNEL_NUMBER_OF_ORGANIZATION'),
       value: orgTotalOfChannel
     },
     {
-      label: '节点总数',
+      label: Intl.formatMessage('BASS_CHANNEL_TOTAL_NUMBER_OF_NODES'),
       value: nodeTotalOfChannel
     }
   ];
@@ -129,7 +130,7 @@ function NodeList(props: NodeListProps) {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
-        <DetailCard cardTitle="基本信息" detailList={channelInfoList} />
+        <DetailCard cardTitle={Intl.formatMessage('BASS_COMMON_BASIC_INFORMATION')} detailList={channelInfoList} />
         <Table
           rowKey="_id"
           loading={qryLoading}

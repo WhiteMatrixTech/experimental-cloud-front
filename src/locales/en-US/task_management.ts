@@ -1,5 +1,5 @@
 export const TASK_MANAGEMENT_US = {
-  BASS_TASK_MANAGEMENT: 'Task management',
+  BASS_TASK_MANAGEMENT: 'Task Management',
   BASS_TASK_MANAGEMENT_ID: 'Task ID',
   BASS_TASK_MANAGEMENT_NAME: 'Task Name',
   BASS_TASK_MANAGEMENT_TYPE: 'Task Type',

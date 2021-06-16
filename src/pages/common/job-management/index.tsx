@@ -9,6 +9,7 @@ import { ColumnsType } from 'antd/lib/table';
 import { JobSchema } from '~/models/block-chain-compile';
 import baseConfig from '~/utils/config';
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/job-management', false);
 
@@ -63,36 +64,36 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 
   const columns: ColumnsType<any> = [
     {
-      title: '任务ID',
+      title: Intl.formatMessage('BASS_TASK_MANAGEMENT_ID'),
       dataIndex: 'jobId',
       key: 'jobId',
       ellipsis: true
     },
     {
-      title: '任务名称',
+      title: Intl.formatMessage('BASS_TASK_MANAGEMENT_NAME'),
       dataIndex: 'jobName',
       key: 'jobName',
       ellipsis: true
     },
     {
-      title: '任务类别',
+      title: Intl.formatMessage('BASS_TASK_MANAGEMENT_TYPE'),
       dataIndex: 'jobCategory',
       key: 'jobCategory',
       ellipsis: true
     },
     {
-      title: '任务状态',
+      title: Intl.formatMessage('BASS_TASK_MANAGEMENT_STATUS'),
       dataIndex: 'status',
       key: 'status',
       ellipsis: true
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (text, record: JobSchema) => (
         <Space size="small">
           <a href={`/common/job-management/job-logs/${record.jobId}`} onClick={(e) => onViewJobLog(e, record)}>
-            查看日志
+            {Intl.formatMessage('BASS_TASK_MANAGEMENT_VIEW_LOG')}
           </a>
         </Space>
       )
@@ -128,7 +129,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
         {moreBtnVisible && (
           <div className={styles.jobListMore}>
             <button className={styles.btn} onClick={getMoreJobList}>
-              加载更多
+              {Intl.formatMessage('BASS_ONE_KEY_COMPILE_LOADING_MORE')}
             </button>
           </div>
         )}

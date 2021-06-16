@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import { serverPurpose } from '../_config';
 import { Dispatch, ElasticServerSchema } from 'umi';
 import { ConnectState } from '~/models/connect';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -60,14 +61,16 @@ function CreateServerModal(props: CreateServerModalProps) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: record ? '修改服务器信息' : '创建服务器',
+    title: record
+      ? Intl.formatMessage('BASS_ELASTIC_CLOUD_MODIFY_SERVER_INFORMATION')
+      : Intl.formatMessage('BASS_ELASTIC_CLOUD_CREATE_SERVER'),
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="submit" type="primary" onClick={handleSubmit} loading={submitLoading}>
-        提交
+        {Intl.formatMessage('BASS_COMMON_SUBMIT')}
       </Button>
     ]
   };
@@ -76,41 +79,44 @@ function CreateServerModal(props: CreateServerModalProps) {
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
         <Item
-          label="服务器名称"
+          label={Intl.formatMessage('BASS_ELASTIC_CLOUD_SERVER_NAME')}
           name="serverName"
           initialValue={(record && record.serverName) || ''}
           rules={[
             {
               required: true,
-              message: '请输入服务器名称'
+              message: Intl.formatMessage('BASS_ELASTIC_CLOUD_INPUT_SERVER_NAME')
             },
             {
               pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
-              message: '服务器名称由4-20位字母、数字、下划线组成，小写字母开头'
+              message: Intl.formatMessage('BASS_ELASTIC_CLOUD_SERVER_NAME_LENGTH')
             }
           ]}>
-          <Input disabled={!!(record && record.serverName)} placeholder="请输入服务器名称" />
+          <Input
+            disabled={!!(record && record.serverName)}
+            placeholder={Intl.formatMessage('BASS_ELASTIC_CLOUD_INPUT_SERVER_NAME')}
+          />
         </Item>
         <Item
-          label="用户名"
+          label={Intl.formatMessage('BASS_ELASTIC_CLOUD_USERNAME')}
           name="username"
           initialValue={(record && record.username) || ''}
           rules={[
             {
               required: true,
-              message: '请输入用户名'
+              message: Intl.formatMessage('BASS_MEMBER_MANAGEMENT_INPUT_USERNAME')
             }
           ]}>
-          <Input placeholder="请输入用户名" />
+          <Input placeholder={Intl.formatMessage('BASS_MEMBER_MANAGEMENT_INPUT_USERNAME')} />
         </Item>
         <Item
-          label="用途类型"
+          label={Intl.formatMessage('BASS_ELASTIC_CLOUD_TYPE_OF_USE')}
           name="serverPurpose"
           initialValue={(record && record.serverPurpose) || null}
           rules={[
             {
               required: true,
-              message: '请选择用途类型'
+              message: Intl.formatMessage('BASS_ELASTIC_CLOUD_SELECT_USE_TYPE')
             }
           ]}>
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择用途类型">
@@ -122,16 +128,16 @@ function CreateServerModal(props: CreateServerModalProps) {
           </Select>
         </Item>
         <Item
-          label="外网IP"
+          label={Intl.formatMessage('BASS_ELASTIC_CLOUD_EXTRANET_IP')}
           name="publicIp"
           initialValue={(record && record.publicIp) || ''}
           rules={[
             {
               required: true,
-              message: '请输入外网IP'
+              message: Intl.formatMessage('BASS_ELASTIC_CLOUD_INPUT_EXTRANET_IP')
             }
           ]}>
-          <Input placeholder="请输入外网IP" />
+          <Input placeholder={Intl.formatMessage('BASS_ELASTIC_CLOUD_INPUT_EXTRANET_IP')} />
         </Item>
         <Item
           label="内网IP"
@@ -140,34 +146,34 @@ function CreateServerModal(props: CreateServerModalProps) {
           rules={[
             {
               required: true,
-              message: '请输入内网IP'
+              message: Intl.formatMessage('BASS_ELASTIC_CLOUD_INPUT_INTRANET_IP')
             }
           ]}>
-          <Input placeholder="请输入内网IP" />
+          <Input placeholder={Intl.formatMessage('BASS_ELASTIC_CLOUD_INPUT_INTRANET_IP')} />
         </Item>
         <Item
-          label="SSH公钥"
+          label={Intl.formatMessage('BASS_ELASTIC_CLOUD_PUBLIC_KEY')}
           name="publicKey"
           initialValue={(record && record.publicKey) || ''}
           rules={[
             {
               required: true,
-              message: '请输入SSH公钥'
+              message: Intl.formatMessage('BASS_ELASTIC_CLOUD_INPUT_PUBLIC_KEY')
             }
           ]}>
-          <Input placeholder="请输入SSH公钥" />
+          <Input placeholder={Intl.formatMessage('BASS_ELASTIC_CLOUD_INPUT_PUBLIC_KEY')} />
         </Item>
         <Item
-          label="SSH私钥"
+          label={Intl.formatMessage('BASS_ELASTIC_CLOUD_PRIVATE_KEY')}
           name="privateKey"
           initialValue={(record && record.privateKey) || ''}
           rules={[
             {
               required: true,
-              message: '请输入SSH私钥'
+              message: Intl.formatMessage('BASS_ELASTIC_CLOUD_INPUT_PRIVATE_KEY')
             }
           ]}>
-          <Input.TextArea placeholder="请输入SSH私钥" />
+          <Input.TextArea placeholder={Intl.formatMessage('BASS_ELASTIC_CLOUD_INPUT_PRIVATE_KEY')} />
         </Item>
       </Form>
     </Modal>

@@ -8,10 +8,15 @@ export const COMMON_US = {
   BASS_COMMON_RESET: 'Reset',
   BASS_COMMON_QUERY: 'Query',
   BASS_COMMON_STATUS: 'Status',
-  BASS_COMMON_CREATE_TIME: 'Create time',
-  BASS_COMMON_GENERATED_TIME: 'Generated time',
+  BASS_COMMON_CREATE_TIME: 'Create Time',
+  BASS_COMMON_GENERATED_TIME: 'Generated Time',
   BASS_COMMON_CHANNEL: 'Channel',
+  BASS_COMMON_SELECT_CHANNEL: 'Please select a channel',
   BASS_COMMON_ORGANIZATION: 'Organization',
-  BASS_COMMON_DETAILED_INFORMATION: 'Detailed information',
-  BASS_COMMON_DELETE: 'Delete'
+  BASS_COMMON_SELECT_ORGANIZATION: 'Please select an organization',
+  BASS_COMMON_DETAILED_INFORMATION: 'Detail',
+  BASS_COMMON_DELETE: 'Delete',
+  BASS_COMMON_CONFIRM: 'Confirm',
+  BASS_COMMON_LIMIT_ACCESS: 'Limited access to information',
+  BASS_COMMON_BASIC_INFORMATION: 'Basic Information'
 };

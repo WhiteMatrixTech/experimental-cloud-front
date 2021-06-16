@@ -1,5 +1,5 @@
 export const NOTIFICATION_US = {
-  BASS_NOTIFICATION_COMPILATION_SUCCEES: 'Succeed in calling one-key compile api',
+  BASS_NOTIFICATION_COMPILATION_SUCCESS: 'Succeed in calling one-key compile api',
   BASS_NOTIFICATION_COMPILATION_FAILED: 'Failed to call one-key compile api',
   BASS_NOTIFICATION_CHANNEL_ADD_ORGANISATION_SUCCESS: 'Succeed in calling add organisation api',
   BASS_NOTIFICATION_CHANNEL_ADD_ORGANISATION_FAILED: 'Failed to call add organisation api',
@@ -23,6 +23,10 @@ export const NOTIFICATION_US = {
   BASS_NOTIFICATION_CUSTORM_IMAGE_DELETE_FAILED: 'Failed to delete custorm image',
   BASS_NOTIFICATION_DASHBOARD_NEW_NETWORK_SUCCESS: 'Succeed in calling new network api',
   BASS_NOTIFICATION_DASHBOARD_NEW_NETWORK_FAILED: 'Failed to call new network api',
+  BASS_NOTIFICATION_DASHBOARD_STOP_NETWORK_SUCCESS: 'Succeed in calling stop using network api',
+  BASS_NOTIFICATION_DASHBOARD_STOP_NETWORK_FAILED: 'Failed to call stop using network api',
+  BASS_NOTIFICATION_DASHBOARD_RESTART_NETWORK_SUCCESS: 'Succeed in calling restart network api',
+  BASS_NOTIFICATION_DASHBOARD_RESTART_NETWORK_FAILED: 'Failed to call restart network api',
   BASS_NOTIFICATION_DASHBOARD_DELETE_SUCCESS: 'Delete network successfully',
   BASS_NOTIFICATION_DASHBOARD_DELETE_FAILED: 'Failed to delete network',
   BASS_NOTIFICATION_DID_NEW_SUCCESS: 'DID created successfully, please login again to get the DID',
@@ -35,17 +39,19 @@ export const NOTIFICATION_US = {
   BASS_NOTIFICATION_DID_DELETE_FAILED: 'Failed to delete DID',
   BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_CREATE_SUCCESS: 'Server creation successful',
   BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_CREATE_FAILED: 'Failed to create server',
+  BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_MODIFY_SUCCESS: 'Modify server successfully',
+  BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_MODIFY_FAILED: 'Failed to modify server',
   BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_DELETE_SUCCESS: 'Delete server successfully',
   BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_DELETE_FAILED: 'Failed to delete server',
-  BASS_NOTIFICATION_ENTERPRISE_MEMBER_STOP_USE:
-    '{isValid === "invalid" ? "Disabled" : "Enable"} user member successfully',
-  BASS_NOTIFICATION_NTERPRISE_MEMBER_START_USE: 'Failed to {isValid === "invalid" ? "Disabled" : "Enable"} user member',
+  BASS_NOTIFICATION_ENTERPRISE_MEMBER_STOP_USE: '{isValid === "invalid" ? "Stop" : "Restart"} user member successfully',
+  BASS_NOTIFICATION_ENTERPRISE_MEMBER_START_USE:
+    'Failed to {isValid === "invalid" ? "Disabled" : "Enable"} user member',
   BASS_NOTIFICATION_ENTERPRISE_MEMBER_PASS:
     '{approvalStatus === "approved" ? "Passed" : "Not Passed"} user member successfully',
-  BASS_NOTIFICATION_NTERPRISE_MEMBER_NOT_PASS:
+  BASS_NOTIFICATION_ENTERPRISE_MEMBER_NOT_PASS:
     'Failed to {approvalStatus === "approved" ? "Passed" : "Not Passed"} user member',
-  BASS_NOTIFICATION_NTERPRISE_MEMBER_RIGHT_CONFIG_SUCCESS: 'Member access rights configured successfully',
-  BASS_NOTIFICATION_NTERPRISE_MEMBER_RIGHT_CONFIG_FAILED: 'Failed to configure member access rights',
+  BASS_NOTIFICATION_ENTERPRISE_MEMBER_RIGHT_CONFIG_SUCCESS: 'Member access rights configured successfully',
+  BASS_NOTIFICATION_ENTERPRISE_MEMBER_RIGHT_CONFIG_FAILED: 'Failed to configure member access rights',
   BASS_NOTIFICATION_EVIDENCE_SUCCESS: 'Certificate successfully',
   BASS_NOTIFICATION_EVIDENCE_FAILED: 'Failed to certificate',
   BASS_NOTIFICATION_FABRIC_ROLE_SUCCESS: 'Add Fabric role successfully',
@@ -70,5 +76,6 @@ export const NOTIFICATION_US = {
     'Succeed in joining the Consortium , please wait for the approval of the Consortium Master',
   BASS_NOTIFICATION_CONSORTIUM_ADD_FAILED: 'Failed to join the Consortium',
   BASS_NOTIFICATION_CONSORTIUM_CREATE_SUCCESS: 'Consortium created successfully',
-  BASS_NOTIFICATION_CONSORTIUM_CREATE_FAILED: 'Failed to create Consortium'
+  BASS_NOTIFICATION_CONSORTIUM_CREATE_FAILED: 'Failed to create Consortium',
+  BASS_NOTIFICATION_CONSORTIUM_UNABLE_ENTER: 'Unable to enter the Consortium'
 };

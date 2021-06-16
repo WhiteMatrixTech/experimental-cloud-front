@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 import { serverPurpose } from '~/pages/common/elastic-cloud-server/_config';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -83,14 +84,14 @@ function CreateOrgModal(props: CreateOrgModalProps) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '创建组织',
+    title: Intl.formatMessage('BASS_ORGANSIZATION_CREATE'),
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="submit" onClick={handleSubmit} type="primary" loading={addLoading}>
-        提交
+        {Intl.formatMessage('BASS_COMMON_SUBMIT')}
       </Button>
     ]
   };
@@ -99,15 +100,18 @@ function CreateOrgModal(props: CreateOrgModalProps) {
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
         <Item
-          label="所属通道"
+          label={Intl.formatMessage('BASS_COMMON_CHANNEL')}
           name="channelId"
           rules={[
             {
               required: true,
-              message: '请选择通道'
+              message: Intl.formatMessage('BASS_COMMON_SELECT_CHANNEL')
             }
           ]}>
-          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择通道">
+          <Select
+            allowClear
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder={Intl.formatMessage('BASS_COMMON_SELECT_CHANNEL')}>
             {channelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
@@ -116,66 +120,72 @@ function CreateOrgModal(props: CreateOrgModalProps) {
           </Select>
         </Item>
         <Item
-          label="组织名称"
+          label={Intl.formatMessage('BASS_ORGANSIZATION_NAME')}
           name="orgName"
           rules={[
             {
               required: true,
-              message: '请输入组织名称'
+              message: Intl.formatMessage('BASS_ORGANSIZATION_INPUT_NAME')
             },
             {
               min: 4,
               max: 20,
               type: 'string',
               pattern: /^[a-zA-Z0-9]{4,20}$/,
-              message: '组织名必须由4-20位数字英文字母或字符组成'
+              message: Intl.formatMessage('BASS_ORGANSIZATION_NAME_LENGTH')
             }
           ]}>
-          <Input placeholder="输入组织名称" />
+          <Input placeholder={Intl.formatMessage('BASS_ORGANSIZATION_INPUT_NAME')} />
         </Item>
         <Item
-          label="组织别名"
+          label={Intl.formatMessage('BASS_ORGANSIZATION_ALIAS')}
           name="orgNameAlias"
           rules={[
             {
               required: true,
-              message: '请输入组织别名'
+              message: Intl.formatMessage('BASS_ORGANSIZATION_INPUT_ALIAS')
             }
           ]}>
-          <Input placeholder="输入组织别名" />
+          <Input placeholder={Intl.formatMessage('BASS_ORGANSIZATION_INPUT_ALIAS')} />
         </Item>
         <Item
-          label="初始化节点名"
+          label={Intl.formatMessage('BASS_ORGANSIZATION_INITIALIZE_NODE_NAME')}
           name="initPeerName"
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请输入初始化节点名'
+              message: Intl.formatMessage('BASS_ORGANSIZATION_INPUT_INITIALIZE_NODE_NAME')
             },
             {
               min: 4,
               max: 20,
               type: 'string',
               pattern: /^[a-zA-Z0-9]{4,20}$/,
-              message: '初始化节点名必须由4-20位数字英文字母或字符组成'
+              message: Intl.formatMessage('BASS_ORGANSIZATION_INITIALIZE_NODE_ALIASES_LENGTH')
             }
           ]}>
-          <Input placeholder="输入初始化节点名" />
+          <Input placeholder={Intl.formatMessage('BASS_ORGANSIZATION_INPUT_INITIALIZE_NODE_NAME')} />
         </Item>
         <Item
-          label="初始化节点别名"
+          label={Intl.formatMessage('BASS_ORGANSIZATION_INITIALIZE_NODE_ALIASES')}
           name="initPeerAliasName"
           rules={[
             {
               required: true,
-              message: '请输入初始化节点别名'
+              message: Intl.formatMessage('BASS_ORGANSIZATION_INPUT_INITIALIZE_NODE_ALIASES')
             }
           ]}>
-          <Input placeholder="输入初始化节点别名" />
+          <Input placeholder={Intl.formatMessage('BASS_ORGANSIZATION_INPUT_INITIALIZE_NODE_ALIASES')} />
         </Item>
-        <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
-          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择服务器">
+        <Item
+          label={Intl.formatMessage('BASS_NODE_SERVERS')}
+          name="serverName"
+          tooltip={Intl.formatMessage('BASS_NODE_DEFAULT_SERVERS')}>
+          <Select
+            allowClear
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder={Intl.formatMessage('BASS_NODE_SELECT_SERVERS')}>
             {filteredServerList.map((item) => (
               <Option key={item.serverName} value={item.serverName}>
                 {item.serverName}

@@ -9,6 +9,7 @@ import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import EvidenceOnChain from './components/EvidenceOnChain';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 
@@ -29,35 +30,35 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 
   const columns: ColumnsType<any> = [
     {
-      title: '哈希',
+      title: Intl.formatMessage('BASS_EVIDENCE_HASH'),
       dataIndex: 'evidenceHash',
       key: 'evidenceHash',
       ellipsis: true,
       width: '20%'
     },
     {
-      title: '所属通道',
+      title: Intl.formatMessage('BASS_COMMON_CHANNEL'),
       dataIndex: 'channelId',
       key: 'channelId'
     },
     {
-      title: '创建用户',
+      title: Intl.formatMessage('BASS_EVIDENCE_CREATE_USER'),
       dataIndex: 'companyName',
       key: 'companyName'
     },
     {
-      title: '上链时间',
+      title: Intl.formatMessage('BASS_EVIDENCE_Time_FOR_ON_CHAIN'),
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '')
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (text, record: EvidenceSchema) => (
         <Space size="small">
           <a href={`/about/Evidence/${record.evidenceHash}`} onClick={(e) => onClickDetail(e, record)}>
-            详情
+            {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
           </a>
         </Space>
       )
@@ -147,7 +148,12 @@ function EvidenceDataList(props: EvidenceDataListProps) {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow table-wrapper">
-        <SearchBar placeholder="输入存证哈希" onSearch={onSearch} btnName="存证上链" onClickBtn={onClickUpload} />
+        <SearchBar
+          placeholder={Intl.formatMessage('BASS_EVIDENCE_INPUT_DEPOSITED_HASH')}
+          onSearch={onSearch}
+          btnName={Intl.formatMessage('BASS_EVIDENCE_ON_CHAIN')}
+          onClickBtn={onClickUpload}
+        />
         <Table
           rowKey="_id"
           columns={columns}

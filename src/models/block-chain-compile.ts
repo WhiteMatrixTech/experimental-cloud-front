@@ -3,6 +3,7 @@ import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 import { JobCategory, JobStatus } from '~/pages/common/job-management/_config';
 import { ConnectState } from './connect';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 export type PublishImageCredential = {
   username: string;
@@ -111,7 +112,7 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
       const res = yield call(API.oneKeyCompileApi, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '一键编译请求发起成功', top: 64, duration: 3 });
+        notification.success({ message: result.message || '一键编译的请求发起失败', top: 64, duration: 3 });
         return true;
       } else {
         notification.error({ message: result.message || '一键编译请求发起失败', top: 64, duration: 3 });
@@ -169,4 +170,4 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
   }
 };
 
-export default BlockChainCompileModel;
+export default injectIntl(BlockChainCompileModel);

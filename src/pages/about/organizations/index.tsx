@@ -10,6 +10,7 @@ import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/organizations');
 export interface OrganizationManagementProps {
@@ -28,32 +29,32 @@ function OrganizationManagement(props: OrganizationManagementProps) {
 
   const columns: ColumnsType<any> = [
     {
-      title: '组织名称',
+      title: Intl.formatMessage('BASS_ORGANSIZATION_NAME'),
       dataIndex: 'orgName',
-      key: 'orgName',
+      key: 'orgName'
     },
     {
-      title: '组织别名',
+      title: Intl.formatMessage('BASS_ORGANSIZATION_ALIAS'),
       dataIndex: 'orgAliasName',
-      key: 'orgAliasName',
+      key: 'orgAliasName'
     },
     {
-      title: '组织MSPID',
+      title: Intl.formatMessage('BASS_ORGANSIZATION_MSPID'),
       dataIndex: 'orgMspId',
-      key: 'orgMspId',
+      key: 'orgMspId'
     },
     {
-      title: '所属用户',
+      title: Intl.formatMessage('BASS_ORGANSIZATION_USER'),
       dataIndex: 'companyName',
-      key: 'companyName',
+      key: 'companyName'
     },
     {
-      title: '组织地址',
+      title: Intl.formatMessage('BASS_ORGANSIZATION_ADDRESS'),
       dataIndex: 'orgAddress',
-      key: 'orgAddress',
+      key: 'orgAddress'
     },
     {
-      title: '当前状态',
+      title: Intl.formatMessage('BASS_ORGANSIZATION_CURRENT_STATUS'),
       dataIndex: 'orgStatus',
       key: 'orgStatus',
       render: (text) =>
@@ -61,14 +62,14 @@ function OrganizationManagement(props: OrganizationManagementProps) {
           <Badge color={orgStatus[text].color} text={orgStatus[text].text} style={{ color: orgStatus[text].color }} />
         ) : (
           ''
-        ),
+        )
     },
     {
-      title: '创建时间',
+      title: Intl.formatMessage('BASS_COMMON_CREATE_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
-    },
+      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+    }
   ];
 
   // 点击 创建组织
@@ -92,11 +93,11 @@ function OrganizationManagement(props: OrganizationManagementProps) {
       networkName,
       limit: pageSize,
       offset: paginator,
-      networkVersion: '1.0.0',
+      networkVersion: '1.0.0'
     };
     dispatch({
       type: 'Organization/getOrgList',
-      payload: params,
+      payload: params
     });
   }, [dispatch, networkName, pageNum, pageSize]);
 
@@ -116,7 +117,7 @@ function OrganizationManagement(props: OrganizationManagementProps) {
       <div className="page-content page-content-shadow table-wrapper">
         <div className="table-header-btn-wrapper">
           <Button type="primary" onClick={onClickCreateOrg}>
-            创建组织
+            {Intl.formatMessage('BASS_ORGANSIZATION_CREATE')}
           </Button>
         </div>
         <Table
@@ -130,7 +131,7 @@ function OrganizationManagement(props: OrganizationManagementProps) {
             total: orgTotal,
             current: pageNum,
             showSizeChanger: false,
-            position: ['bottomCenter'],
+            position: ['bottomCenter']
           }}
         />
       </div>
@@ -143,5 +144,5 @@ export default connect(({ User, Layout, Organization, loading }: ConnectState) =
   User,
   Layout,
   Organization,
-  qryLoading: loading.effects['Organization/getOrgList'],
+  qryLoading: loading.effects['Organization/getOrgList']
 }))(OrganizationManagement);

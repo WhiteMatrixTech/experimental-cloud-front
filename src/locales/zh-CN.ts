@@ -17,6 +17,10 @@ import { SERVICE_LIST_CN } from './zh-CN/service_list';
 import { TASK_MANAGEMENT_CN } from './zh-CN/task_management';
 import { ONE_KEY_COMPILE_CN } from './zh-CN/one_key_compile';
 import { NOTIFICATION_CN } from './zh-CN/notification';
+import { CONFIRM_CN } from './zh-CN/confirm';
+import { CUSTOM_IMAGE_CN } from './zh-CN/custom_image';
+import { LOGIN_CN } from './zh-CN/login';
+import { REGISTER_CN } from './zh-CN/register';
 
 const Locales_CN_JSON = {
   ...COMMON_CN,
@@ -37,7 +41,11 @@ const Locales_CN_JSON = {
   ...DASHBOARD_CN,
   ...ELASTIC_CLOUD_CN,
   ...NOTIFICATION_CN,
-  ...ONE_KEY_COMPILE_CN
+  ...ONE_KEY_COMPILE_CN,
+  ...CONFIRM_CN,
+  ...CUSTOM_IMAGE_CN,
+  ...LOGIN_CN,
+  ...REGISTER_CN
 };
 
 export default Locales_CN_JSON;

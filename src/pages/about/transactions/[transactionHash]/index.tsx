@@ -7,11 +7,12 @@ import styles from './index.less';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 breadCrumbItem.push({
-  menuName: '交易详情',
-  menuHref: `/`,
+  menuName: Intl.formatMessage('BASS_TRANSACTION_INFORMATION'),
+  menuHref: `/`
 });
 
 export type TransactionDetailProps = {
@@ -24,12 +25,12 @@ export type TransactionDetailProps = {
 };
 const TransactionDetail: React.FC<TransactionDetailProps> = ({
   match: {
-    params: { transactionHash },
+    params: { transactionHash }
   },
   User,
   dispatch,
   qryLoading = false,
-  Transactions,
+  Transactions
 }) => {
   const { networkName } = User;
   const { transactionDetail } = Transactions;
@@ -38,41 +39,41 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({
     if (transactionDetail) {
       return [
         {
-          label: '交易哈希',
-          value: transactionDetail.txId,
+          label: Intl.formatMessage('BASS_TRANSACTION_HASH'),
+          value: transactionDetail.txId
         },
         {
-          label: '所属区块',
-          value: transactionDetail.blockHash,
+          label: Intl.formatMessage('BASS_TRANSACTION_BLOCK'),
+          value: transactionDetail.blockHash
         },
         {
-          label: '所属联盟',
-          value: transactionDetail.leagueName,
+          label: Intl.formatMessage('BASS_TRANSACTION_CONSORTIUM'),
+          value: transactionDetail.leagueName
         },
         {
-          label: '交易通道',
-          value: transactionDetail.channelId,
+          label: Intl.formatMessage('BASS_TRANSACTION_CHANNEL'),
+          value: transactionDetail.channelId
         },
         {
-          label: '交易组织',
-          value: transactionDetail.txMsp,
+          label: Intl.formatMessage('BASS_TRANSACTION_ORGANIZATION'),
+          value: transactionDetail.txMsp
         },
         {
-          label: '背书组织',
-          value: JSON.stringify(transactionDetail.txEndorseMsp),
+          label: Intl.formatMessage('BASS_CONTRACT_ENDOESEMENT'),
+          value: JSON.stringify(transactionDetail.txEndorseMsp)
         },
         {
-          label: '交易时间',
-          value: moment(transactionDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+          label: Intl.formatMessage('BASS_TRANSACTION_TIME'),
+          value: moment(transactionDetail.createdAt).format('YYYY-MM-DD HH:mm:ss')
         },
         {
-          label: '所用合约',
-          value: transactionDetail.chainCodeName,
+          label: Intl.formatMessage('BASS_TRANSACTION_CONTRACT_USED'),
+          value: transactionDetail.chainCodeName
         },
         {
-          label: '交易参数',
-          value: JSON.stringify(transactionDetail.txArgs),
-        },
+          label: Intl.formatMessage('BASS_TRANSACTION_PARAMETERS'),
+          value: JSON.stringify(transactionDetail.txArgs)
+        }
       ];
     }
     return [];
@@ -81,7 +82,7 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({
   useEffect(() => {
     dispatch({
       type: 'Transactions/getTransactionDetail',
-      payload: { txId: transactionHash, networkName },
+      payload: { txId: transactionHash, networkName }
     });
   }, [dispatch, networkName, transactionHash]);
 
@@ -92,7 +93,7 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({
         <Spin spinning={qryLoading}>
           <div className={styles['transaction-detail-wrapper']}>
             <div className={styles['transaction-detail-title']}>
-              <div>交易信息</div>
+              <div>{Intl.formatMessage('BASS_TRANSACTION_INFORMATION')}</div>
             </div>
             <div className={styles['transaction-detail-content']}>
               <div className={styles.transactionInfoWrap}>
@@ -120,5 +121,5 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({
 export default connect(({ User, Transactions, loading }: ConnectState) => ({
   User,
   Transactions,
-  qryLoading: loading.effects['Transactions/getTransactionDetail'],
+  qryLoading: loading.effects['Transactions/getTransactionDetail']
 }))(TransactionDetail);

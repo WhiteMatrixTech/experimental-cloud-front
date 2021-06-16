@@ -11,9 +11,10 @@ import { ConnectState } from '~/models/connect';
 import { ChannelSchema, Dispatch, Location } from 'umi';
 import { BasicApiParams, AllPaginationParams } from '~/utils/types';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
-  menuName: '查看合约',
+  menuName: Intl.formatMessage('BASS_CHANNEL_VIEW_CONTRACT'),
   menuHref: `/`
 });
 export interface ChaincodeListProps {
@@ -39,30 +40,33 @@ function ChaincodeList(props: ChaincodeListProps) {
   const [pageNum, setPageNum] = useState(1);
   const columns: ColumnsType<any> = [
     {
-      title: '合约ID',
+      title: Intl.formatMessage('BASS_CONTRACT_ID'),
       dataIndex: '_id',
       key: '_id'
     },
     {
-      title: '合约名称',
+      title: Intl.formatMessage('BASS_CONTRACT_NAME'),
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '创建组织',
+      title: Intl.formatMessage('BASS_ORGANSIZATION_CREATE'),
       dataIndex: 'createOrgName',
       key: 'createOrgName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '合约版本',
+      title: Intl.formatMessage('BASS_CONTRACT_CONTRACT_VERSION'),
       dataIndex: 'chainCodeVersion',
       key: 'chainCodeVersion',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '状态',
+      title: Intl.formatMessage('BASS_COMMON_STATUS'),
       dataIndex: 'chainCodeStatus',
       key: 'chainCodeStatus',
       render: (text) =>
@@ -73,32 +77,36 @@ function ChaincodeList(props: ChaincodeListProps) {
             style={{ color: chainCodeStatusInfo[text].color }}
           />
         ) : (
-          <span className="a-forbidden-style">信息访问受限</span>
+          <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
         )
     },
     {
-      title: '创建时间',
+      title: Intl.formatMessage('BASS_COMMON_CREATE_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+        text ? (
+          moment(text).format('YYYY-MM-DD HH:mm:ss')
+        ) : (
+          <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
+        )
     }
   ];
   const channelInfoList: DetailViewAttr[] = [
     {
-      label: '通道名称',
+      label: Intl.formatMessage('BASS_CHANNEL_NAME'),
       value: channelId
     },
     {
-      label: '组织数量',
+      label: Intl.formatMessage('BASS_CHANNEL_NUMBER_OF_ORGANIZATION'),
       value: orgTotalOfChannel
     },
     {
-      label: '节点总数',
+      label: Intl.formatMessage('BASS_CHANNEL_TOTAL_NUMBER_OF_NODES'),
       value: nodeTotalOfChannel
     },
     {
-      label: '合约总数',
+      label: Intl.formatMessage('BASS_CONTRACT_TOTAL'),
       value: contractTotalOfChannel
     }
   ];
@@ -152,7 +160,7 @@ function ChaincodeList(props: ChaincodeListProps) {
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
         <DetailCard
-          cardTitle="基本信息"
+          cardTitle={Intl.formatMessage('BASS_COMMON_BASIC_INFORMATION')}
           detailList={channelInfoList}
           boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"
           columnsNum={2}

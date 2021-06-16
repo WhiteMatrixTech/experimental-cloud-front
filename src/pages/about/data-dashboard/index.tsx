@@ -14,6 +14,7 @@ import {
   ChaincodeMetrics
 } from './components';
 import { ConnectState } from '~/models/connect';
+import { Intl } from '~/utils/locales';
 
 const { TabPane } = Tabs;
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/data-dashboard');
@@ -24,19 +25,19 @@ function DataDashboard() {
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className={cs(styles['data-dashboard'], 'page-content', 'page-content-shadow')}>
         <Tabs defaultActiveKey="FabricMetrics">
-          <TabPane tab="超级账本" key="FabricMetrics">
+          <TabPane tab={Intl.formatMessage('BASS_DASHBOARD_SUPER_LEDGER')} key="FabricMetrics">
             <FabricMetrics />
           </TabPane>
-          <TabPane tab="账本" key="LedgerMetrics">
+          <TabPane tab={Intl.formatMessage('BASS_DASHBOARD_LEDGER')} key="LedgerMetrics">
             <LedgerMetrics />
           </TabPane>
-          <TabPane tab="交易" key="BalanceTransfer">
+          <TabPane tab={Intl.formatMessage('BASS_DASHBOARD_TRANSACTION')} key="BalanceTransfer">
             <BalanceTransfer />
           </TabPane>
-          <TabPane tab="链码" key="ChaincodeMetrics">
+          <TabPane tab={Intl.formatMessage('BASS_DASHBOARD_CHAINCODE')} key="ChaincodeMetrics">
             <ChaincodeMetrics />
           </TabPane>
-          <TabPane tab="排序节点" key="OrdererMetrics">
+          <TabPane tab={Intl.formatMessage('BASS_DASHBOARD_SORT_NODE')} key="OrdererMetrics">
             <OrdererMetrics />
           </TabPane>
           <TabPane tab="Go" key="GoMetrics">

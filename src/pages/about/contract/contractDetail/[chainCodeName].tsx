@@ -7,10 +7,11 @@ import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { DetailViewAttr } from '~/utils/types';
 import { ConnectState } from '~/models/connect';
 import { ChainCodeSchema } from '~/models/contract';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', true);
 breadCrumbItem.push({
-  menuName: '合约详情',
+  menuName: Intl.formatMessage('BASS_CONTRACT_DETAILS'),
   menuHref: `/`
 });
 export interface ContractDetailProps {
@@ -25,36 +26,36 @@ const ContractDetail: React.FC<ContractDetailProps> = (props) => {
 
   const contractInfoList: DetailViewAttr[] = [
     {
-      label: '合约名称',
+      label: Intl.formatMessage('BASS_CONTRACT_NAME'),
       value: chaincodeInfo.chainCodeName
     },
     {
-      label: '所属通道',
+      label: Intl.formatMessage('BASS_COMMON_CHANNEL'),
       value: chaincodeInfo.channelId
     },
     {
-      label: '合约语言类型',
+      label: Intl.formatMessage('BASS_CONTRACT_LANGUAGE_TYPE'),
       value: chaincodeInfo.chainCodePackageMetaData ? chaincodeInfo.chainCodePackageMetaData.language : ''
     },
     {
-      label: '当前版本',
+      label: Intl.formatMessage('BASS_CONTRACT_VERSION'),
       value: chaincodeInfo.chainCodeVersion
     },
     {
-      label: '创建组织',
+      label: Intl.formatMessage('BASS_CONTRACT_CREATE_AN_ORGANISATION'),
       value: chaincodeInfo.createOrgName
     },
     {
-      label: '创建时间',
+      label: Intl.formatMessage('BASS_COMMON_GENERATED_TIME'),
       value: chaincodeInfo.createdAt ? moment(chaincodeInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -'
     },
     {
-      label: '背书组织',
+      label: Intl.formatMessage('BASS_CONTRACT_ENDOESEMENT'),
       fullRow: true,
       value: chaincodeInfo.endorsementPolicy ? JSON.stringify(chaincodeInfo.endorsementPolicy.orgsToApprove) : ''
     },
     {
-      label: '合约描述',
+      label: Intl.formatMessage('BASS_CONTRACT_DESCRIPTION'),
       fullRow: true,
       value: chaincodeInfo.description
     }
@@ -64,7 +65,7 @@ const ContractDetail: React.FC<ContractDetailProps> = (props) => {
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
         <DetailCard
-          cardTitle="合约信息"
+          cardTitle={Intl.formatMessage('BASS_CONTRACT_INFORMATION')}
           detailList={contractInfoList}
           columnsNum={3}
           boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"

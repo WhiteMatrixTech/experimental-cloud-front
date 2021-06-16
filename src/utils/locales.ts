@@ -51,7 +51,7 @@ class Locales {
     return this.instance;
   }
 
-  private constructor() {
+  constructor() {
     const locales = getLocale() || 'zh-CN';
     const cache = createIntlCache();
     const intl = createIntl(

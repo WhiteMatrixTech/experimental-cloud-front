@@ -5,6 +5,7 @@ import { ConnectState } from '~/models/connect';
 import { Dispatch, history } from 'umi';
 import { NetworkMenuPath, CommonMenuPath, IMenuPathProps } from '~/utils/menu';
 import styles from './ServicesDrawer.less';
+import { Intl } from '~/utils/locales';
 
 export type ServicesDrawerProps = {
   dispatch: Dispatch;
@@ -16,7 +17,7 @@ export type ServicesDrawerProps = {
 const bodyStyle = {
   padding: 0,
   margin: 24,
-  overflow: 'hidden auto',
+  overflow: 'hidden auto'
 };
 
 const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
@@ -27,7 +28,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
   const onClose = () => {
     dispatch({
       type: 'Layout/common',
-      payload: { showDrawer: false },
+      payload: { showDrawer: false }
     });
   };
 
@@ -45,7 +46,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
     localStorage.setItem('networkName', '');
     dispatch({
       type: 'User/cleanNetworkInfo',
-      payload: {},
+      payload: {}
     });
     onClose();
     history.replace('/selectLeague');
@@ -54,7 +55,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
   const onClickMenuPath = (path: string) => {
     dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: path },
+      payload: { selectedMenu: path }
     });
     onClose();
     history.push(path);
@@ -62,7 +63,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
 
   const showNetworkMenu = useMemo(() => pathname.indexOf('/selectLeague') === -1 && networkName, [
     pathname,
-    networkName,
+    networkName
   ]);
   const showChangeLeague = useMemo(() => pathname.indexOf('/selectLeague') === -1, [pathname]);
 
@@ -86,11 +87,11 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
   const currentServices = useMemo(() => {
     const service = {
       servicePath: '',
-      serviceName: '',
+      serviceName: ''
     };
     if (pathname === '/selectLeague') {
       service.servicePath = '/selectLeague';
-      service.serviceName = '切换联盟';
+      service.serviceName = Intl.formatMessage('BASS_SERVICE_LIST_SWITCH_CONSORTIUM');
       return service;
     }
     const findResult = optionalNetworkMenuList
@@ -113,34 +114,37 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
       bodyStyle={bodyStyle}
       getContainer={false}
       style={{ position: 'absolute' }}
-      className={styles['services-drawer']}
-    >
+      className={styles['services-drawer']}>
       <div className={styles['service-wrapper']}>
         <div className={styles['left-service-wrapper']}>
-          <div>当前服务</div>
+          <div>{Intl.formatMessage('BASS_SERVICE_LIST_CURRENT_SERVER')}</div>
           <div className={styles['current-service']}>{currentServices.serviceName}</div>
         </div>
         <div className={styles['right-service-wrapper']}>
           <Row gutter={[16, 12]}>
-            <Col span={24}>所有服务</Col>
+            <Col span={24}>{Intl.formatMessage('BASS_SERVICE_LIST_ALL_SERVER')}</Col>
             {showNetworkMenu && (
               <Col span={4}>
                 <Menu>
-                  <Menu.ItemGroup title="网络">{getNetworkMenu(optionalNetworkMenuList)}</Menu.ItemGroup>
+                  <Menu.ItemGroup title={Intl.formatMessage('BASS_COMMON_NETWORK')}>
+                    {getNetworkMenu(optionalNetworkMenuList)}
+                  </Menu.ItemGroup>
                 </Menu>
               </Col>
             )}
             <Col span={4}>
               <Menu>
-                <Menu.ItemGroup title="通用">{getNetworkMenu(optionalCommonMenuList)}</Menu.ItemGroup>
+                <Menu.ItemGroup title={Intl.formatMessage('BASS_SERVICE_LIST_GENERAL')}>
+                  {getNetworkMenu(optionalCommonMenuList)}
+                </Menu.ItemGroup>
               </Menu>
             </Col>
             <Col span={4}>
               <Menu>
-                <Menu.ItemGroup title="其他">
+                <Menu.ItemGroup title={Intl.formatMessage('BASS_SERVICE_LIST_OTHER')}>
                   {showChangeLeague && (
                     <Menu.Item key="/selectLeague" onClick={onClickChangeLeague}>
-                      切换联盟
+                      {Intl.formatMessage('BASS_SERVICE_LIST_SWITCH_CONSORTIUM')}
                     </Menu.Item>
                   )}
                   <Menu.Item key="ChainIDE" onClick={onClickIDE}>

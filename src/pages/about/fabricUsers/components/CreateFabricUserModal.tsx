@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import { Dispatch } from 'umi';
 import { Roles } from '~/utils/roles';
 import { CreateFabricRole } from '../_config';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -86,9 +87,8 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
     const promise = Promise;
 
     if (value && value !== form.getFieldValue('pass')) {
-      return promise.reject('两次输入的密码不匹配');
+      return promise.reject(Intl.formatMessage('BASS_FABRIC_PROMISE_REJECT'));
     }
-
     return promise.resolve();
   };
 
@@ -96,14 +96,14 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '新增Fabric角色',
+    title: Intl.formatMessage('BASS_FABRIC_NEW_FABRIC_ROLE'),
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="submit" type="primary" onClick={handleSubmit} loading={addLoading}>
-        提交
+        {Intl.formatMessage('BASS_COMMON_SUBMIT')}
       </Button>
     ]
   };
@@ -112,63 +112,66 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
         <Item
-          label="Fabric角色名"
+          label={Intl.formatMessage('BASS_FABRIC_CHARACTER_NAME')}
           name="userId"
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请输入Fabric角色名'
+              message: Intl.formatMessage('BASS_FABRIC_CHARACTER_NAME')
             },
             {
               pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
-              message: 'Fabric角色名由4-20位字母、数字、下划线组成，字母开头'
+              message: Intl.formatMessage('BASS_FABRIC_NAME_CONSIST')
             }
           ]}>
-          <Input placeholder="请输入Fabric角色名" />
+          <Input placeholder={Intl.formatMessage('BASS_FABRIC_CHARACTER_NAME')} />
         </Item>
         <Item
-          label="密码"
+          label={Intl.formatMessage('BASS_FABRIC_PASSWORD')}
           name="pass"
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请输入密码'
+              message: Intl.formatMessage('BASS_FABRIC_INPUT_PASSWORD')
             },
             {
               min: 6,
               max: 18,
-              message: '密码长度为6-18位'
+              message: Intl.formatMessage('BASS_FABRIC_PASSWORD_LENGTH')
             }
           ]}>
-          <Input type="password" placeholder="请输入密码" />
+          <Input type="password" placeholder={Intl.formatMessage('BASS_FABRIC_INPUT_PASSWORD')} />
         </Item>
         <Item
           name="re_pass"
-          label="确认密码"
+          label={Intl.formatMessage('BASS_FABRIC_CONFIRM_PASSWORD')}
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请确认密码!'
+              message: Intl.formatMessage('BASS_FABRIC_PLEASE_CONFIRM_PASSWORD')
             },
             {
               validator: checkConfirm
             }
           ]}>
-          <Input type="password" placeholder="请确认密码" />
+          <Input type="password" placeholder={Intl.formatMessage('BASS_FABRIC_PLEASE_CONFIRM_PASSWORD')} />
         </Item>
         <Item
-          label="角色类型"
+          label={Intl.formatMessage('BASS_FABRIC_CHARACTER_TYPE')}
           name="fabricRole"
           rules={[
             {
               required: true,
-              message: '请选择角色类型'
+              message: Intl.formatMessage('BASS_FABRIC_SELECT_CHARACTER_TYPE')
             }
           ]}>
-          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择角色类型">
+          <Select
+            allowClear
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            placeholder={Intl.formatMessage('BASS_FABRIC_SELECT_CHARACTER_TYPE')}>
             {Object.keys(CreateFabricRole).map((role) => (
               <Option key={role} value={CreateFabricRole[role]}>
                 {CreateFabricRole[role]}
@@ -177,18 +180,18 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
           </Select>
         </Item>
         <Item
-          label="所属组织"
+          label={Intl.formatMessage('BASS_COMMON_ORGANIZATION')}
           name="orgName"
           initialValue={userRole === Roles.NetworkMember ? myOrgInfo && myOrgInfo.orgName : null}
           rules={[
             {
               required: true,
-              message: '请选择所属组织'
+              message: Intl.formatMessage('BASS_FABRIC_SELECT_ORGNISIZATION_NAME')
             }
           ]}>
           <Select
             allowClear
-            placeholder="请选择所属组织"
+            placeholder={Intl.formatMessage('BASS_FABRIC_SELECT_ORGNISIZATION_NAME')}
             disabled={userRole === Roles.NetworkMember}
             getPopupContainer={(triggerNode) => triggerNode.parentNode}>
             {orgList.map((item) => (
@@ -198,8 +201,8 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
             ))}
           </Select>
         </Item>
-        <Item label="属性集" name="attrs" initialValue="">
-          <TextArea placeholder="请输入属性集" />
+        <Item label={Intl.formatMessage('BASS_FABRIC_ATTRIBUTE_SETS')} name="attrs" initialValue="">
+          <TextArea placeholder={Intl.formatMessage('BASS_FABRIC_INPUT_ATTRIBUTE_SETS')} />
         </Item>
       </Form>
     </Modal>

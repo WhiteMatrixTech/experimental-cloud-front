@@ -3,6 +3,7 @@ import { Button, Result } from 'antd';
 import { Link, connect, Dispatch, Location } from 'umi';
 import styles from './style.less';
 import { ConnectState } from '~/models/connect';
+import { Intl } from '~/utils/locales';
 export interface RegisterResultProps {
   dispatch: Dispatch;
   User: ConnectState['User'];
@@ -25,11 +26,11 @@ const RegisterResult: React.FC<RegisterResultProps> = ({ location, dispatch }) =
           state: { account: location?.state?.account }
         }}>
         <Button size="large" type="primary">
-          立即登录
+          {Intl.formatMessage('BASS_LOGIN_NOW')}
         </Button>
       </Link>
       <Link to="/user/register">
-        <Button size="large">重新注册</Button>
+        <Button size="large">{Intl.formatMessage('BASS_REGISTER_AGAIN')}</Button>
       </Link>
     </div>
   );
@@ -40,7 +41,11 @@ const RegisterResult: React.FC<RegisterResultProps> = ({ location, dispatch }) =
       status={location?.state?.account ? 'success' : 'warning'}
       title={
         <div className={styles.title}>
-          {location?.state?.account ? `你的账户：${location?.state?.account} 注册成功` : '暂无账户'}
+          {location?.state?.account
+            ? `${Intl.formatMessage('BASS_REGISTER_YOUR_ACCOUNT')}：${location?.state?.account} ${Intl.formatMessage(
+                'BASS_REGISTER_SUCCESSFULLY'
+              )}`
+            : '暂无账户'}
         </div>
       }
       subTitle=""

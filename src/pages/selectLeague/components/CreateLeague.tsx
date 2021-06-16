@@ -3,17 +3,18 @@ import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
 import { Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
 
 export type CreateLeagueProps = {
@@ -34,11 +35,11 @@ const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
       .then(async (values) => {
         let params = {
           ...values,
-          role: 'networkAdmin',
+          role: 'networkAdmin'
         };
         const res = await dispatch({
           type: 'User/createLeague',
-          payload: params,
+          payload: params
         });
         if (res) {
           onCancel(true);
@@ -53,70 +54,67 @@ const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '创建联盟',
+    title: Intl.formatMessage('BASS_CONSORTIUM_CREATE_CONSORTIUM'),
     onCancel: () => onCancel(false),
     footer: [
       <Button key="cancel" onClick={() => onCancel(false)}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="submit" onClick={handleSubmit} type="primary" loading={addLoading}>
-        提交
-      </Button>,
-    ],
+        {Intl.formatMessage('BASS_COMMON_SUBMIT')}
+      </Button>
+    ]
   };
 
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
         <Item
-          label="联盟名称"
+          label={Intl.formatMessage('BASS_CONSORTIUM_NAME')}
           name="leagueName"
           rules={[
             {
               required: true,
-              message: '请输入联盟名称',
-            },
-          ]}
-        >
-          <Input placeholder="请输入联盟名称" />
+              message: Intl.formatMessage('BASS_CONSORTIUM_INPUT_NAME')
+            }
+          ]}>
+          <Input placeholder={Intl.formatMessage('BASS_CONSORTIUM_INPUT_NAME')} />
         </Item>
         <Item
-          label="网络名称"
+          label={Intl.formatMessage('BASS_USER_INFO_NETWORK_NAME')}
           name="networkName"
           rules={[
             {
               required: true,
-              message: '请输入网络名称',
+              message: Intl.formatMessage('BASS_USER_INFO_INPUT_NETWORK_NAME')
             },
             {
               min: 6,
               max: 15,
               type: 'string',
               pattern: /^[a-zA-Z0-9]+$/,
-              message: '网络名称由6~15位英文字母或数字组成',
-            },
-          ]}
-        >
-          <Input placeholder="请输入网络名称" />
+              message: Intl.formatMessage('BASS_USER_INFO_NETWORK_NAME_LENGTH')
+            }
+          ]}>
+          <Input placeholder={Intl.formatMessage('BASS_USER_INFO_INPUT_NETWORK_NAME')} />
         </Item>
         <Item
-          label="联盟描述"
+          label={Intl.formatMessage('BASS_USER_INFO_CONSORTIUM_DESCRIPTION')}
           name="description"
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请输入联盟描述',
+              message: Intl.formatMessage('BASS_USER_INFO_INPUT_CONSORTIUM_DESCRIPTION')
             },
             {
               min: 1,
               max: 100,
               type: 'string',
-              message: '联盟描述由1~100个字符组成',
-            },
-          ]}
-        >
-          <TextArea placeholder="请输入联盟描述" />
+              message: Intl.formatMessage('BASS_USER_INFO_CONSORTIUM_DESCRIPTION_LENGTH')
+            }
+          ]}>
+          <TextArea placeholder={Intl.formatMessage('BASS_USER_INFO_INPUT_CONSORTIUM_DESCRIPTION')} />
         </Item>
       </Form>
     </Modal>
@@ -125,5 +123,5 @@ const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
 
 export default connect(({ User, loading }: ConnectState) => ({
   User,
-  addLoading: loading.effects['User/createLeague'],
+  addLoading: loading.effects['User/createLeague']
 }))(CreateLeague);

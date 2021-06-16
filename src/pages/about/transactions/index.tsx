@@ -8,6 +8,7 @@ import baseConfig from '~/utils/config';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 
@@ -84,53 +85,60 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   };
   const columns: ColumnsType<any> = [
     {
-      title: '交易ID',
+      title: Intl.formatMessage('BASS_TRANSACTION_ID'),
       dataIndex: 'txId',
       key: 'txId',
       ellipsis: true,
       width: '20%'
     },
     {
-      title: '所属通道',
+      title: Intl.formatMessage('BASS_COMMON_CHANNEL'),
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '交易组织',
+      title: Intl.formatMessage('BASS_TRANSACTION_ORGANIZATION'),
       dataIndex: 'txMsp',
       key: 'txMsp',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '合约名称',
+      title: Intl.formatMessage('BASS_TRANSACTION_CONTRACT_NAME'),
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '生成时间',
+      title: Intl.formatMessage('BASS_COMMON_GENERATED_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+        text ? (
+          moment(text).format('YYYY-MM-DD HH:mm:ss')
+        ) : (
+          <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
+        )
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       //dataIndex:'action'
       key: 'action',
       render: (text, record: TransactionSchema) => (
         <Space size="small">
           {record.channelId || record.txMsp ? (
             <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickDetail(e, record)}>
-              详情
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
             </a>
           ) : (
             <a
               href={`/about/transactions/${record.txId}`}
               className="a-forbidden-style"
               onClick={(e) => e.preventDefault()}>
-              详情
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
             </a>
           )}
         </Space>
@@ -151,7 +159,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content page-content-shadow table-wrapper">
-        <SearchBar placeholder="交易ID" onSearch={onSearch} />
+        <SearchBar placeholder={Intl.formatMessage('BASS_TRANSACTION_ID')} onSearch={onSearch} />
         <Table
           rowKey="txId"
           columns={columns}

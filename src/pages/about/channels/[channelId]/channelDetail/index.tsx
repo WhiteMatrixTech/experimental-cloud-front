@@ -15,10 +15,11 @@ import block from '~/assets/images/dashboard/icon-block.png';
 import transactions from '~/assets/images/dashboard/icon-transcation.png';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
-  menuName: '通道详情',
+  menuName: Intl.formatMessage('BASS_CHANNEL_DESCRIPTION'),
   menuHref: `/`
 });
 
@@ -53,84 +54,96 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
     transactionTotalOfChannel
   } = props.Channel;
   const statisticsList = [
-    { label: '组织', num: orgTotalOfChannel },
-    { label: '节点', num: nodeTotalOfChannel },
-    { label: '区块', num: blockTotalOfChannel },
-    { label: '交易', num: transactionTotalOfChannel },
-    { label: '合约', num: contractTotalOfChannel }
+    { label: Intl.formatMessage('BASS_CHANNEL_ORGANISATION'), num: orgTotalOfChannel },
+    { label: Intl.formatMessage('BASS_CHANNEL_NODE'), num: nodeTotalOfChannel },
+    { label: Intl.formatMessage('BASS_CHANNEL_BLOCK'), num: blockTotalOfChannel },
+    { label: Intl.formatMessage('BASS_CHANNEL_TRANSACTIONS'), num: transactionTotalOfChannel },
+    { label: Intl.formatMessage('BASS_CHANNEL_CONTRACT'), num: contractTotalOfChannel }
   ];
   const blockColumns: ColumnsType<any> = [
     {
-      title: '区块HASH',
+      title: Intl.formatMessage('BASS_BLOCK_BLOCK_HASH'),
       dataIndex: 'blockHash',
       key: 'blockHash',
       ellipsis: true
     },
     {
-      title: '所属通道',
+      title: Intl.formatMessage('BASS_COMMON_CHANNEL'),
       dataIndex: 'channelId',
       key: 'channelId'
     },
     {
-      title: '交易数量',
+      title: Intl.formatMessage('BASS_BLOCK_NUMBER_OF_TRANSACTION'),
       dataIndex: 'txCount',
       key: 'txCount'
     },
     {
-      title: '生成时间',
+      title: Intl.formatMessage('BASS_COMMON_GENERATED_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (text, record) => (
         <Space size="small">
+<<<<<<< HEAD
           <a href={`/about/block/${record.blockHash}`} onClick={(e) => onClickBlockDetail(e, record)}>详情</a>
+=======
+          <a onClick={() => onClickBlockDetail(record)}>{Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}</a>
+>>>>>>> feat: :art: Internationalising the page
         </Space>
       )
     }
   ];
   const transactionColumns: ColumnsType<any> = [
     {
-      title: '交易ID',
+      title: Intl.formatMessage('BASS_TRANSACTION_ID'),
       dataIndex: 'txId',
       key: 'txId',
       ellipsis: true,
       width: '17%'
     },
     {
-      title: '所属通道',
+      title: Intl.formatMessage('BASS_COMMON_CHANNEL'),
       dataIndex: 'channelId',
       key: 'channelId',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '交易组织',
+      title: Intl.formatMessage('BASS_TRANSACTION_ORGANIZATION'),
       dataIndex: 'txEndorseMsp',
       key: 'txEndorseMsp',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '合约名称',
+      title: Intl.formatMessage('BASS_TRANSACTION_CONTRACT_NAME'),
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) =>
+        text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
     {
-      title: '生成时间',
+      title: Intl.formatMessage('BASS_COMMON_GENERATED_TIME'),
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+        text ? (
+          moment(text).format('YYYY-MM-DD HH:mm:ss')
+        ) : (
+          <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
+        )
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (text, record) => (
         <Space size="small">
           {record.channelId || record.txEndorseMsp ? (
+<<<<<<< HEAD
             <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickTransactionDetail(e, record)}>详情</a>
           ) : (
             <a
@@ -139,6 +152,13 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
               onClick={(e) => e.preventDefault()}>
               详情
             </a>
+=======
+            <a onClick={() => onClickTransactionDetail(record)}>
+              {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
+            </a>
+          ) : (
+            <a className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}</a>
+>>>>>>> feat: :art: Internationalising the page
           )}
         </Space>
       )
@@ -236,25 +256,25 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
         <div className={style['channel-basic-info']}>
           <Row>
             <Col span={8}>
-              <label>通道ID：</label>
+              <label>{Intl.formatMessage('BASS_CHANNEL_ID')}：</label>
               <span>{location?.state?._id}</span>
             </Col>
             <Col span={8}>
-              <label>通道名称：</label>
+              <label>{Intl.formatMessage('BASS_CHANNEL_NAME')}：</label>
               <span>{location?.state?.channelId}</span>
             </Col>
             <Col span={8}>
-              <label>通道别名：</label>
+              <label>{Intl.formatMessage('BASS_CHANNEL_ALIAS')}：</label>
               <span>{location?.state?.channelAliasName}</span>
             </Col>
             <Col span={8}>
-              <label>创建时间：</label>
+              <label>{Intl.formatMessage('BASS_COMMON_CREATE_TIME')}：</label>
               <span>
                 {location?.state?.createdAt ? moment(location?.state?.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
               </span>
             </Col>
             <Col span={8}>
-              <label>状态：</label>
+              <label>{Intl.formatMessage('BASS_COMMON_STATUS')}：</label>
               <span>{location?.state?.channelStatus ? ChannelStatus[location?.state?.channelStatus].text : ''}</span>
             </Col>
           </Row>

@@ -4,6 +4,6 @@ export const BLOCK_CN = {
   BASS_BLOCK_NUMBER_OF_TRANSACTION: '交易数量',
   BASS_BLOCK_Details: '区块详情',
   BASS_BLOCK_INFORMATION: '区块信息',
-  BASS_BLOCK_CURRENT_HASH: '当前哈希',
-  BASS_BLOCK_PREORDER_HASH: '前序哈希'
+  BASS_BLOCK_CURRENT_HASH: '当前哈希值',
+  BASS_BLOCK_PREORDER_HASH: '前序哈希值'
 };

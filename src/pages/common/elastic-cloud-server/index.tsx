@@ -9,6 +9,7 @@ import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import CreateServerModal from './components/CreateServerModal';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');
 export interface ServersManagementProps {
@@ -61,9 +62,9 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
-      content: `确认要删除服务器 【${record.serverName}】 吗?`,
-      okText: '确认',
-      cancelText: '取消',
+      content: Intl.formatMessage('BASS_CONFIRM_DELETE_SERVER_MODAL_CONTENT', { serverName: record.serverName }),
+      okText: Intl.formatMessage('BASS_COMMON_CONFIRM'),
+      cancelText: Intl.formatMessage('BASS_COMMON_CANCEL'),
       onOk: callback
     });
   }, [dispatch, getServerList]);
@@ -106,14 +107,14 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
           <a
             href={`/common/elastic-cloud-server/${record.serverName}/resource-usage`}
             onClick={(e) => onViewNode(e, record)}>
-            实例数据
+            {Intl.formatMessage('BASS_ELASTIC_CLOUD_INSTANCE_DATA')}
           </a>
         </Menu.Item>
         <Menu.Item>
           <a
             href={`/common/elastic-cloud-server/${record.serverName}/server-performance`}
             onClick={(e) => onViewPerformance(e, record)}>
-            资源使用情况
+            {Intl.formatMessage('BASS_ELASTIC_CLOUD_RESOURCE_USE')}
           </a>
         </Menu.Item>
       </Menu>
@@ -124,63 +125,64 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
   useEffect(() => {
     const data: ColumnsType<any> = [
       {
-        title: '服务器名称',
+        title: Intl.formatMessage('BASS_ELASTIC_CLOUD_SERVER_NAME'),
         dataIndex: 'serverName',
         key: 'serverName',
         ellipsis: true
       },
       {
-        title: '用户名',
+        title: Intl.formatMessage('BASS_ELASTIC_CLOUD_USERNAME'),
         dataIndex: 'username',
         key: 'username',
         ellipsis: true
       },
       {
-        title: '用途类型',
+        title: Intl.formatMessage('BASS_ELASTIC_CLOUD_TYPE_OF_USE'),
         dataIndex: 'serverPurpose',
         key: 'serverPurpose',
         ellipsis: true
       },
       {
-        title: '外网IP',
+        title: Intl.formatMessage('BASS_ELASTIC_CLOUD_EXTRANET_IP'),
         dataIndex: 'publicIp',
         key: 'publicIp',
         ellipsis: true
       },
       {
-        title: '内网IP',
+        title: Intl.formatMessage('BASS_ELASTIC_CLOUD_INTRANET_IP'),
         dataIndex: 'privateIp',
         key: 'privateIp',
         ellipsis: true
       },
       {
-        title: '实例数量',
+        title: Intl.formatMessage('BASS_ELASTIC_CLOUD_INSTANCE_NUMBER'),
         dataIndex: 'instanceCount',
         key: 'instanceCount',
         ellipsis: true
       },
       {
-        title: '创建时间',
+        title: Intl.formatMessage('BASS_COMMON_CREATE_TIME'),
         dataIndex: 'createAt',
         key: 'createAt',
         render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
         ellipsis: true
       },
       {
-        title: '操作',
+        title: Intl.formatMessage('BASS_COMMON_OPERATION'),
         key: 'action',
         width: '12%',
         render: (_: string, record: ElasticServerSchema) => (
           <Space size="small">
             <span role="button" className="table-action-span" onClick={() => onClickModifyServer(record)}>
-              编辑
+              {Intl.formatMessage('BASS_ELASTIC_CLOUD_EDIT')}
             </span>
             <span role="button" className="table-action-span" onClick={() => onClickDelete(record)}>
-              删除
+              {Intl.formatMessage('BASS_COMMON_DELETE')}
             </span>
             <Dropdown overlay={renderMenu(record)} trigger={['click']}>
               <span role="button" className="table-action-span" onClick={(e) => e.preventDefault()}>
-                更多 <DownOutlined />
+                {Intl.formatMessage('BASS_ELASTIC_CLOUD_MORE')}
+                <DownOutlined />
               </span>
             </Dropdown>
           </Space>
@@ -200,7 +202,7 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
       <div className="page-content page-content-shadow table-wrapper">
         <div className="table-header-btn-wrapper">
           <Button type="primary" onClick={onClickCreateServer}>
-            创建服务器
+            {Intl.formatMessage('BASS_ELASTIC_CLOUD_CREATE_SERVER')}
           </Button>
         </div>
         <Table

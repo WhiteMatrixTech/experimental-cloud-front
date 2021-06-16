@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, history, RbacRole } from 'umi';
-import { Table, Space, Button } from 'antd';
+import { Table, Space, Button, Divider } from 'antd';
 import { Breadcrumb } from '~/components';
 import baseConfig from '~/utils/config';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { DisabledRole } from './_config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/rbac');
 export interface RbacConfigProps {
@@ -26,35 +27,38 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
 
   const columns: ColumnsType<any> = [
     {
-      title: '角色名称',
+      title: Intl.formatMessage('BASS_RBAC_ROLE_NAME'),
       dataIndex: 'roleName',
       key: 'roleName',
       ellipsis: true
     },
     {
-      title: '角色类型',
+      title: Intl.formatMessage('BASS_RBAC_ROLE_TYPE'),
       dataIndex: 'roleType',
       key: 'roleType',
       ellipsis: true,
       render: (_: any, record: RbacRole) => {
         if (DisabledRole.includes(record.roleName)) {
-          return '默认角色';
+          return Intl.formatMessage('BASS_RBAC_DEFAULT_ROLE');
         }
-        return '自定义角色';
+        return Intl.formatMessage('BASS_RBAC_CUSTOM_ROLE');
       }
     },
     {
-      title: '操作',
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (text, record: RbacRole) => (
         <Space size="small">
           {!DisabledRole.includes(record.roleName) && (
-            <a href={`/about/rbac/${record.roleName}/config`} onClick={(e) => onClickRbacConfig(e, record)}>
-              配置
-            </a>
+            <div>
+              <a href={`/about/rbac/${record.roleName}/config`} onClick={(e) => onClickRbacConfig(e, record)}>
+                {Intl.formatMessage('BASS_MEMBER_MANAGEMENT_CONFIG')}
+              </a>
+              <Divider type="vertical" />
+            </div>
           )}
           <a href={`/about/rbac/${record.roleName}/detail`} onClick={(e) => onClickRbacDetail(e, record)}>
-            详情
+            {Intl.formatMessage('BASS_COMMON_DETAILED_INFORMATION')}
           </a>
         </Space>
       )
@@ -119,7 +123,7 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
       <div className="page-content table-wrapper page-content-shadow">
         <div className="table-header-btn-wrapper">
           <Button type="primary" onClick={onClickCreateConfig}>
-            创建访问角色
+            {Intl.formatMessage('BASS_RBAC_ACCESS_ROLE')}
           </Button>
         </div>
         <Table

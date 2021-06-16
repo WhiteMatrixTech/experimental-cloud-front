@@ -2,5 +2,12 @@ export const TRANSACTION_US = {
   BASS_TRANSACTION: 'Transaction',
   BASS_TRANSACTION_ID: 'Transaction ID',
   BASS_TRANSACTION_ORGANIZATION: 'Transaction organization',
-  BASS_TRANSACTION_CONTRACT_NAME: 'Contract name'
+  BASS_TRANSACTION_CONTRACT_NAME: 'Contract name',
+  BASS_TRANSACTION_HASH: 'Transaction HASH',
+  BASS_TRANSACTION_BLOCK: 'Block',
+  BASS_TRANSACTION_CONSORTIUM: 'Consortium',
+  BASS_TRANSACTION_CHANNEL: 'Transaction Channel',
+  BASS_TRANSACTION_TIME: 'Transaction Time',
+  BASS_TRANSACTION_CONTRACT_USED: 'Contract',
+  BASS_TRANSACTION_PARAMETERS: 'Transaction parameters'
 };

@@ -1,13 +1,15 @@
 export const RBAC_US = {
   BASS_RBAC_ACCESS_ROLE_MANAGEMENT: 'Access role management',
   BASS_RBAC_CREATE_ACCESS_ROLE: 'Create Access roles',
+  BASS_RBAC_INPUT_ROLE_NAME: 'Please enter the role name',
+  BASS_RBAC_REGISTER_ROLE: 'Register Role',
   BASS_RBAC_ROLE_NAME: 'Role Name',
   BASS_RBAC_ROLE_TYPE: 'Role Type',
   BASS_RBAC_CHARACTER_STRATEGY_DETAILS: 'Character Strategy Details',
   BASS_RBAC_CONFIGURATION_STRATEGY: 'Configuration strategy',
   BASS_RBAC_BLOCK_INFORMATION: 'Block Information',
   BASS_RBAC_CAN_BE_VIEW_BLOCKS: 'View all blocks in this network',
-  BASS_RBAC_CANNOT_BE_VIEW_BLOCKS: 'Block information that cannot be viewed',
+  BASS_RBAC_CANNOT_BE_VIEW_BLOCKS: 'Cannot view block information',
   BASS_RBAC_TRANSACTION_INFORMACTION: 'Transaction Information',
   BASS_RBAC_CAN_BE_VIEW_TRANSACTION: 'View all transactions in this network',
   BASS_RBAC_CANNOT_BE_VIEW_TRANSACTION: 'Transactions in this network are not viewable(Not recommended)',
@@ -21,5 +23,12 @@ export const RBAC_US = {
   BASS_RBAC_DOWNLOAD_CONTRACT_BY_YOURSELF_CREATED: 'Download contracts that you have created',
   BASS_RBAC_USE_CONTRACT: 'Contract(Call)',
   BASS_RBAC_USE_CONTRACT_IN_CHANNEL: 'All contracts installed in this channel can be called',
-  BASS_RBAC_PROHIBITION_CONTRACT: 'Prohibition of contract calls'
+  BASS_RBAC_PROHIBITION_CONTRACT: 'Prohibition of contract calls',
+  BASS_RBAC_DEFAULT_ROLE: 'Default Role',
+  BASS_RBAC_CUSTOM_ROLE: 'Custom Role',
+  BASS_RBAC_ACCESS_ROLE: 'Create access roles',
+  BASS_RBAC_ACCESS_ADD_ROLE: 'Access to added roles',
+  BASS_RBAC_INPUT_JSON_CONFIG: 'Enter the JSON config',
+  BASS_RBAC_SELECT_CONTRACT: 'Please select a contract',
+  BASS_RBAC_SELECT_ROLE_NAME: 'Please select a role'
 };

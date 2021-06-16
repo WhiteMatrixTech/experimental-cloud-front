@@ -1,16 +1,18 @@
+import { Intl } from '~/utils/locales';
+
 export const peerStatus = {
   // 节点状态
-  Running: { color: 'green', text: '运行中' },
-  Creating: { color: 'orange', text: '创建中' },
-  CreationFailed: { color: 'red', text: '创建失败' },
-  Stopping: { color: 'orange', text: '停用中' },
-  Stopped: { color: ':#E2E9F7', text: '已停用' },
-  StopFailed: { color: 'red', text: '停用失败' },
-  Deleting: { color: 'orange', text: '删除中' },
-  DeletionFailed: { color: 'red', text: '删除失败' },
-  Deleted: { color: 'volcano', text: '已删除' },
-  Starting: { color: 'orange', text: '启动中' },
-  StartFailed: { color: 'red', text: '启动失败' },
+  Running: { color: 'green', text: Intl.formatMessage('BASS_NODE_RUN') },
+  Creating: { color: 'orange', text: Intl.formatMessage('BASS_NODE_CREATE_IN_PROGRESS') },
+  CreationFailed: { color: 'red', text: Intl.formatMessage('BASS_NODE_CREATE_FAILED') },
+  Stopping: { color: 'orange', text: Intl.formatMessage('BASS_NODE_BEING_DEACTIVATED') },
+  Stopped: { color: ':#E2E9F7', text: Intl.formatMessage('BASS_NODE_DEACTIVATED') },
+  StopFailed: { color: 'red', text: Intl.formatMessage('BASS_NODE_DEACTIVATION_FAILED') },
+  Deleting: { color: 'orange', text: Intl.formatMessage('BASS_NODE_BEING_REMOVED') },
+  DeletionFailed: { color: 'red', text: Intl.formatMessage('BASS_NODE_DELETED_FAILED') },
+  Deleted: { color: 'volcano', text: Intl.formatMessage('BASS_NODE_DELETED') },
+  Starting: { color: 'orange', text: Intl.formatMessage('BASS_NODE_BEING_START') },
+  StartFailed: { color: 'red', text: Intl.formatMessage('BASS_NODE_FAILED_TO_START') }
 };
 
 export const availableNodeStatus = ['Running', 'CreationFailed', 'Creating'];

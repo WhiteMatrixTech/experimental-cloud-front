@@ -17,6 +17,10 @@ import { SERVICE_LIST_US } from './en-US/service_list';
 import { TASK_MANAGEMENT_US } from './en-US/task_management';
 import { ONE_KEY_COMPILE_US } from './en-US/one_key_compile';
 import { NOTIFICATION_US } from './en-US/notification';
+import { CONFIRM_US } from './en-US/confirm';
+import { CUSTOM_IMAGE_US } from './en-US/custorm_image';
+import { LOGIN_US } from './en-US/login';
+import { REGISTER_US } from './en-US/register';
 
 const Locales_US_JSON = {
   ...COMMON_US,
@@ -37,7 +41,11 @@ const Locales_US_JSON = {
   ...TASK_MANAGEMENT_US,
   ...SERVICE_LIST_US,
   ...DASHBOARD_US,
-  ...ELASTIC_CLOUD_US
+  ...ELASTIC_CLOUD_US,
+  ...CONFIRM_US,
+  ...CUSTOM_IMAGE_US,
+  ...LOGIN_US,
+  ...REGISTER_US
 };
 
 export default Locales_US_JSON;

@@ -6,10 +6,11 @@ import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, ElasticServerSchema, Location } from 'umi';
+import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');
 breadCrumbItem.push({
-  menuName: '资源使用情况',
+  menuName: Intl.formatMessage('BASS_ELASTIC_CLOUD_RESOURCE_USE'),
   menuHref: `/`
 });
 export interface ServerPerformanceProps {

@@ -4,6 +4,7 @@ import { Button, Form, Input, Modal, Radio, Select } from 'antd';
 import { connect } from 'dva';
 import { Dispatch } from 'umi';
 import styles from './OneKeyCompile.less';
+import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 
@@ -59,14 +60,14 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '一键编译',
+    title: Intl.formatMessage('BASS_ONE_KEY_COMPILE'),
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
-        取消
+        {Intl.formatMessage('BASS_COMMON_CANCEL')}
       </Button>,
       <Button key="submit" type="primary" onClick={handleSubmit} loading={configLoading}>
-        提交
+        {Intl.formatMessage('BASS_COMMON_SUBMIT')}
       </Button>
     ]
   };
@@ -82,36 +83,39 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
     <Modal {...drawerProps}>
       <Form layout="vertical" form={form}>
         <Item
-          label="仓库地址"
+          label={Intl.formatMessage('BASS_ONE_KEY_COMPILE_RESPOSITORY_ADDRESS')}
           name="gitRepoUrl"
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请输入仓库地址'
+              message: Intl.formatMessage('BASS_ONE_KEY_COMPILE_INPUT_RESPOSITORY_ADDRESS')
             }
           ]}>
-          <Input placeholder="输入仓库地址" />
+          <Input placeholder={Intl.formatMessage('BASS_ONE_KEY_COMPILE_INPUT_RESPOSITORY_ADDRESS')} />
         </Item>
         <Item
-          label="分支名"
+          label={Intl.formatMessage('BASS_ONE_KEY_COMPILE_BRANCH_NAME')}
           name="branch"
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请输入分支名'
+              message: Intl.formatMessage('BASS_ONE_KEY_COMPILE_INPUT_BRANCH_NAME')
             }
           ]}>
-          <Input placeholder="输入分支名" />
+          <Input placeholder={Intl.formatMessage('BASS_ONE_KEY_COMPILE_INPUT_BRANCH_NAME')} />
         </Item>
-        <Item label="编译镜像" name="buildEnvImageInputType" initialValue="system">
+        <Item
+          label={Intl.formatMessage('BASS_ONE_KEY_COMPILE_IMAGE')}
+          name="buildEnvImageInputType"
+          initialValue="system">
           <Radio.Group className={styles['radio-group']} onChange={onChangeBuildEnvImageInputType}>
             <Radio className={styles.radio} value="system">
-              系统镜像
+              {Intl.formatMessage('BASS_ONE_KEY_COMPILE_SYSTEM_IMAGE')}
             </Radio>
             <Radio className={styles.radio} value="custom">
-              自定义
+              {Intl.formatMessage('BASS_ONE_KEY_COMPILE_CUSTOM')}
             </Radio>
           </Radio.Group>
         </Item>
@@ -122,12 +126,12 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
             rules={[
               {
                 required: true,
-                message: '请选择编译镜像'
+                message: Intl.formatMessage('BASS_ONE_KEY_COMPILE_PLEASE_SELECT_COMPILE_IMAGE')
               }
             ]}>
             <Select
               allowClear
-              placeholder="选择编译镜像"
+              placeholder={Intl.formatMessage('BASS_ONE_KEY_COMPILE_SELECT_COMPILE_IMAGE')}
               options={imageOptions}
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
             />
@@ -140,25 +144,30 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
             rules={[
               {
                 required: true,
-                message: '请输入编译镜像地址'
+                message: Intl.formatMessage('BASS_ONE_KEY_COMPILE_INPUT_CUSTOM_IMAGE_ADDRESS')
               }
             ]}>
-            <Input placeholder="输入编译镜像地址" />
+            <Input placeholder={Intl.formatMessage('BASS_ONE_KEY_COMPILE_INPUT_CUSTOM_IMAGE_ADDRESS')} />
           </Item>
         )}
         <Item
-          label="编译命令"
+          label={Intl.formatMessage('BASS_ONE_KEY_COMPILE_COMMANDS')}
           name="buildCommands"
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请输入编译命令'
+              message: Intl.formatMessage('BASS_ONE_KEY_INPUT_COMPILE_COMMANDS')
             }
           ]}>
-          <Input.TextArea rows={5} placeholder="输入编译命令，换行分割" />
+          <Input.TextArea
+            rows={5}
+            placeholder={`${Intl.formatMessage('BASS_ONE_KEY_COMPILE_ENTER_COMMAND')},${Intl.formatMessage(
+              'BASS_ONE_KEY_COMPILE_LINE_BREAK'
+            )}`}
+          />
         </Item>
-        <Item label="编译凭证">
+        <Item label={Intl.formatMessage('BASS_CUSTORM_IMAGE_VOUCHERS')}>
           <Input.Group compact>
             <Item
               name="username"
@@ -167,10 +176,10 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
               rules={[
                 {
                   required: true,
-                  message: '请输入用户名'
+                  message: Intl.formatMessage('BASS_USER_INFO_INPUT_USER_NAME')
                 }
               ]}>
-              <Input placeholder="输入用户名" />
+              <Input placeholder={Intl.formatMessage('BASS_CUSTORM_IMAGE_INPUT_USER_NAME')} />
             </Item>
             <Item
               name="password"
@@ -179,10 +188,10 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
               rules={[
                 {
                   required: true,
-                  message: '请输入密码'
+                  message: Intl.formatMessage('BASS_CUSTORM_IMAGE_INPUT_PASSWORD')
                 }
               ]}>
-              <Input placeholder="输入密码" />
+              <Input placeholder={Intl.formatMessage('BASS_CUSTORM_IMAGE_INPUT_PASSWORD')} />
             </Item>
             <Item
               name="registryServer"
@@ -191,10 +200,10 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
               rules={[
                 {
                   required: true,
-                  message: '请输入注册服务器'
+                  message: Intl.formatMessage('BASS_CUSTORM_IMAGE_INPUT_RGGISTER_SERVER')
                 }
               ]}>
-              <Input placeholder="输入注册服务器" />
+              <Input placeholder={Intl.formatMessage('BASS_CUSTORM_IMAGE_INPUT_RGGISTER_SERVER')} />
             </Item>
           </Input.Group>
         </Item>
