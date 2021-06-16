@@ -3,7 +3,6 @@ import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 import { JobCategory, JobStatus } from '~/pages/common/job-management/_config';
 import { ConnectState } from './connect';
-import { injectIntl, FormattedMessage } from 'react-intl';
 
 export type PublishImageCredential = {
   username: string;
@@ -170,4 +169,4 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
   }
 };
 
-export default injectIntl(BlockChainCompileModel);
+export default BlockChainCompileModel;
