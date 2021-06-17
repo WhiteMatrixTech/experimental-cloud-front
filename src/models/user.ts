@@ -4,6 +4,7 @@ import { Roles } from '../utils/roles';
 import LoginStatus from '../utils/loginStatus';
 import type { Reducer, Effect } from 'umi';
 import { NetworkStatus } from '~/utils/networkStatus';
+import { formatMessage } from 'umi';
 
 export type UserInfoSchema = {
   loginName: string;
@@ -85,7 +86,7 @@ const UserModel: UserModelType = {
 
     userRole: (localStorage.getItem('userRole') as Roles) || Roles.NetworkMember, // 进入系统的身份
     networkName: localStorage.getItem('networkName') || '', // 进入系统时的网络
-    leagueName: localStorage.getItem('leagueName') || '', // 进入系统时的联盟
+    leagueName: localStorage.getItem('leagueName') || '' // 进入系统时的联盟
   },
 
   subscriptions: {
@@ -97,7 +98,7 @@ const UserModel: UserModelType = {
           dispatch({ type: 'getMyNetworkList' });
         }
       });
-    },
+    }
   },
 
   effects: {
@@ -109,12 +110,16 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             cacheAccount: result,
-            userAndRegister: true,
-          },
+            userAndRegister: true
+          }
         });
         return true;
       } else {
-        notification.error({ message: result.message || result.error || '用户注册失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || result.error || formatMessage({ id: 'BASS_NOTIFICATION_USER_REGISTER_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -126,8 +131,8 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             userInfo: payload,
-            accessToken: result.access_token,
-          },
+            accessToken: result.access_token
+          }
         });
         return result;
       } else {
@@ -135,8 +140,8 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             loginInfo: result.message || '',
-            loginStatus: LoginStatus.LOGIN_ERROR,
-          },
+            loginStatus: LoginStatus.LOGIN_ERROR
+          }
         });
       }
     },
@@ -149,8 +154,8 @@ const UserModel: UserModelType = {
         yield put({
           type: 'common',
           payload: {
-            userInfo: result,
-          },
+            userInfo: result
+          }
         });
       }
     },
@@ -160,7 +165,7 @@ const UserModel: UserModelType = {
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
-          payload: { networkList: result },
+          payload: { networkList: result }
         });
       }
     },
@@ -171,8 +176,8 @@ const UserModel: UserModelType = {
         yield put({
           type: 'common',
           payload: {
-            myNetworkList: result,
-          },
+            myNetworkList: result
+          }
         });
       }
     },
@@ -183,13 +188,17 @@ const UserModel: UserModelType = {
         yield put({
           type: 'common',
           payload: {
-            roleToken: result.role_token,
-          },
+            roleToken: result.role_token
+          }
         });
         localStorage.setItem('roleToken', result.role_token);
         return true;
       } else {
-        notification.error({ message: result.message || '无法进入联盟', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_CONSORTIUM_UNABLE_ENTER' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -197,10 +206,18 @@ const UserModel: UserModelType = {
       const res = yield call(API.enrollInLeague, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '已成功申请加入联盟，请等待盟主审批', top: 64, duration: 3 });
+        notification.success({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_CONSORTIUM_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '申请加入联盟失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_CONSORTIUM_ADD_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -208,13 +225,21 @@ const UserModel: UserModelType = {
       const res = yield call(API.createLeague, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '联盟创建成功', top: 64, duration: 3 });
+        notification.success({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_CONSORTIUM_CREATE_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '联盟创建失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_CONSORTIUM_CREATE_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
@@ -228,10 +253,10 @@ const UserModel: UserModelType = {
         roleToken: '',
         userRole: Roles.NetworkMember,
         networkName: '',
-        leagueName: '',
+        leagueName: ''
       };
-    },
-  },
+    }
+  }
 };
 
 export default UserModel;

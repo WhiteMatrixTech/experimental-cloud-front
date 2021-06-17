@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Input, Select, Form, Button, Modal } from 'antd';
+import { Input, Select, Form, Button, Modal, notification } from 'antd';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 import { Intl } from '~/utils/locales';
@@ -42,8 +42,20 @@ function CreateChannelModal({ visible, User, onCancel, dispatch, addLoading, Org
           type: 'Channel/createChannel',
           payload: params
         });
-        if (res) {
+        const { statusCode, result } = res;
+        if (statusCode === 'ok') {
           onCancel(true);
+          notification.success({
+            message: Intl.formatMessage('BASS_NOTIFICATION_CHANNEL_NEW_CHANNEL_SUCCESS'),
+            top: 64,
+            duration: 3
+          });
+        } else {
+          notification.error({
+            message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CHANNEL_NEW_CHANNEL_FAILED'),
+            top: 64,
+            duration: 3
+          });
         }
       })
       .catch((info) => {

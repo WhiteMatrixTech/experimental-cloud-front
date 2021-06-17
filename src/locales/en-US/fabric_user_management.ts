@@ -1,6 +1,5 @@
 export const FABRIC_US = {
   BASS_FABRIC_USER_MANAGEMENTS: 'Fabric User Management',
-  BASS_FABRIC_ORGNISIZATION_NAME: 'Name of organisation',
   BASS_FABRIC_SELECT_ORGNISIZATION_NAME: 'Please select an organisation',
   BASS_FABRIC_CHARACTER_NAME: 'Fabric Character Name',
   BASS_FABRIC_CHARACTER_TYPE: 'Character Type',

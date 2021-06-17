@@ -361,7 +361,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
             btnShowInitValue.extraButton = (
               <Col span={8}>
                 <Button type="primary" onClick={onStopNetwork}>
-                  停用网络
+                  {Intl.formatMessage('BASS_CONTRACT_STOP_USE_NETWORK')}
                 </Button>
               </Col>
             );

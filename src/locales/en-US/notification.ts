@@ -43,13 +43,9 @@ export const NOTIFICATION_US = {
   BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_MODIFY_FAILED: 'Failed to modify server',
   BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_DELETE_SUCCESS: 'Delete server successfully',
   BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_DELETE_FAILED: 'Failed to delete server',
-  BASS_NOTIFICATION_ENTERPRISE_MEMBER_STOP_USE: '{isValid === "invalid" ? "Stop" : "Restart"} user member successfully',
-  BASS_NOTIFICATION_ENTERPRISE_MEMBER_START_USE:
-    'Failed to {isValid === "invalid" ? "Disabled" : "Enable"} user member',
-  BASS_NOTIFICATION_ENTERPRISE_MEMBER_PASS:
-    '{approvalStatus === "approved" ? "Passed" : "Not Passed"} user member successfully',
-  BASS_NOTIFICATION_ENTERPRISE_MEMBER_NOT_PASS:
-    'Failed to {approvalStatus === "approved" ? "Passed" : "Not Passed"} user member',
+  BASS_NOTIFICATION_ENTERPRISE_MEMBER_STOP_USE: 'user member successfully',
+  BASS_NOTIFICATION_ENTERPRISE_MEMBER_FAILED: 'Failed to',
+  BASS_NOTIFICATION_ENTERPRISE_MEMBER_USER: 'user member',
   BASS_NOTIFICATION_ENTERPRISE_MEMBER_RIGHT_CONFIG_SUCCESS: 'Member access rights configured successfully',
   BASS_NOTIFICATION_ENTERPRISE_MEMBER_RIGHT_CONFIG_FAILED: 'Failed to configure member access rights',
   BASS_NOTIFICATION_EVIDENCE_SUCCESS: 'Certificate successfully',

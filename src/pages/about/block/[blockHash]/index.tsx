@@ -58,6 +58,9 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
       title: Intl.formatMessage('BASS_TRANSACTION_ORGANIZATION'),
       dataIndex: 'txMsp',
       key: 'txMsp',
+      ellipsis: {
+        showTitle: false
+      },
       render: (text: string) =>
         text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },
@@ -80,7 +83,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
         )
     },
     {
-      title: Intl.formatMessage(' BASS_COMMON_OPERATION'),
+      title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       render: (text: string, record: TransactionSchema) => (
         <Space size="small">

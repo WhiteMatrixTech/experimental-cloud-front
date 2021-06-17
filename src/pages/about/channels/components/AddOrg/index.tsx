@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
-import { Select, Form, Button, Modal } from 'antd';
+import { Select, Form, Button, Modal, notification } from 'antd';
 import { Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { OrganizationSchema } from '~/models/organization';
@@ -60,8 +60,20 @@ function AddOrg(props: AddOrgProps) {
           type: 'Channel/addOrgForChannel',
           payload: { networkName, channelId, orgName: values.peerOrgNames }
         });
-        if (res) {
+        const { statusCode, result } = res;
+        if (statusCode === 'ok') {
           onCancel();
+          notification.success({
+            message: Intl.formatMessage('BASS_NOTIFICATION_CHANNEL_ADD_ORGANISATION_SUCCESS'),
+            top: 64,
+            duration: 3
+          });
+        } else {
+          notification.error({
+            message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CHANNEL_ADD_ORGANISATION_FAILED'),
+            top: 64,
+            duration: 3
+          });
         }
       })
       .catch((info) => {

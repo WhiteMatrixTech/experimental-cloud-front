@@ -1,6 +1,7 @@
 import * as API from '../services/elastic-cloud-server';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
+import { formatMessage } from 'umi';
 
 export type ElasticServerSchema = {
   serverName: string;
@@ -107,8 +108,8 @@ const ElasticServerModel: ElasticServerModelType = {
     *createServer({ payload }, { call, put }) {
       const res = yield call(API.createServer, payload);
       const { statusCode, result } = res;
-      const succMessage = `创建服务器成功`;
-      const failMessage = `创建服务器失败`;
+      const succMessage = formatMessage({ id: 'BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_CREATE_SUCCESS' });
+      const failMessage = formatMessage({ id: 'BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_CREATE_FAILED' });
       if (statusCode === 'ok' && result) {
         notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
         return true;
@@ -121,8 +122,8 @@ const ElasticServerModel: ElasticServerModelType = {
     *modifyServer({ payload }, { call, put }) {
       const res = yield call(API.modifyServer, payload);
       const { statusCode, result } = res;
-      const succMessage = `修改服务器成功`;
-      const failMessage = `修改服务器失败`;
+      const succMessage = formatMessage({ id: 'BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_MODIFY_SUCCESS' });
+      const failMessage = formatMessage({ id: 'BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_MODIFY_FAILED' });
       if (statusCode === 'ok' && result) {
         notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
         return true;
@@ -135,8 +136,8 @@ const ElasticServerModel: ElasticServerModelType = {
     *deleteServer({ payload }, { call, put }) {
       const res = yield call(API.deleteServer, payload);
       const { statusCode, result } = res;
-      const succMessage = `删除服务器成功`;
-      const failMessage = `删除服务器失败`;
+      const succMessage = formatMessage({ id: 'BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_DELETE_SUCCESS' });
+      const failMessage = formatMessage({ id: 'BASS_NOTIFICATION_ELASTIC_CLOUD_SERVER_DELETE_FAILED' });
       if (statusCode === 'ok' && result) {
         notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
         return true;

@@ -11,7 +11,7 @@ import { Intl } from '~/utils/locales';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 breadCrumbItem.push({
-  menuName: Intl.formatMessage('BASS_TRANSACTION_INFORMATION'),
+  menuName: Intl.formatMessage('BASS_RBAC_TRANSACTION_INFORMACTION'),
   menuHref: `/`
 });
 
@@ -93,7 +93,7 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({
         <Spin spinning={qryLoading}>
           <div className={styles['transaction-detail-wrapper']}>
             <div className={styles['transaction-detail-title']}>
-              <div>{Intl.formatMessage('BASS_TRANSACTION_INFORMATION')}</div>
+              <div>{Intl.formatMessage('BASS_RBAC_TRANSACTION_INFORMACTION')}</div>
             </div>
             <div className={styles['transaction-detail-content']}>
               <div className={styles.transactionInfoWrap}>

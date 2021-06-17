@@ -1,5 +1,5 @@
 export const ORGANSIZATION_US = {
-  BASS_ORGANSIZATION_MANAGEMENT: 'Organizational Management',
+  BASS_ORGANSIZATION_MANAGEMENT: 'Organization Management',
   BASS_ORGANSIZATION_NAME: 'Organisation Name',
   BASS_ORGANSIZATION_ALIAS: 'Organization Alias',
   BASS_ORGANSIZATION_INPUT_ALIAS: 'Please enter the Organization alias',

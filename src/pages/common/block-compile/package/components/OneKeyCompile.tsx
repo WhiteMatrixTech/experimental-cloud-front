@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ConnectState } from '~/models/connect';
-import { Button, Form, Input, Modal, Radio, Select } from 'antd';
+import { Button, Form, Input, Modal, notification, Radio, Select } from 'antd';
 import { connect } from 'dva';
 import { Dispatch } from 'umi';
 import styles from './OneKeyCompile.less';
@@ -43,12 +43,24 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
           buildCommands: splitBuildCommands,
           credential: { username, password, registryServer }
         };
-        const res = dispatch({
+        const res = await dispatch({
           type: 'BlockChainCompile/oneKeyCompile',
           payload: params
         });
-        if (res) {
+        const { statusCode, result } = res;
+        if (statusCode === 'ok') {
           onCancel();
+          notification.success({
+            message: result.message || Intl.formatMessage('BASS_NOTIFICATION_COMPILATION_SUCCESS'),
+            top: 64,
+            duration: 3
+          });
+        } else {
+          notification.error({
+            message: result.message || Intl.formatMessage('BASS_NOTIFICATION_COMPILATION_FAILED'),
+            top: 64,
+            duration: 3
+          });
         }
       })
       .catch((info) => {
@@ -167,7 +179,7 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
             )}`}
           />
         </Item>
-        <Item label={Intl.formatMessage('BASS_CUSTORM_IMAGE_VOUCHERS')}>
+        <Item label={Intl.formatMessage('BASS_CUSTOM_IMAGE_VOUCHERS')}>
           <Input.Group compact>
             <Item
               name="username"
@@ -179,7 +191,7 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
                   message: Intl.formatMessage('BASS_USER_INFO_INPUT_USER_NAME')
                 }
               ]}>
-              <Input placeholder={Intl.formatMessage('BASS_CUSTORM_IMAGE_INPUT_USER_NAME')} />
+              <Input placeholder={Intl.formatMessage('BASS_USER_INFO_INPUT_USER_NAME')} />
             </Item>
             <Item
               name="password"
@@ -188,10 +200,10 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
               rules={[
                 {
                   required: true,
-                  message: Intl.formatMessage('BASS_CUSTORM_IMAGE_INPUT_PASSWORD')
+                  message: Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_PASSWORD')
                 }
               ]}>
-              <Input placeholder={Intl.formatMessage('BASS_CUSTORM_IMAGE_INPUT_PASSWORD')} />
+              <Input placeholder={Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_PASSWORD')} />
             </Item>
             <Item
               name="registryServer"
@@ -200,10 +212,10 @@ const OneKeyCompile: React.FC<OneKeyCompileProps> = (props) => {
               rules={[
                 {
                   required: true,
-                  message: Intl.formatMessage('BASS_CUSTORM_IMAGE_INPUT_RGGISTER_SERVER')
+                  message: Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_REGISTER_SERVER')
                 }
               ]}>
-              <Input placeholder={Intl.formatMessage('BASS_CUSTORM_IMAGE_INPUT_RGGISTER_SERVER')} />
+              <Input placeholder={Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_REGISTER_SERVER')} />
             </Item>
           </Input.Group>
         </Item>

@@ -10,6 +10,6 @@ export const CUSTOM_IMAGE_US = {
   BASS_CUSTOM_IMAGE_SELECT_TYPE: 'Please select the image type',
   BASS_CUSTOM_IMAGE_INPUT_USER_NAME: 'Please enter a username',
   BASS_CUSTOM_IMAGE_INPUT_PASSWORD: 'Please enter a password',
-  BASS_CUSTOM_IMAGE_INPUT_RGGISTER_SERVER: 'Please enter the registration server',
+  BASS_CUSTOM_IMAGE_INPUT_REGISTER_SERVER: 'Please enter the registration server',
   BASS_CUSTOM_IMAGE_VOUCHERS: 'Compiling vouchers'
 };

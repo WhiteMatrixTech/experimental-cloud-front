@@ -140,7 +140,7 @@ function CreateServerModal(props: CreateServerModalProps) {
           <Input placeholder={Intl.formatMessage('BASS_ELASTIC_CLOUD_INPUT_EXTRANET_IP')} />
         </Item>
         <Item
-          label="内网IP"
+          label={Intl.formatMessage('BASS_ELASTIC_CLOUD_INTRANET_IP')}
           name="privateIp"
           initialValue={(record && record.privateIp) || ''}
           rules={[

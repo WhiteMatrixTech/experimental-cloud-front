@@ -1,7 +1,8 @@
 import * as API from '../services/rbac';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
-import { ChainCodeIndex, UserAccessPolicy } from '@/pages/about/rbac/_config';
+import { ChainCodeIndex, UserAccessPolicy } from '~/pages/about/rbac/_config';
+import { formatMessage } from 'umi';
 
 export type RbacRole = {
   roleName: string;
@@ -114,10 +115,18 @@ const RBACModel: RBACModelType = {
       const res = yield call(API.setConfig, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '配置角色访问策略成功', top: 64, duration: 3 });
+        notification.success({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_RBAC_CONFIGURE_ROLE_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '配置角色访问策略失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_RBAC_CONFIGURE_ROLE_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -126,10 +135,18 @@ const RBACModel: RBACModelType = {
       const res = yield call(API.setConfigByJson, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '配置角色访问策略成功', top: 64, duration: 3 });
+        notification.success({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_RBAC_CONFIGURE_ROLE_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '配置角色访问策略失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_RBAC_CONFIGURE_ROLE_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     }

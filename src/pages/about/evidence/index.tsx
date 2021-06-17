@@ -50,6 +50,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
       title: Intl.formatMessage('BASS_EVIDENCE_Time_FOR_ON_CHAIN'),
       dataIndex: 'updatedAt',
       key: 'updatedAt',
+      ellipsis: true,
       render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '')
     },
     {

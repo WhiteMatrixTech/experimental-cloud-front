@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import ReactJson from 'react-json-view';
-import { Input, Descriptions, Select, Form, Switch, Button, Modal, Radio, Divider } from 'antd';
+import { Input, Descriptions, Select, Form, Switch, Button, Modal, Radio, Divider, notification } from 'antd';
 import { ChainCodeSchema, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { Intl } from '~/utils/locales';
 
 const { Item } = Form;
 const { Option } = Select;
-
 const formItemLayout = {
   labelCol: {
     sm: { span: 6 }

@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { ChainCodeSchema, Dispatch, history } from 'umi';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
-import { Table, Space, Badge, Modal, Button, message, Spin, Divider } from 'antd';
+import { Table, Space, Badge, Modal, Button, message, Spin, Divider, notification } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { Breadcrumb } from '~/components';
@@ -182,8 +182,20 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       type: 'Contract/releaseContract',
       payload: params
     });
-    if (res) {
+    const { statusCode, result } = res;
+    if (statusCode === 'ok') {
       getChainCodeList();
+      notification.success({
+        message: Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_PUBLISH_SUCCESS'),
+        top: 64,
+        duration: 3
+      });
+    } else {
+      notification.error({
+        message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_PUBLISH_FAILED'),
+        top: 64,
+        duration: 3
+      });
     }
   };
 
@@ -197,8 +209,20 @@ const MyContract: React.FC<MyContractProps> = (props) => {
         networkName: props.User.networkName
       }
     });
-    if (res) {
+    const { statusCode, result } = res;
+    if (statusCode === 'ok') {
       getChainCodeList();
+      notification.success({
+        message: Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_INSTALL_SUCCESS'),
+        top: 64,
+        duration: 3
+      });
+    } else {
+      notification.error({
+        message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_INSTALL_FAILED'),
+        top: 64,
+        duration: 3
+      });
     }
   };
 
@@ -262,7 +286,8 @@ const MyContract: React.FC<MyContractProps> = (props) => {
     {
       title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
-      width: '20%',
+      width: '320px',
+      fixed: 'right',
       render: (_, record) => (
         // 非当前合约组织成员不可操作
         <Space size="small">

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Form, Button, Modal, Radio } from 'antd';
+import { Form, Button, Modal, Radio, notification } from 'antd';
 import { ChainCodeSchema, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { Intl } from '~/utils/locales';
@@ -37,12 +37,26 @@ const ApproveContract: React.FC<ApproveContractProps> = (props) => {
         channelId: editParams && editParams.channelId,
         chainCodeName: editParams && editParams.chainCodeName
       };
-      const res = dispatch({
+      const res = await dispatch({
         type: `Contract/verifyContract`,
         payload: params
       });
-      if (res) {
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
         onCancel(true);
+        notification.success({
+          message: Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_MODIFY_SUCCESS'),
+          top: 64,
+          duration: 3
+        });
+        return true;
+      } else {
+        notification.error({
+          message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_MODIFY_FAILED'),
+          top: 64,
+          duration: 3
+        });
+        return false;
       }
     });
   };

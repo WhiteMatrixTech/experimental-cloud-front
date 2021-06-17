@@ -1,5 +1,5 @@
 export const CONSORTIUM_US = {
-  BASS_CONSORTIUM_INFORMATION_DISPLAY: 'Consortium Information Display',
+  BASS_CONSORTIUM_INFORMATION_DISPLAY: 'Consortium Overview',
   BASS_CONSORTIUM_NAME: 'Consortium Name',
   BASS_CONSORTIUM_INPUT_NAME: 'Please enter the Consortium name',
   BASS_CONSORTIUM_NETWORK_STATUS: 'Network Status',
@@ -24,5 +24,6 @@ export const CONSORTIUM_US = {
   BASS_CONSORTIUM_NO_CONSORTIUM: 'No Consortium',
   BASS_CONSORTIUM_ADD_CONSORTIUM: 'Add Consortium',
   BASS_CONSORTIUM_PAGINATION_TOTAL: 'Total:{total}',
-  BASS_CONSORTIUM_CREATE_CONSORTIUM: 'Create Consortium'
+  BASS_CONSORTIUM_CREATE_CONSORTIUM: 'Create Consortium',
+  BASS_CONTRACT_STOP_USE_NETWORK: 'Stop using the network'
 };

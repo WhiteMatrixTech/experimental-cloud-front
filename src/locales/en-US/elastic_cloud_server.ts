@@ -10,6 +10,7 @@ export const ELASTIC_CLOUD_US = {
   BASS_ELASTIC_CLOUD_PRIVATE_KEY: 'SSH Private Key',
   BASS_ELASTIC_CLOUD_INSTANCE_TOTAL: 'Instances Number',
   BASS_ELASTIC_CLOUD_INSTANCE_NUMBER: 'Instances Total',
+  BASS_ELASTIC_CLOUD_INSTANCE_TYPE: 'Instances Type',
   BASS_ELASTIC_CLOUD_INSTANCE_DATA: 'Instance data',
   BASS_ELASTIC_CLOUD_RESOURCE_USE: 'Use of resources',
   BASS_ELASTIC_CLOUD_INPUT_SERVER_NAME: 'Please enter the name of the server',

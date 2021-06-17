@@ -96,6 +96,7 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
+    width: 700,
     title: Intl.formatMessage('BASS_FABRIC_NEW_FABRIC_ROLE'),
     onCancel: () => onCancel(),
     footer: [

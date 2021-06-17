@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Button, Modal, Space, Table } from 'antd';
+import { Button, Modal, notification, Space, Table } from 'antd';
 import { connect, Dispatch, ImageDetail } from 'umi';
 import { Breadcrumb } from '~/components';
 import { ConnectState } from '~/models/connect';
@@ -119,8 +119,20 @@ function CustomImage(props: CustomImageProps) {
             imageId: record._id
           }
         });
-        if (res) {
+        const { statusCode, result } = res;
+        if (statusCode === 'ok' && result.status) {
           getImageList();
+          notification.success({
+            message: Intl.formatMessage('BASS_NOTIFICATION_CUSTORM_IMAGE_DELETE_SUCCESS'),
+            top: 64,
+            duration: 3
+          });
+        } else {
+          notification.error({
+            message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CUSTORM_IMAGE_DELETE_FAILED'),
+            top: 64,
+            duration: 3
+          });
         }
       }
     });

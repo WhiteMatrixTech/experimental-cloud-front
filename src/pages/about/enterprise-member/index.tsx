@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, EnterpriseMemberSchema, history } from 'umi';
-import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button, Divider } from 'antd';
+import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button, Divider, notification } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import cs from 'classnames';
 import moment from 'moment';
@@ -130,7 +130,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
       fixed: 'right',
-      width: 230,
+      width: '22%',
       render: (text, record: EnterpriseMemberSchema) => (
         <Space size="small">
           {record.approvalStatus === 'pending' && (
@@ -138,22 +138,29 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
               <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'agree')}>
                 {Intl.formatMessage('BASS_CONTRACT_PASSED')}
               </span>
+              <Divider type="vertical" />
               <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'reject')}>
                 {Intl.formatMessage('BASS_CONTRACT_NOT_PASSED')}
               </span>
+              <Divider type="vertical" />
             </>
           )}
           {record.isValid === 'valid' && record.approvalStatus === 'approved' && (
-            <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'invalidate')}>
-              {Intl.formatMessage('BASS_MEMBER_MANAGEMENT_STOP')}
-            </span>
+            <div>
+              <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'invalidate')}>
+                {Intl.formatMessage('BASS_MEMBER_MANAGEMENT_STOP')}
+              </span>
+              <Divider type="vertical" />
+            </div>
           )}
           {record.isValid === 'invalid' && record.approvalStatus === 'approved' && (
-            <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'validate')}>
-              {Intl.formatMessage('BASS_MEMBER_MANAGEMENT_RESTART')}
-            </span>
+            <div>
+              <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'validate')}>
+                {Intl.formatMessage('BASS_MEMBER_MANAGEMENT_RESTART')}
+              </span>
+              <Divider type="vertical" />
+            </div>
           )}
-          <Divider type="vertical" />
           <span role="button" className="table-action-span" onClick={() => onClickRbacConfig(record)}>
             {Intl.formatMessage('BASS_MEMBER_MANAGEMENT_CONFIG_ACCESS_LIMIT')}
           </span>
@@ -265,37 +272,71 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   };
 
   // 停用 & 启用 用户成员
-  const invalidateMember = (record: EnterpriseMemberSchema, isValid: string) => {
+  const invalidateMember = async (record: EnterpriseMemberSchema, isValid: string) => {
     const params = {
       networkName,
       isValid,
       companyName: record.companyName
     };
-    dispatch({
+    const res = await dispatch({
       type: 'Member/setStatusOfLeagueCompany',
       payload: params
-    }).then((res: any) => {
-      if (res) {
-        getMemberList();
-      }
     });
+    let { statusCode, result } = res;
+    const succMessage =
+      `${
+        isValid === 'invalid'
+          ? Intl.formatMessage('BASS_MEMBER_MANAGEMENT_STOP')
+          : Intl.formatMessage('BASS_MEMBER_MANAGEMENT_RESTART')
+      }  ` + Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_STOP_USE');
+    const failMessage =
+      Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_FAILED') +
+      `${
+        isValid === 'invalid'
+          ? Intl.formatMessage('BASS_MEMBER_MANAGEMENT_STOP')
+          : Intl.formatMessage('BASS_MEMBER_MANAGEMENT_RESTART')
+      }  ` +
+      Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_USER');
+    if (statusCode === 'ok' && result === 1) {
+      getMemberList();
+      notification.success({ message: succMessage, top: 64, duration: 3 });
+    } else {
+      notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+    }
   };
 
   // 通过 & 驳回 用户成员
-  const approvalMember = (record: EnterpriseMemberSchema, approvalStatus: string) => {
+  const approvalMember = async (record: EnterpriseMemberSchema, approvalStatus: string) => {
     const params = {
       networkName,
       approvalStatus,
       companyName: record.companyName
     };
-    dispatch({
+    let res = await dispatch({
       type: 'Member/setCompanyApprove',
       payload: params
-    }).then((res: any) => {
-      if (res) {
-        getMemberList();
-      }
     });
+    const { statusCode, result } = res;
+    const succMessage =
+      `${
+        approvalStatus === 'isValid'
+          ? Intl.formatMessage('BASS_CONTRACT_PASSED')
+          : Intl.formatMessage('BASS_CONTRACT_NOT_PASSED')
+      }  ` + Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_STOP_USE');
+    const failMessage =
+      Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_FAILED') +
+      `${
+        approvalStatus === 'isValid'
+          ? Intl.formatMessage('BASS_CONTRACT_PASSED')
+          : Intl.formatMessage('BASS_CONTRACT_NOT_PASSED')
+      }  ` +
+      Intl.formatMessage('BASS_NOTIFICATION_ENTERPRISE_MEMBER_USER');
+    if (statusCode === 'ok' && result === 1) {
+      getMemberList();
+      notification.success({ message: succMessage, top: 64, duration: 3 });
+    } else {
+      notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+    }
   };
 
   const onClickRbacConfig = (record: EnterpriseMemberSchema) => {

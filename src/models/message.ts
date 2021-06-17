@@ -1,6 +1,7 @@
 import * as API from '../services/message';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
+import { formatMessage } from 'umi';
 
 export type MessageSchema = {
   messageTitle: string;
@@ -10,16 +11,16 @@ export type MessageSchema = {
   messageType: string;
   messageDetail: string;
   createdAt: Date;
-}
+};
 
 export type MessageModelState = {
-  selectedMessageTab: string, // 当前选中的消息类别
-  messageList: Array<MessageSchema>, // 消息列表
-  messageTotal: number, // 当前分类下的消息总数
-  messageDetail: MessageSchema | object, // 当前消息详情
-  unreadMesNum: number, // 总未读消息数
-  unreadMesGroup: Array<object>, // 每类消息下的未读数
-}
+  selectedMessageTab: string; // 当前选中的消息类别
+  messageList: Array<MessageSchema>; // 消息列表
+  messageTotal: number; // 当前分类下的消息总数
+  messageDetail: MessageSchema | object; // 当前消息详情
+  unreadMesNum: number; // 总未读消息数
+  unreadMesGroup: Array<object>; // 每类消息下的未读数
+};
 
 export type MessageModelType = {
   namespace: 'Message';
@@ -47,7 +48,7 @@ const MessageModel: MessageModelType = {
     messageTotal: 0,
     messageDetail: {},
     unreadMesNum: 0,
-    unreadMesGroup: [],
+    unreadMesGroup: []
   },
 
   effects: {
@@ -59,8 +60,8 @@ const MessageModel: MessageModelType = {
           type: 'common',
           payload: {
             messageList: result.list,
-            messageTotal: result.totalDocs,
-          },
+            messageTotal: result.totalDocs
+          }
         });
       }
     },
@@ -71,8 +72,8 @@ const MessageModel: MessageModelType = {
         yield put({
           type: 'common',
           payload: {
-            messageDetail: result,
-          },
+            messageDetail: result
+          }
         });
       }
     },
@@ -83,8 +84,8 @@ const MessageModel: MessageModelType = {
         yield put({
           type: 'common',
           payload: {
-            unreadMesNum: result,
-          },
+            unreadMesNum: result
+          }
         });
       }
     },
@@ -95,8 +96,8 @@ const MessageModel: MessageModelType = {
         yield put({
           type: 'common',
           payload: {
-            unreadMesGroup: result,
-          },
+            unreadMesGroup: result
+          }
         });
       }
     },
@@ -104,10 +105,18 @@ const MessageModel: MessageModelType = {
       const res = yield call(API.batchReadMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: '消息标记已读成功', top: 64, duration: 3 });
+        notification.success({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_MESSAGE_READ_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '消息标记已读失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_MESSAGE_READ_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -115,10 +124,18 @@ const MessageModel: MessageModelType = {
       const res = yield call(API.batchDeleteMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: '批量删除消息成功', top: 64, duration: 3 });
+        notification.success({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_DELETE_MULTIPLE_MESSAGE_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '批量删除消息失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DELETE_MULTIPLE_MESSAGE_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -126,19 +143,27 @@ const MessageModel: MessageModelType = {
       const res = yield call(API.deleteMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: '删除消息成功', top: 64, duration: 3 });
+        notification.success({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_DELETE_MESSAGE_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '删除消息失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_DELETE_MESSAGE_FAILED' }),
+          top: 64,
+          duration: 3
+        });
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default MessageModel;

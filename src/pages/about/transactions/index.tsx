@@ -102,6 +102,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       title: Intl.formatMessage('BASS_TRANSACTION_ORGANIZATION'),
       dataIndex: 'txMsp',
       key: 'txMsp',
+      width: '200px',
       render: (text) =>
         text || <span className="a-forbidden-style">{Intl.formatMessage('BASS_COMMON_LIMIT_ACCESS')}</span>
     },

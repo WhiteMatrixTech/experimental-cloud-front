@@ -2,7 +2,8 @@ import * as API from '../services/contract';
 import { getAllUserId } from '../services/fabric-role';
 import { notification } from 'antd';
 import type { Reducer, Effect, ChannelSchema } from 'umi';
-import { ChainCodeStatus } from '@/pages/about/contract/_config';
+import { ChainCodeStatus } from '~/pages/about/contract/_config';
+import { formatMessage } from 'umi';
 
 export type ChainCodeSchema = {
   networkName: string; // 网络名称
@@ -77,7 +78,7 @@ const ContractModel: ContractModelType = {
 
     invokeResult: null,
 
-    allUserId: [], // fabric角色用户列表
+    allUserId: [] // fabric角色用户列表
   },
 
   effects: {
@@ -88,8 +89,8 @@ const ContractModel: ContractModelType = {
         yield put({
           type: 'common',
           payload: {
-            myContractList: result.items,
-          },
+            myContractList: result.items
+          }
         });
       }
     },
@@ -101,8 +102,8 @@ const ContractModel: ContractModelType = {
         yield put({
           type: 'common',
           payload: {
-            myContractTotal: result.count,
-          },
+            myContractTotal: result.count
+          }
         });
       }
     },
@@ -114,8 +115,8 @@ const ContractModel: ContractModelType = {
         yield put({
           type: 'common',
           payload: {
-            channelList: result,
-          },
+            channelList: result
+          }
         });
       }
     },
@@ -127,8 +128,8 @@ const ContractModel: ContractModelType = {
         yield put({
           type: 'common',
           payload: {
-            myChannelList: result,
-          },
+            myChannelList: result
+          }
         });
       }
     },
@@ -140,70 +141,30 @@ const ContractModel: ContractModelType = {
         yield put({
           type: 'common',
           payload: {
-            userOrgInuse: result.result,
-          },
+            userOrgInuse: result.result
+          }
         });
       }
     },
 
     *addContract({ payload }, { call, put }) {
-      const res = yield call(API.addContract, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        notification.success({ message: '新增合约成功', top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || '新增合约失败', top: 64, duration: 3 });
-        return false;
-      }
+      return yield call(API.addContract, payload);
     },
 
     *verifyContract({ payload }, { call, put }) {
-      const res = yield call(API.verifyContract, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        notification.success({ message: '修改合约审核状态成功', top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || '修改合约审核状态失败', top: 64, duration: 3 });
-        return false;
-      }
+      return yield call(API.verifyContract, payload);
     },
 
     *installContract({ payload }, { call, put }) {
-      const res = yield call(API.installContract, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        notification.success({ message: '合约安装请求调用成功', top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || '合约安装请求调用失败', top: 64, duration: 3 });
-        return false;
-      }
+      return yield call(API.installContract, payload);
     },
 
     *upgradeContract({ payload }, { call, put }) {
-      const res = yield call(API.upgradeContract, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        notification.success({ message: '合约升级成功', top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || '合约升级失败', top: 64, duration: 3 });
-        return false;
-      }
+      return yield call(API.upgradeContract, payload);
     },
 
     *releaseContract({ payload }, { call, put }) {
-      const res = yield call(API.releaseContract, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        notification.success({ message: '发布合约请求调用成功', top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || '发布合约请求调用失败', top: 64, duration: 3 });
-        return false;
-      }
+      return yield call(API.releaseContract, payload);
     },
 
     *getAllUserId({ payload }, { call, put }) {
@@ -213,8 +174,8 @@ const ContractModel: ContractModelType = {
         yield put({
           type: 'common',
           payload: {
-            allUserId: result,
-          },
+            allUserId: result
+          }
         });
       }
     },
@@ -228,11 +189,10 @@ const ContractModel: ContractModelType = {
           payload: {
             invokeResult: {
               status: 'Success',
-              message: result || {},
-            },
-          },
+              message: result || {}
+            }
+          }
         });
-        notification.success({ message: '调用合约成功', top: 64, duration: 3 });
         return true;
       } else {
         yield put({
@@ -240,11 +200,15 @@ const ContractModel: ContractModelType = {
           payload: {
             invokeResult: {
               status: 'Failed',
-              message: { error: result.message },
-            },
-          },
+              message: { error: result.message }
+            }
+          }
         });
-        notification.error({ message: result.message || '调用合约失败', top: 64, duration: 3 });
+        notification.error({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_CONSTRACT_CALLING_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
     },
@@ -258,11 +222,10 @@ const ContractModel: ContractModelType = {
           payload: {
             invokeResult: {
               status: 'Success',
-              message: result || {},
-            },
-          },
+              message: result || {}
+            }
+          }
         });
-        notification.success({ message: '调用合约成功', top: 64, duration: 3 });
         return true;
       } else {
         yield put({
@@ -270,21 +233,20 @@ const ContractModel: ContractModelType = {
           payload: {
             invokeResult: {
               status: 'Failed',
-              message: { error: result.message },
-            },
-          },
+              message: { error: result.message }
+            }
+          }
         });
-        notification.error({ message: result.message || '调用合约失败', top: 64, duration: 3 });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default ContractModel;

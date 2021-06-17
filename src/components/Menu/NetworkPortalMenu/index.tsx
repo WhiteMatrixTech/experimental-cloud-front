@@ -44,7 +44,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
       history.push(menu.menuHref);
       dispatch({
         type: 'Layout/common',
-        payload: { selectedMenu: menu.menuHref },
+        payload: { selectedMenu: menu.menuHref }
       });
       localStorage.setItem('selectedMenu', menu.menuHref);
     }
@@ -74,8 +74,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
               <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
               <span>{item.menuName}</span>
             </div>
-          }
-        >
+          }>
           {item.subMenus.map((subItem) => {
             if (!item.accessRole.includes(userRole)) {
               return '';
@@ -108,8 +107,8 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
     dispatch({
       type: 'Dashboard/getNetworkInfo',
       payload: {
-        networkName: networkName,
-      },
+        networkName: networkName
+      }
     });
   }, [dispatch, networkName]);
 
@@ -125,5 +124,5 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
 export default connect(({ Layout, User, Dashboard }: ConnectState) => ({
   Layout,
   User,
-  Dashboard,
+  Dashboard
 }))(NetworkPortalMenu);

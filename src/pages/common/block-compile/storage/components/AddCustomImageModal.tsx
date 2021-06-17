@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Input, Modal, Select } from 'antd';
+import { Button, Form, Input, Modal, notification, Select } from 'antd';
 import { connect, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { ImageTypeForForm } from '../_config';
@@ -37,8 +37,20 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
           type: 'CustomImage/addCustomImage',
           payload: params
         });
-        if (res) {
+        const { statusCode, result } = res;
+        if (statusCode === 'ok' && result.status) {
           onCancel();
+          notification.success({
+            message: Intl.formatMessage('BASS_NOTIFICATION_CUSTORM_IMAGE_ADD_SUCCESS'),
+            top: 64,
+            duration: 3
+          });
+        } else {
+          notification.error({
+            message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CUSTORM_IMAGE_ADD_FAILED'),
+            top: 64,
+            duration: 3
+          });
         }
       })
       .catch((info) => {
@@ -126,10 +138,10 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
               rules={[
                 {
                   required: true,
-                  message: Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_RGGISTER_SERVER')
+                  message: Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_REGISTER_SERVER')
                 }
               ]}>
-              <Input placeholder={Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_RGGISTER_SERVER')} />
+              <Input placeholder={Intl.formatMessage('BASS_CUSTOM_IMAGE_INPUT_REGISTER_SERVER')} />
             </Item>
           </Input.Group>
         </Item>

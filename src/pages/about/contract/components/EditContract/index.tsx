@@ -47,7 +47,7 @@ function EditContract(props: EditContractProps) {
   const handleSubmit = () => {
     form
       .validateFields()
-      .then((values: any) => {
+      .then(async (values: any) => {
         values.chainCodePackageMetaData = fileJson;
         const { upload, ...rest } = values;
         const params = rest;
@@ -60,23 +60,45 @@ function EditContract(props: EditContractProps) {
           orgsToApprove: []
         };
         if (operateType === 'new') {
-          dispatch({
+          const res = await dispatch({
             type: 'Contract/addContract',
             payload: params
-          }).then((res: any) => {
-            if (res) {
-              onCancel(true);
-            }
           });
+          const { statusCode, result } = res;
+          if (statusCode === 'ok') {
+            onCancel(true);
+            notification.success({
+              message: Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_ADD_SUCCESS'),
+              top: 64,
+              duration: 3
+            });
+          } else {
+            notification.error({
+              message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_ADD_FAILED'),
+              top: 64,
+              duration: 3
+            });
+          }
         } else {
-          dispatch({
+          let res = await dispatch({
             type: 'Contract/upgradeContract',
             payload: params
-          }).then((res: any) => {
-            if (res) {
-              onCancel(true);
-            }
           });
+          const { statusCode, result } = res;
+          if (statusCode === 'ok') {
+            onCancel(true);
+            notification.success({
+              message: Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_UPGRADE_SUCCESS'),
+              top: 64,
+              duration: 3
+            });
+          } else {
+            notification.error({
+              message: result.message || Intl.formatMessage('BASS_NOTIFICATION_CONTRACT_UPGRADE_FAILED'),
+              top: 64,
+              duration: 3
+            });
+          }
         }
       })
       .catch((info: any) => {

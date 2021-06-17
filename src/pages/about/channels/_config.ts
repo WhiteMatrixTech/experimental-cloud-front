@@ -25,7 +25,7 @@ export const ChannelStatusMap: ChannelStatusMapAttr = {
 
 export const ChannelStatus = {
   // 通道状态
-  [ChannelStatusMap.InUse]: { color: 'green', text: Intl.formatMessage(' BASS_NODE_INUSE') },
+  [ChannelStatusMap.InUse]: { color: 'green', text: Intl.formatMessage('BASS_NODE_INUSE') },
   [ChannelStatusMap.Creating]: { color: 'orange', text: Intl.formatMessage('BASS_NODE_CREATE_IN_PROGRESS') },
   [ChannelStatusMap.CreationFailed]: { color: 'red', text: Intl.formatMessage('BASS_NODE_CREATE_FAILED') },
   [ChannelStatusMap.Stopping]: { color: 'orange', text: Intl.formatMessage('BASS_NODE_BEING_DEACTIVATED') },

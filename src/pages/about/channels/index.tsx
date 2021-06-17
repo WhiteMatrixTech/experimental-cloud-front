@@ -152,7 +152,8 @@ function ChannelManagement(props: ChannelManagementProps) {
     {
       title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
-      width: '22%',
+      width: '24%',
+      fixed: 'right',
       render: (text, record: ChannelSchema) => (
         <Space size="small">
           <a href={`/about/channels/${record.channelId}/organizationList`} onClick={(e) => onViewOrg(e, record)}>
@@ -198,6 +199,7 @@ function ChannelManagement(props: ChannelManagementProps) {
           columns={columns}
           dataSource={channelList}
           onChange={onPageChange}
+          scroll={{ x: 1300 }}
           pagination={{
             pageSize,
             total: channelTotal,

@@ -1,6 +1,7 @@
 import * as API from '../services/enterprise-member';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
+import { formatMessage } from 'umi';
 
 export type EnterpriseMemberSchema = {
   companyName: string;
@@ -51,7 +52,7 @@ const MemberModel: MemberModelType = {
     memberTotal: 0,
 
     memberDetail: {},
-    memberRole: '',
+    memberRole: ''
   },
 
   effects: {
@@ -62,8 +63,8 @@ const MemberModel: MemberModelType = {
         yield put({
           type: 'common',
           payload: {
-            memberTotal: result.count,
-          },
+            memberTotal: result.count
+          }
         });
       }
     },
@@ -75,8 +76,8 @@ const MemberModel: MemberModelType = {
         yield put({
           type: 'common',
           payload: {
-            memberList: result.items,
-          },
+            memberList: result.items
+          }
         });
       }
     },
@@ -88,40 +89,18 @@ const MemberModel: MemberModelType = {
         yield put({
           type: 'common',
           payload: {
-            memberDetail: result,
-          },
+            memberDetail: result
+          }
         });
       }
     },
 
     *setStatusOfLeagueCompany({ payload }, { call, put }) {
-      const res = yield call(API.setStatusOfLeagueCompany, payload);
-      const { statusCode, result } = res;
-      const { isValid } = payload;
-      const succMessage = `${isValid === 'invalid' ? '停用' : '启用'}用户成员成功`;
-      const failMessage = `${isValid === 'invalid' ? '停用' : '启用'}用户成员失败`;
-      if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: succMessage, top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
-        return false;
-      }
+      return yield call(API.setStatusOfLeagueCompany, payload);
     },
 
     *setCompanyApprove({ payload }, { call, put }) {
-      const res = yield call(API.setCompanyApprove, payload);
-      const { statusCode, result } = res;
-      const { approvalStatus } = payload;
-      const succMessage = `${approvalStatus === 'approved' ? '通过' : '驳回'}用户成员成功`;
-      const failMessage = `${approvalStatus === 'approved' ? '通过' : '驳回'}用户成员失败`;
-      if (statusCode === 'ok' && result === 1) {
-        notification.success({ message: succMessage, top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
-        return false;
-      }
+      return yield call(API.setCompanyApprove, payload);
     },
 
     *getMemberRole({ payload }, { call, put }) {
@@ -131,8 +110,8 @@ const MemberModel: MemberModelType = {
         yield put({
           type: 'common',
           payload: {
-            memberRole: result?.roleName || '',
-          },
+            memberRole: result?.roleName || ''
+          }
         });
       }
     },
@@ -141,20 +120,28 @@ const MemberModel: MemberModelType = {
       const res = yield call(API.setRoleToMember, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '成员访问权限配置成功', top: 64, duration: 3 });
+        notification.success({
+          message: formatMessage({ id: 'BASS_NOTIFICATION_ENTERPRISE_MEMBER_RIGHT_CONFIG_SUCCESS' }),
+          top: 64,
+          duration: 3
+        });
         return true;
       } else {
-        notification.error({ message: result.message || '成员访问权限配置失败', top: 64, duration: 3 });
+        notification.error({
+          message: result.message || formatMessage({ id: 'BASS_NOTIFICATION_ENTERPRISE_MEMBER_RIGHT_CONFIG_FAILED' }),
+          top: 64,
+          duration: 3
+        });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default MemberModel;

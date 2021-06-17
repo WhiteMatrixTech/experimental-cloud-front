@@ -157,6 +157,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
     {
       title: Intl.formatMessage('BASS_COMMON_OPERATION'),
       key: 'action',
+      width: 230,
       render: (_: any, record: FabricRoleSchema) => (
         <Space size="small">
           <a
@@ -196,10 +197,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
           <Form {...formItemLayout} colon={false} form={form}>
             <Row gutter={24}>
               <Col span={8}>
-                <Item
-                  label={Intl.formatMessage('BASS_FABRIC_ORGNISIZATION_NAME')}
-                  name="orgNameSearch"
-                  initialValue={null}>
+                <Item label={Intl.formatMessage('BASS_ORGANSIZATION_NAME')} name="orgNameSearch" initialValue={null}>
                   <Select
                     allowClear
                     getPopupContainer={(triggerNode) => triggerNode.parentNode}
