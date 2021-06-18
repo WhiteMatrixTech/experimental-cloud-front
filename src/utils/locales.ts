@@ -53,6 +53,7 @@ class Locales {
 
   constructor() {
     const locales = getLocale() || 'zh-CN';
+    //const locales = 'zh-CN';
     const cache = createIntlCache();
     const intl = createIntl(
       {
