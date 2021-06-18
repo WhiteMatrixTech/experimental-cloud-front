@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { connect } from 'dva';
 import { Table, Badge } from 'antd';
 import moment from 'moment';
@@ -29,7 +29,6 @@ function ChaincodeList(props: ChaincodeListProps) {
   const {
     User,
     dispatch,
-    location,
     qryLoading,
     match: {
       params: { channelId }
@@ -38,7 +37,6 @@ function ChaincodeList(props: ChaincodeListProps) {
   const { networkName } = User;
   const { contractListOfChannel, contractTotalOfChannel, orgTotalOfChannel, nodeTotalOfChannel } = props.Channel;
   const [pageNum, setPageNum] = useState(1);
-  const [chainCodeName, setChainCodeName] = useState('');
   const columns: ColumnsType<any> = [
     {
       title: '合约ID',
@@ -121,10 +119,10 @@ function ChaincodeList(props: ChaincodeListProps) {
       type: 'Channel/getContractTotalOfChannel',
       payload: params
     });
-  }, []);
+  }, [channelId, dispatch, networkName]);
 
   // 获取 通道下的合约
-  const getContractListOfChannel = () => {
+  const getContractListOfChannel = useCallback(() => {
     const offset = (pageNum - 1) * pageSize;
     const params: BasicApiParams & AllPaginationParams = {
       networkName,
@@ -138,10 +136,11 @@ function ChaincodeList(props: ChaincodeListProps) {
       type: 'Channel/getContractListOfChannel',
       payload: params
     });
-  };
+  }, [channelId, networkName, pageNum, props]);
+
   useEffect(() => {
     getContractListOfChannel();
-  }, [pageNum, chainCodeName]);
+  }, [getContractListOfChannel, pageNum]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {

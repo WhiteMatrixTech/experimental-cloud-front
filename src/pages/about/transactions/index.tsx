@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, history, TransactionSchema } from 'umi';
 import { Table, Space } from 'antd';
@@ -26,7 +26,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   const [txId, setTxId] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
 
-  const getTransactionTotalDocs = () => {
+  const getTransactionTotalDocs = useCallback(() => {
     const params = {
       networkName
     };
@@ -34,9 +34,9 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       type: 'Transactions/getTransactionTotalDocs',
       payload: params
     });
-  };
-  // 查询列表
-  const getTransactionList = () => {
+  }, [dispatch, networkName]);
+
+  const getTransactionList = useCallback(() => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
       networkName,
@@ -48,8 +48,8 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       type: 'Transactions/getTransactionList',
       payload: params
     });
-  };
-  // 搜索
+  }, [dispatch, networkName, pageNum, pageSize]);
+
   const onSearch = (value: string, event: any) => {
     if (event.type && (event.type === 'click' || event.type === 'keydown')) {
       setPageNum(1);
@@ -57,7 +57,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
     }
   };
   //搜索列表
-  const onSearchList = (): void => {
+  const onSearchList = useCallback(() => {
     const params = {
       networkName,
       txId
@@ -66,8 +66,8 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       type: 'Transactions/onSearch',
       payload: params
     });
-  };
-  // 翻页
+  }, [dispatch, networkName, txId])
+
   const onPageChange = (pageInfo: any): void => {
     setPageNum(pageInfo.current);
   };
@@ -145,7 +145,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       getTransactionList();
       getTransactionTotalDocs();
     }
-  }, [txId, pageNum]);
+  }, [txId, pageNum, onSearchList, getTransactionList, getTransactionTotalDocs]);
 
   return (
     <div className="page-wrapper">

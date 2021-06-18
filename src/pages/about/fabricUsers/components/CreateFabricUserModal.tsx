@@ -1,8 +1,8 @@
+import React, { useEffect, useMemo } from 'react';
 import { ConnectState } from '~/models/connect';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
-import React, { useEffect, useMemo } from 'react';
-import { Dispatch, OrganizationSchema } from 'umi';
+import { Dispatch } from 'umi';
 import { Roles } from '~/utils/roles';
 import { CreateFabricRole } from '../_config';
 
@@ -45,7 +45,7 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
       type: 'Organization/getOrgInUseList',
       payload: { networkName }
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   const orgList = useMemo(() => {
     if (userRole === Roles.NetworkAdmin) {

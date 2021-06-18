@@ -41,7 +41,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
 
   const [createModalVisible, setCreateModalVisible] = useState(false);
 
-  const getFabricRoleList = () => {
+  const getFabricRoleList = useCallback(() => {
     const { orgName } = searchParams;
     const params: { networkName: string; orgName?: string } = {
       networkName
@@ -58,7 +58,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       type: 'FabricRole/getFabricRoleList',
       payload: params
     });
-  };
+  }, [dispatch, networkName, searchParams]);
 
   const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
@@ -114,7 +114,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       .catch((info) => {
         console.log('校验失败:', info);
       });
-  }, []);
+  }, [form]);
 
   // 重置
   const resetForm = () => {
@@ -173,19 +173,19 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       type: 'Organization/getOrgList',
       payload: { networkName }
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getFabricRoleList();
-  }, [pageNum, searchParams]);
+  }, [getFabricRoleList, pageNum, searchParams]);
 
   useEffect(() => {
     dispatch({
       type: 'FabricRole/getMyOrgInfo',
       payload: { networkName }
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   return (
     <div className="page-wrapper">

@@ -1,9 +1,9 @@
 /**
  * 访问策略配置(rbac)，相关设计文档 https://www.yuque.com/whitematrix/baas-v1/xpq7pz#6CxuL
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Form, Radio, Select, Spin, Input } from 'antd';
+import { Row, Col, Form, Radio, Select, Spin } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { Breadcrumb } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
@@ -38,12 +38,12 @@ function RbacDetail(props: RbacDetailProps) {
   const [viewChaincode, setViewChaincode] = useState<string | undefined>('InChannel');
   const [invokeChaincodeCustom, setInvokeChaincodeCustom] = useState('InChannel');
 
-  const getConfig = (value: string) => {
+  const getConfig = useCallback((value: string) => {
     dispatch({
       type: 'RBAC/getRbacConfigWithRole',
       payload: { networkName, roleName: value }
     });
-  };
+  }, [dispatch, networkName]);
 
   useEffect(() => {
     if (rbacPolicy && rbacPolicy.policy) {
@@ -67,7 +67,7 @@ function RbacDetail(props: RbacDetailProps) {
       setViewChaincode(viewChaincode?.field);
       form.setFieldsValue(configValue);
     }
-  }, [rbacPolicy]);
+  }, [form, rbacPolicy]);
 
   // 查询角色列表
   useEffect(() => {
@@ -75,13 +75,13 @@ function RbacDetail(props: RbacDetailProps) {
       type: 'RBAC/getRoleNameList',
       payload: { networkName }
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   useEffect(() => {
     if (location.state?.roleName) {
       getConfig(location.state?.roleName);
     }
-  }, [location.state]);
+  }, [getConfig, location.state]);
 
   return (
     <div className={styles['rbac-config-wrapper']}>

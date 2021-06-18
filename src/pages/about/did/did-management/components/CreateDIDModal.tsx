@@ -70,7 +70,7 @@ function CreateDIDModal(props: CreateDIDModalProps) {
     } // 有值的情况
 
     try {
-      const json = JSON.parse(value);
+      JSON.parse(value);
     } catch (e) {
       return promise.reject('请输入json');
     }

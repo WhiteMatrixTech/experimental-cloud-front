@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Table, Badge, Button } from 'antd';
 import moment from 'moment';
@@ -85,7 +85,7 @@ function OrganizationManagement(props: OrganizationManagementProps) {
   };
 
   // 查询列表
-  const getOrgList = () => {
+  const getOrgList = useCallback(() => {
     const paginator = (pageNum - 1) * pageSize;
     const params = {
       from: Number(moment(new Date()).format('x')),
@@ -98,7 +98,7 @@ function OrganizationManagement(props: OrganizationManagementProps) {
       type: 'Organization/getOrgList',
       payload: params,
     });
-  };
+  }, [dispatch, networkName, pageNum, pageSize]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
@@ -108,7 +108,7 @@ function OrganizationManagement(props: OrganizationManagementProps) {
   // 页码改变改变时，重新查询列表
   useEffect(() => {
     getOrgList();
-  }, [pageNum]);
+  }, [getOrgList, pageNum]);
 
   return (
     <div className="page-wrapper">

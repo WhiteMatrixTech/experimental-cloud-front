@@ -111,7 +111,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
         networkName: networkName,
       },
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   return (
     <div className={styles.leftMenu}>

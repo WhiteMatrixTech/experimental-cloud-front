@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Layout as AntdLayout, Modal } from 'antd';
 import { history } from 'umi';
@@ -17,7 +17,7 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
   const { children, pathname, Layout } = props;
   const { showDrawer } = Layout;
 
-  const receiveMessage = (e: { key: any; newValue: any }) => {
+  const receiveMessage = useCallback((e: { key: any; newValue: any }) => {
     const { key, newValue } = e;
     if (key === 'accessToken' && newValue) {
       localStorage.setItem('newAccountLogin', 'true');
@@ -29,7 +29,7 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
         cancelButtonProps: { disabled: true },
       });
     }
-  };
+  }, []);
 
   const onOk = () => {
     localStorage.removeItem('newAccountLogin');
@@ -39,7 +39,7 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
   useEffect(() => {
     window.addEventListener('storage', receiveMessage);
     return () => window.removeEventListener('storage', receiveMessage);
-  }, []);
+  }, [receiveMessage]);
 
   useEffect(() => {
     let modal: {

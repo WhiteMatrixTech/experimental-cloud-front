@@ -83,7 +83,7 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({
       type: 'Transactions/getTransactionDetail',
       payload: { txId: transactionHash, networkName },
     });
-  }, []);
+  }, [dispatch, networkName, transactionHash]);
 
   return (
     <div className="page-wrapper">

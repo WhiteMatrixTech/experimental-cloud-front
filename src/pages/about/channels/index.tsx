@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Dispatch, history, Location } from 'umi';
-import { Table, Button, Badge, Space, Modal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Table, Button, Badge, Space } from 'antd';
 import { Breadcrumb } from '~/components';
 import CreateChannelModal from './components/CreateChannelModal';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
@@ -32,7 +31,7 @@ function ChannelManagement(props: ChannelManagementProps) {
   const [createChannelVisible, setCreateChannelVisible] = useState(false);
 
   // 获取通道列表
-  const getChannelList = () => {
+  const getChannelList = useCallback(() => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
       offset,
@@ -45,11 +44,12 @@ function ChannelManagement(props: ChannelManagementProps) {
       type: 'Channel/getChannelList',
       payload: params
     });
-  };
+  }, [dispatch, networkName, pageNum, pageSize]);
+
   // 页码改变重新查询列表
   useEffect(() => {
     getChannelList();
-  }, [pageNum]);
+  }, [getChannelList, pageNum]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
@@ -102,32 +102,6 @@ function ChannelManagement(props: ChannelManagementProps) {
     history.push({
       pathname: `/about/channels/${record.channelId}/channelDetail`,
       state: { ...record }
-    });
-  };
-
-  // 点击操作按钮, 进行二次确认
-  const onClickToConfirm = (record: ChannelSchema, type: any) => {
-    let tipTitle = '';
-    let callback = () => {};
-    switch (type) {
-      case 'enable':
-        tipTitle = '启用';
-        callback = () => false;
-        break;
-      case 'stop':
-        tipTitle = '停用';
-        callback = () => false;
-        break;
-      default:
-        break;
-    }
-    Modal.confirm({
-      title: 'Confirm',
-      icon: <ExclamationCircleOutlined />,
-      content: `确认要${tipTitle}通道 【${record.channelId}】 吗?`,
-      okText: '确认',
-      cancelText: '取消',
-      onOk: callback
     });
   };
 

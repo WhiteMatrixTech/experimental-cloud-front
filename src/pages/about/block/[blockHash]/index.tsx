@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, Fragment } from 'react';
+import React, { useState, useEffect, useMemo, Fragment, useCallback } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Dispatch, history, TransactionSchema } from 'umi';
@@ -94,7 +94,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
   ];
 
   // 查询交易列表
-  const getTransactionList = (): void => {
+  const getTransactionList = useCallback((): void => {
     const params = {
       blockHash,
       networkName,
@@ -107,7 +107,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
       type: 'Block/getTransactionList',
       payload: params
     });
-  };
+  }, [blockHash, dispatch, networkName, pageNum, pageSize]);
 
   // 翻页
   const onPageChange = (pageInfo: any): void => {
@@ -134,18 +134,18 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
       type: 'Block/getBlockDetail',
       payload: { blockHash, networkName }
     });
-  }, []);
+  }, [blockHash, dispatch, networkName]);
 
   useEffect(() => {
     dispatch({
       type: 'Block/getTxCountByBlockHash',
       payload: { blockHash, networkName }
     });
-  }, []);
+  }, [blockHash, dispatch, networkName]);
 
   useEffect(() => {
     getTransactionList();
-  }, [pageNum]);
+  }, [getTransactionList, pageNum]);
 
   const detailList: DetailViewAttr[] = useMemo(() => {
     if (blockDetail) {

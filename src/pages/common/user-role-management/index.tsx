@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Space, Table } from 'antd';
 import { connect, history, Dispatch } from 'umi';
 import { RolesMapNames } from '~/utils/roles';
@@ -74,7 +74,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
     setPageNum(pageInfo.current);
   };
 
-  const getUserList = () => {
+  const getUserList = useCallback(() => {
     const params = {
       offset: (pageNum - 1) * 10,
       limit: 10
@@ -87,11 +87,11 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
       type: 'UserRole/getUserTotal',
       payload: {}
     });
-  };
+  }, [dispatch, pageNum]);
 
   useEffect(() => {
     getUserList();
-  }, [pageNum]);
+  }, [getUserList, pageNum]);
 
   return (
     <div className="page-wrapper">

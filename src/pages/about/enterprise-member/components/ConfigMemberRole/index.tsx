@@ -35,11 +35,11 @@ function ConfigMemberRole(props: ConfigMemberRoleProps) {
       type: 'Member/getMemberRole',
       payload: { networkName, companyName: record?.companyName },
     });
-  }, []);
+  }, [dispatch, networkName, record?.companyName]);
 
   useEffect(() => {
     form.setFieldsValue({ companyName: record?.companyName, roleName: memberRole });
-  }, [memberRole]);
+  }, [form, memberRole, record?.companyName]);
 
   const handleSubmit = () => {
     form

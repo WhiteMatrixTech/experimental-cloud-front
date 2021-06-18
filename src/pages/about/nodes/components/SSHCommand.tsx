@@ -23,7 +23,7 @@ function SSHCommand(props: SSHCommandProps) {
       type: 'Peer/getNodeSSH',
       payload: { networkName, orgName: nodeRecord.orgName, nodeName: nodeRecord.nodeName },
     });
-  }, []);
+  }, [dispatch, networkName, nodeRecord.nodeName, nodeRecord.orgName]);
 
   const drawerProps = {
     visible: visible,

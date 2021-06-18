@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Dispatch, ElasticServerSchema, history } from 'umi';
@@ -25,7 +25,7 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
   const [serverRecord, setServerRecord] = useState<ElasticServerSchema | null>(null);
 
   // 获取服务器列表
-  const getServerList = () => {
+  const getServerList = useCallback(() => {
     const offset = (pageNum - 1) * 10;
 
     const params = {
@@ -41,14 +41,14 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
       type: 'ElasticServer/getServerTotal',
       payload: {}
     });
-  };
+  }, [dispatch, pageNum]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
   };
 
-  const onClickDelete = (record: ElasticServerSchema) => {
+  const onClickDelete = useCallback((record: ElasticServerSchema) => {
     const callback = async () => {
       const res = await dispatch({
         type: 'ElasticServer/deleteServer',
@@ -66,7 +66,7 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
       cancelText: '取消',
       onOk: callback
     });
-  };
+  }, [dispatch, getServerList]);
 
   const onClickModifyServer = (record: ElasticServerSchema) => {
     setServerRecord(record);
@@ -99,7 +99,7 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
     setCreateServerVisible(false);
   };
 
-  const renderMenu = (record: ElasticServerSchema) => {
+  const renderMenu = useCallback((record: ElasticServerSchema) => {
     return (
       <Menu>
         <Menu.Item>
@@ -118,7 +118,7 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
         </Menu.Item>
       </Menu>
     );
-  };
+  }, []);
 
   // 用户身份改变时，表格展示改变
   useEffect(() => {
@@ -188,11 +188,11 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
       }
     ];
     setColumns(data);
-  }, []);
+  }, [onClickDelete, renderMenu]);
 
   useEffect(() => {
     getServerList();
-  }, [pageNum]);
+  }, [getServerList, pageNum]);
 
   return (
     <div className="page-wrapper">

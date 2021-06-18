@@ -52,7 +52,7 @@ function InvokeContract(props: InvokeContractProps) {
       type: 'Contract/getAllUserId',
       payload: { networkName },
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   const drawerProps = {
     visible: visible,

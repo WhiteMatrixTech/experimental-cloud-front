@@ -29,7 +29,7 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
       type: 'Contract/getChannelList',
       payload: { networkName },
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   const handleSubmit = () => {
     form

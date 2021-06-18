@@ -49,7 +49,7 @@ function AddOrg(props: AddOrgProps) {
       type: 'Organization/getOrgList',
       payload: { networkName }
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   const handleSubmit = () => {
     form

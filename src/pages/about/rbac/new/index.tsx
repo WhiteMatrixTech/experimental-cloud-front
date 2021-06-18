@@ -146,7 +146,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
     });
     form.setFieldsValue(defaultValue);
     setJsonPolicy(JSON.stringify(defaultValue, null, 2));
-  }, []);
+  }, [dispatch, form, networkName]);
 
   return (
     <div className={styles['rbac-config-wrapper']}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { ChainCodeSchema, Dispatch, history } from 'umi';
 import request from 'umi-request';
@@ -38,16 +38,8 @@ const MyContract: React.FC<MyContractProps> = (props) => {
   const [editParams, setEditParams] = useState<ChainCodeSchema>(); //修改、升级合约的信息
   const [downloading, setDownloading] = useState(false);
 
-  useEffect(() => {
-    dispatch({
-      type: 'Contract/checkOrgInUse',
-      payload: { networkName }
-    });
-    getChainCodeList();
-  }, [pageNum]);
-
   // 获取合约列表
-  const getChainCodeList = () => {
+  const getChainCodeList = useCallback(() => {
     const { networkName } = props.User;
     const offset = (pageNum - 1) * pageSize;
     const params = {
@@ -65,7 +57,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       type: 'Contract/getChainCodeList',
       payload: params
     });
-  };
+  }, [dispatch, pageNum, props.User]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
@@ -312,6 +304,14 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       )
     }
   ];
+
+  useEffect(() => {
+    dispatch({
+      type: 'Contract/checkOrgInUse',
+      payload: { networkName }
+    });
+    getChainCodeList();
+  }, [dispatch, getChainCodeList, networkName, pageNum]);
 
   return (
     <div className="page-wrapper">

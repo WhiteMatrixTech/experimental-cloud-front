@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Menu } from 'antd';
-import { history } from 'umi';
+import { history, Dispatch } from 'umi';
 import { isEmpty } from 'lodash';
-import type { Dispatch } from 'umi';
 import { tree2Arr } from '~/utils';
 import { CommonMenuList, CommonMenuProps, RootMenuId } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
@@ -87,7 +86,7 @@ const CommonPortalMenu: React.FC<CommonPortalMenuProps> = (props) => {
         break;
       }
     }
-  }, []);
+  }, [pathname]);
 
   return (
     <div className={styles.leftMenu}>

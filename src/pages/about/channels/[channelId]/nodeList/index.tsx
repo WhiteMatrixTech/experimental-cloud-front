@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'dva';
 import { Table, Badge } from 'antd';
 import moment from 'moment';
@@ -26,10 +26,8 @@ export interface NodeListProps {
 const pageSize = baseConfig.pageSize;
 function NodeList(props: NodeListProps) {
   const [pageNum, setPageNum] = useState(1);
-  const [peerName, setPeerName] = useState('');
   const {
     qryLoading = false,
-    location,
     match: {
       params: { channelId }
     }
@@ -79,8 +77,28 @@ function NodeList(props: NodeListProps) {
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     }
   ];
+
+  // 获取 通道下的节点
+  const getNodeListOfChannel = useCallback(() => {
+    const { User } = props;
+    const { networkName } = User;
+    let params: { networkName: string; channelId?: string; orgName?: string } = {
+      networkName,
+      channelId
+    };
+    props.dispatch({
+      type: 'Channel/getNodeListOfChannel',
+      payload: params
+    });
+  }, [channelId, props]);
+
+  // 翻页
+  const onPageChange = (pageInfo: any) => {
+    setPageNum(pageInfo.current);
+  };
+
   useEffect(() => {
-    const { User, location } = props;
+    const { User } = props;
     const { networkName } = User;
     const params = {
       networkName,
@@ -91,29 +109,7 @@ function NodeList(props: NodeListProps) {
       payload: params
     });
     getNodeListOfChannel();
-  }, []);
-
-  // 获取 通道下的节点
-  const getNodeListOfChannel = () => {
-    const { User, location } = props;
-    const { networkName } = User;
-    let params: { networkName: string; channelId?: string; orgName?: string } = {
-      networkName,
-      channelId
-    };
-    if (peerName) {
-      params.orgName = peerName;
-    }
-    props.dispatch({
-      type: 'Channel/getNodeListOfChannel',
-      payload: params
-    });
-  };
-
-  // 翻页
-  const onPageChange = (pageInfo: any) => {
-    setPageNum(pageInfo.current);
-  };
+  }, [channelId, getNodeListOfChannel, props]);
 
   const channelInfoList: DetailViewAttr[] = [
     {

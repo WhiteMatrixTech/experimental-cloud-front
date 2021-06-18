@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import request from 'umi-request';
@@ -36,7 +36,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   const [createNodeVisible, setCreateNodeVisible] = useState(false);
 
   // 获取节点列表
-  const getNodeList = () => {
+  const getNodeList = useCallback(() => {
     const params = {
       networkName
     };
@@ -44,7 +44,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
       type: 'Peer/getNodeList',
       payload: params
     });
-  };
+  }, [dispatch, networkName]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
@@ -67,7 +67,10 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
     setSshModalVisible(true);
   };
 
-  const onDownLoadCertificate = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: PeerSchema) => {
+  const onDownLoadCertificate = useCallback((
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    record: PeerSchema
+  ) => {
     e.preventDefault();
     // token校验
     const accessToken = localStorage.getItem('accessToken');
@@ -87,7 +90,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
       const blob = new Blob([res]);
       saveAs(blob, `${networkName}.pem`);
     });
-  };
+  }, [networkName])
 
   // 用户身份改变时，表格展示改变
   useEffect(() => {
@@ -162,12 +165,12 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
       data.splice(3, 0, insertColumn);
     }
     setColumns(data);
-  }, [userRole]);
+  }, [networkName, onDownLoadCertificate, userRole]);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getNodeList();
-  }, [pageNum]);
+  }, [getNodeList, pageNum]);
 
   return (
     <div className="page-wrapper">

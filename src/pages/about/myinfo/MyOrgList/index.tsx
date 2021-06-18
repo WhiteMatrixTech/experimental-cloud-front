@@ -61,7 +61,7 @@ function MyOrgInfo(props: MyOrgInfoProps) {
       type: 'MyInfo/getMyOrgInfo',
       payload: { networkName },
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   return (
     <div className="page-wrapper">

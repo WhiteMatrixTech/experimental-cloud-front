@@ -86,7 +86,7 @@ function EvidenceDataDetail({
       type: 'Evidence/getEvidenceDataDetail',
       payload: { channelId: location?.query?.channelId, evidenceHash, networkName },
     });
-  }, []);
+  }, [dispatch, evidenceHash, location?.query?.channelId, networkName]);
 
   return (
     <div className="page-wrapper">

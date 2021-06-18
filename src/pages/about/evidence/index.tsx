@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, EvidenceSchema, history } from 'umi';
 import { Table, Space } from 'antd';
@@ -90,7 +90,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
   };
 
   // 查询列表
-  const getEvidenceDataList = () => {
+  const getEvidenceDataList = useCallback(() => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
       networkName,
@@ -110,9 +110,9 @@ function EvidenceDataList(props: EvidenceDataListProps) {
       type: 'Evidence/getEvidenceDataList',
       payload: params
     });
-  };
+  }, [dispatch, evidenceHash, networkName, pageNum, pageSize]);
 
-  const getEvidenceTotalDocs = () => {
+  const getEvidenceTotalDocs = useCallback(() => {
     const params = {
       networkName
     };
@@ -120,7 +120,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
       type: 'Evidence/getEvidenceTotalDocs',
       payload: params
     });
-  };
+  }, [dispatch, networkName]);
 
   // 搜索
   const onSearch = (value: string, event: { type: string }) => {
@@ -141,7 +141,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
     if (!evidenceHash) {
       getEvidenceTotalDocs();
     }
-  }, [evidenceHash, pageNum]);
+  }, [evidenceHash, getEvidenceDataList, getEvidenceTotalDocs, pageNum]);
 
   return (
     <div className="page-wrapper">

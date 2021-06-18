@@ -61,7 +61,7 @@ function MyLeagueInfo(props: MyLeagueInfoProps) {
       type: 'MyInfo/getMyLeagueInfo',
       payload: { networkName },
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   return (
     <div className="page-wrapper">

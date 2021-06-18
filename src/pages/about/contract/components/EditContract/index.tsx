@@ -100,7 +100,7 @@ function EditContract(props: EditContractProps) {
       type: 'Contract/getChannelListByOrg',
       payload: { networkName },
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   const accessToken = localStorage.getItem('accessToken');
   const roleToken = localStorage.getItem('roleToken');

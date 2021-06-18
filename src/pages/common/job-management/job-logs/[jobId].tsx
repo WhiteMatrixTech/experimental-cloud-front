@@ -69,7 +69,7 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
       type: 'BlockChainCompile/getJobLog',
       payload: { jobId }
     });
-  }, []);
+  }, [dispatch, jobId]);
 
   return (
     <div className="page-wrapper">

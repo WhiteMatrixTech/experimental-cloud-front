@@ -52,7 +52,7 @@ function CreateOrgModal(props: CreateOrgModalProps) {
       type: 'Contract/getChannelList',
       payload: { networkName }
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   const handleSubmit = () => {
     form

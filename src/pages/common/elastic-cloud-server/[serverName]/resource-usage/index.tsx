@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
 import { Table } from 'antd';
 import moment from 'moment';
@@ -59,7 +59,7 @@ function ResourceUsage(props: ResourceUsageProps) {
   const { nodeList, nodeTotal } = ElasticServer;
   const [pageNum, setPageNum] = useState(1);
 
-  const getNodeList = () => {
+  const getNodeList = useCallback(() => {
     const offset = (pageNum - 1) * baseConfig.pageSize;
 
     const params = {
@@ -76,7 +76,7 @@ function ResourceUsage(props: ResourceUsageProps) {
       type: 'ElasticServer/getNodeTotal',
       payload: { serverName }
     });
-  };
+  }, [dispatch, pageNum, serverName]);
 
   const onPageChange = (pageInfo: any) => {
     setPageNum(pageInfo.current);
@@ -105,7 +105,7 @@ function ResourceUsage(props: ResourceUsageProps) {
 
   useEffect(() => {
     getNodeList();
-  }, [pageNum]);
+  }, [getNodeList, pageNum]);
 
   return (
     <div className="page-wrapper">

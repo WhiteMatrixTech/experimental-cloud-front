@@ -165,7 +165,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     }
   ];
 
-  const getMemberTotalDocs = () => {
+  const getMemberTotalDocs = useCallback(() => {
     const params = {
       ...queryParams,
       networkName,
@@ -175,10 +175,10 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       type: 'Member/getMemberTotalDocs',
       payload: params
     });
-  };
+  }, [dispatch, networkName, queryParams]);
 
   // 查询列表
-  const getMemberList = () => {
+  const getMemberList = useCallback(() => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
       ...queryParams,
@@ -192,7 +192,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       type: 'Member/getPageListOfCompanyMember',
       payload: params
     });
-  };
+  }, [dispatch, networkName, pageNum, pageSize, queryParams]);
 
   // 搜索
   const onSearch = useCallback(() => {
@@ -227,7 +227,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   // 点击操作按钮, 进行二次确认
   const onClickToConfirm = (record: EnterpriseMemberSchema, type: string) => {
     let tipTitle = '';
-    let callback = () => {};
+    let callback = () => { };
     switch (type) {
       case 'validate':
         tipTitle = '启用';
@@ -316,7 +316,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   useEffect(() => {
     getMemberList();
     getMemberTotalDocs();
-  }, [queryParams, pageNum]);
+  }, [queryParams, pageNum, getMemberList, getMemberTotalDocs]);
 
   return (
     <div className="page-wrapper">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Table, Space, Col, Row } from 'antd';
 import { connect } from 'dva';
 import { ChannelSchema, Dispatch, history, Location } from 'umi';
@@ -32,7 +32,7 @@ export interface ChannelDetailProps {
   location: Location<ChannelSchema>;
   match: { params: { channelId: string } };
 }
-function ChannelDetail(props: ChannelDetailProps) {
+const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
   const {
     dispatch,
     User,
@@ -87,7 +87,7 @@ function ChannelDetail(props: ChannelDetailProps) {
       key: 'action',
       render: (text, record) => (
         <Space size="small">
-          <a onClick={() => onClickBlockDetail(record)}>详情</a>
+          <a href={`/about/block/${record.blockHash}`} onClick={(e) => onClickBlockDetail(e, record)}>详情</a>
         </Space>
       )
     }
@@ -131,22 +131,22 @@ function ChannelDetail(props: ChannelDetailProps) {
       render: (text, record) => (
         <Space size="small">
           {record.channelId || record.txEndorseMsp ? (
-            <a onClick={() => onClickTransactionDetail(record)}>详情</a>
+            <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickTransactionDetail(e, record)}>详情</a>
           ) : (
-            <a className="a-forbidden-style">详情</a>
+            <a
+              href={`/about/transactions/${record.txId}`}
+              className="a-forbidden-style"
+              onClick={(e) => e.preventDefault()}>
+              详情
+            </a>
           )}
         </Space>
       )
     }
   ];
-  useEffect(() => {
-    getStaticInfo();
-    getBlockList();
-    getTransactionList();
-  }, []);
 
   // 获取汇总信息
-  const getStaticInfo = () => {
+  const getStaticInfo = useCallback(() => {
     const { networkName } = User;
     const params = {
       networkName,
@@ -156,10 +156,10 @@ function ChannelDetail(props: ChannelDetailProps) {
       type: 'Channel/getStaticInfo',
       payload: params
     });
-  };
+  }, [User, channelId, dispatch]);
 
   // 获取交易列表
-  const getTransactionList = () => {
+  const getTransactionList = useCallback(() => {
     const { networkName } = User;
     const params = {
       networkName,
@@ -172,10 +172,14 @@ function ChannelDetail(props: ChannelDetailProps) {
       type: 'Channel/getTransactionsListOfChannel',
       payload: params
     });
-  };
+  }, [User, channelId, dispatch]);
 
   // 查看交易详情
-  const onClickTransactionDetail = (record: { txId: string }) => {
+  const onClickTransactionDetail = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    record: { txId: string }
+  ) => {
+    e.preventDefault();
     props.dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/transactions' }
@@ -189,7 +193,7 @@ function ChannelDetail(props: ChannelDetailProps) {
   };
 
   // 获取区块列表和总数
-  const getBlockList = () => {
+  const getBlockList = useCallback(() => {
     const { networkName } = User;
     const params = {
       networkName,
@@ -202,10 +206,11 @@ function ChannelDetail(props: ChannelDetailProps) {
       type: 'Channel/getBlockListOfChannel',
       payload: params
     });
-  };
+  }, [User, channelId, dispatch]);
 
   // 查看区块详情
-  const onClickBlockDetail = (record: { blockHash: string }) => {
+  const onClickBlockDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: { blockHash: string }) => {
+    e.preventDefault();
     props.dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/block' }
@@ -217,6 +222,13 @@ function ChannelDetail(props: ChannelDetailProps) {
       }
     });
   };
+
+  useEffect(() => {
+    getStaticInfo();
+    getBlockList();
+    getTransactionList();
+  }, [getBlockList, getStaticInfo, getTransactionList]);
+
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />

@@ -75,7 +75,7 @@ function DidDetail(props: DidDetailProps) {
         payload: { didDetail: null }
       });
     };
-  }, []);
+  }, [did, dispatch, networkName]);
 
   return (
     <div className="page-wrapper">

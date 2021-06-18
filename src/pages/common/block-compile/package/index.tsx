@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Table, Button, Space } from 'antd';
 import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
@@ -25,19 +25,18 @@ export type SourceCodeCompilationProps = {
 const pageSize = baseConfig.pageSize;
 const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   const { dispatch, qryLoading = false, BlockChainCompile } = props;
-  const { gitBuildJobList, gitBuildJobTotal, compileContinueData } = BlockChainCompile;
-  const [pageNum, setPageNum] = useState(1);
+  const { gitBuildJobList, compileContinueData } = BlockChainCompile;
   const [compileModalVisible, setCompileModalVisible] = useState(false);
   const [moreBtnVisible, setMoreBtnVisible] = useState(false);
 
-  const getCompileJobList = () => {
+  const getCompileJobList = useCallback(() => {
     dispatch({
       type: 'BlockChainCompile/getCompileJobList',
       payload: {
         limit: pageSize
       }
     });
-  };
+  }, [dispatch]);
 
   const getMoreCompileJobList = () => {
     dispatch({
@@ -49,15 +48,15 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
     });
   };
 
-  const cleanHob = () => {
+  const cleanHob = useCallback(() => {
     dispatch({
       type: 'BlockChainCompile/cleanJob',
       payload: {}
     });
-  };
+  }, [dispatch]);
 
   const onPageChange = (pageInfo: any) => {
-    setPageNum(pageInfo.current);
+    // 页码改变
   };
 
   const onClickOneKeyCompile = () => {
@@ -136,7 +135,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   useEffect(() => {
     getCompileJobList();
     return () => cleanHob();
-  }, []);
+  }, [cleanHob, getCompileJobList]);
 
   useEffect(() => {
     if (compileContinueData) {

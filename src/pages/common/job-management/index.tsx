@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Table, Space } from 'antd';
 import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
@@ -20,18 +20,17 @@ export type SourceCodeCompilationProps = {
 const pageSize = baseConfig.pageSize;
 const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   const { dispatch, qryLoading = false, BlockChainCompile } = props;
-  const { jobList, jobTotal, jobContinueData } = BlockChainCompile;
-  const [pageNum, setPageNum] = useState(1);
+  const { jobList, jobContinueData } = BlockChainCompile;
   const [moreBtnVisible, setMoreBtnVisible] = useState(false);
 
-  const getJobList = () => {
+  const getJobList = useCallback(() => {
     dispatch({
       type: 'BlockChainCompile/getJobList',
       payload: {
         limit: pageSize
       }
     });
-  };
+  }, [dispatch]);
 
   const getMoreJobList = () => {
     dispatch({
@@ -43,15 +42,15 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
     });
   };
 
-  const cleanHob = () => {
+  const cleanHob = useCallback(() => {
     dispatch({
       type: 'BlockChainCompile/cleanJob',
       payload: {}
     });
-  };
+  }, [dispatch]);
 
   const onPageChange = (pageInfo: any) => {
-    setPageNum(pageInfo.current);
+    // 页码改变
   };
 
   const onViewJobLog = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: JobSchema) => {
@@ -103,7 +102,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   useEffect(() => {
     getJobList();
     return () => cleanHob();
-  }, []);
+  }, [cleanHob, getJobList]);
 
   useEffect(() => {
     if (jobContinueData) {

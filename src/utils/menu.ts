@@ -116,24 +116,6 @@ const NetworkMenuList: NetworkMenuProps[] = [
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
   },
-  // {
-  //   id: 'certificate',
-  //   menuPid: RootMenuId,
-  //   menuHref: "/about/certificate",
-  //   menuIcon: "KBasszhengshuguanli",
-  //   menuName: "证书管理",
-  //   accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-  //   subMenus: []
-  // },
-  // {
-  //   id: 'logsList',
-  //   menuPid: RootMenuId,
-  //   menuHref: "/about/logsList",
-  //   menuIcon: "KBassdakaixinfeng",
-  //   menuName: "日志管理",
-  //   accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
-  //   subMenus: []
-  // },
   {
     id: 'enterprise-member',
     menuPid: RootMenuId,

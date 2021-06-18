@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { BlockSchema, Dispatch, history } from 'umi';
 import { Table, Space } from 'antd';
@@ -26,8 +26,7 @@ const Block: React.FC<BlockProps> = (props) => {
   const [blockHash, setBlockHash] = useState('');
   const [pageSize] = useState(baseConfig.pageSize);
 
-  //查询列表的totalDocs
-  const getBlockTotalDocs = (): void => {
+  const getBlockTotalDocs = useCallback(() => {
     const params = {
       networkName
     };
@@ -35,9 +34,9 @@ const Block: React.FC<BlockProps> = (props) => {
       type: 'Block/getBlockTotalDocs',
       payload: params
     });
-  };
-  //查询列表current
-  const getBlockList = (): void => {
+  }, [dispatch, networkName]);
+
+  const getBlockList = useCallback(() => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
       networkName,
@@ -49,7 +48,7 @@ const Block: React.FC<BlockProps> = (props) => {
       type: 'Block/getBlockList',
       payload: params
     });
-  };
+  }, [dispatch, networkName, pageNum, pageSize]);
 
   // 搜索
   const onSearch = (value: string, event: any): void => {
@@ -60,7 +59,7 @@ const Block: React.FC<BlockProps> = (props) => {
   };
 
   //搜索列表
-  const onSearchList = (): void => {
+  const onSearchList = useCallback(() => {
     const params = {
       networkName,
       blockHash
@@ -69,7 +68,7 @@ const Block: React.FC<BlockProps> = (props) => {
       type: 'Block/onSearch',
       payload: params
     });
-  };
+  }, [blockHash, dispatch, networkName]);
 
   // 翻页
   const onPageChange = (pageInfo: any): void => {
@@ -144,7 +143,7 @@ const Block: React.FC<BlockProps> = (props) => {
       getBlockList();
       getBlockTotalDocs();
     }
-  }, [blockHash, pageNum]);
+  }, [blockHash, getBlockList, getBlockTotalDocs, onSearchList, pageNum]);
 
   return (
     <div className="page-wrapper">

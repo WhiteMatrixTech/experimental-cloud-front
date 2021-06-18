@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'dva';
 import { Breadcrumb, DetailCard } from '~/components';
 import { Input, Result, Empty } from 'antd';

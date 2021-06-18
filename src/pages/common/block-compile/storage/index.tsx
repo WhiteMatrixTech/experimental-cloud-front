@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Modal, Space, Table } from 'antd';
 import { connect, Dispatch, ImageDetail } from 'umi';
 import { Breadcrumb } from '~/components';
@@ -35,7 +35,7 @@ function CustomImage(props: CustomImageProps) {
   const [pageNum, setPageNum] = useState(1);
   const [addCustomImageVisible, setAddCustomImageVisible] = useState(false);
 
-  const getImageList = () => {
+  const getImageList = useCallback(() => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
       offset,
@@ -49,11 +49,11 @@ function CustomImage(props: CustomImageProps) {
       type: 'CustomImage/getImageListTotal',
       payload: {}
     });
-  };
+  }, [dispatch, pageNum]);
 
   useEffect(() => {
     getImageList();
-  }, [pageNum]);
+  }, [getImageList, pageNum]);
 
   const onClickAddMirrorImage = () => {
     setAddCustomImageVisible(true);

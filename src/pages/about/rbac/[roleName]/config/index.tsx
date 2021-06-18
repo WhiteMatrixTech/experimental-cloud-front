@@ -1,7 +1,7 @@
 /**
  * 访问策略配置(rbac)，相关设计文档 https://www.yuque.com/whitematrix/baas-v1/xpq7pz#6CxuL
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'dva';
 import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal, Input, message } from 'antd';
 import { CaretDownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
@@ -41,21 +41,21 @@ function RbacConfig(props: RbacConfigProps) {
   const [viewChaincode, setViewChaincode] = useState<string | undefined>('InChannel');
   const [invokeChaincodeCustom, setInvokeChaincodeCustom] = useState<string>('InChannel');
 
-  const getConfig = (value: string) => {
+  const getConfig = useCallback((value: string) => {
     dispatch({
       type: 'RBAC/getRbacConfigWithRole',
       payload: { networkName, roleName: value }
     });
-  };
+  }, [dispatch, networkName]);
 
   //TODO 自定义合约调用
-  const getChaincodeList = () => {
+  const getChaincodeList = useCallback(() => {
     const apiName = viewChaincode === 'Own' ? 'RBAC/getMyselfChainCodeList' : 'RBAC/getChainCodeList';
     dispatch({
       type: apiName,
       payload: { networkName, companyName: 'todo' }
     });
-  };
+  }, [dispatch, networkName, viewChaincode]);
 
   const onChangeConfigType = (e: any) => {
     setConfigType(e.target.value);
@@ -155,7 +155,7 @@ function RbacConfig(props: RbacConfigProps) {
       setViewChaincode(viewChaincode?.field);
       form.setFieldsValue(configValue);
     }
-  }, [rbacPolicy]);
+  }, [form, getChaincodeList, rbacPolicy]);
 
   // 查询角色列表
   useEffect(() => {
@@ -163,13 +163,13 @@ function RbacConfig(props: RbacConfigProps) {
       type: 'RBAC/getRoleNameList',
       payload: { networkName }
     });
-  }, []);
+  }, [dispatch, networkName]);
 
   useEffect(() => {
     if (location.state?.roleName) {
       getConfig(location.state?.roleName);
     }
-  }, [location.state, configType]);
+  }, [location.state, configType, getConfig]);
 
   return (
     <div className={styles['rbac-config-wrapper']}>

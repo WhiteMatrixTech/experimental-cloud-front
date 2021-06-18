@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
 import { DidSchema, Dispatch, history } from 'umi';
 import { Breadcrumb } from '~/components';
-import { Table, Button, Space, Form, Row, Col, Input, Modal } from 'antd';
+import { Table, Button, Space, Form, Row, Col, Input } from 'antd';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import baseConfig from '~/utils/config';
 import { ConnectState } from '~/models/connect';
@@ -27,14 +27,14 @@ export interface DidManagementProps {
 }
 function DidManagement(props: DidManagementProps) {
   const { dispatch, qryLoading = false } = props;
-  const { networkName, userRole } = props.User;
+  const { networkName } = props.User;
   const { didList, didTotal } = props.DID;
 
   const [form] = Form.useForm();
   const [pageNum, setPageNum] = useState(1);
   const [searchParams, setSearchParams] = useState({ did: '' });
 
-  const getDidList = () => {
+  const getDidList = useCallback(() => {
     const { did } = searchParams;
     const params = {
       networkName,
@@ -51,9 +51,13 @@ function DidManagement(props: DidManagementProps) {
       type: 'DID/getDidList',
       payload: params
     });
-  };
+  }, [dispatch, networkName, searchParams]);
 
-  const onClickDetail = (record: DidSchema) => {
+  const onClickDetail = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    record: DidSchema
+  ) => {
+    e.preventDefault();
     history.push({
       pathname: `/about/did/did-management/did-detail/${record.did}`,
       state: record
@@ -74,7 +78,7 @@ function DidManagement(props: DidManagementProps) {
       .catch((info) => {
         console.log('校验失败:', info);
       });
-  }, []);
+  }, [form]);
 
   // 重置
   const resetForm = () => {
@@ -120,17 +124,19 @@ function DidManagement(props: DidManagementProps) {
           <Space size="small">
             {/* <a onClick={() => onClickModify(record)}>修改</a>
             <a onClick={() => onClickDelete(record)}>删除</a> */}
-            <a onClick={() => onClickDetail(record)}>详情</a>
+            <a
+              href={`/about/did/did-management/did-detail/${record.did}`}
+              onClick={(e) => onClickDetail(e, record)}>详情</a>
           </Space>
         )
       }
     ];
-  }, [userRole]);
+  }, []);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getDidList();
-  }, [searchParams]);
+  }, [getDidList, searchParams]);
 
   return (
     <div className="page-wrapper">

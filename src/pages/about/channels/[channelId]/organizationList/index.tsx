@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
 import { Table, Button } from 'antd';
 import { Breadcrumb, DetailCard } from '~/components';
@@ -87,7 +87,7 @@ function OrganizationList(props: OrganizationListProps) {
   }, [channelId, orgTotalOfChannel, nodeTotalOfChannel]);
 
   // 获取 通道下的组织
-  const getOrgListOfChannel = () => {
+  const getOrgListOfChannel = useCallback(() => {
     const params = {
       networkName,
       channelId
@@ -96,10 +96,11 @@ function OrganizationList(props: OrganizationListProps) {
       type: 'Channel/getOrgListOfChannel',
       payload: params
     });
-  };
+  }, [channelId, dispatch, networkName]);
+
   useEffect(() => {
     getOrgListOfChannel();
-  }, []);
+  }, [getOrgListOfChannel]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, history, RbacRole } from 'umi';
 import { Table, Space, Button } from 'antd';
@@ -62,7 +62,7 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
   ];
 
   // 查询列表
-  const getRoleList = () => {
+  const getRoleList = useCallback(() => {
     const offset = (pageNum - 1) * pageSize;
     const params = {
       networkName,
@@ -73,7 +73,7 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
       type: 'RBAC/getRoleList',
       payload: params
     });
-  };
+  }, [dispatch, networkName, pageNum, pageSize]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
@@ -111,7 +111,7 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
 
   useEffect(() => {
     getRoleList();
-  }, []);
+  }, [getRoleList]);
 
   return (
     <div className="page-wrapper">

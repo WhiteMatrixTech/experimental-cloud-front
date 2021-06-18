@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Dispatch, Location } from 'umi';
-import { Spin } from 'antd';
 import moment from 'moment';
 import { Breadcrumb, DetailCard } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
