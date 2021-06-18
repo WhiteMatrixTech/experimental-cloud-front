@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Drawer, Menu, Row, Col } from 'antd';
+import { Drawer, Menu, Row, Col, Popconfirm } from 'antd';
 import { connect } from 'dva';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, history } from 'umi';
@@ -151,8 +151,15 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
                   <Menu.Item key="ChainIDE" onClick={onClickIDE}>
                     ChainIDE
                   </Menu.Item>
-                  <Menu.Item key="AntChain" onClick={onClickAntChain}>
-                    蚂蚁链
+                  <Menu.Item key="AntChain">
+                    <Popconfirm
+                      placement="topLeft"
+                      title={'只有内网才可以访问'}
+                      okText="确认"
+                      cancelText="取消"
+                      onConfirm={onClickAntChain}>
+                      蚂蚁链
+                    </Popconfirm>
                   </Menu.Item>
                 </Menu.ItemGroup>
               </Menu>
