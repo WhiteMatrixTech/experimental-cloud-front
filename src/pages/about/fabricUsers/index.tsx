@@ -149,12 +149,12 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       key: 'attrs',
       ellipsis: true
     },
-    {
-      title: '创建时间',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
-      render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss')
-    },
+    // {
+    //   title: '创建时间',
+    //   dataIndex: 'updatedAt',
+    //   key: 'updatedAt',
+    //   render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+    // },
     {
       title: '操作',
       key: 'action',

@@ -1,3 +1,6 @@
+@import '~themes/variable.less';
+@import '~antd/es/style/themes/default.less';
+
 .main {
   margin: 0 auto;
   h3 {
@@ -10,10 +13,18 @@
     width: 100%;
   }
 
+  .prefixIcon {
+    color: #177ddc;
+    font-size: @font-size-base;
+  }
+  .submit {
+    width: 100%;
+  }
+
   .other {
     margin-top: 24px;
+    color: @second-level-color;
     line-height: 22px;
-    text-align: left;
 
     .register {
       margin-left: 12px;
