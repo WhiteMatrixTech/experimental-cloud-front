@@ -16,7 +16,7 @@ export type ServicesDrawerProps = {
 const bodyStyle = {
   padding: 0,
   margin: 24,
-  overflow: 'hidden auto',
+  overflow: 'hidden auto'
 };
 
 const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
@@ -27,7 +27,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
   const onClose = () => {
     dispatch({
       type: 'Layout/common',
-      payload: { showDrawer: false },
+      payload: { showDrawer: false }
     });
   };
 
@@ -39,13 +39,19 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
     window.open(link);
   };
 
+  const onClickAntChain = () => {
+    const link = 'http://172.16.65.107:8080/index.html';
+    onClose();
+    window.open(link);
+  };
+
   const onClickChangeLeague = () => {
     localStorage.setItem('roleToken', '');
     localStorage.setItem('leagueName', '');
     localStorage.setItem('networkName', '');
     dispatch({
       type: 'User/cleanNetworkInfo',
-      payload: {},
+      payload: {}
     });
     onClose();
     history.replace('/selectLeague');
@@ -54,7 +60,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
   const onClickMenuPath = (path: string) => {
     dispatch({
       type: 'Layout/common',
-      payload: { selectedMenu: path },
+      payload: { selectedMenu: path }
     });
     onClose();
     history.push(path);
@@ -62,7 +68,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
 
   const showNetworkMenu = useMemo(() => pathname.indexOf('/selectLeague') === -1 && networkName, [
     pathname,
-    networkName,
+    networkName
   ]);
   const showChangeLeague = useMemo(() => pathname.indexOf('/selectLeague') === -1, [pathname]);
 
@@ -86,7 +92,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
   const currentServices = useMemo(() => {
     const service = {
       servicePath: '',
-      serviceName: '',
+      serviceName: ''
     };
     if (pathname === '/selectLeague') {
       service.servicePath = '/selectLeague';
@@ -113,8 +119,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
       bodyStyle={bodyStyle}
       getContainer={false}
       style={{ position: 'absolute' }}
-      className={styles['services-drawer']}
-    >
+      className={styles['services-drawer']}>
       <div className={styles['service-wrapper']}>
         <div className={styles['left-service-wrapper']}>
           <div>当前服务</div>
@@ -145,6 +150,9 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
                   )}
                   <Menu.Item key="ChainIDE" onClick={onClickIDE}>
                     ChainIDE
+                  </Menu.Item>
+                  <Menu.Item key="AntChain" onClick={onClickAntChain}>
+                    蚂蚁链
                   </Menu.Item>
                 </Menu.ItemGroup>
               </Menu>
