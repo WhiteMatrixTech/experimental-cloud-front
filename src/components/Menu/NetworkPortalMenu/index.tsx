@@ -10,6 +10,7 @@ import { Roles } from '~/utils/roles';
 import { NetworkStatus } from '~/utils/networkStatus';
 import { ConnectState } from '~/models/connect';
 import styles from './index.less';
+import { Intl } from '~/utils/locales';
 
 const { SubMenu } = Menu;
 
@@ -36,7 +37,10 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
       unavailableNetworkStatus.includes(networkStatusInfo.networkStatus) &&
       !availableMenu.includes(menu.menuHref)
     ) {
-      const warnMes = userRole === Roles.NetworkAdmin ? '请先创建网络' : '请等待盟主创建网络';
+      const warnMes =
+        userRole === Roles.NetworkAdmin
+          ? Intl.formatMessage('BASS_MENU_PLEASE_CREATE_NETWORK')
+          : Intl.formatMessage('BASS_MENU_WAITING_CONSORTIUM_MASTER_CREATE_NETWORK');
       message.warn(warnMes);
       return;
     }

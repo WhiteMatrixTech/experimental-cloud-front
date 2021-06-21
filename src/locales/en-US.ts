@@ -21,6 +21,7 @@ import { CONFIRM_US } from './en-US/confirm';
 import { CUSTOM_IMAGE_US } from './en-US/custorm_image';
 import { LOGIN_US } from './en-US/login';
 import { REGISTER_US } from './en-US/register';
+import { MENU_US } from './en-US/menu';
 
 const Locales_US_JSON = {
   ...COMMON_US,
@@ -45,7 +46,8 @@ const Locales_US_JSON = {
   ...CONFIRM_US,
   ...CUSTOM_IMAGE_US,
   ...LOGIN_US,
-  ...REGISTER_US
+  ...REGISTER_US,
+  ...MENU_US
 };
 
 export default Locales_US_JSON;

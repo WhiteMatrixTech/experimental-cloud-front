@@ -21,6 +21,7 @@ import { CONFIRM_CN } from './zh-CN/confirm';
 import { CUSTOM_IMAGE_CN } from './zh-CN/custom_image';
 import { LOGIN_CN } from './zh-CN/login';
 import { REGISTER_CN } from './zh-CN/register';
+import { MENU_CN } from './zh-CN/menu';
 
 const Locales_CN_JSON = {
   ...COMMON_CN,
@@ -45,7 +46,8 @@ const Locales_CN_JSON = {
   ...CONFIRM_CN,
   ...CUSTOM_IMAGE_CN,
   ...LOGIN_CN,
-  ...REGISTER_CN
+  ...REGISTER_CN,
+  ...MENU_CN
 };
 
 export default Locales_CN_JSON;
