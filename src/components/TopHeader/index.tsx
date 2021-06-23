@@ -6,7 +6,7 @@ import type { Dispatch } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined, BarsOutlined } from '@ant-design/icons';
 import { ConnectState } from '~/models/connect';
-import buaaLogo from '~/assets/images/buaa-small.png';
+import buaaLogo from '~/assets/images/jiangxizhiye-small.png';
 import styles from './index.less';
 
 const { Header } = Layout;
