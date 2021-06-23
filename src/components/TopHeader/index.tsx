@@ -6,7 +6,7 @@ import type { Dispatch } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined, BarsOutlined } from '@ant-design/icons';
 import { ConnectState } from '~/models/connect';
-import buaaLogo from '~/assets/images/buaa-small.png';
+import buaaLogo from '~/assets/images/jiangxizhiye-small.png';
 import styles from './index.less';
 
 const { Header } = Layout;
@@ -52,7 +52,7 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
     <Header className={styles.header}>
       <div className={styles['logo-sub']}>
         <img src={buaaLogo} alt="北京航空大学杭州创新研究院" />
-        <span>欢迎使用区块链应用服务平台</span>
+        <span>欢迎使用区块链实训教学平台</span>
         <a className={styles['header-menu-item']} onClick={onClickShowDrawer}>
           <BarsOutlined />
           <span>服务列表</span>
