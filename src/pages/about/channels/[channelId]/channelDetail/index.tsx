@@ -180,7 +180,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
     record: { txId: string }
   ) => {
     e.preventDefault();
-    props.dispatch({
+    dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/transactions' }
     });
@@ -211,7 +211,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
   // 查看区块详情
   const onClickBlockDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: { blockHash: string }) => {
     e.preventDefault();
-    props.dispatch({
+    dispatch({
       type: 'Layout/common',
       payload: { selectedMenu: '/about/block' }
     });

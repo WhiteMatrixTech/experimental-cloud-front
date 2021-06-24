@@ -27,11 +27,13 @@ const pageSize = baseConfig.pageSize;
 function NodeList(props: NodeListProps) {
   const [pageNum, setPageNum] = useState(1);
   const {
+    dispatch,
     qryLoading = false,
     match: {
       params: { channelId }
     }
   } = props;
+  const { networkName } = props.User;
   const { nodeListOfChannel, orgTotalOfChannel, nodeTotalOfChannel } = props.Channel;
 
   const columns: ColumnsType<any> = [
@@ -80,17 +82,15 @@ function NodeList(props: NodeListProps) {
 
   // 获取 通道下的节点
   const getNodeListOfChannel = useCallback(() => {
-    const { User } = props;
-    const { networkName } = User;
     let params: { networkName: string; channelId?: string; orgName?: string } = {
       networkName,
       channelId
     };
-    props.dispatch({
+    dispatch({
       type: 'Channel/getNodeListOfChannel',
       payload: params
     });
-  }, [channelId, props]);
+  }, [channelId, dispatch, networkName]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
@@ -98,18 +98,16 @@ function NodeList(props: NodeListProps) {
   };
 
   useEffect(() => {
-    const { User } = props;
-    const { networkName } = User;
     const params = {
       networkName,
       channelId
     };
-    props.dispatch({
+    dispatch({
       type: 'Channel/getOrgListOfChannel',
       payload: params
     });
     getNodeListOfChannel();
-  }, [channelId, getNodeListOfChannel, props]);
+  }, [channelId, dispatch, getNodeListOfChannel, networkName]);
 
   const channelInfoList: DetailViewAttr[] = [
     {

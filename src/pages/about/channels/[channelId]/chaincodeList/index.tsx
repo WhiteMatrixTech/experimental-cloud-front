@@ -132,11 +132,11 @@ function ChaincodeList(props: ChaincodeListProps) {
       ascend: false,
       channelId
     };
-    props.dispatch({
+    dispatch({
       type: 'Channel/getContractListOfChannel',
       payload: params
     });
-  }, [channelId, networkName, pageNum, props]);
+  }, [channelId, dispatch, networkName, pageNum]);
 
   useEffect(() => {
     getContractListOfChannel();

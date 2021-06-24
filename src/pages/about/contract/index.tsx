@@ -40,7 +40,6 @@ const MyContract: React.FC<MyContractProps> = (props) => {
 
   // 获取合约列表
   const getChainCodeList = useCallback(() => {
-    const { networkName } = props.User;
     const offset = (pageNum - 1) * pageSize;
     const params = {
       networkName,
@@ -57,7 +56,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       type: 'Contract/getChainCodeList',
       payload: params
     });
-  }, [dispatch, pageNum, props.User]);
+  }, [dispatch, pageNum, networkName]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
