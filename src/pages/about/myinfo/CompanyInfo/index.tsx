@@ -63,11 +63,11 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
     {
       label: '当前审批状态',
       value: myCompany && statusList[myCompany.approvalStatus]
-    },
-    {
-      label: '我的DID',
-      value: getDid || ''
     }
+    // {
+    //   label: '我的DID',
+    //   value: getDid || ''
+    // }
   ];
 
   const companyContactsInfo: DetailViewAttr[] = [
