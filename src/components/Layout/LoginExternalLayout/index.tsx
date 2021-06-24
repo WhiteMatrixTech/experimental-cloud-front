@@ -12,7 +12,9 @@ class LoginExternalLayout extends React.PureComponent<LoginLayoutProps> {
   render() {
     const { children } = this.props;
     return (
-      <Layout className={styles['main-container']}>
+      <Layout
+        className={styles['main-container']}
+        style={{ backgroundImage: `url("${require('~/assets/images/login-external-bg.png')}")` }}>
         <LoginHeader />
         <Content className={styles['section-container']}>
           <div className={styles['section-common-wrapper']}>
