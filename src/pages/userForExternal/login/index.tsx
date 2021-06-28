@@ -52,7 +52,7 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
     <div className={styles.main}>
       <h3>登录</h3>
       {loginStatus === LoginStatus.LOGIN_ERROR && !loginLoading && <LoginMessage content={loginInfo} />}
-      <Form form={form}>
+      <Form form={form} onFinish={handleSubmit}>
         <FormItem
           name="email"
           initialValue={location?.state?.account}
@@ -74,7 +74,7 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
           ]}>
           <Input.Password prefix={<LockTwoTone className={styles.prefixIcon} />} placeholder="密码" />
         </FormItem>
-        <Button size="large" type="primary" className={styles.submit} onClick={handleSubmit}>
+        <Button size="large" type="primary" htmlType="submit" className={styles.submit} onClick={handleSubmit}>
           登录
         </Button>
         <div className={styles.other}>
