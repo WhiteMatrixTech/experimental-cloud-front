@@ -81,7 +81,7 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
             placeholder={Intl.formatMessage('BASS_FABRIC_INPUT_PASSWORD')}
           />
         </FormItem>
-        <Button middle type="primary" htmlType="submit" className={styles.submit} onClick={handleSubmit}>
+        <Button size="middle" type="primary" htmlType="submit" className={styles.submit} onClick={handleSubmit}>
           {Intl.formatMessage('BASS_LOGIN')}
         </Button>
         <div className={styles.other}>
