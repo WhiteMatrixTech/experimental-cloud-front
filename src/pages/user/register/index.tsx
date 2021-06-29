@@ -113,17 +113,17 @@ const Register: React.FC<RegisterProps> = (props) => {
       {current > 0 ? <StepTwo {...stepsProps} /> : <StepOne {...stepsProps} />}
       <div className={styles.operate}>
         {current === 0 && (
-          <Button size="large" className={styles.next} type="primary" onClick={next}>
+          <Button size="middle" className={styles.next} type="primary" onClick={next}>
             下一步
           </Button>
         )}
         {current === 1 && (
-          <Button size="large" className={styles.prev} onClick={prev}>
+          <Button size="middle" className={styles.prev} onClick={prev}>
             上一步
           </Button>
         )}
         {current === 1 && (
-          <Button size="large" loading={submitting} className={styles.submit} type="primary" onClick={register}>
+          <Button size="middle" loading={submitting} className={styles.submit} type="primary" onClick={register}>
             注册
           </Button>
         )}

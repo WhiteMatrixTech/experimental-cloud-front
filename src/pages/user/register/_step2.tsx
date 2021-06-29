@@ -132,7 +132,7 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
             message: '手机号格式错误'
           }
         ]}>
-        <Input size="large" placeholder="联系人手机号" />
+        <Input size="middle" placeholder="联系人手机号" />
       </FormItem>
       <FormItem
         name="contactEmail"
@@ -146,7 +146,7 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
             message: '邮箱地址格式错误'
           }
         ]}>
-        <Input size="large" placeholder="联系人邮箱" />
+        <Input size="middle" placeholder="联系人邮箱" />
       </FormItem>
       <FormItem
         name="loginName"
@@ -161,7 +161,7 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
             message: '用户名不合法, 至少需要5个字符'
           }
         ]}>
-        <Input size="large" placeholder="用户名" />
+        <Input size="middle" placeholder="用户名" />
       </FormItem>
       <Popover
         getPopupContainer={(node) => {
@@ -201,7 +201,7 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
               validator: checkPassword
             }
           ]}>
-          <Input size="large" type="password" placeholder="至少6位密码，区分大小写" />
+          <Input size="middle" type="password" placeholder="至少6位密码，区分大小写" />
         </FormItem>
       </Popover>
       <FormItem
@@ -215,7 +215,7 @@ const StepTwo: React.FC<StepTwoProps> = (props) => {
             validator: checkConfirm
           }
         ]}>
-        <Input size="large" type="password" placeholder="确认密码" />
+        <Input size="middle" type="password" placeholder="确认密码" />
       </FormItem>
     </Form>
   );

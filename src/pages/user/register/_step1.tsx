@@ -40,7 +40,7 @@ const StepOne: React.FC<StepOneProps> = (props) => {
             message: '请输入用户名称!'
           }
         ]}>
-        <Input size="large" placeholder="用户名称" />
+        <Input size="middle" placeholder="用户名称" />
       </FormItem>
       <FormItem
         initialValue={basicInfo.companyCertBusinessNumber ? basicInfo.companyCertBusinessNumber : ''}
@@ -51,7 +51,7 @@ const StepOne: React.FC<StepOneProps> = (props) => {
             message: '请输入统一社会信用代码!'
           }
         ]}>
-        <Input size="large" placeholder="统一社会信用代码" />
+        <Input size="middle" placeholder="统一社会信用代码" />
       </FormItem>
       <FormItem
         initialValue={basicInfo.legalPersonName ? basicInfo.legalPersonName : ''}
@@ -62,7 +62,7 @@ const StepOne: React.FC<StepOneProps> = (props) => {
             message: '请输入法人代表姓名!'
           }
         ]}>
-        <Input size="large" placeholder="法人代表姓名" />
+        <Input size="middle" placeholder="法人代表姓名" />
       </FormItem>
       <FormItem
         initialValue={basicInfo.contactName ? basicInfo.contactName : ''}
@@ -73,7 +73,7 @@ const StepOne: React.FC<StepOneProps> = (props) => {
             message: '请输入联系人姓名!'
           }
         ]}>
-        <Input size="large" placeholder="联系人姓名" />
+        <Input size="middle" placeholder="联系人姓名" />
       </FormItem>
       <FormItem
         initialValue={basicInfo.companyAddress ? basicInfo.companyAddress : ''}
@@ -84,10 +84,10 @@ const StepOne: React.FC<StepOneProps> = (props) => {
             message: '请输入联系人地址!'
           }
         ]}>
-        <Input size="large" placeholder="联系地址" />
+        <Input size="middle" placeholder="联系地址" />
       </FormItem>
       <FormItem initialValue={basicInfo.invitationCode ? basicInfo.invitationCode : ''} name="invitationCode">
-        <Input size="large" placeholder="邀请码" />
+        <Input size="middle" placeholder="邀请码" />
       </FormItem>
     </Form>
   );

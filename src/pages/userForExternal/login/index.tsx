@@ -74,7 +74,7 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
           ]}>
           <Input.Password prefix={<LockTwoTone className={styles.prefixIcon} />} placeholder="密码" />
         </FormItem>
-        <Button size="large" type="primary" htmlType="submit" className={styles.submit} onClick={handleSubmit}>
+        <Button size="middle" type="primary" htmlType="submit" className={styles.submit} onClick={handleSubmit}>
           登录
         </Button>
         <div className={styles.other}>
