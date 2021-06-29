@@ -64,7 +64,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
     }
     if (isEmpty(item.subMenus)) {
       return (
-        <Menu.Item key={item.menuHref} onClick={() => hashChange(item)}>
+        <Menu.Item key={item.menuHref} title={item.menuName} onClick={() => hashChange(item)}>
           <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
           <span>{item.menuName}</span>
         </Menu.Item>
@@ -84,7 +84,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
               return '';
             }
             return (
-              <Menu.Item key={subItem.menuHref} onClick={() => hashChange(subItem)}>
+              <Menu.Item key={subItem.menuHref} title={item.menuName} onClick={() => hashChange(subItem)}>
                 <span style={{ paddingLeft: '8px' }}>{subItem.menuName}</span>
               </Menu.Item>
             );

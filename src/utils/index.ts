@@ -29,7 +29,7 @@ export const getCookie = () => {
       }
     }
   }
-  return 'en';
+  return 'zh';
 };
 
 // tree数据压平为数组
