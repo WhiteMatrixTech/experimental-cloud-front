@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { ChainCodeSchema, Dispatch, history } from 'umi';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
-import { Table, Space, Badge, Modal, Button, message, Spin } from 'antd';
+import { Table, Space, Badge, Modal, Button, message, notification, Spin } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { Breadcrumb } from '~/components';
@@ -143,6 +143,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       })
       .catch(() => {
         setDownloading(false);
+        notification.error({ message: '合约下载失败', top: 64, duration: 3 });
       });
   };
 

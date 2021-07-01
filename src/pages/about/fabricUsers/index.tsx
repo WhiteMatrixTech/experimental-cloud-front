@@ -4,7 +4,7 @@ import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Breadcrumb } from '~/components';
-import { Table, Button, Space, Form, Row, Col, Select, message } from 'antd';
+import { Table, Button, Space, Form, Row, Col, Select, message, notification } from 'antd';
 import CreateFabricUserModal from './components/CreateFabricUserModal';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { OrgStatusEnum } from '../organizations/_config';
@@ -98,6 +98,8 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
     ).then((res: any) => {
       const blob = new Blob([res]);
       saveAs(blob, `${record.userId}.json`);
+    }).catch(() => {
+      notification.error({ message: 'SDK配置下载失败', top: 64, duration: 3 });
     });
   };
 

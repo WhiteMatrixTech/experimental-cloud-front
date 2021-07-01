@@ -4,7 +4,7 @@ import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Breadcrumb } from '~/components';
-import { Table, Button, Badge, Space } from 'antd';
+import { Table, Button, Badge, Space, notification } from 'antd';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import CreateNodeModal from './components/CreateNodeModal';
 import SSHCommand from './components/SSHCommand';
@@ -89,7 +89,9 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
     }).then((res: any) => {
       const blob = new Blob([res]);
       saveAs(blob, `${networkName}.pem`);
-    });
+    }).catch(() => {
+      notification.error({ message: '节点证书下载失败', top: 64, duration: 3 });
+    });;
   }, [networkName])
 
   // 用户身份改变时，表格展示改变
