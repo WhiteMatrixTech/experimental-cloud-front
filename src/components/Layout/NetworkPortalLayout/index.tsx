@@ -1,11 +1,12 @@
 import React, { useEffect, useCallback } from 'react';
 import { connect } from 'dva';
-import { Layout as AntdLayout, Modal } from 'antd';
+import { Layout as AntdLayout, Modal, Spin } from 'antd';
 import { history } from 'umi';
 import { NetworkPortalMenu, ServicesDrawer, TopHeader } from '~/components';
 import { ModalFuncProps } from 'antd/lib/modal';
 import { ConnectState } from '~/models/connect';
 import styles from './index.less';
+
 
 export type NetworkPortalLayoutProps = {
   children: JSX.Element;
@@ -15,7 +16,7 @@ export type NetworkPortalLayoutProps = {
 
 function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
   const { children, pathname, Layout } = props;
-  const { showDrawer } = Layout;
+  const { showDrawer, globalLoading, loadingDescription } = Layout;
 
   const receiveMessage = useCallback((e: { key: any; newValue: any }) => {
     const { key, newValue } = e;
@@ -62,20 +63,22 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
   }, []);
 
   return (
-    <AntdLayout className="layout-style">
-      <TopHeader pathname={pathname} />
-      <AntdLayout>
-        <div className={styles.appLayout}>
-          <div className={styles.leftMenu}>
-            <NetworkPortalMenu pathname={pathname} />
+    <Spin size="large" spinning={globalLoading} tip={loadingDescription}>
+      <AntdLayout className="layout-style">
+        <TopHeader pathname={pathname} />
+        <AntdLayout>
+          <div className={styles.appLayout}>
+            <div className={styles.leftMenu}>
+              <NetworkPortalMenu pathname={pathname} />
+            </div>
+            <div id="app-layout" className={styles.rightPart}>
+              {children}
+            </div>
+            {showDrawer && <ServicesDrawer pathname={pathname} />}
           </div>
-          <div id="app-layout" className={styles.rightPart}>
-            {children}
-          </div>
-          {showDrawer && <ServicesDrawer pathname={pathname} />}
-        </div>
+        </AntdLayout>
       </AntdLayout>
-    </AntdLayout>
+    </Spin>
   );
 }
 

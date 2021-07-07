@@ -42,5 +42,5 @@ export async function restartNetwork(params: CreateNetworkRequest) {
  * 删除网络
  */
 export async function deleteNetwork(params: CreateNetworkRequest) {
-  return request(`/network/${params.networkName}/delete`, { method: 'GET', body: params });
+  return request(`/network/${params.networkName}/delete`, { method: 'DELETE', body: params });
 }

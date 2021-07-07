@@ -30,3 +30,14 @@ export enum StopOrRestart {
   Stop = 'stop',
   Restart = 'restart'
 }
+
+export const CanDeleteNetworkStatus = [
+  NetworkStatus.Running,
+  NetworkStatus.CreationFailed,
+  NetworkStatus.AddChannelFailed,
+  NetworkStatus.AddOrgFailed,
+  NetworkStatus.AddPeerFailed,
+  NetworkStatus.OrgJoinChannelFailed,
+  NetworkStatus.UnknownError,
+  NetworkStatus.Stopped
+]
