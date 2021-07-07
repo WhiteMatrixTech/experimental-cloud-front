@@ -93,8 +93,6 @@ const UserModel: UserModelType = {
       return history.listen(({ pathname }: { pathname: string }) => {
         if (pathname.indexOf('/selectLeague') > -1) {
           dispatch({ type: 'getUserInfo' });
-          dispatch({ type: 'getNetworkList' });
-          dispatch({ type: 'getMyNetworkList' });
         }
       });
     },

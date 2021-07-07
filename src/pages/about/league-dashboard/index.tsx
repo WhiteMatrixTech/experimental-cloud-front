@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Spin, Table, Space, Col, Row, Button, message, Modal } from 'antd';
+import { Spin, Table, Space, Col, Row, Button, message, Modal, notification } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import { BlockSchema, Dispatch, history, TransactionSchema } from 'umi';
@@ -7,7 +7,7 @@ import moment from 'moment';
 import { Roles } from '~/utils/roles';
 import { StatisticsCard, Breadcrumb } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import { NetworkStatus, NetworkInfo, StopOrRestart } from '~/utils/networkStatus';
+import { NetworkStatus, NetworkInfo, StopOrRestart, CanDeleteNetworkStatus } from '~/utils/networkStatus';
 import CreateNetworkModal from './components/CreateNetworkModal';
 import config from '~/utils/config';
 import style from './index.less';
@@ -18,6 +18,7 @@ const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/league-dashboard');
 export interface LeagueDashboardProps {
   Dashboard: ConnectState['Dashboard'];
   User: ConnectState['User'];
+  Layout: ConnectState['Layout'];
   dispatch: Dispatch;
   qryBlockLoading: boolean;
   qryNetworkLoading: boolean;
@@ -41,6 +42,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   const { serverTotal } = props.ElasticServer;
   const { networkStatusInfo, transactionList, blockList, channelTotal } = Dashboard;
   const [createVisible, setCreateVisible] = useState(false);
+  const [pollInterval, setPollInterval] = useState<NodeJS.Timeout | null>(null);
 
   const statisticsList = useMemo(() => {
     return [
@@ -137,6 +139,56 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       onOk: confirm
     });
   }, [dispatch, networkName]);
+
+  const onDeleteNetwork = useCallback(() => {
+    const confirm = async () => {
+      const res = dispatch({
+        type: 'Dashboard/deleteNetwork',
+        payload: {
+          networkName,
+        }
+      });
+      if (res) {
+        dispatch({
+          type: 'Layout/common',
+          payload: {
+            globalLoading: true,
+            loadingDescription: '删除网络请求提交成功, 网络将被删除, 即将退出联盟'
+          }
+        });
+        setTimeout(() => {
+          localStorage.setItem('roleToken', '');
+          localStorage.setItem('leagueName', '');
+          localStorage.setItem('networkName', '');
+
+          if (pollInterval) {
+            clearInterval(pollInterval);
+          };
+
+          dispatch({
+            type: 'User/cleanNetworkInfo',
+            payload: {},
+          });
+          dispatch({
+            type: 'Layout/common',
+            payload: {
+              globalLoading: false,
+              loadingDescription: ''
+            }
+          });
+          history.replace('/selectLeague');
+        }, 4000);
+      }
+    };
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: `确认要删除网络 【${networkName}】 吗?`,
+      okText: '确认',
+      cancelText: '取消',
+      onOk: confirm
+    });
+  }, [dispatch, networkName, pollInterval]);
 
   // 点击去创建通道
   const linkToCreateChannel = useCallback(
@@ -307,14 +359,17 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
 
   const btnShow: {
     createChannelLink: JSX.Element;
+    deleteButton: JSX.Element;
     extraButton: JSX.Element;
   } = useMemo(() => {
     const btnShowInitValue = {
       createChannelLink: <></>,
+      deleteButton: <></>,
       extraButton: <></>
     };
     if (userRole === Roles.NetworkAdmin) {
-      switch (networkStatusInfo?.networkStatus) {
+      const status = networkStatusInfo?.networkStatus;
+      switch (status) {
         case NetworkStatus.NotExist:
           btnShowInitValue.extraButton = (
             <Col span={8}>
@@ -355,18 +410,17 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
           break;
         default:
           break;
+      };
+      if (status && CanDeleteNetworkStatus.includes(status)) {
+        btnShowInitValue.deleteButton = <Col span={8}>
+          <Button type="primary" onClick={onDeleteNetwork}>
+            删除网络
+          </Button>
+        </Col>
       }
     }
     return btnShowInitValue;
-  }, [
-    channelTotal,
-    linkToCreateChannel,
-    networkStatusInfo?.networkStatus,
-    onCreateNetwork,
-    onRestartNetwork,
-    onStopNetwork,
-    userRole
-  ]);
+  }, [channelTotal, linkToCreateChannel, networkStatusInfo?.networkStatus, onCreateNetwork, onDeleteNetwork, onRestartNetwork, onStopNetwork, userRole]);
 
   useEffect(() => {
     getBlockList();
@@ -380,6 +434,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       getStaticInfo();
       getTransactionList();
     }, 10000);
+    setPollInterval(interval);
     return () => clearInterval(interval);
   }, [getBlockList, getNetworkInfo, getStaticInfo, getTransactionList]);
 
@@ -415,6 +470,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
                 {btnShow.createChannelLink}
               </Col>
               {btnShow.extraButton}
+              {btnShow.deleteButton}
             </Row>
           </div>
         </Spin>

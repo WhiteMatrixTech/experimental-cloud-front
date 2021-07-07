@@ -116,13 +116,14 @@ const DashboardModel: DashboardModelType = {
       const res = yield call(API.deleteNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '网络删除成功', top: 64, duration: 3 });
         yield put({
           type: 'getNetworkInfo',
           payload: {}
         });
+        return true;
       } else {
-        notification.error({ message: result.message || '网络删除失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || '删除网络请求提交失败', top: 64, duration: 3 });
+        return false;
       }
     },
 

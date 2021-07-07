@@ -5,6 +5,8 @@ export type LayoutModelState = {
   selectedMenu: string;
   commonPortalSelectedMenu: string;
   showDrawer: boolean;
+  globalLoading: boolean;
+  loadingDescription: string;
 };
 
 export type LayoutModelType = {
@@ -26,6 +28,8 @@ const LayoutModel: LayoutModelType = {
     commonPortalSelectedMenu: localStorage.getItem('commonPortalSelectedMenu') || '/common/job-management',
     selectedMenu: localStorage.getItem('selectedMenu') || '/about/league-dashboard', // 当前选中菜单
     showDrawer: false,
+    globalLoading: false,
+    loadingDescription: ''
   },
 
   effects: {

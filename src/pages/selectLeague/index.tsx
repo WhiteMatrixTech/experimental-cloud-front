@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { history, connect, Dispatch, LeagueSchema } from 'umi';
 import { PlusOutlined } from '@ant-design/icons';
 import { Row, Col, Button, Spin, Empty, Divider, Pagination } from 'antd';
@@ -23,6 +23,23 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   const [visible, setVisible] = useState(false);
   const [myLeaguePageNum, setMyLeaguePageNum] = useState(1);
   const [optionLeaguePageNum, setOptionLeaguePageNum] = useState(1);
+
+  const getLeagueList = useCallback(() => {
+    dispatch({
+      type: 'User/getNetworkList',
+      payload: {}
+    });
+    dispatch({
+      type: 'User/getMyNetworkList',
+      payload: {}
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    getLeagueList();
+    const interval = setInterval(getLeagueList, 10000);
+    return () => clearInterval(interval);
+  }, [getLeagueList]);
 
   // 分页
   const getMyLeagueListFromPage = useMemo(() => {
@@ -49,10 +66,7 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   const onCancel = (label: boolean) => {
     setVisible(false);
     if (label) {
-      dispatch({
-        type: 'User/getMyNetworkList',
-        payload: {}
-      });
+      getLeagueList();
     }
   };
 
