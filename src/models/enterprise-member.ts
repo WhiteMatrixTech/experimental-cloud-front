@@ -33,6 +33,7 @@ export type MemberModelType = {
     getMemberTotalDocs: Effect;
     getPageListOfCompanyMember: Effect;
     getMemberDetail: Effect;
+    resetPassword: Effect;
     setStatusOfLeagueCompany: Effect;
     setCompanyApprove: Effect;
     getMemberRole: Effect;
@@ -91,6 +92,18 @@ const MemberModel: MemberModelType = {
             memberDetail: result,
           },
         });
+      }
+    },
+
+    *resetPassword({ payload }, { call, put }) {
+      const res = yield call(API.resetPassword, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: '重置成员公司登陆密码成功', top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || '重置成员公司登陆密码失败', top: 64, duration: 3 });
+        return false
       }
     },
 

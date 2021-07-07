@@ -88,7 +88,11 @@ const Register: React.FC<RegisterProps> = (props) => {
     if (userAndRegister) {
       history.push({
         pathname: '/user/register-result',
-        state: { account: accountInfo.contactEmail }
+        state: {
+          register: true,
+          account: accountInfo.contactEmail,
+          tip: `你的账户：${accountInfo.contactEmail} 注册成功`,
+        },
       });
     }
   }, [accountInfo.contactEmail, userAndRegister]);

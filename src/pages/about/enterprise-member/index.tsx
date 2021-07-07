@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, EnterpriseMemberSchema, history } from 'umi';
-import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button, Menu, Dropdown } from 'antd';
+import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
 import cs from 'classnames';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
@@ -49,6 +49,27 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   const [memberRecord, setMemberRecord] = useState<EnterpriseMemberSchema | null>(null);
   const [configVisible, setConfigVisible] = useState(false);
 
+  const renderMenu = (record: EnterpriseMemberSchema) => {
+    return (
+      <Menu>
+        <Menu.Item>
+          <span role="button" onClick={() => onClickRbacConfig(record)}>
+            配置访问权限
+          </span>
+        </Menu.Item>
+        <Menu.Item>
+          <span role="button" onClick={() => onClickToConfirm(record, 'resetPassword')}>重置密码</span>
+        </Menu.Item>
+        <Menu.Item>
+          <a
+            href={`/about/enterprise-member/${record.companyCertBusinessNumber}`}
+            onClick={(e) => onClickDetail(e, record)}
+          >详情</a>
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
   const columns: ColumnsType<any> = [
     {
       title: '用户名',
@@ -58,20 +79,6 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       fixed: 'left',
       width: 160
     },
-    // {
-    //   title: '统一社会信用代码',
-    //   dataIndex: 'companyCertBusinessNumber',
-    //   key: 'companyCertBusinessNumber',
-    //   ellipsis: true,
-    //   width: 150,
-    // },
-    // {
-    //   title: '法人代表姓名',
-    //   dataIndex: 'legalPersonName',
-    //   key: 'legalPersonName',
-    //   ellipsis: true,
-    //   width: 120,
-    // },
     {
       title: '联系人姓名',
       dataIndex: 'contactName',
@@ -129,7 +136,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       title: '操作',
       key: 'action',
       fixed: 'right',
-      width: 230,
+      width: 120,
       render: (text, record: EnterpriseMemberSchema) => (
         <Space size="small">
           {record.approvalStatus === 'pending' && (
@@ -152,14 +159,11 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
               启用
             </span>
           )}
-          <span role="button" className="table-action-span" onClick={() => onClickRbacConfig(record)}>
-            配置访问权限
-          </span>
-          <a
-            href={`/about/enterprise-member/${record.companyCertBusinessNumber}`}
-            onClick={(e) => onClickDetail(e, record)}>
-            详情
-          </a>
+          <Dropdown overlay={renderMenu(record)} trigger={['click']}>
+            <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+              更多 <DownOutlined />
+            </a>
+          </Dropdown>
         </Space>
       )
     }
@@ -230,20 +234,24 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     let callback = () => { };
     switch (type) {
       case 'validate':
-        tipTitle = '启用';
+        tipTitle = `启用成员 【${record.companyName}】 `;
         callback = () => invalidateMember(record, 'valid');
         break;
       case 'invalidate':
-        tipTitle = '停用';
+        tipTitle = `停用成员 【${record.companyName}】 `;
         callback = () => invalidateMember(record, 'invalid');
         break;
       case 'agree':
-        tipTitle = '通过';
+        tipTitle = `通过成员 【${record.companyName}】 `;
         callback = () => approvalMember(record, 'approved');
         break;
       case 'reject':
-        tipTitle = '驳回';
+        tipTitle = `驳回成员 【${record.companyName}】 `;
         callback = () => approvalMember(record, 'rejected');
+        break;
+      case 'resetPassword':
+        tipTitle = `为成员 【${record.companyName}】 重置密码`;
+        callback = () => resetPassword(record);
         break;
       default:
         break;
@@ -251,10 +259,26 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
-      content: `确认要${tipTitle}成员 【${record.companyName}】 吗?`,
+      content: `确定要${tipTitle}吗?`,
       okText: '确认',
       cancelText: '取消',
       onOk: callback
+    });
+  };
+
+  const resetPassword = (record: EnterpriseMemberSchema) => {
+    const params = {
+      networkName,
+      companyName: record.companyName,
+    };
+    dispatch({
+      type: 'Member/resetPassword',
+      payload: params,
+    }).then((res: boolean) => {
+      if (res) {
+        getMemberList();
+        getMemberTotalDocs();
+      }
     });
   };
 
@@ -371,7 +395,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
             loading={qryLoading}
             dataSource={memberList}
             onChange={onPageChange}
-            scroll={{ x: 1600, y: 300 }}
+            scroll={{ x: 1540, y: 300 }}
             pagination={{
               pageSize,
               total: memberTotal,

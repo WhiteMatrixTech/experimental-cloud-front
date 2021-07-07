@@ -1,5 +1,6 @@
 import { Form, Input, Popover, Progress } from 'antd';
 import React, { useEffect, useState, useCallback } from 'react';
+import { passwordProgressMap } from '../_config';
 import { operType } from './index';
 import styles from './index.less';
 const FormItem = Form.Item;
@@ -11,16 +12,6 @@ const passwordStatusMap = {
 };
 
 type ProgressStatus = 'success' | 'normal' | 'exception' | 'active' | undefined;
-
-const passwordProgressMap: {
-  ok: ProgressStatus;
-  pass: ProgressStatus;
-  poor: ProgressStatus;
-} = {
-  ok: 'success',
-  pass: 'normal',
-  poor: 'exception'
-};
 
 export type StepTwoProps = {
   curOper: operType;

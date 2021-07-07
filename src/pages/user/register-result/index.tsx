@@ -6,7 +6,7 @@ import { ConnectState } from '~/models/connect';
 export interface RegisterResultProps {
   dispatch: Dispatch;
   User: ConnectState['User'];
-  location: Location<{ account: string }>;
+  location: Location<{ account: string; tip: string }>;
 }
 
 const RegisterResult: React.FC<RegisterResultProps> = ({ location, dispatch }) => {
@@ -37,10 +37,10 @@ const RegisterResult: React.FC<RegisterResultProps> = ({ location, dispatch }) =
   return (
     <Result
       className={styles.registerResult}
-      status={location?.state?.account ? 'success' : 'warning'}
+      status={location?.state?.tip ? "success" : "warning"}
       title={
         <div className={styles.title}>
-          {location?.state?.account ? `你的账户：${location?.state?.account} 注册成功` : '暂无账户'}
+          {location?.state?.tip ? location?.state?.tip : '暂无账户'}
         </div>
       }
       subTitle=""
