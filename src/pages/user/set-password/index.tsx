@@ -67,7 +67,7 @@ const SetPassword: React.FC<SetPasswordProps> = (props) => {
     return 'poor';
   };
 
-  const checkConfirm = (_, value: string) => {
+  const checkConfirm = (_: any, value: string) => {
     const promise = Promise;
 
     if (value && value !== form.getFieldValue('newPassword')) {
@@ -77,7 +77,7 @@ const SetPassword: React.FC<SetPasswordProps> = (props) => {
     return promise.resolve();
   };
 
-  const checkPassword = (_, value: string) => {
+  const checkPassword = (_: any, value: string) => {
     const promise = Promise;
 
     if (value && value === form.getFieldValue('password')) {
