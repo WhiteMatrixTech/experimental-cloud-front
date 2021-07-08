@@ -78,6 +78,7 @@ const Login: React.FC<LoginProps> = (props) => {
             onPressEnter={handleUserKeyInput}
             prefix={<UserOutlined className={styles.prefixIcon} />}
             placeholder="邮箱"
+            size="large"
           />
         </FormItem>
         <FormItem
@@ -88,7 +89,7 @@ const Login: React.FC<LoginProps> = (props) => {
               message: '请输入密码！'
             }
           ]}>
-          <Input.Password ref={inputRef} prefix={<LockTwoTone className={styles.prefixIcon} />} placeholder="密码" />
+          <Input.Password size="large" ref={inputRef} prefix={<LockTwoTone className={styles.prefixIcon} />} placeholder="密码" />
         </FormItem>
         <Button size="middle" type="primary" htmlType="submit" className={styles.submit} onClick={handleSubmit}>
           登录
@@ -100,6 +101,14 @@ const Login: React.FC<LoginProps> = (props) => {
               立即注册
             </Link>
           </div>
+          <Link
+            to={{
+              pathname: '/user/set-password',
+              state: { email: form.getFieldValue('email') },
+            }}
+          >
+            修改密码
+          </Link>
         </div>
       </Form>
     </div>

@@ -56,3 +56,10 @@ export async function getMemberRole(params: any) {
 export async function setRoleToMember(params: any) {
   return request(`/network/${params.networkName}/accessPolicy/configure`, { method: 'POST', body: params });
 }
+
+/**
+ * 重置成员密码
+ */
+export async function resetPassword(params: { networkName: string; companyName: string }) {
+  return request(`/network/${params.networkName}/enterprises/resetPassword`, { method: 'POST', body: params });
+}

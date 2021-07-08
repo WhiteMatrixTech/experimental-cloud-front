@@ -381,7 +381,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
           break;
         case NetworkStatus.Stopped:
           btnShowInitValue.extraButton = (
-            <Col span={8}>
+            <Col span={2}>
               <Button type="primary" onClick={onRestartNetwork}>
                 重启网络
               </Button>
@@ -400,7 +400,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
             );
           } else {
             btnShowInitValue.extraButton = (
-              <Col span={8}>
+              <Col span={2}>
                 <Button type="primary" onClick={onStopNetwork}>
                   停用网络
                 </Button>
@@ -412,7 +412,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
           break;
       };
       if (status && CanDeleteNetworkStatus.includes(status)) {
-        btnShowInitValue.deleteButton = <Col span={8}>
+        btnShowInitValue.deleteButton = <Col span={2}>
           <Button type="primary" onClick={onDeleteNetwork}>
             删除网络
           </Button>

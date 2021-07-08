@@ -48,6 +48,7 @@ export type UserModelType = {
   state: UserModelState;
   effects: {
     register: Effect;
+    changePassword: Effect;
     login: Effect;
     getUserInfo: Effect;
     getNetworkList: Effect;
@@ -116,6 +117,25 @@ const UserModel: UserModelType = {
         return false;
       }
     },
+
+    *changePassword({ payload }, { call, put }) {
+      const res = yield call(API.changePassword, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            cacheAccount: result,
+            userAndRegister: true,
+          },
+        });
+        return true;
+      } else {
+        notification.error({ message: result.message || result.error || '密码修改失败', top: 64, duration: 3 });
+        return false;
+      }
+    },
+
     *login({ payload }, { call, put }) {
       const res = yield call(API.login, payload);
       const { statusCode, result } = res;

@@ -11,10 +11,17 @@ export type RegisterApiParams = {
   email: string;
   name: string;
   phone: string;
-  invitationCode: string;
+  invitationCode?: string;
 };
 export async function register(params: RegisterApiParams) {
   return request(`/register`, { method: 'POST', body: params });
+}
+
+/**
+ * 修改密码
+ */
+export async function changePassword(params: RegisterApiParams) {
+  return request(`/changePassword`, { method: 'POST', body: params });
 }
 
 /**
