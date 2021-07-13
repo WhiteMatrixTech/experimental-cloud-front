@@ -113,13 +113,13 @@ const Login: React.FC<LoginProps> = (props) => {
               立即注册
             </Link>
           </div>
-          <Link
+          {/* <Link
             to={{
               pathname: '/user/set-password',
               state: { email: form.getFieldValue('email') }
             }}>
             修改密码
-          </Link>
+          </Link> */}
         </div>
       </Form>
     </div>

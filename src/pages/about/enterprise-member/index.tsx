@@ -234,7 +234,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   // 点击操作按钮, 进行二次确认
   const onClickToConfirm = (record: EnterpriseMemberSchema, type: string) => {
     let tipTitle = '';
-    let callback = () => {};
+    let callback = () => { };
     switch (type) {
       case 'validate':
         tipTitle = `启用成员 【${record.companyName}】 `;

@@ -9,7 +9,7 @@ export default class LoginFooter extends React.PureComponent {
   render() {
     return (
       <Footer className={styles.footer}>
-        <div className={styles.copyright}>Powered By BUAA | 违法和不良信息举报电话：0571-85366069</div>
+        <div className={styles.copyright}>版权所有：南京航空航天大学 ALL RIGHTS RESERVED</div>
       </Footer>
     );
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
-import buaaLogo from '~/assets/images/buaa-logo.png';
+import nanhangLogo from '~/assets/images/nanhang-logo.png';
 import styles from './index.less';
 
 const { Header } = Layout;
@@ -10,7 +10,7 @@ export default class LoginHeader extends React.PureComponent {
     return (
       <Header className={styles.header}>
         <div className={styles['logo-sub']}>
-          <img src={buaaLogo} alt="北京航空大学杭州创新研究院" />
+          <img src={nanhangLogo} alt="南京航空航天大学" />
         </div>
       </Header>
     );
