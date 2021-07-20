@@ -2,7 +2,7 @@ import * as API from '../services/contract';
 import { getAllUserId } from '../services/fabric-role';
 import { notification } from 'antd';
 import type { Reducer, Effect, ChannelSchema } from 'umi';
-import { ChainCodeStatus } from '@/pages/about/contract/_config';
+import { ChainCodeStatus } from '~/pages/about/contract/_config';
 
 export type ChainCodeSchema = {
   networkName: string; // 网络名称
@@ -37,7 +37,11 @@ export type ContractModelState = {
   myContractList: Array<ChainCodeSchema>; // 我的合约列表
   myContractTotal: number;
 
-  invokeResult: { status: any; message: object } | null;
+  invokeResult: {
+    status: any;
+    message: { result: any; error: any }
+  }
+  | null;
 
   allUserId: Array<string>; // fabric角色用户列表
 };

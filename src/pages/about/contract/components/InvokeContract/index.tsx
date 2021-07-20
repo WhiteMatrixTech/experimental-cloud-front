@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
-import ReactJson from 'react-json-view';
 import { Input, Descriptions, Select, Form, Switch, Button, Modal, Radio, Divider } from 'antd';
 import { ChainCodeSchema, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
+import style from './index.less';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -53,6 +53,13 @@ function InvokeContract(props: InvokeContractProps) {
       payload: { networkName },
     });
   }, [dispatch, networkName]);
+
+  const resultMessage = useMemo(() => {
+    if (invokeResult?.message?.result) {
+      return <span className={style['invoke-success']}>{invokeResult?.message?.result}</span>
+    }
+    return <span className={style['invoke-error']}>{invokeResult?.message?.error}</span>
+  }, [invokeResult])
 
   const drawerProps = {
     visible: visible,
@@ -180,7 +187,7 @@ function InvokeContract(props: InvokeContractProps) {
           <Descriptions bordered column={1} title="">
             <Descriptions.Item label="合约调用结果">{invokeResult.status}</Descriptions.Item>
             <Descriptions.Item label={invokeResult.status === 'Failed' ? `失败原因` : `返回数据`}>
-              <ReactJson name="" src={invokeResult.message} />
+              {resultMessage}
             </Descriptions.Item>
           </Descriptions>
         </div>

@@ -1,4 +1,4 @@
-import { InstancePurpose } from '@/pages/about/elastic-cloud-server/_config';
+import { InstancePurpose } from '~/pages/common/elastic-cloud-server/_config';
 import { AllPaginationParams } from '~/utils/types';
 import { request } from '../utils/request';
 

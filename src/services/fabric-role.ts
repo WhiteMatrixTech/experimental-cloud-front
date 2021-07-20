@@ -1,4 +1,4 @@
-import { FabricRole } from '@/pages/about/fabricUsers/_config';
+import { FabricRole } from '~/pages/about/fabricUsers/_config';
 import { BasicApiParams } from '~/utils/types';
 import { request } from '../utils/request';
 
