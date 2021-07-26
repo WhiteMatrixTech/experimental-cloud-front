@@ -155,7 +155,7 @@ function RbacConfig(props: RbacConfigProps) {
       setViewChaincode(viewChaincode?.field);
       form.setFieldsValue(configValue);
     }
-  }, [form, getChaincodeList, rbacPolicy]);
+  }, [form, rbacPolicy]);
 
   // 查询角色列表
   useEffect(() => {
