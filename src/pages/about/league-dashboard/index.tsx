@@ -318,8 +318,8 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     },
     {
       title: '交易组织',
-      dataIndex: 'txEndorseMsp',
-      key: 'txEndorseMsp',
+      dataIndex: 'txMsp',
+      key: 'txMsp',
       render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
@@ -340,7 +340,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       key: 'action',
       render: (text, record: TransactionSchema) => (
         <Space size="small">
-          {record.channelId || record.txEndorseMsp ? (
+          {record.channelId || record.txMsp ? (
             <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickTransactionDetail(e, record)}>
               详情
             </a>
