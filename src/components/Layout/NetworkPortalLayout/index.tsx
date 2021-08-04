@@ -6,6 +6,7 @@ import { NetworkPortalMenu, ServicesDrawer, TopHeader } from '~/components';
 import { ModalFuncProps } from 'antd/lib/modal';
 import { ConnectState } from '~/models/connect';
 import styles from './index.less';
+import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
 
 
 export type NetworkPortalLayoutProps = {
@@ -21,7 +22,7 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
   const receiveMessage = useCallback((e: { key: any; newValue: any }) => {
     const { key, newValue } = e;
     if (key === 'accessToken' && newValue) {
-      localStorage.setItem('newAccountLogin', 'true');
+      localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NEW_ACCOUNT_LOGIN, 'true');
       Modal.confirm({
         title: 'Confirm',
         content: '你的账号已被登出',
@@ -33,7 +34,7 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
   }, []);
 
   const onOk = () => {
-    localStorage.removeItem('newAccountLogin');
+    localStorage.removeItem(LOCAL_STORAGE_ITEM_KEY.NEW_ACCOUNT_LOGIN);
     history.replace('/user/login');
   };
 
@@ -47,7 +48,7 @@ function NetworkPortalLayout(props: NetworkPortalLayoutProps) {
       destroy: any;
       update?: (configUpdate: ModalFuncProps | ((prevConfig: ModalFuncProps) => ModalFuncProps)) => void;
     };
-    if (localStorage.getItem('newAccountLogin')) {
+    if (localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.NEW_ACCOUNT_LOGIN)) {
       modal = Modal.confirm({
         title: '你的账号已被登出',
         okText: '重新登录',

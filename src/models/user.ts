@@ -4,6 +4,8 @@ import { Roles } from '../utils/roles';
 import LoginStatus from '../utils/loginStatus';
 import type { Reducer, Effect } from 'umi';
 import { NetworkStatus } from '~/utils/networkStatus';
+import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
+import { decryptData, deviceId, encryptData } from '~/utils/encryptAndDecrypt';
 
 export type UserInfoSchema = {
   loginName: string;
@@ -66,8 +68,11 @@ export type UserModelType = {
   };
 };
 
-const storageUserInfo = localStorage.getItem('userInfo');
+let storageUserInfo = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.USER_INFO);
+storageUserInfo = storageUserInfo && decryptData(storageUserInfo, deviceId);
 const userInfo = storageUserInfo ? JSON.parse(storageUserInfo) : {};
+let userRole = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE_IN_NETWORK);
+userRole = userRole ? decryptData(userRole, deviceId) : Roles.NetworkMember;
 
 const UserModel: UserModelType = {
   namespace: 'User',
@@ -84,9 +89,9 @@ const UserModel: UserModelType = {
     networkList: [], // 网络列表
     myNetworkList: [], // 我的网络列表
 
-    userRole: (localStorage.getItem('userRole') as Roles) || Roles.NetworkMember, // 进入系统的身份
-    networkName: localStorage.getItem('networkName') || '', // 进入系统时的网络
-    leagueName: localStorage.getItem('leagueName') || '', // 进入系统时的联盟
+    userRole: userRole as Roles, // 进入系统的身份
+    networkName: '', // 进入系统时的网络
+    leagueName: '', // 进入系统时的联盟
   },
 
   subscriptions: {
@@ -162,8 +167,9 @@ const UserModel: UserModelType = {
       const res = yield call(API.getUserInfo, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        localStorage.setItem('userInfo', JSON.stringify(result));
-        localStorage.setItem('role', result.role);
+        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.USER_INFO, encryptData(JSON.stringify(result), deviceId));
+
+        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE, encryptData(result.role, deviceId));
         yield put({
           type: 'common',
           payload: {
@@ -204,7 +210,8 @@ const UserModel: UserModelType = {
             roleToken: result.role_token,
           },
         });
-        localStorage.setItem('roleToken', result.role_token);
+        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.ROLE_TOKEN, encryptData(result.role_token, deviceId));
+
         return true;
       } else {
         notification.error({ message: result.message || '无法进入联盟', top: 64, duration: 3 });

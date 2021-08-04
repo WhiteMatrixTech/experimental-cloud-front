@@ -10,6 +10,24 @@
     lodash.debounce "^4.0.8"
     lodash.throttle "^4.1.1"
 
+"@amplitude/types@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.npmjs.org/@amplitude/types/-/types-1.8.0.tgz#58f65f52c05b5ba844322f66b2158eab35651b24"
+  integrity sha512-Jomb5ypMM4fuS+4LThY33mbiLdNgDa3KAypH7bRmTqGnXKd3h2olM0HkHrQtAAbl2tln/hd9IPiSKjRVqoQ3fQ==
+
+"@amplitude/ua-parser-js@0.7.24":
+  version "0.7.24"
+  resolved "https://registry.npmjs.org/@amplitude/ua-parser-js/-/ua-parser-js-0.7.24.tgz#2ce605af7d2c38d4a01313fb2385df55fbbd69aa"
+  integrity sha512-VbQuJymJ20WEw0HtI2np7EdC3NJGUWi8+Xdbc7uk8WfMIF308T0howpzkQ3JFMN7ejnrcSM/OyNGveeE3TP3TA==
+
+"@amplitude/utils@^1.0.5":
+  version "1.8.0"
+  resolved "https://registry.npmjs.org/@amplitude/utils/-/utils-1.8.0.tgz#e687d8bb89579bc64455704a6f6d7badee78d3be"
+  integrity sha512-Hl9U2jc8Xp/2/c3QcCQ2ulKzYrdd6DISSHp6Un7v/lW9GdCXwk8aZU8B0MEvmBaAkvMnzJqJsIKqfVOU9iT0Gg==
+  dependencies:
+    "@amplitude/types" "^1.8.0"
+    tslib "^1.9.3"
+
 "@ant-design/colors@^6.0.0":
   version "6.0.0"
   resolved "https://registry.npmjs.org/@ant-design/colors/-/colors-6.0.0.tgz"
@@ -1468,6 +1486,11 @@
     remark "^13.0.0"
     unist-util-find-all-after "^3.0.2"
 
+"@types/amplitude-js@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.npmjs.org/@types/amplitude-js/-/amplitude-js-8.0.1.tgz#97406436b0ba3b14eba87b01a63b56681364654d"
+  integrity sha512-JrVJ/G8bXEz/b12xKOsSWbQ4C4i4AlPalQprJBCXhUG0loWtPNfV/8Uj53mL0OHa3hfI5javocIsgF33k6cOVQ==
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.14"
   resolved "https://registry.npmjs.org/@types/babel__core/-/babel__core-7.1.14.tgz"
@@ -1500,6 +1523,11 @@
   integrity sha512-Vs0hm0vPahPMYi9tDjtP66llufgO3ST16WXaSTtDGEl9cewAl3AibmxWw6TINOqHPT9z0uABKAYjT9jNSg4npw==
   dependencies:
     "@babel/types" "^7.3.0"
+
+"@types/crypto-js@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.npmjs.org/@types/crypto-js/-/crypto-js-4.0.2.tgz#4524325a175bf819fec6e42560c389ce1fb92c97"
+  integrity sha512-sCVniU+h3GcGqxOmng11BRvf9TfN9yIs8KKjB8C8d75W69cpTfZG80gau9yTx5SxF3gvHGbJhdESzzvnjtf3Og==
 
 "@types/file-saver@^2.0.2":
   version "2.0.2"
@@ -2447,6 +2475,16 @@ ajv@^8.0.1:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
+amplitude-js@^8.4.0:
+  version "8.4.0"
+  resolved "https://registry.npmjs.org/amplitude-js/-/amplitude-js-8.4.0.tgz#989e1715372a450b25dc0408afe58a8914b359a1"
+  integrity sha512-XGF1MGovAq2JrEN2P7ax2lN3qoyQ1pFNAfx/p8pvfdBpo8UP3QCmy3QMeONJ+YPrWaq+KgcPWDTNnJL6Pg3abA==
+  dependencies:
+    "@amplitude/ua-parser-js" "0.7.24"
+    "@amplitude/utils" "^1.0.5"
+    blueimp-md5 "^2.10.0"
+    query-string "5"
+
 ansi-colors@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npmjs.org/ansi-colors/-/ansi-colors-4.1.1.tgz"
@@ -3080,6 +3118,11 @@ bluebird@^3.5.5:
   version "3.7.2"
   resolved "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
+
+blueimp-md5@^2.10.0:
+  version "2.18.0"
+  resolved "https://registry.npmjs.org/blueimp-md5/-/blueimp-md5-2.18.0.tgz#1152be1335f0c6b3911ed9e36db54f3e6ac52935"
+  integrity sha512-vE52okJvzsVWhcgUHOv+69OG3Mdg151xyn41aVQN/5W5S+S43qZhxECtYLAEHMSFWX6Mv5IZrzj3T5+JqXfj5Q==
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.11.9:
   version "4.12.0"
@@ -3887,6 +3930,11 @@ crypto-browserify@^3.11.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
+
+crypto-js@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
+  integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==
 
 css-animation@1.x, css-animation@^1.3.2:
   version "1.6.1"
@@ -9120,6 +9168,15 @@ qs@~6.5.2:
   resolved "https://registry.npmjs.org/qs/-/qs-6.5.2.tgz"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
+query-string@5:
+  version "5.1.1"
+  resolved "https://registry.npmjs.org/query-string/-/query-string-5.1.1.tgz#a78c012b71c17e05f2e3fa2319dd330682efb3cb"
+  integrity sha512-gjWOsm2SoGlgLEdAGt7a6slVOk9mGiXmPFMqrEhLQ68rhQuBnpfs3+EmlvqKyxnCo9/PPlF+9MtY02S1aFg+Jw==
+  dependencies:
+    decode-uri-component "^0.2.0"
+    object-assign "^4.1.0"
+    strict-uri-encode "^1.0.0"
+
 query-string@^4.1.0:
   version "4.3.4"
   resolved "https://registry.npmjs.org/query-string/-/query-string-4.3.4.tgz"
@@ -11749,7 +11806,7 @@ tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.14.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==

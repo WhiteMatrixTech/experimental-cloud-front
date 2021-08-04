@@ -1,4 +1,5 @@
 import type { Reducer, Effect } from 'umi';
+import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
 
 export type LayoutModelState = {
   getUnreadMessage: number;
@@ -25,8 +26,10 @@ const LayoutModel: LayoutModelType = {
 
   state: {
     getUnreadMessage: 0, // 未读消息条数
-    commonPortalSelectedMenu: localStorage.getItem('commonPortalSelectedMenu') || '/common/job-management',
-    selectedMenu: localStorage.getItem('selectedMenu') || '/about/league-dashboard', // 当前选中菜单
+    commonPortalSelectedMenu:
+      localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.COMMON_PORTAL_SELECTED_MENU) || '/common/job-management',
+    selectedMenu:
+      localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_PORTAL_SELECTED_MENU) || '/about/league-dashboard', // 当前选中菜单
     showDrawer: false,
     globalLoading: false,
     loadingDescription: ''

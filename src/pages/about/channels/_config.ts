@@ -29,7 +29,7 @@ export const ChannelStatus = {
   [ChannelStatusMap.CreationFailed]: { color: 'red', text: '创建失败' },
   [ChannelStatusMap.Stopping]: { color: 'orange', text: '停用中' },
   [ChannelStatusMap.StopFailed]: { color: 'red', text: '停用失败' },
-  [ChannelStatusMap.Stopped]: { color: ':#E2E9F7', text: '已停用' },
+  [ChannelStatusMap.Stopped]: { color: '#E2E9F7', text: '已停用' },
   [ChannelStatusMap.Deleting]: { color: 'orange', text: '删除中' },
   [ChannelStatusMap.DeletionFailed]: { color: 'red', text: '删除失败' },
   [ChannelStatusMap.Deleted]: { color: 'volcano', text: '已删除' },

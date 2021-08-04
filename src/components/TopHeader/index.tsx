@@ -61,7 +61,7 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
       <div className={styles['header-right-info']}>
         <Dropdown placement="bottomCenter" overlay={getUserMenu()}>
           <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-            {userInfo.loginName} <DownOutlined />
+            {userInfo && userInfo.loginName} <DownOutlined />
           </a>
         </Dropdown>
       </div>

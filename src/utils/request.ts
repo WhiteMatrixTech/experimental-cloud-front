@@ -2,6 +2,8 @@ import { notification } from 'antd';
 import { history } from 'umi';
 import { stringify } from 'qs';
 import { extend } from 'umi-request';
+import { LOCAL_STORAGE_ITEM_KEY } from './const';
+import { decryptData, deviceId } from './encryptAndDecrypt';
 
 let isSendNotification = false;
 
@@ -63,8 +65,12 @@ export const request = (url: string, options?: { method: string; body?: object }
     RoleAuth: '',
   };
   // token校验
-  const accessToken = localStorage.getItem('accessToken');
-  const roleToken = localStorage.getItem('roleToken');
+  let accessToken = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.ACCESS_TOKEN);
+  accessToken = accessToken && decryptData(accessToken, deviceId);
+
+  let roleToken = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.ROLE_TOKEN);
+  roleToken = roleToken && decryptData(roleToken, deviceId);
+
   const needsToken = window.location.href.indexOf('/userForExternal/login') === -1;
   if (accessToken && needsToken) {
     headers.Authorization = `Bearer ${accessToken}`;

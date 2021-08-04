@@ -13,6 +13,8 @@ import styles from './index.less';
 import { Dispatch, FabricRoleSchema } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
+import { decryptData, deviceId } from '~/utils/encryptAndDecrypt';
 
 const { Item } = Form;
 const Option = Select.Option;
@@ -79,8 +81,11 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
   const onDownLoadSDK = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: FabricRoleSchema) => {
     e.preventDefault();
     // token校验
-    const accessToken = localStorage.getItem('accessToken');
-    const roleToken = localStorage.getItem('roleToken');
+    let accessToken = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.ACCESS_TOKEN);
+    accessToken = accessToken && decryptData(accessToken, deviceId);
+
+    let roleToken = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.ROLE_TOKEN);
+    roleToken = roleToken && decryptData(roleToken, deviceId);
     let headers = {
       'Content-Type': 'text/plain',
       Authorization: `Bearer ${accessToken}`,

@@ -10,6 +10,7 @@ import { Roles } from '~/utils/roles';
 import { NetworkStatus } from '~/utils/networkStatus';
 import { ConnectState } from '~/models/connect';
 import styles from './index.less';
+import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
 
 const { SubMenu } = Menu;
 
@@ -46,7 +47,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
         type: 'Layout/common',
         payload: { selectedMenu: menu.menuHref },
       });
-      localStorage.setItem('selectedMenu', menu.menuHref);
+      localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_PORTAL_SELECTED_MENU, menu.menuHref);
     }
   };
 
