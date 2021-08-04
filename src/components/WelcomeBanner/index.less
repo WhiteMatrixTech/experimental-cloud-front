@@ -1,0 +1,49 @@
+@import '~themes/variable.less';
+
+.welcomeheader-container {
+  margin-bottom: 20px;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 2px;
+  transition: height 0.3s, margin 0.3s;
+  .welcomeheader-content {
+    transition: opacity 0.3s;
+  }
+  .welcomeheader-large-banner {
+    position: relative;
+    padding: 24px;
+    color: @default-font-color;
+    background: #247fff;
+    h2 {
+      margin: 0 0 8px;
+      color: @default-font-color;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 32px;
+    }
+    p {
+      margin-bottom: 0;
+      color: hsla(0, 0%, 100%, 0.85);
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 22px;
+    }
+    .welcomeheader-extras {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 20px;
+    }
+  }
+  .welcomeheader-collapsed-banner {
+    position: relative;
+    padding: 16px 24px;
+    border: 1px solid @default-border-color;
+    .welcomeheader-extras {
+      position: absolute;
+      top: 16px;
+      right: 24px;
+      font-size: 20px;
+    }
+  }
+}

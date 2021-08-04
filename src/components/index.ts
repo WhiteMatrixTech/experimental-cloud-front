@@ -16,6 +16,7 @@ import NetworkPortalLayout from './Layout/NetworkPortalLayout';
 import HeaderSearch from './HeaderSearch';
 import ServicesDrawer from './Drawer/ServicesDrawer';
 import PageTitle from './PageTitle';
+import WelcomeBanner from './WelcomeBanner';
 
 export {
   NetworkPortalLayout,
@@ -36,4 +37,5 @@ export {
   ChartCard,
   Field,
   LoginMessage,
+  WelcomeBanner
 };

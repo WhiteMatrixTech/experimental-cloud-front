@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import { Table, Space, Col, Row } from 'antd';
+import { Table, Space, Col, Row, Descriptions, Statistic } from 'antd';
 import { connect } from 'dva';
 import { ChannelSchema, Dispatch, history, Location } from 'umi';
 import moment from 'moment';
@@ -15,6 +15,7 @@ import block from '~/assets/images/dashboard/icon-block.png';
 import transactions from '~/assets/images/dashboard/icon-transcation.png';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { StatisticValueStyle } from '~/pages/about/league-dashboard/_style';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
@@ -233,49 +234,47 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <div className="page-content">
+        <Descriptions title="基本信息" className={style['channel-basic-info']}>
+          <Descriptions.Item label="通道ID：">{location?.state?._id}</Descriptions.Item>
+          <Descriptions.Item label="通道名称：">{location?.state?.channelId}</Descriptions.Item>
+          <Descriptions.Item label="通道别名：">{location?.state?.channelAliasName}</Descriptions.Item>
+          <Descriptions.Item label="创建时间：">
+            {location?.state?.createdAt ? moment(location?.state?.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
+          </Descriptions.Item>
+          <Descriptions.Item label="状态：">
+            {location?.state?.channelStatus ? ChannelStatus[location?.state?.channelStatus].text : ''}
+          </Descriptions.Item>
+        </Descriptions>
         <div className={style['channel-basic-info']}>
-          <Row>
-            <Col span={8}>
-              <label>通道ID：</label>
-              <span>{location?.state?._id}</span>
-            </Col>
-            <Col span={8}>
-              <label>通道名称：</label>
-              <span>{location?.state?.channelId}</span>
-            </Col>
-            <Col span={8}>
-              <label>通道别名：</label>
-              <span>{location?.state?.channelAliasName}</span>
-            </Col>
-            <Col span={8}>
-              <label>创建时间：</label>
-              <span>
-                {location?.state?.createdAt ? moment(location?.state?.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
-              </span>
-            </Col>
-            <Col span={8}>
-              <label>状态：</label>
-              <span>{location?.state?.channelStatus ? ChannelStatus[location?.state?.channelStatus].text : ''}</span>
-            </Col>
+          <h2>通道内数据</h2>
+          <Row gutter={24} justify="space-between">
+            {statisticsList.map(item => <Col key={item.label} span={4}>
+              <Statistic
+                title={item.label}
+                value={item.num}
+                valueStyle={StatisticValueStyle}
+              />
+            </Col>)}
           </Row>
         </div>
-        <StatisticsCard statisticsList={statisticsList} imgList={imgList} />
-        <Table
-          rowKey="_id"
-          columns={blockColumns}
-          loading={qryBlockLoading}
-          dataSource={blockListOfChannel}
-          className="page-content-shadow"
-          pagination={false}
-        />
-        <Table
-          rowKey="_id"
-          columns={transactionColumns}
-          loading={qryTransactionLoading}
-          dataSource={transactionListOfChannel}
-          className="page-content-shadow"
-          pagination={false}
-        />
+        <div className="page-content page-content-shadow table-wrapper">
+          <Table
+            rowKey="_id"
+            columns={blockColumns}
+            loading={qryBlockLoading}
+            dataSource={blockListOfChannel}
+            pagination={false}
+          />
+        </div>
+        <div className="page-content page-content-shadow table-wrapper">
+          <Table
+            rowKey="_id"
+            columns={transactionColumns}
+            loading={qryTransactionLoading}
+            dataSource={transactionListOfChannel}
+            pagination={false}
+          />
+        </div>
       </div>
     </div>
   );

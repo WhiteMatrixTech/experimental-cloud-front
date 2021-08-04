@@ -32,19 +32,38 @@
 }
 
 .league-basic-info {
-  justify-content: flex-start;
   margin-bottom: 20px;
-  padding: 16px;
+  padding: 20px;
   background: @content-background;
-  -webkit-box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
-  .description {
-    color: @second-level-color;
-  }
-  label {
-    font-weight: 600;
+  border: 1px solid @default-border-color;
+  h2 {
+    flex: auto;
+    margin-bottom: 20px;
+    overflow: hidden;
+    color: @black_85;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1.5715;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   button {
-    margin-top: 14px;
+    height: 28px;
+    padding: 0 15px;
+  }
+
+  :global {
+    .ant-col {
+      border-right: 1px solid @default-divider-background;
+    }
+    .ant-col:last-child {
+      border-right: none;
+    }
+    .ant-statistic-title {
+      margin-bottom: 15px;
+      font-size: 14px;
+      font-style: normal;
+      line-height: 1em;
+    }
   }
 }

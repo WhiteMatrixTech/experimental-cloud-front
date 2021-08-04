@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Spin, Table, Space, Col, Row, Button, message, Modal } from 'antd';
+import { Spin, Table, Space, Button, message, Modal, Descriptions, Statistic, Row, Col } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import { BlockSchema, Dispatch, history, TransactionSchema } from 'umi';
 import moment from 'moment';
 import { Roles } from '~/utils/roles';
-import { StatisticsCard, PageTitle } from '~/components';
+import { WelcomeBanner } from '~/components';
 import { NetworkStatus, NetworkInfo, StopOrRestart, CanDeleteNetworkStatus } from '~/utils/networkStatus';
 import CreateNetworkModal from './components/CreateNetworkModal';
 import config from '~/utils/config';
@@ -13,6 +13,7 @@ import style from './index.less';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
+import { StatisticValueStyle } from './_style';
 
 export interface LeagueDashboardProps {
   Dashboard: ConnectState['Dashboard'];
@@ -404,7 +405,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       }
       if (status && CanDeleteNetworkStatus.includes(status)) {
         btnShowInitValue.deleteButton =
-          <Button type="primary" style={{ marginLeft: '20px' }} onClick={onDeleteNetwork}>
+          <Button type="primary" danger style={{ marginLeft: '20px' }} onClick={onDeleteNetwork}>
             删除网络
           </Button>
       }
@@ -459,35 +460,42 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <PageTitle label="联盟总览" extra={
-        <div>{btnShow.extraButton}
-          {btnShow.deleteButton}</div>
-      } />
       <div className="page-content">
+        <WelcomeBanner
+          title="Hi，欢迎使用区块链应用服务平台"
+          subtitle="快速构建联盟链基础设施，提供区块链应用开发、部署、测试和监控的整套解决方案"
+        />
         <Spin spinning={qryNetworkLoading || stopNetworkLoading || restartNetworkLoading}>
-          <div className={style['league-basic-info']}>
-            <Row>
-              <Col span={8}>
-                <label>联盟名称：</label>
-                <span className={style.description}>{leagueName}</span>
-              </Col>
-              <Col span={8}>
-                <label>创建时间：</label>
-                <span className={style.description}>
-                  {networkStatusInfo ? moment(networkStatusInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
-                </span>
-              </Col>
-              <Col span={8}>
-                <label>网络状态: </label>
-                <span className={style.description}>
-                  {networkStatusInfo ? NetworkInfo[networkStatusInfo.networkStatus] : ''}
-                </span>
-                {btnShow.createChannelLink}
-              </Col>
-            </Row>
-          </div>
+          <Descriptions title="基本信息" className={style['league-basic-info']}>
+            <Descriptions.Item label="联盟名称：">{leagueName}</Descriptions.Item>
+            <Descriptions.Item label="网络名称：">{networkName}</Descriptions.Item>
+            <Descriptions.Item label="创建时间：">
+              {networkStatusInfo ? moment(networkStatusInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
+            </Descriptions.Item>
+            <Descriptions.Item label="网络状态: ">
+              {networkStatusInfo ? NetworkInfo[networkStatusInfo.networkStatus] : ''}
+              {btnShow.createChannelLink}
+            </Descriptions.Item>
+            <Descriptions.Item label="网络操作：">
+              <div>
+                {btnShow.extraButton}
+                {btnShow.deleteButton}
+              </div>
+            </Descriptions.Item>
+          </Descriptions>
         </Spin>
-        <StatisticsCard statisticsList={statisticsList} />
+        <div className={style['league-basic-info']}>
+          <h2>链上数据</h2>
+          <Row gutter={24} justify="space-between">
+            {statisticsList.map(item => <Col key={item.label} span={4}>
+              <Statistic
+                title={item.label}
+                value={item.num}
+                valueStyle={StatisticValueStyle}
+              />
+            </Col>)}
+          </Row>
+        </div>
         <div className="page-content page-content-shadow table-wrapper">
           <Table
             rowKey="blockHash"
