@@ -121,6 +121,8 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
           payload: { selectedMenu: '/about/league-dashboard' }
         });
         localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE_IN_NETWORK, encryptData(league.role as Roles, deviceId));
+        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.LEAGUE_NAME, encryptData(league.leagueName, deviceId));
+        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_NAME, encryptData(league.networkName, deviceId));
 
         history.replace('/about/league-dashboard');
       }

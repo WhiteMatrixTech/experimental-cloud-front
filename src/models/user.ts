@@ -5,7 +5,7 @@ import LoginStatus from '../utils/loginStatus';
 import type { Reducer, Effect } from 'umi';
 import { NetworkStatus } from '~/utils/networkStatus';
 import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
-import { decryptData, deviceId, encryptData } from '~/utils/encryptAndDecrypt';
+import { deviceId, encryptData, getInitData } from '~/utils/encryptAndDecrypt';
 
 export type UserInfoSchema = {
   loginName: string;
@@ -68,11 +68,7 @@ export type UserModelType = {
   };
 };
 
-let storageUserInfo = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.USER_INFO);
-storageUserInfo = storageUserInfo && decryptData(storageUserInfo, deviceId);
-const userInfo = storageUserInfo ? JSON.parse(storageUserInfo) : {};
-let userRole = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE_IN_NETWORK);
-userRole = userRole ? decryptData(userRole, deviceId) : Roles.NetworkMember;
+const { userInfo, userRole, networkName, leagueName } = getInitData();
 
 const UserModel: UserModelType = {
   namespace: 'User',
@@ -90,8 +86,8 @@ const UserModel: UserModelType = {
     myNetworkList: [], // 我的网络列表
 
     userRole: userRole as Roles, // 进入系统的身份
-    networkName: '', // 进入系统时的网络
-    leagueName: '', // 进入系统时的联盟
+    networkName: networkName, // 进入系统时的网络
+    leagueName: leagueName, // 进入系统时的联盟
   },
 
   subscriptions: {

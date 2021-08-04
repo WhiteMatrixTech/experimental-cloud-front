@@ -5,8 +5,8 @@ import { ConnectState } from '~/models/connect';
 import { Dispatch, history } from 'umi';
 import { NetworkMenuPath, CommonMenuPath, IMenuPathProps } from '~/utils/menu';
 import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
-import { decryptData, deviceId } from '~/utils/encryptAndDecrypt';
 import styles from './ServicesDrawer.less';
+import { getTokenData } from '~/utils/encryptAndDecrypt';
 
 export type ServicesDrawerProps = {
   dispatch: Dispatch;
@@ -35,8 +35,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
 
   // 跳转至IDE
   const onClickIDE = () => {
-    let accessToken = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.ACCESS_TOKEN);
-    accessToken = accessToken && decryptData(accessToken, deviceId);
+    const { accessToken } = getTokenData();
     const link = `${process.env.CHAIN_IDE_LINK}#${accessToken}`;
     onClose();
     window.open(link);
