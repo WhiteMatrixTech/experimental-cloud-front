@@ -1,3 +1,5 @@
+import { LOCAL_STORAGE_ITEM_KEY } from './const';
+import { decryptData, deviceId } from './encryptAndDecrypt';
 import { getAllPath, tree2Arr } from './index';
 import { Roles } from './roles';
 
@@ -315,15 +317,19 @@ const CommonMenuPath: IMenuPathProps[] = getAllMenuPath(getAllPath(CommonMenuLis
 const allNetworkMenu: NetworkMenuProps[] = tree2Arr(NetworkMenuList, 'subMenus');
 const allCommonMenu: CommonMenuProps[] = tree2Arr(CommonMenuList, 'subMenus');
 const pageAuthControl = (pathname: string): boolean => {
-  const userRole = localStorage.getItem('userRole') as Roles;
-  const role = localStorage.getItem('role') as Roles;
+  let role = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE);
+  role = role && decryptData(role, deviceId);
+
+  let userRole = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE_IN_NETWORK);
+  userRole = userRole && decryptData(userRole, deviceId);
+
   const isNetworkMenu = allNetworkMenu.find((menu) => menu.menuHref === pathname);
   if (isNetworkMenu) {
-    return !isNetworkMenu.accessRole.includes(userRole);
+    return !isNetworkMenu.accessRole.includes(userRole as Roles);
   }
   const isCommonMenu = allCommonMenu.find((menu) => menu.menuHref === pathname);
   if (isCommonMenu) {
-    return !isCommonMenu.accessRole.includes(role);
+    return !isCommonMenu.accessRole.includes(role as Roles);
   }
   return false;
 };

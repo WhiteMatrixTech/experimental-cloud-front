@@ -7,6 +7,7 @@ import { tree2Arr } from '~/utils';
 import { CommonMenuList, CommonMenuProps, RootMenuId } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import styles from './index.less';
+import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
 
 const { SubMenu } = Menu;
 
@@ -30,7 +31,7 @@ const CommonPortalMenu: React.FC<CommonPortalMenuProps> = (props) => {
         type: 'Layout/common',
         payload: { commonPortalSelectedMenu: menu.menuHref },
       });
-      localStorage.setItem('commonPortalSelectedMenu', menu.menuHref);
+      localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.COMMON_PORTAL_SELECTED_MENU, menu.menuHref);
     }
   };
 
@@ -39,7 +40,7 @@ const CommonPortalMenu: React.FC<CommonPortalMenuProps> = (props) => {
   };
 
   const getMenuItem = (item: CommonMenuProps) => {
-    if (!item.accessRole.includes(userInfo.role)) {
+    if (!userInfo || !item.accessRole.includes(userInfo.role)) {
       return '';
     }
     if (isEmpty(item.subMenus)) {

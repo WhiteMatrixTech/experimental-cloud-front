@@ -8,6 +8,8 @@ import { ConnectState } from '~/models/connect';
 import { Roles } from '~/utils/roles';
 import { getDifferenceSet } from '~/utils';
 import styles from './index.less';
+import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
+import { deviceId, encryptData } from '~/utils/encryptAndDecrypt';
 
 const AdminRole = [Roles.Admin, Roles.SuperUser];
 
@@ -118,9 +120,8 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
           type: 'Layout/common',
           payload: { selectedMenu: '/about/league-dashboard' }
         });
-        localStorage.setItem('userRole', league.role as Roles);
-        localStorage.setItem('leagueName', league.leagueName);
-        localStorage.setItem('networkName', league.networkName);
+        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE_IN_NETWORK, encryptData(league.role as Roles, deviceId));
+
         history.replace('/about/league-dashboard');
       }
     });

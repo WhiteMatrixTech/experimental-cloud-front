@@ -5,6 +5,8 @@ import { LockTwoTone, UserOutlined } from '@ant-design/icons';
 import { LoginMessage } from '~/components';
 import LoginStatus from '~/utils/loginStatus';
 import { ConnectState } from '~/models/connect';
+import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
+import { deviceId, encryptData } from '~/utils/encryptAndDecrypt';
 import styles from './index.less';
 
 const FormItem = Form.Item;
@@ -31,7 +33,7 @@ const Login: React.FC<LoginProps> = (props) => {
           payload: values
         }).then((res: { access_token: string }) => {
           if (res) {
-            localStorage.setItem('accessToken', res.access_token);
+            localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.ACCESS_TOKEN, encryptData(res.access_token, deviceId));
             const redirect = localStorage.getItem('redirect');
             if (redirect) {
               window.location.replace(`${redirect}#${res.access_token}`);
@@ -91,7 +93,12 @@ const Login: React.FC<LoginProps> = (props) => {
           ]}>
           <Input.Password size="large" ref={inputRef} prefix={<LockTwoTone className={styles.prefixIcon} />} placeholder="密码" />
         </FormItem>
-        <Button size="middle" type="primary" htmlType="submit" className={styles.submit} onClick={handleSubmit}>
+        <Button
+          size="middle"
+          type="primary"
+          htmlType="submit"
+          loading={loginLoading}
+          className={styles.submit} onClick={handleSubmit}>
           登录
         </Button>
         <div className={styles.other}>

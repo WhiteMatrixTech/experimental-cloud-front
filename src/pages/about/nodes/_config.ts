@@ -4,7 +4,7 @@ export const peerStatus = {
   Creating: { color: 'orange', text: '创建中' },
   CreationFailed: { color: 'red', text: '创建失败' },
   Stopping: { color: 'orange', text: '停用中' },
-  Stopped: { color: ':#E2E9F7', text: '已停用' },
+  Stopped: { color: '#E2E9F7', text: '已停用' },
   StopFailed: { color: 'red', text: '停用失败' },
   Deleting: { color: 'orange', text: '删除中' },
   DeletionFailed: { color: 'red', text: '删除失败' },

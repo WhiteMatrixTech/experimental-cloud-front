@@ -13,6 +13,7 @@ import config from '~/utils/config';
 import style from './index.less';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/league-dashboard');
 export interface LeagueDashboardProps {
@@ -157,9 +158,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
           }
         });
         setTimeout(() => {
-          localStorage.setItem('roleToken', '');
-          localStorage.setItem('leagueName', '');
-          localStorage.setItem('networkName', '');
+          localStorage.removeItem(LOCAL_STORAGE_ITEM_KEY.ROLE_TOKEN);
 
           if (pollInterval) {
             clearInterval(pollInterval);
