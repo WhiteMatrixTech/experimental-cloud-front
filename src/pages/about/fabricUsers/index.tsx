@@ -16,7 +16,6 @@ import { cancelCurrentRequest } from '~/utils/request';
 
 const { Item } = Form;
 const Option = Select.Option;
-
 export interface FabricRoleManagementProps {
   dispatch: Dispatch;
   qryLoading: boolean;

@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { BlockSchema, Dispatch, history } from 'umi';
 import { Table, Space, Form, Spin, Input, Row, Col, Button } from 'antd';
 import moment from 'moment';
-import { PageTitle, SearchBar } from '~/components';
+import { PageTitle } from '~/components';
 import baseConfig from '~/utils/config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
