@@ -6,9 +6,8 @@ import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
 import cs from 'classnames';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
-import { Breadcrumb } from '~/components';
+import { PageTitle } from '~/components';
 import baseConfig from '~/utils/config';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
 import { statusList, validStatus } from './_config';
 import ConfigMemberRole from './components/ConfigMemberRole';
@@ -30,7 +29,6 @@ const initSearchObj = {
   approvalStatus: 'any'
 };
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterprise-member');
 export interface EnterpriseMemberProps {
   Member: ConnectState['Member'];
   qryLoading: boolean;
@@ -347,7 +345,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="成员管理" />
       <div className={cs(styles['enterprise-wrapper'], 'page-content')}>
         <div className={cs(styles['search-wrapper'], 'page-content-shadow')}>
           <Form {...formItemLayout} colon={false} form={form}>

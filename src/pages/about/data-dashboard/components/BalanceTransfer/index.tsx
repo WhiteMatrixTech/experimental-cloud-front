@@ -8,7 +8,7 @@ export default function BalanceTransfer() {
       <Row gutter={[16, 16]}>
         <Col span={12}>
           <iframe
-            src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=40`}
+            src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=40`}
             title="Ledger Height Per Channel"
             id="Ledger Height Per Channel"
             frameBorder="0"
@@ -16,7 +16,7 @@ export default function BalanceTransfer() {
         </Col>
         <Col span={12}>
           <iframe
-            src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=12`}
+            src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=12`}
             title="Live Monitored Nodes"
             id="Live Monitored Nodes"
             frameBorder="0"
@@ -25,7 +25,7 @@ export default function BalanceTransfer() {
         <Col span={12}>
           <div className={styles['col-span-12']}>
             <iframe
-              src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=20`}
+              src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=20`}
               title="Block Processing Time"
               id="Block Processing Time"
               frameBorder="0"
@@ -35,7 +35,7 @@ export default function BalanceTransfer() {
         <Col span={12}>
           <div className={styles['col-span-12']}>
             <iframe
-              src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=dark&panelId=50`}
+              src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s&theme=light&panelId=50`}
               title="Amount of Business Transactions per Channel"
               id="Amount of Business Transactions per Channel"
               frameBorder="0"

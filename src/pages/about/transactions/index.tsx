@@ -3,13 +3,10 @@ import { connect } from 'dva';
 import { Dispatch, history, TransactionSchema } from 'umi';
 import { Table, Space } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, SearchBar } from '~/components';
+import { PageTitle, SearchBar } from '~/components';
 import baseConfig from '~/utils/config';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
-
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/transactions');
 
 export interface TransactionsProps {
   Transactions: ConnectState['Transactions'];
@@ -149,7 +146,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="交易信息" />
       <div className="page-content page-content-shadow table-wrapper">
         <SearchBar placeholder="交易ID" onSearch={onSearch} />
         <Table

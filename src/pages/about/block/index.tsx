@@ -3,14 +3,10 @@ import { connect } from 'dva';
 import { BlockSchema, Dispatch, history } from 'umi';
 import { Table, Space } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, SearchBar } from '~/components';
+import { PageTitle, SearchBar } from '~/components';
 import baseConfig from '~/utils/config';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
-
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
-
 export interface BlockProps {
   Block: ConnectState['Block'];
   qryLoading: boolean;
@@ -147,7 +143,7 @@ const Block: React.FC<BlockProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="区块数据" />
       <div className="page-content page-content-shadow table-wrapper">
         <SearchBar placeholder="区块HASH" onSearch={onSearch} />
         <Table

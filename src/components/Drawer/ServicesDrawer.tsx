@@ -128,18 +128,18 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
             <Col span={24}>所有服务</Col>
             {showNetworkMenu && (
               <Col span={4}>
-                <Menu>
+                <Menu theme="dark">
                   <Menu.ItemGroup title="网络">{getNetworkMenu(optionalNetworkMenuList)}</Menu.ItemGroup>
                 </Menu>
               </Col>
             )}
             <Col span={4}>
-              <Menu>
+              <Menu theme="dark">
                 <Menu.ItemGroup title="通用">{getNetworkMenu(optionalCommonMenuList)}</Menu.ItemGroup>
               </Menu>
             </Col>
             <Col span={4}>
-              <Menu>
+              <Menu theme="dark">
                 <Menu.ItemGroup title="其他">
                   {showChangeLeague && (
                     <Menu.Item key="/selectLeague" onClick={onClickChangeLeague}>

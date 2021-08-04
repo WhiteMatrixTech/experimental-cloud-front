@@ -3,14 +3,11 @@ import { Table, Space } from 'antd';
 import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
 import { ConnectState } from '~/models/connect';
-import { Breadcrumb } from '~/components';
-import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
+import { PageTitle } from '~/components';
 import { ColumnsType } from 'antd/lib/table';
 import { JobSchema } from '~/models/block-chain-compile';
 import baseConfig from '~/utils/config';
 import styles from './index.less';
-
-const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/job-management', false);
 
 export type SourceCodeCompilationProps = {
   qryLoading: boolean;
@@ -114,7 +111,7 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="任务管理" />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
           rowKey="jobId"

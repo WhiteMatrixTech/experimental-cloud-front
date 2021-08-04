@@ -42,7 +42,7 @@ const Breadcrumb: React.FC<IProps> = (props) => {
 
   return (
     <div className={classnames(styles.breadcrumb, className)} style={style}>
-      <AntBreadcrumb separator=">">
+      <AntBreadcrumb separator="/">
         {hideIndex || <AntBreadcrumb.Item>{indexMenuName}</AntBreadcrumb.Item>}
         {breadCrumbItem.map((item, key) => {
           return key !== breadCrumbItem.length - 1 ? (

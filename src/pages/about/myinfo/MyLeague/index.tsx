@@ -2,18 +2,12 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, DetailCard } from '~/components';
+import { PageTitle, DetailCard } from '~/components';
 import { NetworkInfo } from '~/utils/networkStatus';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 import { DetailViewAttr } from '~/utils/types';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
-breadCrumbItem.push({
-  menuName: '我的联盟',
-  menuHref: `/`,
-});
 export interface MyLeagueInfoProps {
   User: ConnectState['User'];
   dispatch: Dispatch;
@@ -65,7 +59,7 @@ function MyLeagueInfo(props: MyLeagueInfoProps) {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="我的联盟" />
       <div className="page-content">
         <Spin spinning={qryLoading}>
           <DetailCard cardTitle="联盟信息" detailList={myLeagueInfo} />

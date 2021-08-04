@@ -15,6 +15,7 @@ import CommonPortalLayout from './Layout/CommonPortalLayout';
 import NetworkPortalLayout from './Layout/NetworkPortalLayout';
 import HeaderSearch from './HeaderSearch';
 import ServicesDrawer from './Drawer/ServicesDrawer';
+import PageTitle from './PageTitle';
 
 export {
   NetworkPortalLayout,
@@ -24,6 +25,7 @@ export {
   LeaguePageLayout,
   LoginExternalLayout,
   TopHeader,
+  PageTitle,
   HeaderSearch,
   NetworkPortalMenu,
   CommonPortalMenu,

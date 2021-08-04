@@ -2,16 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Table, Badge, Button } from 'antd';
 import moment from 'moment';
-import { Breadcrumb } from '~/components';
+import { PageTitle } from '~/components';
 import baseConfig from '~/utils/config';
 import { orgStatus } from './_config';
 import CreateOrgModal from './components/CreateOrgModal';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
-
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/organizations');
 export interface OrganizationManagementProps {
   Organization: ConnectState['Organization'];
   qryLoading: boolean;
@@ -112,13 +109,10 @@ function OrganizationManagement(props: OrganizationManagementProps) {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="组织管理" extra={<Button type="primary" onClick={onClickCreateOrg}>
+        创建组织
+      </Button>} />
       <div className="page-content page-content-shadow table-wrapper">
-        <div className="table-header-btn-wrapper">
-          <Button type="primary" onClick={onClickCreateOrg}>
-            创建组织
-          </Button>
-        </div>
         <Table
           rowKey="_id"
           columns={columns}

@@ -3,17 +3,26 @@
 .appLayout {
   position: relative;
   display: flex;
+  flex-direction: row;
+  align-items: stretch;
   height: 100%;
+  -webkit-box-align: stretch;
   .leftMenu {
-    width: 220px;
+    position: relative;
+    flex: 0 0 224px;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 8px;
   }
+
   .rightPart {
-    flex: 1;
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    max-width: 100%;
     height: 100%;
     padding: 20px;
-    overflow: auto;
-    background: @wrapper-background;
+    overflow: hidden auto;
+    background: @grey-5;
   }
 }

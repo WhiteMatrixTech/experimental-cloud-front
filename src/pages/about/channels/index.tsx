@@ -3,18 +3,14 @@ import { connect } from 'dva';
 import moment from 'moment';
 import { Dispatch, history, Location } from 'umi';
 import { Table, Button, Badge, Space } from 'antd';
-import { Breadcrumb } from '~/components';
 import CreateChannelModal from './components/CreateChannelModal';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import baseConfig from '~/utils/config';
 import { Roles } from '~/utils/roles';
 import { ChannelStatus } from './_config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { ChannelSchema } from '~/models/channel';
-
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
-
+import { PageTitle } from '~/components';
 export interface ChannelManagementProps {
   dispatch: Dispatch;
   qryLoading: boolean;
@@ -179,15 +175,12 @@ function ChannelManagement(props: ChannelManagementProps) {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="通道管理" extra={userRole === Roles.NetworkAdmin ? (
+        <Button type="primary" onClick={onClickCreateChannel}>
+          创建通道
+        </Button>
+      ) : null} />
       <div className="page-content page-content-shadow table-wrapper">
-        {userRole === Roles.NetworkAdmin && (
-          <div className="table-header-btn-wrapper">
-            <Button type="primary" onClick={onClickCreateChannel}>
-              创建通道
-            </Button>
-          </div>
-        )}
         <Table
           rowKey="_id"
           loading={qryLoading}

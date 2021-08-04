@@ -6,8 +6,7 @@ import { saveAs } from 'file-saver';
 import { Table, Space, Badge, Modal, Button, message, notification, Spin } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { Breadcrumb } from '~/components';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import { PageTitle } from '~/components';
 import EditContract from './components/EditContract';
 import InvokeContract from './components/InvokeContract';
 import ApproveContract from './components/ApproveContract';
@@ -18,7 +17,6 @@ import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
 import { cancelCurrentRequest } from '~/utils/request';
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 
 const pageSize = baseConfig.pageSize;
 export interface MyContractProps {
@@ -322,13 +320,12 @@ const MyContract: React.FC<MyContractProps> = (props) => {
   return (
     <div className="page-wrapper">
       <Spin spinning={downloading} tip="下载中...">
-        <Breadcrumb breadCrumbItem={breadCrumbItem} />
+        <PageTitle label="合约管理" extra={
+          <Button type="primary" onClick={onClickAdd}>
+            创建合约
+          </Button>}
+        />
         <div className="page-content page-content-shadow table-wrapper">
-          <div className="table-header-btn-wrapper">
-            <Button type="primary" onClick={onClickAdd}>
-              创建合约
-            </Button>
-          </div>
           <Table
             rowKey={(record: any) => `${record.chainCodeName}-${record.channelId}`}
             columns={columns}

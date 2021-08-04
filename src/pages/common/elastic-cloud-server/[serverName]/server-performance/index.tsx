@@ -28,21 +28,21 @@ function ServerPerformance(props: ServerPerformanceProps) {
           <Row gutter={[16, 16]}>
             <Col span={8}>
               <iframe
-                src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=dark&panelId=7`}
+                src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=light&panelId=7`}
                 title="Running Containers"
                 id="Running Containers"
                 frameBorder="0"></iframe>
             </Col>
             <Col span={8}>
               <iframe
-                src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=dark&panelId=5`}
+                src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=light&panelId=5`}
                 title="Total Memory Usage"
                 id="Total Memory Usage"
                 frameBorder="0"></iframe>
             </Col>
             <Col span={8}>
               <iframe
-                src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=dark&panelId=6`}
+                src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=light&panelId=6`}
                 title="Total CPU Usage"
                 id="Total CPU Usage"
                 frameBorder="0"></iframe>
@@ -50,7 +50,7 @@ function ServerPerformance(props: ServerPerformanceProps) {
             <Col span={24}>
               <div className={styles['col-span-24']}>
                 <iframe
-                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=dark&panelId=2`}
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=light&panelId=2`}
                   title="CPU Usage"
                   id="CPU Usage"
                   frameBorder="0"></iframe>
@@ -59,7 +59,7 @@ function ServerPerformance(props: ServerPerformanceProps) {
             <Col span={24}>
               <div className={styles['col-span-24']}>
                 <iframe
-                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=dark&panelId=1`}
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=light&panelId=1`}
                   title="Memory Usage"
                   id="Memory Usage"
                   frameBorder="0"></iframe>
@@ -68,7 +68,7 @@ function ServerPerformance(props: ServerPerformanceProps) {
             <Col span={12}>
               <div className={styles['col-span-12']}>
                 <iframe
-                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=dark&panelId=3`}
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=light&panelId=3`}
                   title="Network Rx"
                   id="Network Rx"
                   frameBorder="0"></iframe>
@@ -77,7 +77,7 @@ function ServerPerformance(props: ServerPerformanceProps) {
             <Col span={12}>
               <div className={styles['col-span-12']}>
                 <iframe
-                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=dark&panelId=4`}
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=light&panelId=4`}
                   title="Network Tx"
                   id="Network Tx"
                   frameBorder="0"></iframe>
@@ -86,7 +86,7 @@ function ServerPerformance(props: ServerPerformanceProps) {
             <Col span={12}>
               <div className={styles['col-span-12']}>
                 <iframe
-                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=dark&panelId=8`}
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=light&panelId=8`}
                   title="I/O Rx"
                   id="I/O Rx"
                   frameBorder="0"></iframe>
@@ -95,7 +95,7 @@ function ServerPerformance(props: ServerPerformanceProps) {
             <Col span={12}>
               <div className={styles['col-span-12']}>
                 <iframe
-                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=dark&panelId=9`}
+                  src={`${process.env.RESOURCE_USAGE_DASHBOARD}&var-node=${publicIp}&theme=light&panelId=9`}
                   title="I/O Tx"
                   id="I/O Tx"
                   frameBorder="0"></iframe>

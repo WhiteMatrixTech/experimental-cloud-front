@@ -2,14 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, history, RbacRole } from 'umi';
 import { Table, Space, Button } from 'antd';
-import { Breadcrumb } from '~/components';
+import { PageTitle } from '~/components';
 import baseConfig from '~/utils/config';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { DisabledRole } from './_config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/rbac');
 export interface RbacConfigProps {
   RBAC: ConnectState['RBAC'];
   qryLoading: boolean;
@@ -115,13 +113,12 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="访问角色管理" extra={
+        <Button type="primary" onClick={onClickCreateConfig}>
+          创建访问角色
+        </Button>
+      } />
       <div className="page-content table-wrapper page-content-shadow">
-        <div className="table-header-btn-wrapper">
-          <Button type="primary" onClick={onClickCreateConfig}>
-            创建访问角色
-          </Button>
-        </div>
         <Table
           rowKey="roleName"
           columns={columns}

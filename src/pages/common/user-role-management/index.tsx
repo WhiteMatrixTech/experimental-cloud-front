@@ -4,10 +4,7 @@ import { connect, history, Dispatch } from 'umi';
 import { RolesMapNames } from '~/utils/roles';
 import { ConnectState } from '~/models/connect';
 import { UserInfo } from '~/models/user-role';
-import { Breadcrumb } from '~/components';
-import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
-
-const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/user-role-management', false);
+import { PageTitle } from '~/components';
 
 export type UserManagementProps = {
   qryLoading: boolean;
@@ -95,7 +92,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="用户角色管理" />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
           rowKey="companyName"

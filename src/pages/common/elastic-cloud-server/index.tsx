@@ -1,16 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Dispatch, ElasticServerSchema, history } from 'umi';
-import { Breadcrumb } from '~/components';
+import { PageTitle } from '~/components';
 import { Table, Button, Space, Modal, Dropdown, Menu } from 'antd';
 import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
-import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import CreateServerModal from './components/CreateServerModal';
 import { ConnectState } from '~/models/connect';
-import { ColumnsType } from 'antd/lib/table';
-
-const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');
 export interface ServersManagementProps {
   dispatch: Dispatch;
   qryLoading: boolean;
@@ -19,7 +15,6 @@ export interface ServersManagementProps {
 const ServersManagement: React.FC<ServersManagementProps> = (props) => {
   const { dispatch, qryLoading = false } = props;
   const { serverList, serverTotal } = props.ElasticServer;
-  const [columns, setColumns] = useState<ColumnsType<any>>([]);
   const [pageNum, setPageNum] = useState(1);
   const [createServerVisible, setCreateServerVisible] = useState(false);
   const [serverRecord, setServerRecord] = useState<ElasticServerSchema | null>(null);
@@ -120,9 +115,8 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
     );
   }, []);
 
-  // 用户身份改变时，表格展示改变
-  useEffect(() => {
-    const data: ColumnsType<any> = [
+  const columns = useMemo(() => {
+    return [
       {
         title: '服务器名称',
         dataIndex: 'serverName',
@@ -187,7 +181,6 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
         )
       }
     ];
-    setColumns(data);
   }, [onClickDelete, renderMenu]);
 
   useEffect(() => {
@@ -196,13 +189,12 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="弹性云服务器管理" extra={
+        <Button type="primary" onClick={onClickCreateServer}>
+          创建服务器
+        </Button>
+      } />
       <div className="page-content page-content-shadow table-wrapper">
-        <div className="table-header-btn-wrapper">
-          <Button type="primary" onClick={onClickCreateServer}>
-            创建服务器
-          </Button>
-        </div>
         <Table
           rowKey="_id"
           loading={qryLoading}

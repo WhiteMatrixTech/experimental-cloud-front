@@ -1,15 +1,16 @@
 @import '~themes/variable.less';
 
 .services-drawer {
+  color: #ced0d9;
   .left-service-wrapper {
     width: 188px;
     padding-right: 16px;
-    border-right: 1px solid @dark-border-color;
+    border-right: 1px solid @default-border-color;
     .current-service {
       margin: 12px 0;
       padding: 8px 16px;
-      color: @primary-border-color;
-      background-color: @menu-background;
+      color: @default-font-color;
+      background-color: #30344c;
     }
   }
 
@@ -26,6 +27,18 @@
     .ant-menu {
       // height: 100%;
       background: transparent;
+      .ant-menu-item-group-title {
+        color: #71768d;
+      }
+      .ant-menu-item-group-list {
+        color: #ced0d9;
+      }
+      .ant-menu-item-only-child:hover {
+        background-color: #30344c;
+      }
+    }
+    .ant-drawer-content {
+      background-color: #171826;
     }
   }
 }

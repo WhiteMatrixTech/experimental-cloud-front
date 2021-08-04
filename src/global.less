@@ -35,18 +35,18 @@ body {
 }
 
 .page-content {
-  margin-top: 20px;
+  // margin-top: 20px;
 }
 
 .page-content-shadow {
   margin-bottom: 20px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+  // -webkit-box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+  // box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
 }
 
 .table-wrapper {
-  padding: 20px 24px;
+  padding: 20px;
   background-color: @content-background;
   ::-webkit-scrollbar-thumb {
     background-color: @default-background;
@@ -54,13 +54,17 @@ body {
   }
 }
 
+.table-header-search-wrapper {
+
+}
+
 .table-top-search-wrapper {
   margin-bottom: 20px;
   padding: 24px 24px 0;
   background: @content-background;
   border-radius: 4px;
-  -webkit-box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+  // -webkit-box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+  // box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
 }
 
 .table-header-btn-wrapper {
@@ -161,7 +165,7 @@ select:-webkit-autofill {
   background-color: transparent;
   background-image: none;
   transition: background-color 50000s ease-in-out 0s; //背景色透明  生效时长  过渡效果  启用时延迟的时间
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.85) !important;
+  -webkit-text-fill-color: @first-level-color !important;
 }
 
 input {

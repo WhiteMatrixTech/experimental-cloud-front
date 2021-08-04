@@ -15,11 +15,11 @@ export const LeagueCard: React.FC<LeagueCardProps> = (props) => {
   const { onClickCard, leagueInfo, showTime } = props;
 
   const getShowTimeLabel = useMemo(() => {
-    return leagueInfo.role === Roles.NetworkAdmin ? 'Create Time' : 'Join Time';
+    return leagueInfo.role === Roles.NetworkAdmin ? '创建时间' : '加入时间';
   }, [leagueInfo.role]);
 
   const getTime = useMemo(() => {
-    if (showTime === 'Create Time') {
+    if (showTime === '创建时间') {
       return leagueInfo.createdTime ? moment(leagueInfo.createdTime).format('YYYY-MM-DD') : '';
     }
     return leagueInfo.timeAdded ? moment(leagueInfo.timeAdded).format('YYYY-MM-DD') : '';

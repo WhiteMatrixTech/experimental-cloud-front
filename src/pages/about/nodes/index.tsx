@@ -3,9 +3,8 @@ import { connect } from 'dva';
 import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
-import { Breadcrumb } from '~/components';
+import { PageTitle } from '~/components';
 import { Table, Button, Badge, Space, notification, Spin } from 'antd';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import CreateNodeModal from './components/CreateNodeModal';
 import SSHCommand from './components/SSHCommand';
 import baseConfig from '~/utils/config';
@@ -16,8 +15,6 @@ import { Dispatch, PeerSchema } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
 import { cancelCurrentRequest } from '~/utils/request';
-
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/nodes');
 
 export interface NodeManagementProps {
   dispatch: Dispatch;
@@ -190,13 +187,14 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   return (
     <div className="page-wrapper">
       <Spin spinning={downloading} tip="下载中...">
-        <Breadcrumb breadCrumbItem={breadCrumbItem} />
+        <PageTitle
+          label="节点管理"
+          extra={<Button
+            type="primary"
+            onClick={onClickCreateNode}>
+            创建节点
+          </Button>} />
         <div className="page-content page-content-shadow table-wrapper">
-          <div className="table-header-btn-wrapper">
-            <Button type="primary" onClick={onClickCreateNode}>
-              创建节点
-            </Button>
-          </div>
           <Table
             rowKey="_id"
             loading={qryLoading}

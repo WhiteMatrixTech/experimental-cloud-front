@@ -2,18 +2,12 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Spin } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, DetailCard } from '~/components';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
+import { PageTitle, DetailCard } from '~/components';
 import { orgStatus } from '../../organizations/_config';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 import { DetailViewAttr } from '~/utils/types';
 
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/myinfo', false);
-breadCrumbItem.push({
-  menuName: '组织信息',
-  menuHref: `/`,
-});
 export interface MyOrgInfoProps {
   User: ConnectState['User'];
   dispatch: Dispatch;
@@ -65,7 +59,7 @@ function MyOrgInfo(props: MyOrgInfoProps) {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="我的组织" />
       <div className="page-content">
         <Spin spinning={qryLoading}>
           <DetailCard cardTitle="组织信息" detailList={myOrgInfoList} />

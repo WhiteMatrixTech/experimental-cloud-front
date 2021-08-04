@@ -3,13 +3,11 @@ import { connect } from 'dva';
 import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
-import { Breadcrumb } from '~/components';
 import { Table, Button, Space, Form, Row, Col, Select, message, notification, Spin } from 'antd';
+import { PageTitle } from '~/components';
 import CreateFabricUserModal from './components/CreateFabricUserModal';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { OrgStatusEnum } from '../organizations/_config';
 import baseConfig from '~/utils/config';
-import styles from './index.less';
 import { Dispatch, FabricRoleSchema } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
@@ -22,8 +20,6 @@ const formItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 }
 };
-
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/fabricUsers');
 export interface FabricRoleManagementProps {
   dispatch: Dispatch;
   qryLoading: boolean;
@@ -202,17 +198,18 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
   return (
     <div className="page-wrapper">
       <Spin spinning={downloading} tip="下载中...">
-        <Breadcrumb breadCrumbItem={breadCrumbItem} />
-        <div className="page-content">
-          <div className="table-top-search-wrapper">
+        <PageTitle label="Fabric用户管理" extra={
+          <Button type="primary" onClick={onClickCreate}>
+            新增Fabric角色
+          </Button>
+        } />
+        <div className="table-wrapper page-content-shadow">
+          <div className="table-header-search-wrapper">
             <Form {...formItemLayout} colon={false} form={form}>
               <Row gutter={24}>
                 <Col span={8}>
                   <Item label="组织名称" name="orgNameSearch" initialValue={null}>
-                    <Select
-                      allowClear
-                      getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                      placeholder="选择组织">
+                    <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择组织">
                       {orgList.map((item) => (
                         <Option key={item.orgName} value={item.orgName}>
                           {item.orgName}
@@ -232,27 +229,20 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
               </Row>
             </Form>
           </div>
-          <div className="table-wrapper page-content-shadow">
-            <div className={styles['table-header-btn-wrapper']}>
-              <Button type="primary" onClick={onClickCreate}>
-                新增Fabric角色
-              </Button>
-            </div>
-            <Table
-              rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.userId}`}
-              loading={qryLoading}
-              columns={columns}
-              dataSource={fabricRoleList}
-              onChange={onPageChange}
-              pagination={{
-                pageSize: baseConfig.pageSize,
-                total: fabricRoleTotal,
-                current: pageNum,
-                showSizeChanger: false,
-                position: ['bottomCenter']
-              }}
-            />
-          </div>
+          <Table
+            rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.userId}`}
+            loading={qryLoading}
+            columns={columns}
+            dataSource={fabricRoleList}
+            onChange={onPageChange}
+            pagination={{
+              pageSize: baseConfig.pageSize,
+              total: fabricRoleTotal,
+              current: pageNum,
+              showSizeChanger: false,
+              position: ['bottomCenter']
+            }}
+          />
         </div>
         {createModalVisible && (
           <CreateFabricUserModal

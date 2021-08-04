@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, EvidenceSchema, history } from 'umi';
-import { Table, Space } from 'antd';
+import { Table, Space, Button } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, SearchBar } from '~/components';
+import { PageTitle, SearchBar } from '~/components';
 import baseConfig from '~/utils/config';
-import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import EvidenceOnChain from './components/EvidenceOnChain';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
-
-const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 
 export interface EvidenceDataListProps {
   User: ConnectState['User'];
@@ -145,9 +142,13 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="存证上链" extra={
+        <Button type="primary" onClick={onClickUpload}>
+          存证上链
+        </Button>}
+      />
       <div className="page-content page-content-shadow table-wrapper">
-        <SearchBar placeholder="输入存证哈希" onSearch={onSearch} btnName="存证上链" onClickBtn={onClickUpload} />
+        <SearchBar placeholder="输入存证哈希" onSearch={onSearch} />
         <Table
           rowKey="_id"
           columns={columns}

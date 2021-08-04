@@ -60,7 +60,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuPid: RootMenuId,
     menuHref: '/about/block',
     menuIcon: 'KBassqukuailian',
-    menuName: '区块链',
+    menuName: '区块数据',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
   },
@@ -69,7 +69,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuPid: RootMenuId,
     menuHref: '/about/transactions',
     menuIcon: 'KBassjiaoyi',
-    menuName: '交易',
+    menuName: '交易信息',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
   },

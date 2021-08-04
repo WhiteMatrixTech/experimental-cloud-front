@@ -3,19 +3,12 @@ import { Table, Button, Space } from 'antd';
 import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
 import { ConnectState } from '~/models/connect';
-import { Breadcrumb } from '~/components';
+import { PageTitle } from '~/components';
 import OneKeyCompile from './components/OneKeyCompile';
-import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import { GitBuildRepoTask } from '~/models/block-chain-compile';
 import { ColumnsType } from 'antd/lib/table';
 import baseConfig from '~/utils/config';
 import styles from './index.less';
-
-const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
-breadCrumbItem.push({
-  menuName: '一键编译',
-  menuHref: `/`
-});
 
 export type SourceCodeCompilationProps = {
   qryLoading: boolean;
@@ -147,13 +140,12 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="一键编译" extra={
+        <Button type="primary" onClick={onClickOneKeyCompile}>
+          一键编译
+        </Button>
+      } />
       <div className="page-content page-content-shadow table-wrapper">
-        <div className="table-header-btn-wrapper">
-          <Button type="primary" onClick={onClickOneKeyCompile}>
-            一键编译
-          </Button>
-        </div>
         <Table
           rowKey="buildJobId"
           loading={qryLoading}

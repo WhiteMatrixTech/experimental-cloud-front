@@ -1,21 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Modal, Space, Table } from 'antd';
 import { connect, Dispatch, ImageDetail } from 'umi';
-import { Breadcrumb } from '~/components';
+import { PageTitle } from '~/components';
 import { ConnectState } from '~/models/connect';
-import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import baseConfig from '../../../../utils/config';
 import { ColumnsType } from 'antd/lib/table';
 import AddCustomImageModal from './components/AddCustomImageModal';
 import moment from 'moment';
 import { Roles } from '~/utils/roles';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-
-const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/block-compile', false);
-breadCrumbItem.push({
-  menuName: '自定义镜像管理',
-  menuHref: `/`
-});
 
 const OperationalRole = [Roles.Admin, Roles.SuperUser];
 const pageSize = baseConfig.pageSize;
@@ -131,15 +124,12 @@ function CustomImage(props: CustomImageProps) {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="自定义镜像管理" extra={OperationalRole.includes(userInfo.role) ? (
+        <Button type="primary" onClick={onClickAddMirrorImage}>
+          添加镜像
+        </Button>
+      ) : null} />
       <div className="page-content page-content-shadow table-wrapper">
-        {OperationalRole.includes(userInfo.role) && (
-          <div className="table-header-btn-wrapper">
-            <Button type="primary" onClick={onClickAddMirrorImage}>
-              添加镜像
-            </Button>
-          </div>
-        )}
         <Table
           rowKey="_id"
           loading={qryLoading}

@@ -95,9 +95,7 @@ const CommonPortalMenu: React.FC<CommonPortalMenuProps> = (props) => {
         onOpenChange={onOpenChange}
         openKeys={openKeys}
         selectedKeys={[commonPortalSelectedMenu]}
-        mode="inline"
-        theme="dark"
-      >
+        mode="inline">
         {CommonMenuList.map((item) => getMenuItem(item))}
       </Menu>
     </div>

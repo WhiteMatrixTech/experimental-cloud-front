@@ -11,8 +11,11 @@ export default defineConfig({
   title: 'BaaS',
   favicon: '/favicon.png',
 
-  antd: {
-    dark: true // 开启暗色主题
+  // antd: {
+  //   dark: true // 开启暗色主题
+  // },
+  theme: {
+    "table-header-bg": "#ebedf0",
   },
 
   alias: {

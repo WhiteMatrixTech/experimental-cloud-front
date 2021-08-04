@@ -116,7 +116,11 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
 
   return (
     <div className={styles.leftMenu}>
-      <Menu onOpenChange={onOpenChange} openKeys={openKeys} selectedKeys={[selectedMenu]} mode="inline" theme="dark">
+      <Menu
+        onOpenChange={onOpenChange}
+        openKeys={openKeys}
+        selectedKeys={[selectedMenu]}
+        mode="inline">
         {MenuList.map((item) => getMenuItem(item))}
       </Menu>
     </div>
