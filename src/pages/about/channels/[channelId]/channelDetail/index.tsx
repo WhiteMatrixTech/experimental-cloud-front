@@ -3,7 +3,7 @@ import { Table, Space, Col, Row, Descriptions, Statistic, Divider } from 'antd';
 import { connect } from 'dva';
 import { ChannelSchema, Dispatch, history, Location } from 'umi';
 import moment from 'moment';
-import { StatisticsCard, Breadcrumb, PageTitle } from '~/components';
+import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ChannelStatus } from '../../_config';
 import style from './index.less';
