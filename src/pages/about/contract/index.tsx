@@ -357,5 +357,8 @@ const MyContract: React.FC<MyContractProps> = (props) => {
 export default connect(({ User, Contract, loading }: ConnectState) => ({
   User,
   Contract,
-  qryLoading: loading.effects['Contract/getPageListOfChainCode']
+  qryLoading:
+    loading.effects['Contract/getPageListOfChainCode'] ||
+    loading.effects['Contract/installContract'] ||
+    loading.effects['Contract/releaseContract']
 }))(MyContract);

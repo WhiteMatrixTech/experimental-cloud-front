@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, connect, history, Dispatch } from 'umi';
 import { Form, Button, Input } from 'antd';
 import { LockTwoTone, UserOutlined } from '@ant-design/icons';
@@ -91,7 +91,12 @@ const Login: React.FC<LoginProps> = (props) => {
               message: '请输入密码！'
             }
           ]}>
-          <Input.Password size="large" ref={inputRef} prefix={<LockTwoTone className={styles.prefixIcon} />} placeholder="密码" />
+          <Input.Password
+            size="large"
+            ref={inputRef}
+            prefix={<LockTwoTone className={styles.prefixIcon} />}
+            placeholder="密码"
+          />
         </FormItem>
         <Button
           size="middle"
@@ -111,9 +116,8 @@ const Login: React.FC<LoginProps> = (props) => {
           <Link
             to={{
               pathname: '/user/set-password',
-              state: { email: form.getFieldValue('email') },
-            }}
-          >
+              state: { email: form.getFieldValue('email') }
+            }}>
             修改密码
           </Link>
         </div>

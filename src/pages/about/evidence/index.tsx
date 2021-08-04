@@ -171,5 +171,8 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 export default connect(({ User, Evidence, loading }: ConnectState) => ({
   User,
   Evidence,
-  qryLoading: loading.effects['Evidence/getEvidenceDataList'] || loading.effects['Evidence/getEvidenceDataByHash']
+  qryLoading:
+    loading.effects['Evidence/getEvidenceDataList'] ||
+    loading.effects['Evidence/getEvidenceDataByHash'] ||
+    loading.effects['Evidence/getEvidenceTotalDocs']
 }))(EvidenceDataList);
