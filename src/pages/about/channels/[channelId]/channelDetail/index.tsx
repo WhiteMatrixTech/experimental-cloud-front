@@ -8,11 +8,6 @@ import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ChannelStatus } from '../../_config';
 import style from './index.less';
 import config from '~/utils/config';
-import peer from '~/assets/images/dashboard/icon-peer.png';
-import msp from '~/assets/images/dashboard/icon-msp.png';
-import chaincode from '~/assets/images/dashboard/icon-chaincode.png';
-import block from '~/assets/images/dashboard/icon-block.png';
-import transactions from '~/assets/images/dashboard/icon-transcation.png';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { StatisticValueStyle } from '~/pages/about/league-dashboard/_style';
@@ -23,7 +18,6 @@ breadCrumbItem.push({
   menuHref: `/`
 });
 
-const imgList = [msp, peer, block, transactions, chaincode];
 export interface ChannelDetailProps {
   dispatch: Dispatch;
   User: ConnectState['User'];
