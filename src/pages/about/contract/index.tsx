@@ -242,7 +242,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
           <Badge
             color={chainCodeStatusInfo[text].color}
             text={chainCodeStatusInfo[text].text}
-            style={{ color: chainCodeStatusInfo[text].color }}
+            style={{ color: chaincodestatusinfo[text].color }}
           />
         ) : (
           <span className="a-forbidden-style">信息访问受限</span>
@@ -357,8 +357,5 @@ const MyContract: React.FC<MyContractProps> = (props) => {
 export default connect(({ User, Contract, loading }: ConnectState) => ({
   User,
   Contract,
-  qryLoading:
-    loading.effects['Contract/getPageListOfChainCode'] ||
-    loading.effects['Contract/installContract'] ||
-    loading.effects['Contract/releaseContract']
+  qryLoading: loading.effects['Contract/getPageListOfChainCode']
 }))(MyContract);

@@ -417,9 +417,5 @@ export default connect(({ User, Layout, Member, loading }: ConnectState) => ({
   User,
   Layout,
   Member,
-  qryLoading:
-    loading.effects['Member/getPageListOfCompanyMember'] ||
-    loading.effects['Member/setStatusOfLeagueCompany'] ||
-    loading.effects['Member/setCompanyApprove'] ||
-    loading.effects['Member/resetPassword']
+  qryLoading: loading.effects['Member/getPageListOfCompanyMember']
 }))(EnterpriseMember);

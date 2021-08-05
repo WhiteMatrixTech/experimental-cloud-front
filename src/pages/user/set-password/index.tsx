@@ -17,11 +17,11 @@ export type SetPasswordProps = {
   dispatch: Dispatch;
   location: any;
   User: ConnectState['User'];
-  loginLoading: boolean;
+  changePawLoading: boolean;
 };
 
 const SetPassword: React.FC<SetPasswordProps> = (props) => {
-  const { dispatch, location, loginLoading } = props;
+  const { dispatch, location, changePawLoading } = props;
 
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
@@ -210,7 +210,7 @@ const SetPassword: React.FC<SetPasswordProps> = (props) => {
         <FormItem>
           <Button
             size="large"
-            loading={loginLoading}
+            loading={changePawLoading}
             className={styles.submit}
             type="primary"
             htmlType="submit"
@@ -228,5 +228,5 @@ const SetPassword: React.FC<SetPasswordProps> = (props) => {
 
 export default connect(({ User, loading }: ConnectState) => ({
   User,
-  loginLoading: loading.effects['User/changePassword']
+  changePawLoading: loading.effects['User/changePassword']
 }))(SetPassword);
