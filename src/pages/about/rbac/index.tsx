@@ -125,7 +125,6 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
           loading={qryLoading}
           dataSource={roleList}
           onChange={onPageChange}
-          scroll={{ x: 1600, y: 300 }}
           pagination={{
             pageSize,
             current: pageNum,

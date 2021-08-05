@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { BlockSchema, Dispatch, history } from 'umi';
-import { Table, Space } from 'antd';
+import { Table, Space, Form, Spin, Input, Row, Col, Button } from 'antd';
 import moment from 'moment';
 import { PageTitle, SearchBar } from '~/components';
 import baseConfig from '~/utils/config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+
+const pageSize = baseConfig.pageSize;
 export interface BlockProps {
   Block: ConnectState['Block'];
   qryLoading: boolean;
@@ -18,9 +20,10 @@ const Block: React.FC<BlockProps> = (props) => {
   const { Block, qryLoading, dispatch, User } = props;
   const { networkName } = User;
   const { blockList, blockTotal } = Block;
+
+  const [form] = Form.useForm();
   const [pageNum, setPageNum] = useState(1);
-  const [blockHash, setBlockHash] = useState('');
-  const [pageSize] = useState(baseConfig.pageSize);
+  const [searchParams, setSearchParams] = useState({ blockHash: '' });
 
   const getBlockTotalDocs = useCallback(() => {
     const params = {
@@ -44,27 +47,39 @@ const Block: React.FC<BlockProps> = (props) => {
       type: 'Block/getBlockList',
       payload: params
     });
-  }, [dispatch, networkName, pageNum, pageSize]);
+  }, [dispatch, networkName, pageNum]);
 
   // 搜索
-  const onSearch = (value: string, event: any): void => {
-    if (event.type && (event.type === 'click' || event.type === 'keydown')) {
-      setPageNum(1);
-      setBlockHash(value || '');
-    }
+  const onSearch = useCallback(() => {
+    form
+      .validateFields()
+      .then((values) => {
+        setPageNum(1);
+        setSearchParams({ blockHash: values.blockHash });
+      })
+      .catch((info) => {
+        console.log('校验失败:', info);
+      });
+  }, [form]);
+
+  // 重置
+  const resetForm = () => {
+    form.resetFields();
+    setPageNum(1);
+    setSearchParams({ blockHash: '' });
   };
 
   //搜索列表
   const onSearchList = useCallback(() => {
     const params = {
       networkName,
-      blockHash
+      blockHash: searchParams.blockHash
     };
     dispatch({
       type: 'Block/onSearch',
       payload: params
     });
-  }, [blockHash, dispatch, networkName]);
+  }, [dispatch, networkName, searchParams.blockHash]);
 
   // 翻页
   const onPageChange = (pageInfo: any): void => {
@@ -84,7 +99,7 @@ const Block: React.FC<BlockProps> = (props) => {
 
   const columns: ColumnsType<any> = [
     {
-      title: '区块HASH',
+      title: '区块哈希',
       dataIndex: 'blockHash',
       key: 'blockHash',
       ellipsis: true,
@@ -133,33 +148,54 @@ const Block: React.FC<BlockProps> = (props) => {
 
   // 页码改变时,或搜索值blockHash=''时重新查询列表
   useEffect(() => {
+    const { blockHash } = searchParams;
     if (blockHash) {
       onSearchList();
     } else {
       getBlockList();
       getBlockTotalDocs();
     }
-  }, [blockHash, getBlockList, getBlockTotalDocs, onSearchList, pageNum]);
+  }, [searchParams, getBlockList, getBlockTotalDocs, onSearchList, pageNum]);
 
   return (
     <div className="page-wrapper">
       <PageTitle label="区块数据" />
       <div className="page-content page-content-shadow table-wrapper">
-        <SearchBar placeholder="区块HASH" onSearch={onSearch} />
-        <Table
-          rowKey="blockHash"
-          columns={columns}
-          loading={qryLoading}
-          dataSource={blockList}
-          onChange={onPageChange}
-          pagination={{
-            pageSize,
-            total: blockTotal,
-            current: pageNum,
-            showSizeChanger: false,
-            position: ['bottomCenter']
-          }}
-        />
+        <Spin spinning={qryLoading}>
+          <div className="table-header-search-wrapper">
+            <Form form={form}>
+              <Row>
+                <Col span={8}>
+                  <Form.Item label="区块哈希" name="blockHash" initialValue="">
+                    <Input placeholder="输入区块哈希" />
+                  </Form.Item>
+                </Col>
+                <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                  <Space size="middle">
+                    <Button onClick={resetForm}>重置</Button>
+                    <Button type="primary" onClick={onSearch}>
+                      查询
+                    </Button>
+                  </Space>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+          <Table
+            rowKey="blockHash"
+            columns={columns}
+            loading={qryLoading}
+            dataSource={blockList}
+            onChange={onPageChange}
+            pagination={{
+              pageSize,
+              total: blockTotal,
+              current: pageNum,
+              showSizeChanger: false,
+              position: ['bottomCenter']
+            }}
+          />
+        </Spin>
       </div>
     </div>
   );

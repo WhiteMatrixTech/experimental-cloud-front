@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, history, TransactionSchema } from 'umi';
-import { Table, Space } from 'antd';
+import { Table, Space, Form, Spin, Input, Row, Col, Button } from 'antd';
 import moment from 'moment';
-import { PageTitle, SearchBar } from '~/components';
+import { PageTitle } from '~/components';
 import baseConfig from '~/utils/config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 
+const pageSize = baseConfig.pageSize;
 export interface TransactionsProps {
   Transactions: ConnectState['Transactions'];
   qryLoading: boolean;
@@ -16,12 +17,13 @@ export interface TransactionsProps {
 }
 
 const Transactions: React.FC<TransactionsProps> = (props) => {
-  const { Transactions, qryLoading, dispatch, User } = props;
+  const { Transactions, qryLoading = false, dispatch, User } = props;
   const { transactionList, transactionTotal } = Transactions;
   const { networkName } = User;
+
+  const [form] = Form.useForm();
   const [pageNum, setPageNum] = useState(1);
-  const [txId, setTxId] = useState('');
-  const [pageSize] = useState(baseConfig.pageSize);
+  const [searchParams, setSearchParams] = useState({ txId: '' });
 
   const getTransactionTotalDocs = useCallback(() => {
     const params = {
@@ -45,16 +47,31 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       type: 'Transactions/getTransactionList',
       payload: params
     });
-  }, [dispatch, networkName, pageNum, pageSize]);
+  }, [dispatch, networkName, pageNum]);
 
-  const onSearch = (value: string, event: any) => {
-    if (event.type && (event.type === 'click' || event.type === 'keydown')) {
-      setPageNum(1);
-      setTxId(value || '');
-    }
+  // 搜索
+  const onSearch = useCallback(() => {
+    form
+      .validateFields()
+      .then((values) => {
+        setPageNum(1);
+        setSearchParams({ txId: values.txId });
+      })
+      .catch((info) => {
+        console.log('校验失败:', info);
+      });
+  }, [form]);
+
+  // 重置
+  const resetForm = () => {
+    form.resetFields();
+    setPageNum(1);
+    setSearchParams({ txId: '' });
   };
+
   //搜索列表
   const onSearchList = useCallback(() => {
+    const { txId } = searchParams;
     const params = {
       networkName,
       txId
@@ -63,7 +80,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       type: 'Transactions/onSearch',
       payload: params
     });
-  }, [dispatch, networkName, txId]);
+  }, [dispatch, networkName, searchParams])
 
   const onPageChange = (pageInfo: any): void => {
     setPageNum(pageInfo.current);
@@ -136,33 +153,53 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   ];
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
+    const { txId } = searchParams;
     if (txId) {
       onSearchList();
     } else {
       getTransactionList();
       getTransactionTotalDocs();
     }
-  }, [txId, pageNum, onSearchList, getTransactionList, getTransactionTotalDocs]);
+  }, [pageNum, onSearchList, getTransactionList, getTransactionTotalDocs, searchParams]);
 
   return (
     <div className="page-wrapper">
       <PageTitle label="交易信息" />
       <div className="page-content page-content-shadow table-wrapper">
-        <SearchBar placeholder="交易ID" onSearch={onSearch} />
-        <Table
-          rowKey="txId"
-          columns={columns}
-          loading={qryLoading}
-          dataSource={transactionList}
-          onChange={onPageChange}
-          pagination={{
-            pageSize,
-            total: transactionTotal,
-            current: pageNum,
-            showSizeChanger: false,
-            position: ['bottomCenter']
-          }}
-        />
+        <Spin spinning={qryLoading}>
+          <div className="table-header-search-wrapper">
+            <Form form={form}>
+              <Row>
+                <Col span={8}>
+                  <Form.Item label="交易ID" name="txId" initialValue="">
+                    <Input placeholder="输入交易ID" />
+                  </Form.Item>
+                </Col>
+                <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                  <Space size="middle">
+                    <Button onClick={resetForm}>重置</Button>
+                    <Button type="primary" onClick={onSearch}>
+                      查询
+                    </Button>
+                  </Space>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+          <Table
+            rowKey="txId"
+            columns={columns}
+            dataSource={transactionList}
+            onChange={onPageChange}
+            pagination={{
+              pageSize,
+              total: transactionTotal,
+              current: pageNum,
+              showSizeChanger: false,
+              position: ['bottomCenter']
+            }}
+          />
+        </Spin>
       </div>
     </div>
   );

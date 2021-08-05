@@ -16,10 +16,7 @@ import { cancelCurrentRequest } from '~/utils/request';
 
 const { Item } = Form;
 const Option = Select.Option;
-const formItemLayout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 }
-};
+
 export interface FabricRoleManagementProps {
   dispatch: Dispatch;
   qryLoading: boolean;
@@ -205,7 +202,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
         } />
         <div className="table-wrapper page-content-shadow">
           <div className="table-header-search-wrapper">
-            <Form {...formItemLayout} colon={false} form={form}>
+            <Form colon={false} form={form}>
               <Row gutter={24}>
                 <Col span={8}>
                   <Item label="组织名称" name="orgNameSearch" initialValue={null}>
@@ -231,7 +228,6 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
           </div>
           <Table
             rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.userId}`}
-            loading={qryLoading}
             columns={columns}
             dataSource={fabricRoleList}
             onChange={onPageChange}
@@ -261,5 +257,6 @@ export default connect(({ User, Organization, Layout, FabricRole, loading }: Con
   Organization,
   Layout,
   FabricRole,
-  qryLoading: loading.effects['FabricRole/getFabricRoleList']
+  qryLoading: loading.effects['FabricRole/getFabricRoleList'] ||
+    loading.effects['FabricRole/getFabricRoleListWithOrg']
 }))(FabricRoleManagement);

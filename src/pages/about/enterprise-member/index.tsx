@@ -18,10 +18,6 @@ const { Item } = Form;
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
 
-const formItemLayout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 }
-};
 const initSearchObj = {
   companyName: '',
   createTimeStart: 0,
@@ -348,14 +344,14 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       <PageTitle label="成员管理" />
       <div className={cs(styles['enterprise-wrapper'], 'page-content')}>
         <div className={cs(styles['search-wrapper'], 'page-content-shadow')}>
-          <Form {...formItemLayout} colon={false} form={form}>
-            <Row gutter={24}>
-              <Col span={8}>
+          <Form form={form}>
+            <Row gutter={24} justify="space-between">
+              <Col span={7}>
                 <Item label="用户名" name="companyName" initialValue="">
                   <Input placeholder="请输入用户名" />
                 </Item>
               </Col>
-              <Col span={8}>
+              <Col span={7}>
                 <Item label="创建时间" name="createTime" initialValue={[]}>
                   <RangePicker
                     getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
@@ -364,7 +360,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
                   />
                 </Item>
               </Col>
-              <Col span={8}>
+              <Col span={7}>
                 <Item label="审批状态" name="approvalStatus" initialValue={null}>
                   <Select
                     allowClear

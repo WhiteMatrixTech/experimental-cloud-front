@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, EvidenceSchema, history } from 'umi';
-import { Table, Space, Button } from 'antd';
+import { Table, Space, Button, Form, Row, Col, Input, Spin } from 'antd';
 import moment from 'moment';
-import { PageTitle, SearchBar } from '~/components';
+import { PageTitle } from '~/components';
 import baseConfig from '~/utils/config';
 import EvidenceOnChain from './components/EvidenceOnChain';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 
+const pageSize = baseConfig.pageSize;
 export interface EvidenceDataListProps {
   User: ConnectState['User'];
   Evidence: ConnectState['Evidence'];
@@ -19,10 +20,11 @@ function EvidenceDataList(props: EvidenceDataListProps) {
   const { User, Evidence, qryLoading, dispatch } = props;
   const { evidenceDataList, evidenceDataTotal } = Evidence;
   const { networkName } = User;
+
+  const [form] = Form.useForm();
   const [pageNum, setPageNum] = useState(1);
-  const [evidenceHash, setEvidenceHash] = useState('');
+  const [searchParams, setSearchParams] = useState({ evidenceHash: '' });
   const [uploadVisible, setUploadVisible] = useState(false);
-  const [pageSize] = useState(baseConfig.pageSize);
 
   const columns: ColumnsType<any> = [
     {
@@ -88,6 +90,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 
   // 查询列表
   const getEvidenceDataList = useCallback(() => {
+    const { evidenceHash } = searchParams;
     const offset = (pageNum - 1) * pageSize;
     const params = {
       networkName,
@@ -107,7 +110,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
       type: 'Evidence/getEvidenceDataList',
       payload: params
     });
-  }, [dispatch, evidenceHash, networkName, pageNum, pageSize]);
+  }, [dispatch, searchParams, networkName, pageNum]);
 
   const getEvidenceTotalDocs = useCallback(() => {
     const params = {
@@ -120,11 +123,23 @@ function EvidenceDataList(props: EvidenceDataListProps) {
   }, [dispatch, networkName]);
 
   // 搜索
-  const onSearch = (value: string, event: { type: string }) => {
-    if (event.type && (event.type === 'click' || event.type === 'keydown')) {
-      setPageNum(1);
-      setEvidenceHash(value || '');
-    }
+  const onSearch = useCallback(() => {
+    form
+      .validateFields()
+      .then((values) => {
+        setPageNum(1);
+        setSearchParams({ evidenceHash: values.evidenceHash });
+      })
+      .catch((info) => {
+        console.log('校验失败:', info);
+      });
+  }, [form]);
+
+  // 重置
+  const resetForm = () => {
+    form.resetFields();
+    setPageNum(1);
+    setSearchParams({ evidenceHash: '' });
   };
 
   // 翻页
@@ -134,11 +149,12 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
+    const { evidenceHash } = searchParams;
     getEvidenceDataList();
     if (!evidenceHash) {
       getEvidenceTotalDocs();
     }
-  }, [evidenceHash, getEvidenceDataList, getEvidenceTotalDocs, pageNum]);
+  }, [searchParams, getEvidenceDataList, getEvidenceTotalDocs, pageNum]);
 
   return (
     <div className="page-wrapper">
@@ -148,21 +164,40 @@ function EvidenceDataList(props: EvidenceDataListProps) {
         </Button>}
       />
       <div className="page-content page-content-shadow table-wrapper">
-        <SearchBar placeholder="输入存证哈希" onSearch={onSearch} />
-        <Table
-          rowKey="_id"
-          columns={columns}
-          loading={qryLoading}
-          dataSource={evidenceDataList}
-          onChange={onPageChange}
-          pagination={{
-            pageSize,
-            total: evidenceDataTotal,
-            current: pageNum,
-            showSizeChanger: false,
-            position: ['bottomCenter']
-          }}
-        />
+        <Spin spinning={qryLoading}>
+          <div className="table-header-search-wrapper">
+            <Form form={form}>
+              <Row>
+                <Col span={8}>
+                  <Form.Item label="存证哈希" name="evidenceHash" initialValue="">
+                    <Input placeholder="输入存证哈希" />
+                  </Form.Item>
+                </Col>
+                <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                  <Space size="middle">
+                    <Button onClick={resetForm}>重置</Button>
+                    <Button type="primary" onClick={onSearch}>
+                      查询
+                    </Button>
+                  </Space>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+          <Table
+            rowKey="_id"
+            columns={columns}
+            dataSource={evidenceDataList}
+            onChange={onPageChange}
+            pagination={{
+              pageSize,
+              total: evidenceDataTotal,
+              current: pageNum,
+              showSizeChanger: false,
+              position: ['bottomCenter']
+            }}
+          />
+        </Spin>
       </div>
       {uploadVisible && <EvidenceOnChain visible={uploadVisible} onCancel={onCloseUpload} />}
     </div>
