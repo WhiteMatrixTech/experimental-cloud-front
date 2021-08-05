@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { connect } from 'dva';
-import { Table, Badge } from 'antd';
+import { Table, Badge, Descriptions, Divider } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, DetailCard } from '~/components';
+import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { chainCodeStatusInfo } from '../../../contract/_config';
 import baseConfig from '~/utils/config';
@@ -13,7 +13,7 @@ import { BasicApiParams, AllPaginationParams } from '~/utils/types';
 import { ColumnsType } from 'antd/lib/table';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
-  menuName: '查看合约',
+  menuName: '通道中合约数据',
   menuHref: `/`
 });
 export interface ChaincodeListProps {
@@ -150,14 +150,20 @@ function ChaincodeList(props: ChaincodeListProps) {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="通道中合约数据" />
       <div className="page-content">
-        <DetailCard
-          cardTitle="基本信息"
-          detailList={channelInfoList}
-          boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"
-          columnsNum={2}
-        />
+        <Descriptions title="通道信息" className="descriptions-wrapper">
+          {channelInfoList.map(item =>
+            <Descriptions.Item
+              key={item.label}
+              label={item.label}>
+              {item.value}
+            </Descriptions.Item>
+          )}
+        </Descriptions>
         <div className="table-wrapper page-content-shadow">
+          <div className="table-header-title">合约列表</div>
+          <Divider />
           <Table
             rowKey="_id"
             loading={qryLoading}

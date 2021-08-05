@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Row, Col, Spin } from 'antd';
-import { Breadcrumb } from '~/components';
-import styles from './index.less';
+import { Row, Col, Spin, Descriptions } from 'antd';
+import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
@@ -88,31 +87,20 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className="page-content page-content-shadow">
-        <Spin spinning={qryLoading}>
-          <div className={styles['transaction-detail-wrapper']}>
-            <div className={styles['transaction-detail-title']}>
-              <div>交易信息</div>
-            </div>
-            <div className={styles['transaction-detail-content']}>
-              <div className={styles.transactionInfoWrap}>
-                <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }, 16]}>
-                  {detailList.map((item) => (
-                    <Fragment key={item.label}>
-                      <Col className={styles['gutter-row-label']} span={4}>
-                        {item.label}
-                      </Col>
-                      <Col className={styles['gutter-row-content']} span={20}>
-                        {item.value}
-                      </Col>
-                    </Fragment>
-                  ))}
-                </Row>
-              </div>
-            </div>
-          </div>
-        </Spin>
-      </div>
+      <PageTitle label="交易详情" />
+      <Spin spinning={qryLoading}>
+        <div className="page-content">
+          <Descriptions column={2} title="交易信息" className="descriptions-wrapper">
+            {detailList.map(item =>
+              <Descriptions.Item
+                key={item.label}
+                label={item.label}>
+                {item.value}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+        </div>
+      </Spin>
     </div>
   );
 };

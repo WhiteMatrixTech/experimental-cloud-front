@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Spin } from 'antd';
+import { Spin, Descriptions } from 'antd';
 import moment from 'moment';
-import { PageTitle, DetailCard } from '~/components';
+import { PageTitle } from '~/components';
 import { NetworkInfo } from '~/utils/networkStatus';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
@@ -60,11 +60,19 @@ function MyLeagueInfo(props: MyLeagueInfoProps) {
   return (
     <div className="page-wrapper">
       <PageTitle label="我的联盟" />
-      <div className="page-content">
-        <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="联盟信息" detailList={myLeagueInfo} />
-        </Spin>
-      </div>
+      <Spin spinning={qryLoading}>
+        <div className="page-content">
+          <Descriptions title="联盟信息" className="descriptions-wrapper">
+            {myLeagueInfo.map(item =>
+              <Descriptions.Item
+                key={item.label}
+                label={item.label}>
+                {item.value}
+              </Descriptions.Item>
+            )}
+          </Descriptions>        </div>
+      </Spin>
+
     </div>
   );
 }

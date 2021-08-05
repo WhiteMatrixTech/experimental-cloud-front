@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Spin } from 'antd';
+import { Descriptions, Divider, Spin } from 'antd';
 import { isObject } from 'lodash';
-import { Breadcrumb, DetailCard } from '~/components';
+import { Breadcrumb, PageTitle } from '~/components';
 import ReactJson from 'react-json-view';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
@@ -13,7 +13,7 @@ import { DetailViewAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 breadCrumbItem.push({
-  menuName: '存证上链详情',
+  menuName: '存证详情',
   menuHref: `/`,
 });
 export interface EvidenceDataDetailProps {
@@ -42,20 +42,20 @@ function EvidenceDataDetail({
       value: evidenceDataDetail && evidenceDataDetail.evidenceHash,
     },
     {
-      label: '所属通道',
-      value: evidenceDataDetail && evidenceDataDetail.channelId,
-    },
-    {
-      label: '创建用户',
-      value: evidenceDataDetail && evidenceDataDetail.companyName,
-    },
-    {
       label: '上链时间',
       value: evidenceDataDetail && moment(evidenceDataDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
+      label: '所属通道',
+      value: evidenceDataDetail && evidenceDataDetail.channelId,
+    },
+    {
       label: '所属网络',
       value: evidenceDataDetail && evidenceDataDetail.networkName,
+    },
+    {
+      label: '创建用户',
+      value: evidenceDataDetail && evidenceDataDetail.companyName,
     },
     {
       label: '存证用户',
@@ -91,13 +91,21 @@ function EvidenceDataDetail({
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="存证详情" />
       <div className="page-content">
         <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="基本信息" detailList={detailList} />
-          <div className={styles['detail-card-wrapper']}>
-            <div className={styles['detail-card-title']}>
-              <span className={styles['detail-title-content']}>存证信息</span>
-            </div>
+          <Descriptions column={2} title="基本信息" className="descriptions-wrapper">
+            {detailList.map(item =>
+              <Descriptions.Item
+                key={item.label}
+                label={item.label}>
+                {item.value}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+          <div className="table-wrapper page-content-shadow">
+            <div className="table-header-title">存证数据</div>
+            <Divider />
             <div className={styles['detail-info-wrapper']}>
               <ReactJson name={null} src={getEvidenceData()} />
             </div>

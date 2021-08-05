@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback } from 'react';
-import { Table, Space, Col, Row, Descriptions, Statistic } from 'antd';
+import { Table, Space, Col, Row, Descriptions, Statistic, Divider } from 'antd';
 import { connect } from 'dva';
 import { ChannelSchema, Dispatch, history, Location } from 'umi';
 import moment from 'moment';
-import { StatisticsCard, Breadcrumb } from '~/components';
+import { StatisticsCard, Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ChannelStatus } from '../../_config';
 import style from './index.less';
@@ -233,6 +233,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="通道详情" />
       <div className="page-content">
         <Descriptions title="基本信息" className={style['channel-basic-info']}>
           <Descriptions.Item label="通道ID：">{location?.state?._id}</Descriptions.Item>
@@ -258,6 +259,8 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
           </Row>
         </div>
         <div className="page-content page-content-shadow table-wrapper">
+          <div className="table-header-title">区块列表</div>
+          <Divider />
           <Table
             rowKey="_id"
             columns={blockColumns}
@@ -267,6 +270,8 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
           />
         </div>
         <div className="page-content page-content-shadow table-wrapper">
+          <div className="table-header-title">交易列表</div>
+          <Divider />
           <Table
             rowKey="_id"
             columns={transactionColumns}

@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
 import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal, Input, message } from 'antd';
 import { CaretDownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Breadcrumb } from '~/components';
+import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { defaultValue, setParams } from '../_config';
 import styles from './index.less';
@@ -17,7 +17,7 @@ const { Option } = Select;
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/rbac');
 breadCrumbItem.push({
-  menuName: '访问角色新增',
+  menuName: '新增访问角色',
   menuHref: `/`,
 });
 export interface NewRbacConfigProps {
@@ -151,6 +151,7 @@ function NewRbacConfig(props: NewRbacConfigProps) {
   return (
     <div className={styles['rbac-config-wrapper']}>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="新增访问角色" />
       <div className="page-content page-content-shadow table-wrapper">
         <Spin spinning={configLoading || resetLoading}>
           <div className={styles['rbac-config-content']}>

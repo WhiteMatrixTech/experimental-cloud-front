@@ -5,19 +5,19 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'dva';
 import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal, Input, message } from 'antd';
 import { CaretDownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Breadcrumb } from '~/components';
+import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import styles from './index.less';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, Location, RbacRole } from 'umi';
 import { configValueState, setParams } from '../../_config';
+import styles from '../../new/index.less';
 
 const { Item } = Form;
 const { Option } = Select;
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/rbac');
 breadCrumbItem.push({
-  menuName: '访问角色配置',
+  menuName: '配置访问角色',
   menuHref: `/`
 });
 
@@ -174,6 +174,7 @@ function RbacConfig(props: RbacConfigProps) {
   return (
     <div className={styles['rbac-config-wrapper']}>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="配置访问角色" />
       <div className="page-content page-content-shadow table-wrapper">
         <Spin spinning={configLoading || resetLoading}>
           <div className={styles['rbac-config-content']}>

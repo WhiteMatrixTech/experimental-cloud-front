@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
-import { Table } from 'antd';
+import { Descriptions, Divider, Table } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, DetailCard } from '~/components';
+import { Breadcrumb, DetailCard, PageTitle } from '~/components';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import baseConfig from '~/utils/config';
 import { serverPurpose } from '../../_config';
@@ -110,22 +110,34 @@ function ResourceUsage(props: ResourceUsageProps) {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="实例数据" />
       <div className="page-content">
-        <DetailCard cardTitle="服务器信息" detailList={serverInfoList} boxShadow="0 4px 12px 0 rgba(0,0,0,.05)" />
-        <Table
-          rowKey="instanceId"
-          loading={qryLoading}
-          columns={columns}
-          className="page-content-shadow table-wrapper"
-          dataSource={nodeList}
-          onChange={onPageChange}
-          pagination={{
-            pageSize: baseConfig.pageSize,
-            total: nodeTotal,
-            current: pageNum,
-            position: ['bottomCenter']
-          }}
-        />
+        <Descriptions title="服务器信息" className="descriptions-wrapper">
+          {serverInfoList.map(item =>
+            <Descriptions.Item
+              key={item.label}
+              label={item.label}>
+              {item.value}
+            </Descriptions.Item>
+          )}
+        </Descriptions>
+        <div className="table-wrapper page-content-shadow">
+          <div className="table-header-title">实例列表</div>
+          <Divider />
+          <Table
+            rowKey="instanceId"
+            loading={qryLoading}
+            columns={columns}
+            dataSource={nodeList}
+            onChange={onPageChange}
+            pagination={{
+              pageSize: baseConfig.pageSize,
+              total: nodeTotal,
+              current: pageNum,
+              position: ['bottomCenter']
+            }}
+          />
+        </div>
       </div>
     </div>
   );

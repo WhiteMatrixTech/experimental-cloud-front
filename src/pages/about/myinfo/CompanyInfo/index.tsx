@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Spin } from 'antd';
-import { DetailCard, PageTitle } from '~/components';
+import { Descriptions, Spin } from 'antd';
+import { PageTitle } from '~/components';
 import { statusList } from '../../enterprise-member/_config';
 import { injectIntl, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
@@ -22,7 +22,7 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
   } = props;
   const { networkName } = User;
 
-  const companyBasicInfo: DetailViewAttr[] = [
+  const basicInfo: DetailViewAttr[] = [
     {
       label: '用户名称',
       value: myCompany && myCompany.companyName
@@ -33,7 +33,7 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
     }
   ];
 
-  const companyContactsInfo: DetailViewAttr[] = [
+  const contactsInfo: DetailViewAttr[] = [
     {
       label: '联系人姓名',
       value: myCompany && myCompany.contactName
@@ -62,12 +62,28 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
   return (
     <div className="page-wrapper">
       <PageTitle label="我的信息" />
-      <div className="page-content">
-        <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="基本信息" detailList={companyBasicInfo} />
-          <DetailCard cardTitle="联系人信息" detailList={companyContactsInfo} />
-        </Spin>
-      </div>
+      <Spin spinning={qryLoading}>
+        <div className="page-content">
+          <Descriptions title="基本信息" className="descriptions-wrapper">
+            {basicInfo.map(item =>
+              <Descriptions.Item
+                key={item.label}
+                label={item.label}>
+                {item.value}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+          <Descriptions title="联系信息" className="descriptions-wrapper">
+            {contactsInfo.map(item =>
+              <Descriptions.Item
+                key={item.label}
+                label={item.label}>
+                {item.value}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+        </div>
+      </Spin>
     </div>
   );
 }

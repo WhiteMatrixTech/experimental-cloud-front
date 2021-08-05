@@ -3,7 +3,7 @@ import { Space, Button, Spin, Form, Row, Col, Input, Select } from 'antd';
 import { connect, history, Dispatch, Location, UserInfo } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { RolesMapNames } from '~/utils/roles';
-import { Breadcrumb } from '~/components';
+import { Breadcrumb, PageTitle } from '~/components';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
 
@@ -82,6 +82,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="配置用户角色" />
       <div className="page-content page-content-shadow table-wrapper">
         <Spin spinning={configLoading}>
           <div className={styles['form-content-wrapper']}>

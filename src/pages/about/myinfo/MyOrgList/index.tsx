@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Spin } from 'antd';
+import { Descriptions, Spin } from 'antd';
 import moment from 'moment';
-import { PageTitle, DetailCard } from '~/components';
+import { PageTitle } from '~/components';
 import { orgStatus } from '../../organizations/_config';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
@@ -60,11 +60,19 @@ function MyOrgInfo(props: MyOrgInfoProps) {
   return (
     <div className="page-wrapper">
       <PageTitle label="我的组织" />
-      <div className="page-content">
-        <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="组织信息" detailList={myOrgInfoList} />
-        </Spin>
-      </div>
+      <Spin spinning={qryLoading}>
+        <div className="page-content">
+          <Descriptions title="组织信息" className="descriptions-wrapper">
+            {myOrgInfoList.map(item =>
+              <Descriptions.Item
+                key={item.label}
+                label={item.label}>
+                {item.value}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+        </div>
+      </Spin>
     </div>
   );
 }

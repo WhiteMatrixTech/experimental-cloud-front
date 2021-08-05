@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'dva';
-import { Table, Badge } from 'antd';
+import { Table, Badge, Descriptions, Divider } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, DetailCard } from '~/components';
+import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { peerStatus } from '../../../nodes/_config';
 import baseConfig from '~/utils/config';
@@ -12,7 +12,7 @@ import { ChannelSchema, Dispatch, Location } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
-  menuName: '查看节点',
+  menuName: '通道中节点数据',
   menuHref: `/`
 });
 export interface NodeListProps {
@@ -126,17 +126,29 @@ function NodeList(props: NodeListProps) {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="通道中节点数据" />
       <div className="page-content">
-        <DetailCard cardTitle="基本信息" detailList={channelInfoList} />
-        <Table
-          rowKey="_id"
-          loading={qryLoading}
-          columns={columns}
-          className="page-content-shadow table-wrapper"
-          dataSource={nodeListOfChannel}
-          onChange={onPageChange}
-          pagination={{ pageSize, total: nodeTotalOfChannel, current: pageNum, position: ['bottomCenter'] }}
-        />
+        <Descriptions title="通道信息" className="descriptions-wrapper">
+          {channelInfoList.map(item =>
+            <Descriptions.Item
+              key={item.label}
+              label={item.label}>
+              {item.value}
+            </Descriptions.Item>
+          )}
+        </Descriptions>
+        <div className="table-wrapper page-content-shadow">
+          <div className="table-header-title">节点列表</div>
+          <Divider />
+          <Table
+            rowKey="_id"
+            loading={qryLoading}
+            columns={columns}
+            dataSource={nodeListOfChannel}
+            onChange={onPageChange}
+            pagination={{ pageSize, total: nodeTotalOfChannel, current: pageNum, position: ['bottomCenter'] }}
+          />
+        </div>
       </div>
     </div>
   );

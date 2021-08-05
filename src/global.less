@@ -6,6 +6,7 @@ body,
   min-height: 100%;
   color: @first-level-color;
   font-size: 14px;
+  scroll-behavior: smooth;
 }
 
 :global(.ant-layout) {
@@ -54,8 +55,11 @@ body {
   }
 }
 
-.table-header-search-wrapper {
-
+.descriptions-wrapper {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: @content-background;
+  border: 1px solid @default-border-color;
 }
 
 .table-top-search-wrapper {
@@ -65,6 +69,15 @@ body {
   border-radius: 4px;
   // -webkit-box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
   // box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+}
+
+.table-header-title {
+  display: flex;
+  justify-content: space-between;
+  color: @black_85;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5715;
 }
 
 .table-header-btn-wrapper {

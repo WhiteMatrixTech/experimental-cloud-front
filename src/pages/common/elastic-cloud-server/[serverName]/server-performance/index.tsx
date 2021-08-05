@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Row, Col } from 'antd';
-import { Breadcrumb } from '~/components';
+import { Breadcrumb, PageTitle } from '~/components';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
 import { ConnectState } from '~/models/connect';
@@ -9,7 +9,7 @@ import { Dispatch, ElasticServerSchema, Location } from 'umi';
 
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');
 breadCrumbItem.push({
-  menuName: '资源使用情况',
+  menuName: '服务器资源监控',
   menuHref: `/`
 });
 export interface ServerPerformanceProps {
@@ -23,6 +23,7 @@ function ServerPerformance(props: ServerPerformanceProps) {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="服务器资源监控" />
       <div className="page-content table-wrapper page-content-shadow">
         <div className={styles['tabs-body']}>
           <Row gutter={[16, 16]}>

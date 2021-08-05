@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'dva';
-import { Spin } from 'antd';
-import { Breadcrumb, DetailCard } from '~/components';
+import { Descriptions, Divider, Empty, Spin } from 'antd';
+import { Breadcrumb, PageTitle } from '~/components';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
-import styles from './index.less';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, JobSchema, Location } from 'umi';
 
@@ -81,17 +80,27 @@ const JobLogs: React.FC<JobLogsProps> = (props) => {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className="page-content">
-        <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="基本信息" detailList={detailList} />
-          <div className={styles['detail-card-wrapper']}>
-            <div className={styles['detail-card-title']}>
-              <span className={styles['detail-title-content']}>日志信息</span>
+      <PageTitle label="任务日志" />
+      <Spin spinning={qryLoading}>
+        <div className="page-content">
+          <Descriptions title="基本信息" className="descriptions-wrapper">
+            {detailList.map(item =>
+              <Descriptions.Item
+                key={item.label}
+                label={item.label}>
+                {item.value}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+          <div className="table-wrapper page-content-shadow">
+            <div className="table-header-title">日志信息</div>
+            <Divider />
+            <div id="job-logs">
+              {!jobLog && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
             </div>
-            <div id="job-logs" className={styles['detail-info-wrapper']}></div>
           </div>
-        </Spin>
-      </div>
+        </div>
+      </Spin>
     </div>
   );
 };

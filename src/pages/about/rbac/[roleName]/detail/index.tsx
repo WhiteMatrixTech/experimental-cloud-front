@@ -5,12 +5,12 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'dva';
 import { Row, Col, Form, Radio, Select, Spin } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
-import { Breadcrumb } from '~/components';
+import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import styles from './index.less';
 import { Dispatch, Location, RbacRole } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { configValueState } from '../../_config';
+import styles from '../../new/index.less';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -86,6 +86,7 @@ function RbacDetail(props: RbacDetailProps) {
   return (
     <div className={styles['rbac-config-wrapper']}>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="角色策略详情" />
       <div className="page-content page-content-shadow table-wrapper">
         <Spin spinning={configLoading || resetLoading}>
           <div className={styles['rbac-config-content']}>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Table, Space } from 'antd';
+import { Table, Space, Button, Tooltip } from 'antd';
+import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import { Dispatch, history } from 'umi';
 import { ConnectState } from '~/models/connect';
@@ -16,8 +17,11 @@ export type SourceCodeCompilationProps = {
 };
 const pageSize = baseConfig.pageSize;
 const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
-  const { dispatch, qryLoading = false, BlockChainCompile } = props;
-  const { jobList, jobContinueData } = BlockChainCompile;
+  const {
+    dispatch,
+    qryLoading = false,
+    BlockChainCompile } = props;
+  const { jobList, jobContinueData, backTopVisible } = BlockChainCompile;
   const [moreBtnVisible, setMoreBtnVisible] = useState(false);
 
   const getJobList = useCallback(() => {
@@ -36,8 +40,26 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
         limit: pageSize,
         continueData: jobContinueData
       }
+    }).then(() => {
+      const pageAnchor = document.getElementById('common-portal-layout');
+      if (pageAnchor) {
+        pageAnchor.scrollTop = pageAnchor.scrollHeight;
+      }
     });
   };
+
+  const onBackTop = () => {
+    const pageAnchor = document.getElementById('common-portal-layout');
+    if (pageAnchor) {
+      pageAnchor.scrollTop = 0;
+    }
+    dispatch({
+      type: 'BlockChainCompile/common',
+      payload: {
+        backTopVisible: false
+      }
+    });
+  }
 
   const cleanHob = useCallback(() => {
     dispatch({
@@ -46,9 +68,6 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
     });
   }, [dispatch]);
 
-  const onPageChange = (pageInfo: any) => {
-    // 页码改变
-  };
 
   const onViewJobLog = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: JobSchema) => {
     e.preventDefault();
@@ -118,18 +137,27 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
           loading={qryLoading}
           columns={columns}
           dataSource={jobList}
-          onChange={onPageChange}
-          scroll={{ y: 450 }}
           pagination={false}
         />
-        {moreBtnVisible && (
+        {moreBtnVisible ? (
           <div className={styles.jobListMore}>
             <button className={styles.btn} onClick={getMoreJobList}>
               加载更多
             </button>
           </div>
+        ) : (
+          <div className={styles.jobListMore}>
+            已经到底啦~
+          </div>
         )}
       </div>
+      {backTopVisible &&
+        <div className={styles['back-top']} onClick={onBackTop}>
+          <Tooltip title="回到顶部">
+            <Button type="primary" shape="circle" icon={<VerticalAlignTopOutlined />} />
+          </Tooltip>
+        </div>
+      }
     </div>
   );
 };

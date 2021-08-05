@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Spin } from 'antd';
-import { Breadcrumb, DetailCard } from '~/components';
+import { Descriptions, Spin } from 'antd';
+import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { statusList } from '../_config';
 import { ConnectState } from '~/models/connect';
@@ -10,14 +10,14 @@ import { DetailViewAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/enterprise-member');
 breadCrumbItem.push({
-  menuName: '用户详情',
+  menuName: '成员详情',
   menuHref: `/`,
 });
 export interface MemberDetailProps {
   qryLoading: boolean;
   location: Location<EnterpriseMemberSchema>;
 }
-function MemberDetail(props: MemberDetailProps) {
+const MemberDetail: React.FC<MemberDetailProps> = (props) => {
   const { qryLoading = false, location } = props;
   const basicInfo: DetailViewAttr[] = [
     {
@@ -60,12 +60,29 @@ function MemberDetail(props: MemberDetailProps) {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className="page-content">
-        <Spin spinning={qryLoading}>
-          <DetailCard cardTitle="基本信息" detailList={basicInfo} />
-          <DetailCard cardTitle="联系人信息" detailList={contactsInfo} />
-        </Spin>
-      </div>
+      <PageTitle label="成员详情" />
+      <Spin spinning={qryLoading}>
+        <div className="page-content">
+          <Descriptions title="基本信息" className="descriptions-wrapper">
+            {basicInfo.map(item =>
+              <Descriptions.Item
+                key={item.label}
+                label={item.label}>
+                {item.value}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+          <Descriptions title="联系信息" className="descriptions-wrapper">
+            {contactsInfo.map(item =>
+              <Descriptions.Item
+                key={item.label}
+                label={item.label}>
+                {item.value}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+        </div>
+      </Spin>
     </div>
   );
 }

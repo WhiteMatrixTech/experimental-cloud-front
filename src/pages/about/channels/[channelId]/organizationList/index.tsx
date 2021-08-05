@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
-import { Table, Button } from 'antd';
-import { Breadcrumb, DetailCard } from '~/components';
+import { Table, Button, Descriptions, Divider } from 'antd';
+import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import AddOrg from '../../components/AddOrg';
 import { ChannelStatusMap } from '../../_config';
@@ -14,7 +14,7 @@ import { DetailViewAttr } from '~/utils/types';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
-  menuName: '查看组织',
+  menuName: '通道中组织数据',
   menuHref: `/`
 });
 
@@ -123,21 +123,27 @@ function OrganizationList(props: OrganizationListProps) {
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="通道中组织数据" />
       <div className="page-content">
-        <DetailCard
-          cardTitle="基本信息"
-          detailList={channelInfoList}
-          boxShadow="0 4px 12px 0 rgba(0,0,0,.05)"
-          columnsNum={2}
-        />
+        <Descriptions title="通道信息" className="descriptions-wrapper">
+          {channelInfoList.map(item =>
+            <Descriptions.Item
+              key={item.label}
+              label={item.label}>
+              {item.value}
+            </Descriptions.Item>
+          )}
+        </Descriptions>
         <div className="page-content page-content-shadow table-wrapper">
-          {showAddOrg && (
-            <div className="table-header-btn-wrapper">
+          <div className="table-header-title">
+            <span>组织列表</span>
+            {showAddOrg && (
               <Button type="primary" onClick={onClickAddOrg}>
                 添加组织
               </Button>
-            </div>
-          )}
+            )}
+          </div>
+          <Divider />
           <Table
             rowKey="_id"
             loading={qryLoading}

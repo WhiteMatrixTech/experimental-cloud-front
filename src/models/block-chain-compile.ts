@@ -43,6 +43,7 @@ export type BlockChainCompileModelState = {
   jobLog: any;
   compileContinueData: string;
   jobContinueData: string;
+  backTopVisible: boolean;
 };
 
 export type BlockChainCompileModelType = {
@@ -72,7 +73,8 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
     jobTotal: 0,
     jobLog: null,
     compileContinueData: '',
-    jobContinueData: ''
+    jobContinueData: '',
+    backTopVisible: false
   },
 
   effects: {
@@ -158,6 +160,7 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
       return {
         ...state,
         ...action.payload,
+        backTopVisible: false,
         gitBuildJobList: [],
         gitBuildJobTotal: 0,
         compileContinueData: '',

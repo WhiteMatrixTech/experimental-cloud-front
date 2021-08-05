@@ -28,7 +28,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 
   const columns: ColumnsType<any> = [
     {
-      title: '哈希',
+      title: '存证哈希',
       dataIndex: 'evidenceHash',
       key: 'evidenceHash',
       ellipsis: true,

@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useMemo, Fragment, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Dispatch, history, TransactionSchema } from 'umi';
-import { Table, Space, Row, Col, Spin } from 'antd';
-import { Breadcrumb } from '~/components';
+import { Table, Space, Divider, Spin, Descriptions } from 'antd';
+import { Breadcrumb, PageTitle } from '~/components';
 import baseConfig from '~/utils/config';
-import styles from './index.less';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { DetailViewAttr } from '~/utils/types';
@@ -159,16 +158,16 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
           value: blockDetail.previousHash
         },
         {
-          label: '交易笔数',
-          value: blockDetail.txCount
+          label: '所属通道',
+          value: blockDetail.channelId
         },
         {
           label: '生成时间',
           value: moment(blockDetail.createdAt).format('YYYY-MM-DD HH:mm:ss')
         },
         {
-          label: '所属通道',
-          value: blockDetail.channelId
+          label: '交易笔数',
+          value: blockDetail.txCount
         }
       ];
     }
@@ -178,34 +177,21 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
+      <PageTitle label="区块详情" />
       <Spin spinning={qryLoading}>
         <div className="page-content">
-          <div className={styles['block-detail-wrapper']}>
-            <div className={styles['block-detail-title']}>
-              <div>区块信息</div>
-            </div>
-            <div className={styles['block-detail-content']}>
-              <div className={styles.blockInfoWrap}>
-                <Row
-                  gutter={[
-                    { xs: 8, sm: 16, md: 24, lg: 32 },
-                    { xs: 8, sm: 16, md: 24, lg: 32 }
-                  ]}>
-                  {detailList.map((item) => (
-                    <Fragment key={item.label}>
-                      <Col className={styles['gutter-row-label']} span={3}>
-                        {item.label}
-                      </Col>
-                      <Col className={styles['gutter-row-content']} span={21}>
-                        {item.value}
-                      </Col>
-                    </Fragment>
-                  ))}
-                </Row>
-              </div>
-            </div>
-          </div>
+          <Descriptions column={2} title="基本信息" className="descriptions-wrapper">
+            {detailList.map(item =>
+              <Descriptions.Item
+                key={item.label}
+                label={item.label}>
+                {item.value}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
           <div className="table-wrapper page-content-shadow">
+            <div className="table-header-title">交易数据</div>
+            <Divider />
             <Table
               rowKey="txId"
               columns={columns}
