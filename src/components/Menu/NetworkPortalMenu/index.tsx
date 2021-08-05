@@ -61,22 +61,19 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
     }
     if (isEmpty(item.subMenus)) {
       return (
-        <Menu.Item key={item.menuHref} onClick={() => hashChange(item)}>
-          <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
-          <span>{item.menuName}</span>
+        <Menu.Item
+          icon={item.menuIcon}
+          key={item.menuHref}
+          onClick={() => hashChange(item)}>
+          {item.menuName}
         </Menu.Item>
       );
     } else {
       return (
         <SubMenu
           key={item.menuHref}
-          title={
-            <div className={styles.menuTitle}>
-              <i className={`icon-menu-width KBass ${item.menuIcon}`}></i>
-              <span>{item.menuName}</span>
-            </div>
-          }
-        >
+          icon={item.menuIcon}
+          title={item.menuName}>
           {item.subMenus.map((subItem) => {
             if (!item.accessRole.includes(userRole)) {
               return '';

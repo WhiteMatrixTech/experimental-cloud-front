@@ -201,44 +201,46 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
           </Button>
         } />
         <div className="table-wrapper page-content-shadow">
-          <div className="table-header-search-wrapper">
-            <Form colon={false} form={form}>
-              <Row gutter={24}>
-                <Col span={8}>
-                  <Item label="组织名称" name="orgNameSearch" initialValue={null}>
-                    <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择组织">
-                      {orgList.map((item) => (
-                        <Option key={item.orgName} value={item.orgName}>
-                          {item.orgName}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Item>
-                </Col>
-                <Col span={8} offset={8} style={{ textAlign: 'right' }}>
-                  <Space size="middle">
-                    <Button onClick={resetForm}>重置</Button>
-                    <Button type="primary" onClick={onSearch}>
-                      查询
-                    </Button>
-                  </Space>
-                </Col>
-              </Row>
-            </Form>
-          </div>
-          <Table
-            rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.userId}`}
-            columns={columns}
-            dataSource={fabricRoleList}
-            onChange={onPageChange}
-            pagination={{
-              pageSize: baseConfig.pageSize,
-              total: fabricRoleTotal,
-              current: pageNum,
-              showSizeChanger: false,
-              position: ['bottomCenter']
-            }}
-          />
+          <Spin spinning={qryLoading}>
+            <div className="table-header-search-wrapper">
+              <Form colon={false} form={form}>
+                <Row gutter={24}>
+                  <Col span={8}>
+                    <Item label="组织名称" name="orgNameSearch" initialValue={null}>
+                      <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择组织">
+                        {orgList.map((item) => (
+                          <Option key={item.orgName} value={item.orgName}>
+                            {item.orgName}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Item>
+                  </Col>
+                  <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                    <Space size="middle">
+                      <Button onClick={resetForm}>重置</Button>
+                      <Button type="primary" onClick={onSearch}>
+                        查询
+                      </Button>
+                    </Space>
+                  </Col>
+                </Row>
+              </Form>
+            </div>
+            <Table
+              rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.userId}`}
+              columns={columns}
+              dataSource={fabricRoleList}
+              onChange={onPageChange}
+              pagination={{
+                pageSize: baseConfig.pageSize,
+                total: fabricRoleTotal,
+                current: pageNum,
+                showSizeChanger: false,
+                position: ['bottomCenter']
+              }}
+            />
+          </Spin>
         </div>
         {createModalVisible && (
           <CreateFabricUserModal

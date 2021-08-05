@@ -17,7 +17,7 @@ export interface EvidenceDataListProps {
   dispatch: Dispatch;
 }
 function EvidenceDataList(props: EvidenceDataListProps) {
-  const { User, Evidence, qryLoading, dispatch } = props;
+  const { User, Evidence, qryLoading = false, dispatch } = props;
   const { evidenceDataList, evidenceDataTotal } = Evidence;
   const { networkName } = User;
 

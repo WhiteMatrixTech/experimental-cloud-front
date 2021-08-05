@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, EnterpriseMemberSchema, history } from 'umi';
-import { Modal, Table, Space, Row, Col, Form, Select, DatePicker, Input, Button, Menu, Dropdown } from 'antd';
+import { Modal, Table, Space, Spin, Row, Col, Form, Select, DatePicker, Input, Button, Menu, Dropdown } from 'antd';
 import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
 import cs from 'classnames';
 import moment from 'moment';
@@ -228,7 +228,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   // 点击操作按钮, 进行二次确认
   const onClickToConfirm = (record: EnterpriseMemberSchema, type: string) => {
     let tipTitle = '';
-    let callback = () => {};
+    let callback = () => { };
     switch (type) {
       case 'validate':
         tipTitle = `启用成员 【${record.companyName}】 `;
@@ -343,64 +343,65 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     <div className="page-wrapper">
       <PageTitle label="成员管理" />
       <div className={cs(styles['enterprise-wrapper'], 'page-content')}>
-        <div className={cs(styles['search-wrapper'], 'page-content-shadow')}>
-          <Form form={form}>
-            <Row gutter={24} justify="space-between">
-              <Col span={7}>
-                <Item label="用户名" name="companyName" initialValue="">
-                  <Input placeholder="请输入用户名" />
-                </Item>
-              </Col>
-              <Col span={7}>
-                <Item label="创建时间" name="createTime" initialValue={[]}>
-                  <RangePicker
-                    getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
-                    style={{ width: '100%' }}
-                    showTime
-                  />
-                </Item>
-              </Col>
-              <Col span={7}>
-                <Item label="审批状态" name="approvalStatus" initialValue={null}>
-                  <Select
-                    allowClear
-                    getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                    placeholder="请选择审批状态">
-                    {Object.keys(statusList).map((item) => (
-                      <Option key={item} value={item}>
-                        {statusList[item]}
-                      </Option>
-                    ))}
-                  </Select>
-                </Item>
-              </Col>
-              <Col span={8} offset={16} style={{ textAlign: 'right' }}>
-                <Space size="middle">
-                  <Button onClick={resetForm}>重置</Button>
-                  <Button type="primary" onClick={onSearch}>
-                    查询
-                  </Button>
-                </Space>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-        <div className="table-wrapper page-content-shadow">
-          <Table
-            rowKey="contactEmail"
-            columns={columns}
-            loading={qryLoading}
-            dataSource={memberList}
-            onChange={onPageChange}
-            scroll={{ x: 1540, y: 300 }}
-            pagination={{
-              pageSize,
-              total: memberTotal,
-              current: pageNum,
-              position: ['bottomCenter']
-            }}
-          />
-        </div>
+        <Spin spinning={qryLoading}>
+          <div className={cs(styles['search-wrapper'], 'page-content-shadow')}>
+            <Form form={form}>
+              <Row gutter={24} justify="space-between">
+                <Col span={7}>
+                  <Item label="用户名" name="companyName" initialValue="">
+                    <Input placeholder="请输入用户名" />
+                  </Item>
+                </Col>
+                <Col span={7}>
+                  <Item label="创建时间" name="createTime" initialValue={[]}>
+                    <RangePicker
+                      getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
+                      style={{ width: '100%' }}
+                      showTime
+                    />
+                  </Item>
+                </Col>
+                <Col span={7}>
+                  <Item label="审批状态" name="approvalStatus" initialValue={null}>
+                    <Select
+                      allowClear
+                      getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                      placeholder="请选择审批状态">
+                      {Object.keys(statusList).map((item) => (
+                        <Option key={item} value={item}>
+                          {statusList[item]}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Item>
+                </Col>
+                <Col span={8} offset={16} style={{ textAlign: 'right' }}>
+                  <Space size="middle">
+                    <Button onClick={resetForm}>重置</Button>
+                    <Button type="primary" onClick={onSearch}>
+                      查询
+                    </Button>
+                  </Space>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+          <div className="table-wrapper page-content-shadow">
+            <Table
+              rowKey="contactEmail"
+              columns={columns}
+              dataSource={memberList}
+              onChange={onPageChange}
+              scroll={{ x: 1540, y: 300 }}
+              pagination={{
+                pageSize,
+                total: memberTotal,
+                current: pageNum,
+                position: ['bottomCenter']
+              }}
+            />
+          </div>
+        </Spin>
       </div>
       {configVisible && <ConfigMemberRole visible={configVisible} onCancel={onCloseModal} record={memberRecord} />}
     </div>

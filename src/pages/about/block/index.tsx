@@ -17,7 +17,7 @@ export interface BlockProps {
 }
 
 const Block: React.FC<BlockProps> = (props) => {
-  const { Block, qryLoading, dispatch, User } = props;
+  const { Block, qryLoading = false, dispatch, User } = props;
   const { networkName } = User;
   const { blockList, blockTotal } = Block;
 

@@ -1,3 +1,21 @@
+import {
+  CodeSandboxOutlined,
+  FileTextOutlined,
+  DeploymentUnitOutlined,
+  DashboardOutlined,
+  BlockOutlined,
+  TransactionOutlined,
+  SafetyCertificateOutlined,
+  TeamOutlined,
+  SolutionOutlined,
+  IdcardOutlined,
+  FileProtectOutlined,
+  PartitionOutlined,
+  ApartmentOutlined,
+  FileSearchOutlined,
+  CloudServerOutlined,
+  AuditOutlined
+} from '@ant-design/icons';
 import { LOCAL_STORAGE_ITEM_KEY } from './const';
 import { decryptData, deviceId } from './encryptAndDecrypt';
 import { getAllPath, tree2Arr } from './index';
@@ -17,7 +35,7 @@ interface BasicMenuProps {
   id: string;
   menuPid: string;
   menuHref: string;
-  menuIcon: string | null;
+  menuIcon: JSX.Element | string | null;
   menuName: string;
   accessRole: Roles[];
 }
@@ -41,7 +59,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'league-dashboard',
     menuPid: RootMenuId,
     menuHref: '/about/league-dashboard',
-    menuIcon: 'KBasslianmengguanli1',
+    menuIcon: <CodeSandboxOutlined />,
     menuName: '联盟总览',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
@@ -50,7 +68,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'data-dashboard',
     menuPid: RootMenuId,
     menuHref: '/about/data-dashboard',
-    menuIcon: 'KBassyibiaopan',
+    menuIcon: <DashboardOutlined />,
     menuName: '仪表盘',
     accessRole: [Roles.NetworkAdmin],
     subMenus: []
@@ -59,7 +77,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'block',
     menuPid: RootMenuId,
     menuHref: '/about/block',
-    menuIcon: 'KBassqukuailian',
+    menuIcon: <BlockOutlined />,
     menuName: '区块数据',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
@@ -68,7 +86,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'transactions',
     menuPid: RootMenuId,
     menuHref: '/about/transactions',
-    menuIcon: 'KBassjiaoyi',
+    menuIcon: <TransactionOutlined />,
     menuName: '交易信息',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
@@ -77,7 +95,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'channels',
     menuPid: RootMenuId,
     menuHref: '/about/channels',
-    menuIcon: 'KBasstongdaoguanli',
+    menuIcon: <PartitionOutlined />,
     menuName: '通道管理',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
@@ -86,7 +104,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'organizations',
     menuPid: RootMenuId,
     menuHref: '/about/organizations',
-    menuIcon: 'KBasszuzhiguanli',
+    menuIcon: <ApartmentOutlined />,
     menuName: '组织管理',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
@@ -95,7 +113,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'nodes',
     menuPid: RootMenuId,
     menuHref: '/about/nodes',
-    menuIcon: 'KBassjiedianguanli',
+    menuIcon: <DeploymentUnitOutlined />,
     menuName: '节点管理',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
@@ -104,7 +122,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'contract',
     menuPid: RootMenuId,
     menuHref: '/about/contract',
-    menuIcon: 'KBassheyueguanli',
+    menuIcon: <FileTextOutlined />,
     menuName: '合约管理',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
@@ -113,7 +131,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'evidence',
     menuPid: RootMenuId,
     menuHref: '/about/evidence',
-    menuIcon: 'KBasszhengshuguanli',
+    menuIcon: < FileProtectOutlined />,
     menuName: '存证上链',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
@@ -122,7 +140,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'enterprise-member',
     menuPid: RootMenuId,
     menuHref: '/about/enterprise-member',
-    menuIcon: 'KBasschengyuanguanli',
+    menuIcon: <TeamOutlined />,
     menuName: '成员管理',
     accessRole: [Roles.NetworkAdmin],
     subMenus: []
@@ -140,7 +158,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'myinfo',
     menuPid: RootMenuId,
     menuHref: '/about/myinfo',
-    menuIcon: 'KBasswodexinxi',
+    menuIcon: <IdcardOutlined />,
     menuName: '用户信息',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: [
@@ -205,7 +223,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'fabricUsers',
     menuPid: RootMenuId,
     menuHref: '/about/fabricUsers',
-    menuIcon: 'KBasslianmengguanli',
+    menuIcon: <SolutionOutlined />,
     menuName: 'Fabric用户管理',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
@@ -214,7 +232,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'rbac',
     menuPid: RootMenuId,
     menuHref: '/about/rbac',
-    menuIcon: 'KBasszhengshuguanli',
+    menuIcon: <SafetyCertificateOutlined />,
     menuName: '访问角色管理',
     accessRole: [Roles.NetworkAdmin],
     subMenus: []
@@ -226,7 +244,7 @@ const CommonMenuList: CommonMenuProps[] = [
     id: 'job-management',
     menuPid: RootMenuId,
     menuHref: '/common/job-management',
-    menuIcon: 'KBasszhengshuguanli',
+    menuIcon: <FileSearchOutlined />,
     menuName: '任务管理',
     accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
     subMenus: []
@@ -235,7 +253,7 @@ const CommonMenuList: CommonMenuProps[] = [
     id: 'block-compile',
     menuPid: RootMenuId,
     menuHref: '/common/block-compile',
-    menuIcon: 'KBasslianmengguanli',
+    menuIcon: <DeploymentUnitOutlined />,
     menuName: '区块链编译',
     accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
     subMenus: [
@@ -263,7 +281,7 @@ const CommonMenuList: CommonMenuProps[] = [
     id: 'elastic-cloud-server',
     menuPid: RootMenuId,
     menuHref: '/common/elastic-cloud-server',
-    menuIcon: 'KBasszhengshuguanli',
+    menuIcon: <CloudServerOutlined />,
     menuName: '弹性云服务器管理',
     accessRole: [Roles.Admin, Roles.SuperUser],
     subMenus: []
@@ -272,7 +290,7 @@ const CommonMenuList: CommonMenuProps[] = [
     id: 'user-role-management',
     menuPid: RootMenuId,
     menuHref: '/common/user-role-management',
-    menuIcon: 'KBasslianmengguanli',
+    menuIcon: <AuditOutlined />,
     menuName: '用户角色管理',
     accessRole: [Roles.SuperUser],
     subMenus: []

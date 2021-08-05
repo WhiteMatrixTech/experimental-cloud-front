@@ -50,15 +50,18 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
 
   return (
     <Header className={styles.header}>
-      <div className={styles['logo-sub']}>
-        <img src={buaaLogo} alt="北京航空大学杭州创新研究院" />
-        <span>区块链应用服务平台</span>
+      <div className={styles['header-left-wrapper']}>
+        <div className={styles['logo-sub']}>
+          <img src={buaaLogo} alt="北京航空大学杭州创新研究院" />
+          <span>区块链应用服务平台</span>
+        </div>
+        <span className={styles['divider-span']}></span>
         <a className={styles['header-menu-item']} onClick={onClickShowDrawer}>
           <BarsOutlined />
           <span>服务列表</span>
         </a>
       </div>
-      <div className={styles['header-right-info']}>
+      <div className={styles['header-right-wrapper']}>
         <Dropdown placement="bottomCenter" overlay={getUserMenu()}>
           <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
             {userInfo && userInfo.loginName} <DownOutlined />
