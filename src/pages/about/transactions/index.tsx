@@ -66,7 +66,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       type: 'Transactions/onSearch',
       payload: params
     });
-  }, [dispatch, networkName, txId])
+  }, [dispatch, networkName, txId]);
 
   const onPageChange = (pageInfo: any): void => {
     setPageNum(pageInfo.current);
@@ -175,5 +175,5 @@ export default connect(({ User, Layout, Transactions, loading }: ConnectState) =
   User,
   Layout,
   Transactions,
-  qryLoading: loading.effects['Transactions/getTransactionList']
+  qryLoading: loading.effects['Transactions/getTransactionList'] || loading.effects['Transactions/onSearch']
 }))(Transactions);

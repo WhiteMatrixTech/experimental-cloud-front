@@ -146,7 +146,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       const res = dispatch({
         type: 'Dashboard/deleteNetwork',
         payload: {
-          networkName,
+          networkName
         }
       });
       if (res) {
@@ -162,11 +162,11 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
 
           if (pollInterval) {
             clearInterval(pollInterval);
-          };
+          }
 
           dispatch({
             type: 'User/cleanNetworkInfo',
-            payload: {},
+            payload: {}
           });
           dispatch({
             type: 'Layout/common',
@@ -409,17 +409,28 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
           break;
         default:
           break;
-      };
+      }
       if (status && CanDeleteNetworkStatus.includes(status)) {
-        btnShowInitValue.deleteButton = <Col span={2}>
-          <Button type="primary" onClick={onDeleteNetwork}>
-            删除网络
-          </Button>
-        </Col>
+        btnShowInitValue.deleteButton = (
+          <Col span={2}>
+            <Button type="primary" onClick={onDeleteNetwork}>
+              删除网络
+            </Button>
+          </Col>
+        );
       }
     }
     return btnShowInitValue;
-  }, [channelTotal, linkToCreateChannel, networkStatusInfo?.networkStatus, onCreateNetwork, onDeleteNetwork, onRestartNetwork, onStopNetwork, userRole]);
+  }, [
+    channelTotal,
+    linkToCreateChannel,
+    networkStatusInfo?.networkStatus,
+    onCreateNetwork,
+    onDeleteNetwork,
+    onRestartNetwork,
+    onStopNetwork,
+    userRole
+  ]);
 
   useEffect(() => {
     getBlockList();

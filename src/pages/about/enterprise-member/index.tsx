@@ -58,13 +58,16 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
           </span>
         </Menu.Item>
         <Menu.Item>
-          <span role="button" onClick={() => onClickToConfirm(record, 'resetPassword')}>重置密码</span>
+          <span role="button" onClick={() => onClickToConfirm(record, 'resetPassword')}>
+            重置密码
+          </span>
         </Menu.Item>
         <Menu.Item>
           <a
             href={`/about/enterprise-member/${record.companyCertBusinessNumber}`}
-            onClick={(e) => onClickDetail(e, record)}
-          >详情</a>
+            onClick={(e) => onClickDetail(e, record)}>
+            详情
+          </a>
         </Menu.Item>
       </Menu>
     );
@@ -231,7 +234,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   // 点击操作按钮, 进行二次确认
   const onClickToConfirm = (record: EnterpriseMemberSchema, type: string) => {
     let tipTitle = '';
-    let callback = () => { };
+    let callback = () => {};
     switch (type) {
       case 'validate':
         tipTitle = `启用成员 【${record.companyName}】 `;
@@ -269,11 +272,11 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   const resetPassword = (record: EnterpriseMemberSchema) => {
     const params = {
       networkName,
-      companyName: record.companyName,
+      companyName: record.companyName
     };
     dispatch({
       type: 'Member/resetPassword',
-      payload: params,
+      payload: params
     }).then((res: boolean) => {
       if (res) {
         getMemberList();

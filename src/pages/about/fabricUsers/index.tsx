@@ -4,7 +4,7 @@ import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Breadcrumb } from '~/components';
-import { Table, Button, Space, Form, Row, Col, Select, message, notification } from 'antd';
+import { Table, Button, Space, Form, Row, Col, Select, message, notification, Spin } from 'antd';
 import CreateFabricUserModal from './components/CreateFabricUserModal';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { OrgStatusEnum } from '../organizations/_config';
@@ -41,6 +41,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
   const [searchParams, setSearchParams] = useState({ orgName: '' });
 
   const [createModalVisible, setCreateModalVisible] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const getFabricRoleList = useCallback(() => {
     const { orgName } = searchParams;
@@ -86,7 +87,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       Authorization: `Bearer ${accessToken}`,
       RoleAuth: roleToken
     };
-
+    setDownloading(true);
     request(
       `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRole/${record.orgName}/${record.userId}/getUserCcp`,
       {
@@ -95,12 +96,16 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
         method: 'GET',
         responseType: 'blob'
       }
-    ).then((res: any) => {
-      const blob = new Blob([res]);
-      saveAs(blob, `${record.userId}.json`);
-    }).catch(() => {
-      notification.error({ message: 'SDK配置下载失败', top: 64, duration: 3 });
-    });
+    )
+      .then((res: any) => {
+        setDownloading(false);
+        const blob = new Blob([res]);
+        saveAs(blob, `${record.userId}.json`);
+      })
+      .catch(() => {
+        setDownloading(false);
+        notification.error({ message: 'SDK配置下载失败', top: 64, duration: 3 });
+      });
   };
 
   // 搜索
@@ -191,62 +196,67 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className="page-content">
-        <div className="table-top-search-wrapper">
-          <Form {...formItemLayout} colon={false} form={form}>
-            <Row gutter={24}>
-              <Col span={8}>
-                <Item label="组织名称" name="orgNameSearch" initialValue={null}>
-                  <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择组织">
-                    {orgList.map((item) => (
-                      <Option key={item.orgName} value={item.orgName}>
-                        {item.orgName}
-                      </Option>
-                    ))}
-                  </Select>
-                </Item>
-              </Col>
-              <Col span={8} offset={8} style={{ textAlign: 'right' }}>
-                <Space size="middle">
-                  <Button onClick={resetForm}>重置</Button>
-                  <Button type="primary" onClick={onSearch}>
-                    查询
-                  </Button>
-                </Space>
-              </Col>
-            </Row>
-          </Form>
-        </div>
-        <div className="table-wrapper page-content-shadow">
-          <div className={styles['table-header-btn-wrapper']}>
-            <Button type="primary" onClick={onClickCreate}>
-              新增Fabric角色
-            </Button>
+      <Spin spinning={downloading} tip="下载中...">
+        <Breadcrumb breadCrumbItem={breadCrumbItem} />
+        <div className="page-content">
+          <div className="table-top-search-wrapper">
+            <Form {...formItemLayout} colon={false} form={form}>
+              <Row gutter={24}>
+                <Col span={8}>
+                  <Item label="组织名称" name="orgNameSearch" initialValue={null}>
+                    <Select
+                      allowClear
+                      getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                      placeholder="选择组织">
+                      {orgList.map((item) => (
+                        <Option key={item.orgName} value={item.orgName}>
+                          {item.orgName}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Item>
+                </Col>
+                <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                  <Space size="middle">
+                    <Button onClick={resetForm}>重置</Button>
+                    <Button type="primary" onClick={onSearch}>
+                      查询
+                    </Button>
+                  </Space>
+                </Col>
+              </Row>
+            </Form>
           </div>
-          <Table
-            rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.userId}`}
-            loading={qryLoading}
-            columns={columns}
-            dataSource={fabricRoleList}
-            onChange={onPageChange}
-            pagination={{
-              pageSize: baseConfig.pageSize,
-              total: fabricRoleTotal,
-              current: pageNum,
-              showSizeChanger: false,
-              position: ['bottomCenter']
-            }}
-          />
+          <div className="table-wrapper page-content-shadow">
+            <div className={styles['table-header-btn-wrapper']}>
+              <Button type="primary" onClick={onClickCreate}>
+                新增Fabric角色
+              </Button>
+            </div>
+            <Table
+              rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.userId}`}
+              loading={qryLoading}
+              columns={columns}
+              dataSource={fabricRoleList}
+              onChange={onPageChange}
+              pagination={{
+                pageSize: baseConfig.pageSize,
+                total: fabricRoleTotal,
+                current: pageNum,
+                showSizeChanger: false,
+                position: ['bottomCenter']
+              }}
+            />
+          </div>
         </div>
-      </div>
-      {createModalVisible && (
-        <CreateFabricUserModal
-          visible={createModalVisible}
-          onCancel={onCloseCreateModal}
-          getFabricRoleList={getFabricRoleList}
-        />
-      )}
+        {createModalVisible && (
+          <CreateFabricUserModal
+            visible={createModalVisible}
+            onCancel={onCloseCreateModal}
+            getFabricRoleList={getFabricRoleList}
+          />
+        )}
+      </Spin>
     </div>
   );
 };

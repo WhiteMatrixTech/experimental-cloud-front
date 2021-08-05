@@ -10,17 +10,18 @@ const FormItem = Form.Item;
 const passwordStatusMap = {
   ok: <div className={styles.success}>强度：强</div>,
   pass: <div className={styles.warning}>强度：中</div>,
-  poor: <div className={styles.error}>强度：弱</div>,
+  poor: <div className={styles.error}>强度：弱</div>
 };
 
 export type SetPasswordProps = {
   dispatch: Dispatch;
   location: any;
   User: ConnectState['User'];
+  changePawLoading: boolean;
 };
 
 const SetPassword: React.FC<SetPasswordProps> = (props) => {
-  const { dispatch, location } = props;
+  const { dispatch, location, changePawLoading } = props;
 
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
@@ -35,15 +36,15 @@ const SetPassword: React.FC<SetPasswordProps> = (props) => {
         const { confirm, ...params } = values;
         dispatch({
           type: 'User/changePassword',
-          payload: params,
+          payload: params
         }).then((res: boolean) => {
           if (res) {
             history.push({
               pathname: '/user/register-result',
               state: {
                 account: params.email,
-                tip: `你的账户：${params.email} 密码修改成功`,
-              },
+                tip: `你的账户：${params.email} 密码修改成功`
+              }
             });
           }
         });
@@ -135,10 +136,9 @@ const SetPassword: React.FC<SetPasswordProps> = (props) => {
           rules={[
             {
               required: true,
-              message: '请输入邮箱!',
-            },
-          ]}
-        >
+              message: '请输入邮箱!'
+            }
+          ]}>
           <Input size="large" placeholder="邮箱" />
         </FormItem>
         <FormItem
@@ -146,10 +146,9 @@ const SetPassword: React.FC<SetPasswordProps> = (props) => {
           rules={[
             {
               required: true,
-              message: '请输入原密码!',
-            },
-          ]}
-        >
+              message: '请输入原密码!'
+            }
+          ]}>
           <Input size="large" type="password" placeholder="原密码" />
         </FormItem>
         <Popover
@@ -164,27 +163,24 @@ const SetPassword: React.FC<SetPasswordProps> = (props) => {
             visible && (
               <div
                 style={{
-                  padding: '4px 0',
-                }}
-              >
+                  padding: '4px 0'
+                }}>
                 {passwordStatusMap[getPasswordStatus()]}
                 {renderPasswordProgress()}
                 <div
                   style={{
-                    marginTop: 10,
-                  }}
-                >
+                    marginTop: 10
+                  }}>
                   {same ? '新密码不能与旧密码相同' : '请至少输入 6 个字符。请不要使用容易被猜到的密码'}
                 </div>
               </div>
             )
           }
           overlayStyle={{
-            width: 240,
+            width: 240
           }}
           placement="right"
-          visible={visible}
-        >
+          visible={visible}>
           <FormItem
             name="newPassword"
             className={
@@ -192,10 +188,9 @@ const SetPassword: React.FC<SetPasswordProps> = (props) => {
             }
             rules={[
               {
-                validator: checkPassword,
-              },
-            ]}
-          >
+                validator: checkPassword
+              }
+            ]}>
             <Input size="large" type="password" placeholder="新密码，至少6位密码，区分大小写" />
           </FormItem>
         </Popover>
@@ -204,17 +199,22 @@ const SetPassword: React.FC<SetPasswordProps> = (props) => {
           rules={[
             {
               required: true,
-              message: '请确认密码!',
+              message: '请确认密码!'
             },
             {
-              validator: checkConfirm,
-            },
-          ]}
-        >
+              validator: checkConfirm
+            }
+          ]}>
           <Input size="large" type="password" placeholder="确认密码" />
         </FormItem>
         <FormItem>
-          <Button size="large" className={styles.submit} type="primary" htmlType="submit" onClick={handleSubmit}>
+          <Button
+            size="large"
+            loading={changePawLoading}
+            className={styles.submit}
+            type="primary"
+            htmlType="submit"
+            onClick={handleSubmit}>
             提交
           </Button>
         </FormItem>
@@ -224,9 +224,9 @@ const SetPassword: React.FC<SetPasswordProps> = (props) => {
       </Link>
     </div>
   );
-}
+};
 
 export default connect(({ User, loading }: ConnectState) => ({
   User,
-  loginLoading: loading.effects['User/login'],
+  changePawLoading: loading.effects['User/changePassword']
 }))(SetPassword);

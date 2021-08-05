@@ -242,7 +242,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
           <Badge
             color={chainCodeStatusInfo[text].color}
             text={chainCodeStatusInfo[text].text}
-            style={{ color: chainCodeStatusInfo[text].color }}
+            style={{ color: chaincodestatusinfo[text].color }}
           />
         ) : (
           <span className="a-forbidden-style">信息访问受限</span>

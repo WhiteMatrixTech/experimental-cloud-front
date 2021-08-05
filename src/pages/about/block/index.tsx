@@ -172,5 +172,5 @@ const Block: React.FC<BlockProps> = (props) => {
 export default connect(({ User, Block, loading }: ConnectState) => ({
   User,
   Block,
-  qryLoading: loading.effects['Block/getBlockList']
+  qryLoading: loading.effects['Block/getBlockList'] || loading.effects['Block/onSearch']
 }))(Block);

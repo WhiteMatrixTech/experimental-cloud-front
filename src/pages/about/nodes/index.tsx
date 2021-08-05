@@ -4,7 +4,7 @@ import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Breadcrumb } from '~/components';
-import { Table, Button, Badge, Space, notification } from 'antd';
+import { Table, Button, Badge, Space, notification, Spin } from 'antd';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import CreateNodeModal from './components/CreateNodeModal';
 import SSHCommand from './components/SSHCommand';
@@ -35,6 +35,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   const [nodeRecord, setNodeRecord] = useState<PeerSchema>({});
   const [sshModalVisible, setSshModalVisible] = useState(false);
   const [createNodeVisible, setCreateNodeVisible] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   // 获取节点列表
   const getNodeList = useCallback(() => {
@@ -68,32 +69,38 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
     setSshModalVisible(true);
   };
 
-  const onDownLoadCertificate = useCallback((
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    record: PeerSchema
-  ) => {
-    e.preventDefault();
-    // token校验
-    const { accessToken, roleToken } = getTokenData();
+  const onDownLoadCertificate = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: PeerSchema) => {
+      e.preventDefault();
+      // token校验
+      const { accessToken, roleToken } = getTokenData();
 
-    let headers = {
-      'Content-Type': 'text/plain',
-      Authorization: `Bearer ${accessToken}`,
-      RoleAuth: roleToken
-    };
+      let headers = {
+        'Content-Type': 'text/plain',
+        Authorization: `Bearer ${accessToken}`,
+        RoleAuth: roleToken
+      };
 
-    request(`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`, {
-      headers,
-      mode: 'cors',
-      method: 'GET',
-      responseType: 'blob'
-    }).then((res: any) => {
-      const blob = new Blob([res]);
-      saveAs(blob, `${networkName}.pem`);
-    }).catch(() => {
-      notification.error({ message: '节点证书下载失败', top: 64, duration: 3 });
-    });;
-  }, [networkName])
+      setDownloading(true);
+
+      request(`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`, {
+        headers,
+        mode: 'cors',
+        method: 'GET',
+        responseType: 'blob'
+      })
+        .then((res: any) => {
+          setDownloading(false);
+          const blob = new Blob([res]);
+          saveAs(blob, `${networkName}.pem`);
+        })
+        .catch(() => {
+          setDownloading(false);
+          notification.error({ message: '节点证书下载失败', top: 64, duration: 3 });
+        });
+    },
+    [networkName]
+  );
 
   // 用户身份改变时，表格展示改变
   useEffect(() => {
@@ -177,32 +184,34 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <div className="page-content page-content-shadow table-wrapper">
-        <div className="table-header-btn-wrapper">
-          <Button type="primary" onClick={onClickCreateNode}>
-            创建节点
-          </Button>
+      <Spin spinning={downloading} tip="下载中...">
+        <Breadcrumb breadCrumbItem={breadCrumbItem} />
+        <div className="page-content page-content-shadow table-wrapper">
+          <div className="table-header-btn-wrapper">
+            <Button type="primary" onClick={onClickCreateNode}>
+              创建节点
+            </Button>
+          </div>
+          <Table
+            rowKey="_id"
+            loading={qryLoading}
+            columns={columns}
+            dataSource={nodeList}
+            onChange={onPageChange}
+            pagination={{
+              pageSize,
+              total: nodeTotal,
+              current: pageNum,
+              showSizeChanger: false,
+              position: ['bottomCenter']
+            }}
+          />
         </div>
-        <Table
-          rowKey="_id"
-          loading={qryLoading}
-          columns={columns}
-          dataSource={nodeList}
-          onChange={onPageChange}
-          pagination={{
-            pageSize,
-            total: nodeTotal,
-            current: pageNum,
-            showSizeChanger: false,
-            position: ['bottomCenter']
-          }}
-        />
-      </div>
-      {createNodeVisible && (
-        <CreateNodeModal getNodeList={getNodeList} visible={createNodeVisible} onCancel={onCloseModal} />
-      )}
-      {sshModalVisible && <SSHCommand nodeRecord={nodeRecord} visible={sshModalVisible} onCancel={onCloseModal} />}
+        {createNodeVisible && (
+          <CreateNodeModal getNodeList={getNodeList} visible={createNodeVisible} onCancel={onCloseModal} />
+        )}
+        {sshModalVisible && <SSHCommand nodeRecord={nodeRecord} visible={sshModalVisible} onCancel={onCloseModal} />}
+      </Spin>
     </div>
   );
 };
