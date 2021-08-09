@@ -405,7 +405,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       }
       if (status && CanDeleteNetworkStatus.includes(status)) {
         btnShowInitValue.deleteButton =
-          <Button type="primary" danger style={{ marginLeft: '20px' }} onClick={onDeleteNetwork}>
+          <Button type="primary" danger onClick={onDeleteNetwork}>
             删除网络
           </Button>
       }
@@ -467,16 +467,16 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
         />
         <Spin spinning={qryNetworkLoading || stopNetworkLoading || restartNetworkLoading}>
           <Descriptions title="基本信息" className={style['league-basic-info']}>
-            <Descriptions.Item label="联盟名称：">{leagueName}</Descriptions.Item>
-            <Descriptions.Item label="网络名称：">{networkName}</Descriptions.Item>
-            <Descriptions.Item label="创建时间：">
+            <Descriptions.Item label="联盟名称">{leagueName}</Descriptions.Item>
+            <Descriptions.Item label="网络名称">{networkName}</Descriptions.Item>
+            <Descriptions.Item label="创建时间">
               {networkStatusInfo ? moment(networkStatusInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
             </Descriptions.Item>
-            <Descriptions.Item label="网络状态: ">
+            <Descriptions.Item label="网络状态">
               {networkStatusInfo ? NetworkInfo[networkStatusInfo.networkStatus] : ''}
               {btnShow.createChannelLink}
             </Descriptions.Item>
-            <Descriptions.Item label="网络操作：">
+            <Descriptions.Item label="网络操作">
               <div>
                 {btnShow.extraButton}
                 {btnShow.deleteButton}
