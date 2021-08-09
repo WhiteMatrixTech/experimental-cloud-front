@@ -31,6 +31,11 @@ export enum StopOrRestart {
   Restart = 'restart'
 }
 
+export enum OrderType {
+  Etcdraft = 'Etcdraft',
+  Kafka = 'Kafka'
+}
+
 export const CanDeleteNetworkStatus = [
   NetworkStatus.Running,
   NetworkStatus.CreationFailed,

@@ -1,3 +1,4 @@
+import { OrderType } from './../utils/networkStatus';
 import { ImageDetail } from '~/models/custom-image';
 import { BasicApiParams } from '~/utils/types';
 import { request } from '../utils/request';
@@ -23,6 +24,8 @@ export type CreateNetworkRequest = {
   initOrgName: string;
   initPeerInfo: CreateNodeInfo[];
   imageInfo?: ImageDetail[];
+  orderType?: OrderType;
+  kafkaServerList?: string[]; // orderType === OrderType.Kafka时必填
   companyName?: string;
   networkName?: string;
 };
