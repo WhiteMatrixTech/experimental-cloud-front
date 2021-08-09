@@ -439,14 +439,22 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     getTransactionList();
     // 轮询
     const interval = setInterval(() => {
-      getBlockList();
+      if (networkStatusInfo?.networkStatus !== NetworkStatus.NotExist) {
+        getBlockList();
+        getStaticInfo();
+        getTransactionList();
+      }
       getNetworkInfo();
-      getStaticInfo();
-      getTransactionList();
     }, 10000);
     setPollInterval(interval);
     return () => clearInterval(interval);
-  }, [getBlockList, getNetworkInfo, getStaticInfo, getTransactionList]);
+  }, [
+    getBlockList,
+    getNetworkInfo,
+    getStaticInfo,
+    getTransactionList,
+    networkStatusInfo?.networkStatus
+  ]);
 
   useEffect(() => {
     dispatch({

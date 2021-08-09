@@ -6,6 +6,7 @@ import styles from './CreateNetworkModal.less';
 import { Dispatch, ImageDetail } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { CreateNodeInfo } from '~/services/dashboard';
+import { OrderType } from '~/utils/networkStatus';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -34,6 +35,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
   const [template, setTemplate] = useState('default');
 
   const [curOper, setCurOper] = useState(operType.default);
+  const [orderType, setOrderType] = useState<OrderType | null>(null);
   const confirmValues = useRef('');
   const [current, setCurrent] = useState(0);
 
@@ -100,6 +102,14 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
   const onChangeConfirmValue = (e: any) => {
     confirmValues.current = e.target.value;
   };
+
+  const onChangeOrderType = (value: OrderType) => {
+    setOrderType(value);
+  }
+
+  const onClearOrderType = () => {
+    setOrderType(null);
+  }
 
   const btnList = useMemo(() => {
     if (curOper === operType.next) {
@@ -234,6 +244,86 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
               ))}
             </Select>
           </Item>
+          <Item label="共识机制" name="orderType">
+            <Select
+              allowClear
+              placeholder="选择共识机制"
+              onClear={onClearOrderType}
+              onChange={onChangeOrderType}
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}>
+              <Option key={OrderType.Etcdraft} value={OrderType.Etcdraft}>
+                {OrderType.Etcdraft}
+              </Option>
+              <Option key={OrderType.Kafka} value={OrderType.Kafka}>
+                {OrderType.Kafka}
+              </Option>
+            </Select>
+          </Item>
+          {orderType === OrderType.Kafka && (
+            <Item
+              label="Kafka服务器"
+              name="kafkaServerList"
+              tooltip="一共有四个kafka的brokers，可以选择放在不同的服务器上。不选择则自动分配服务器">
+              <Row gutter={24}>
+                <Col span={12}>
+                  <Item name="kafka1">
+                    <Select
+                      allowClear={true}
+                      placeholder="Kafka1服务器"
+                      getPopupContainer={(triggerNode) => triggerNode.parentNode}>
+                      {serverList.map((item) => (
+                        <Option key={item.serverName} value={item.serverName}>
+                          {item.serverName}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Item>
+                </Col>
+                <Col span={12}>
+                  <Item name="kafka2">
+                    <Select
+                      allowClear={true}
+                      placeholder="Kafka2服务器"
+                      getPopupContainer={(triggerNode) => triggerNode.parentNode}>
+                      {serverList.map((item) => (
+                        <Option key={item.serverName} value={item.serverName}>
+                          {item.serverName}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Item>
+                </Col>
+                <Col span={12}>
+                  <Item name="kafka3">
+                    <Select
+                      allowClear={true}
+                      placeholder="Kafka3服务器"
+                      getPopupContainer={(triggerNode) => triggerNode.parentNode}>
+                      {serverList.map((item) => (
+                        <Option key={item.serverName} value={item.serverName}>
+                          {item.serverName}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Item>
+                </Col>
+                <Col span={12}>
+                  <Item name="kafka4">
+                    <Select
+                      allowClear={true}
+                      placeholder="Kafka4服务器"
+                      getPopupContainer={(triggerNode) => triggerNode.parentNode}>
+                      {serverList.map((item) => (
+                        <Option key={item.serverName} value={item.serverName}>
+                          {item.serverName}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Item>
+                </Col>
+              </Row>
+            </Item>
+          )}
           {template === 'default' && (
             <Form.List name="initPeerInfo">
               {(fields, { add, remove }) => (
@@ -296,7 +386,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
                           <Item
                             {...restField}
                             {...inlineItemLayout}
-                            initialValue={true}
+                            initialValue={'true'}
                             name={[name, 'isAnchor']}
                             fieldKey={[fieldKey, 'isAnchor']}>
                             <Select
@@ -383,7 +473,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
                   </Item>
                 </Col>
                 <Col span={12}>
-                  <Item initialValue={true} name="isAnchor">
+                  <Item initialValue={'true'} name="isAnchor">
                     <Select
                       allowClear={true}
                       placeholder="是否为anchor节点"
@@ -411,7 +501,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
 
 function spliceFormValues(formValue: any, template: string) {
   let peerList = [];
-  let params = [];
+  let params: any = {};
   if (template === 'default') {
     const { networkTemplate, initPeerInfo, ...rest } = formValue;
     peerList = initPeerInfo.map(
@@ -455,6 +545,14 @@ function spliceFormValues(formValue: any, template: string) {
       peerList.push(peerInfo);
     }
     params = { ...rest, initPeerInfo: peerList };
+  }
+  const { orderType } = params;
+  if (orderType === OrderType.Kafka) {
+    const { kafka1, kafka2, kafka3, kafka4, ...rest } = params;
+    params = {
+      ...rest,
+      kafkaServerList: { kafka1, kafka2, kafka3, kafka4 }
+    }
   }
   return params;
 }

@@ -124,7 +124,7 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
         localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.LEAGUE_NAME, encryptData(league.leagueName, deviceId));
         localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_NAME, encryptData(league.networkName, deviceId));
 
-        history.replace('/about/league-dashboard');
+        history.push('/about/league-dashboard');
       }
     });
   };
