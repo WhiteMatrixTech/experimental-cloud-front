@@ -3,7 +3,8 @@ import { parse } from 'qs';
 import { InitLocales } from './utils/locales';
 import { pageAuthControl } from './utils/menu';
 import { cancelCurrentRequest } from './utils/request';
-// import { tree2Arr } from './utils';
+import { LOCAL_STORAGE_ITEM_KEY } from './utils/const';
+import { deviceId, encryptData } from './utils/encryptAndDecrypt';
 
 //初始化国际化语言
 InitLocales();
@@ -32,28 +33,22 @@ export function render(oldRender: () => void) {
   // 路由切换时，取消当前页面的请求
   cancelCurrentRequest();
 
-  // 404路由控制
-  // let isUnknownPage = false;
-  // const allRoute = tree2Arr(routes, 'routes');
-  // const matchRoute = allRoute.find((item: RouteProps) => item.path === pathname);
-  // if (!matchRoute) {
-  //   isUnknownPage = true;
-  // } else if (matchRoute && matchRoute.exact && !state) {
-  //   isUnknownPage = true;
-  // }
-
   // 403路由控制
   const noAccessSituation = pageAuthControl(pathname);
 
   // 外部登录
   const search = window.location.search ? window.location.search.replace('?', '') : '';
-  const { redirect } = parse(search);
+  const { redirect, token } = parse(search);
 
   if (noAccessSituation) {
     history.push('/403');
     oldRender();
   } else if (redirect) {
     history.push(`/userForExternal/login?redirect=${redirect}`);
+    oldRender();
+  } else if (token) {
+    localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.ACCESS_TOKEN, encryptData(token as string, deviceId));
+    history.push('/selectLeague');
     oldRender();
   } else {
     oldRender();

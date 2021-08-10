@@ -36,7 +36,9 @@ const authorization = (response: any) => {
     // 强制刷新页面
     // window.location.reload();
     setTimeout(() => {
-      history.push('/user/login');
+      // history.push('/user/login');
+      window.location.href =
+        `${process.env.PLATFORM_SSO_AUTH_ENDPOINT}?returnUrl=${encodeURIComponent(window.location.origin)}`;
     }, 1000);
     return;
   }
