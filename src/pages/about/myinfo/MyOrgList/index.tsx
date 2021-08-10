@@ -73,7 +73,7 @@ function MyOrgInfo(props: MyOrgInfoProps) {
           </Descriptions>
         </div>
       </Spin>
-    </div>
+    </div >
   );
 }
 

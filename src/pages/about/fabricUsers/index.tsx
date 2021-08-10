@@ -197,8 +197,8 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
         <PageTitle label="Fabric用户管理" extra={
           <Button type="primary" onClick={onClickCreate}>
             新增Fabric角色
-          </Button>
-        } />
+          </Button>}
+        />
         <div className="table-wrapper page-content-shadow">
           <Spin spinning={qryLoading}>
             <div className="table-header-search-wrapper">
@@ -249,7 +249,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
           />
         )}
       </Spin>
-    </div>
+    </div >
   );
 };
 

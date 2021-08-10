@@ -274,8 +274,8 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
             pagination={false}
           />
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
 

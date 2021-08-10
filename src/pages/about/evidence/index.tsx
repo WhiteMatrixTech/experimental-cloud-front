@@ -200,7 +200,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
         </Spin>
       </div>
       {uploadVisible && <EvidenceOnChain visible={uploadVisible} onCancel={onCloseUpload} />}
-    </div>
+    </div >
   );
 }
 

@@ -70,10 +70,11 @@ function MyLeagueInfo(props: MyLeagueInfoProps) {
                 {item.value}
               </Descriptions.Item>
             )}
-          </Descriptions>        </div>
+          </Descriptions>
+        </div>
       </Spin>
 
-    </div>
+    </div >
   );
 }
 
