@@ -17,6 +17,7 @@ import { chainCodeStatusInfo, ChainCodeStatus, VerifyStatusList, UpdateStatusLis
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
+import { cancelCurrentRequest } from '~/utils/request';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', false);
 
 const pageSize = baseConfig.pageSize;
@@ -142,9 +143,12 @@ const MyContract: React.FC<MyContractProps> = (props) => {
         const file = new File([res], `${record.chainCodeName}.tar.gz`, { type: 'application/tar+gzip' });
         saveAs(file);
       })
-      .catch(() => {
-        setDownloading(false);
-        notification.error({ message: '合约下载失败', top: 64, duration: 3 });
+      .catch((errMsg) => {
+        // DOMException: The user aborted a request.
+        if (!errMsg) {
+          setDownloading(false);
+          notification.error({ message: '合约下载失败', top: 64, duration: 3 });
+        }
       });
   };
 
@@ -312,6 +316,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       payload: { networkName }
     });
     getChainCodeList();
+    return () => cancelCurrentRequest();
   }, [dispatch, getChainCodeList, networkName, pageNum]);
 
   return (

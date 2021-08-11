@@ -15,6 +15,7 @@ import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
+import { cancelCurrentRequest } from '~/utils/request';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/nodes');
 
@@ -94,9 +95,12 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
           const blob = new Blob([res]);
           saveAs(blob, `${networkName}.pem`);
         })
-        .catch(() => {
-          setDownloading(false);
-          notification.error({ message: '节点证书下载失败', top: 64, duration: 3 });
+        .catch((errMsg) => {
+          // DOMException: The user aborted a request.
+          if (!errMsg) {
+            setDownloading(false);
+            notification.error({ message: '节点证书下载失败', top: 64, duration: 3 });
+          }
         });
     },
     [networkName]
@@ -180,6 +184,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getNodeList();
+    return () => cancelCurrentRequest();
   }, [getNodeList, pageNum]);
 
   return (

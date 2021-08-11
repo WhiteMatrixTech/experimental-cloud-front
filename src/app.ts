@@ -2,6 +2,7 @@ import { history } from 'umi';
 import { parse } from 'qs';
 import { InitLocales } from './utils/locales';
 import { pageAuthControl } from './utils/menu';
+import { cancelCurrentRequest } from './utils/request';
 // import { tree2Arr } from './utils';
 
 //初始化国际化语言
@@ -23,9 +24,13 @@ export const dva = {
   }
 };
 
+
 export function render(oldRender: () => void) {
   // const routes = getRoutes();
   const { pathname } = history.location;
+
+  // 路由切换时，取消当前页面的请求
+  cancelCurrentRequest();
 
   // 404路由控制
   // let isUnknownPage = false;

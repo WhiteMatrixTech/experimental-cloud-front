@@ -461,6 +461,11 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       type: 'ElasticServer/getServerTotal',
       payload: {}
     });
+    dispatch({
+      type: 'Layout/common',
+      payload: { selectedMenu: '/about/league-dashboard' },
+    });
+    localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_PORTAL_SELECTED_MENU, '/about/league-dashboard')
   }, [dispatch]);
 
   return (

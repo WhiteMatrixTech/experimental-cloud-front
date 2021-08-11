@@ -1,7 +1,7 @@
 import { notification } from 'antd';
 import { history } from 'umi';
 import { stringify } from 'qs';
-import { extend } from 'umi-request';
+import { extend, ResponseError } from 'umi-request';
 import { getTokenData } from './encryptAndDecrypt';
 
 let isSendNotification = false;
@@ -45,19 +45,29 @@ const authorization = (response: any) => {
 };
 
 /** 异常处理程序 */
-const errorHandler = (error: { response: Response }) => {
+const errorHandler = (error: ResponseError) => {
   const { response } = error;
   return response.json().then((formatResponseData) => {
     return authorization(formatResponseData);
   });
 };
 
-/**
- * Requests a URL, returning a promise.
- * @param  {string} url       The URL we want to request
- * @param  {object} [options] The options we want to pass to "fetch"
- */
-export const request = (url: string, options?: { method: string; body?: object }) => {
+let cancelRequestArray: Array<{
+  controller: AbortController;
+  url: string;
+}> = [];
+
+// 配置umi request请求时的默认参数
+const _requestFunc = extend({
+  errorHandler, // 默认错误处理
+  mode: 'cors',
+  timeout: 30000,
+  // parseResponse: false,
+  credentials: 'include', // 默认请求是否带上cookie,
+  prefix: process.env.BAAS_BACKEND_LINK,
+});
+
+_requestFunc.interceptors.request.use((url, options) => {
   let headers = {
     'Content-Type': 'application/json',
     Authorization: '',
@@ -73,17 +83,38 @@ export const request = (url: string, options?: { method: string; body?: object }
   if (roleToken && needsToken) {
     headers.RoleAuth = roleToken;
   }
-  // 配置umi request请求时的默认参数
-  const _requestFunc = extend({
-    errorHandler, // 默认错误处理
-    mode: 'cors',
-    timeout: 30000,
-    headers: headers,
-    // parseResponse: false,
-    credentials: 'include', // 默认请求是否带上cookie,
-    prefix: process.env.BAAS_BACKEND_LINK,
-  });
+  options.headers = {
+    ...options.headers,
+    ...headers
+  };
+  // add abort signal
+  const abortController = new AbortController();
+  options.signal = abortController.signal;
+  cancelRequestArray.push({ controller: abortController, url });
 
+  return { url, options };
+});
+
+/**
+ * cancel the current network request in progress
+ */
+export function cancelCurrentRequest() {
+  cancelRequestArray.forEach((item) => {
+    const { controller } = item;
+    if (!controller.signal.aborted) {
+      controller.abort();
+    }
+  });
+  // init
+  cancelRequestArray = [];
+}
+
+/**
+ * Requests a URL, returning a promise.
+ * @param  {string} url       The URL we want to request
+ * @param  {object} [options] The options we want to pass to "fetch"
+ */
+export const request = (url: string, options?: { method: string; body?: object }) => {
   let newOptions = { method: options ? options.method : 'GET', data: options?.body };
   let newUrl = url;
   if (options?.method === 'GET') {

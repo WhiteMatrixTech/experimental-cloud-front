@@ -14,6 +14,7 @@ import { Dispatch, FabricRoleSchema } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
+import { cancelCurrentRequest } from '~/utils/request';
 
 const { Item } = Form;
 const Option = Select.Option;
@@ -102,9 +103,12 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
         const blob = new Blob([res]);
         saveAs(blob, `${record.userId}.json`);
       })
-      .catch(() => {
-        setDownloading(false);
-        notification.error({ message: 'SDK配置下载失败', top: 64, duration: 3 });
+      .catch((errMsg) => {
+        // DOMException: The user aborted a request.
+        if (!errMsg) {
+          setDownloading(false);
+          notification.error({ message: 'SDK配置下载失败', top: 64, duration: 3 });
+        }
       });
   };
 
@@ -192,6 +196,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       type: 'FabricRole/getMyOrgInfo',
       payload: { networkName }
     });
+    return () => cancelCurrentRequest();
   }, [dispatch, networkName]);
 
   return (
