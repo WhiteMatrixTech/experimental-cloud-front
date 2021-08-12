@@ -55,12 +55,12 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
       <div className={styles['header-left-wrapper']}>
         <div className={styles['logo-sub']}>
           <img src={buaaLogo} alt="北京航空大学杭州创新研究院" />
-          <span>区块链应用服务平台</span>
+          <div className={styles.item}>区块链应用服务平台</div>
         </div>
         <span className={styles['divider-span']}></span>
         <a className={styles['header-menu-item']} onClick={onClickShowDrawer}>
           <BarsOutlined />
-          <span>服务列表</span>
+          <div className={styles.item}>服务列表</div>
         </a>
       </div>
       <div className={styles['header-right-wrapper']}>

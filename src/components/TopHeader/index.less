@@ -31,15 +31,20 @@
     display: flex;
     align-items: center;
   }
+  .item {
+    height: 100%;
+    padding-left: 4px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
   .header-menu-item {
+    display: flex;
+    align-items: center;
     margin-left: 16px;
-    padding-top: 4px;
     color: @second-white-font;
     font-size: 14px;
     cursor: pointer;
-    span {
-      padding-left: 4px;
-    }
     &.active {
       color: @default-font-color;
     }
