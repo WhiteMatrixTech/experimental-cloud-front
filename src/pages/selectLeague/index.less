@@ -2,18 +2,26 @@
 @import '~antd/es/style/themes/default.less';
 .main {
   height: 100%;
-  padding: 50px 80px;
+  padding: 30px 80px;
   overflow-y: auto;
   background-color: @wrapper-background;
-  h3 {
-    margin-bottom: 20px;
-    font-weight: 600;
-    font-size: 24px;
+  .page-title-wrapper {
+    height: 100px;
+    margin-bottom: 16px;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 20px;
+    line-height: 100px;
+    background-color: #247fff;
+    background-image: url(https://gw.alipayobjects.com/mdn/Baas/afts/img/A*P_l8QJN_wQ8AAAAAAAAAAABkARQnAQ);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: contain;
   }
   .league-wrapper {
     .newButton {
       width: 100%;
-      height: 186px;
+      height: 120px;
       color: @text-color-secondary;
       font-size: 20px;
       background-color: @component-background;
@@ -25,7 +33,7 @@
     }
 
     .league-card {
-      height: 186px;
+      height: 120px;
       margin-bottom: 20px;
       color: @first-level-color;
       background: @component-background;
@@ -64,34 +72,24 @@
         }
       }
       .card-content {
-        height: 104px;
-        padding: 3px 16px;
+        padding: 3px 20px;
         overflow: hidden;
-        color: @second-level-color;
-      }
-      .card-footer {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        height: 34px;
-        border-top: 1px solid @border-color-base;
-        .allies {
-          width: 50%;
-          padding: 0 12px;
-          overflow: hidden;
-          color: @second-level-color;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-        .createTime {
-          width: 50%;
-          padding-right: 12px;
-          overflow: hidden;
-          color: @third-level-color;
-          white-space: nowrap;
-          text-align: right;
-          text-overflow: ellipsis;
+        color: @third-level-color;
+        font-size: 12px;
+        .description-item {
+          display: flex;
+          align-items: flex-start;
+          label {
+            min-width: 60px;
+          }
+          .league-description {
+            display: -webkit-box;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+          }
         }
       }
     }

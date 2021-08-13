@@ -36,7 +36,8 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
   // 跳转至IDE
   const onClickIDE = () => {
     const { accessToken } = getTokenData();
-    const link = `${process.env.CHAIN_IDE_LINK}#${accessToken}`;
+    let link = `${process.env.CHAIN_IDE_LINK}#${accessToken}`;
+    link = networkName ? `${link}?networkName=${networkName}` : link;
     onClose();
     window.open(link);
   };

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, connect, history, Dispatch } from 'umi';
 import { Form, Button, Input } from 'antd';
 import { LockTwoTone, UserOutlined } from '@ant-design/icons';

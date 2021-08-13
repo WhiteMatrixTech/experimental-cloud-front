@@ -8,22 +8,25 @@ import { LeagueSchema } from '~/models/user';
 export type LeagueCardProps = {
   onClickCard: (leagueInfo: LeagueSchema) => void;
   leagueInfo: LeagueSchema;
-  showTime?: string;
+  extra?: boolean;
 };
 
 export const LeagueCard: React.FC<LeagueCardProps> = (props) => {
-  const { onClickCard, leagueInfo, showTime } = props;
+  const { onClickCard, leagueInfo, extra } = props;
 
   const getShowTimeLabel = useMemo(() => {
-    return leagueInfo.role === Roles.NetworkAdmin ? '创建时间' : '加入时间';
-  }, [leagueInfo.role]);
+    if (extra) {
+      return '创建时间：'
+    }
+    return leagueInfo.role === Roles.NetworkAdmin ? '创建时间：' : '加入时间：';
+  }, [leagueInfo.role, extra]);
 
   const getTime = useMemo(() => {
-    if (showTime === '创建时间') {
+    if (leagueInfo.createdTime) {
       return leagueInfo.createdTime ? moment(leagueInfo.createdTime).format('YYYY-MM-DD') : '';
     }
     return leagueInfo.timeAdded ? moment(leagueInfo.timeAdded).format('YYYY-MM-DD') : '';
-  }, [leagueInfo.createdTime, leagueInfo.timeAdded, showTime]);
+  }, [leagueInfo.createdTime, leagueInfo.timeAdded]);
 
   return (
     <div className={styles['league-card']} onClick={() => onClickCard(leagueInfo)}>
@@ -33,11 +36,16 @@ export const LeagueCard: React.FC<LeagueCardProps> = (props) => {
         </span>
         <span className={styles['league-name']}>{leagueInfo.leagueName}</span>
       </div>
-      <div className={styles['card-content']}>{leagueInfo.description}</div>
-      <div className={styles['card-footer']}>
-        <div className={styles.allies}>{showTime || getShowTimeLabel}</div>
-        <div className={styles.createTime} title={getTime}>
-          {getTime}
+      <div className={styles['card-content']}>
+        <div>
+          <label>{getShowTimeLabel}</label>
+          <span>{getTime}</span>
+        </div>
+        <div className={styles['description-item']}>
+          <label>联盟描述：</label>
+          <div
+            className={styles['league-description']}
+            title={leagueInfo.description}>{leagueInfo.description}</div>
         </div>
       </div>
     </div>

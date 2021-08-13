@@ -39,6 +39,8 @@ export type UserModelState = {
 
   networkList: Array<LeagueSchema>;
   myNetworkList: Array<LeagueSchema>;
+  myCreatedNetworkList: Array<LeagueSchema>;
+  myJoinedNetworkList: Array<LeagueSchema>;
 
   userRole: Roles;
   networkName: string;
@@ -84,6 +86,8 @@ const UserModel: UserModelType = {
 
     networkList: [], // 网络列表
     myNetworkList: [], // 我的网络列表
+    myCreatedNetworkList: [],
+    myJoinedNetworkList: [],
 
     userRole: userRole as Roles, // 进入系统的身份
     networkName: networkName, // 进入系统时的网络
@@ -192,6 +196,10 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             myNetworkList: result,
+            myCreatedNetworkList: result.filter((league: LeagueSchema) =>
+              league.role === Roles.NetworkAdmin),
+            myJoinedNetworkList: result.filter((league: LeagueSchema) =>
+              league.role === Roles.NetworkMember)
           },
         });
       }
@@ -217,11 +225,16 @@ const UserModel: UserModelType = {
     *enrollInLeague({ payload }, { call, put }) {
       const res = yield call(API.enrollInLeague, payload);
       const { statusCode, result } = res;
+      const { message } = result;
       if (statusCode === 'ok') {
-        notification.success({ message: '已成功申请加入联盟，请等待盟主审批', top: 64, duration: 3 });
+        if (message.includes('enroll again')) {
+          notification.warn({ message: '已申请过加入联盟，请等待盟主审批，勿重复申请', top: 64, duration: 3 });
+        } else {
+          notification.success({ message: '已成功申请加入联盟，请等待盟主审批', top: 64, duration: 3 });
+        }
         return true;
       } else {
-        notification.error({ message: result.message || '申请加入联盟失败', top: 64, duration: 3 });
+        notification.error({ message: message || '申请加入联盟失败', top: 64, duration: 3 });
         return false;
       }
     },
