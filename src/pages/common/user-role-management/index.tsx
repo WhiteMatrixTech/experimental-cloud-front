@@ -14,7 +14,7 @@ export type UserManagementProps = {
 
 const UserManagement: React.FC<UserManagementProps> = (props) => {
   const { qryLoading, dispatch, UserRole } = props;
-  const { userList } = UserRole;
+  const { userList, userTotal } = UserRole;
 
   const [pageNum, setPageNum] = useState(1);
   const columns = [
@@ -102,7 +102,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
           onChange={onPageChange}
           pagination={{
             pageSize: 10,
-            total: 0,
+            total: userTotal,
             current: pageNum,
             showSizeChanger: false,
             position: ['bottomCenter']
