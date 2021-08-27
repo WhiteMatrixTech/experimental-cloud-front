@@ -67,16 +67,18 @@ const _requestFunc = extend({
   prefix: process.env.BAAS_BACKEND_LINK,
 });
 
+
+
 _requestFunc.interceptors.request.use((url, options) => {
   let headers = {
-    'Content-Type': 'application/json',
-    Authorization: '',
-    RoleAuth: '',
   };
   // token校验
   const { accessToken, roleToken } = getTokenData();
 
-  const needsToken = window.location.href.indexOf('/userForExternal/login') === -1;
+  let needsToken = window.location.href.indexOf('/userForExternal/login') === -1;
+  if (url.includes('http://8.142.34.146:5001')) {
+    needsToken = false;
+  }
   if (accessToken && needsToken) {
     headers.Authorization = `Bearer ${accessToken}`;
   }

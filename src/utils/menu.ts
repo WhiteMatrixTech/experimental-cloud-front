@@ -218,6 +218,15 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuName: '访问角色管理',
     accessRole: [Roles.NetworkAdmin],
     subMenus: []
+  },
+  {
+    id: 'ipfs',
+    menuPid: RootMenuId,
+    menuHref: '/about/ipfs',
+    menuIcon: 'KBasszhengshuguanli',
+    menuName: 'IPFS分布式文件系统',
+    accessRole: [Roles.NetworkAdmin],
+    subMenus: []
   }
 ];
 
