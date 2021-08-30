@@ -1,5 +1,6 @@
 import { request } from '../utils/request';
 import { BasicApiParams } from '~/utils/types';
+import { NodeOperate } from '~/pages/about/nodes/_config';
 
 /**
  * 获取节点的列表
@@ -32,4 +33,14 @@ export type CreateNodeApiParams = {
 };
 export async function createNode(params: CreateNodeApiParams) {
   return request(`/network/${params.networkName}/nodes/createNode`, { method: 'POST', body: params });
+}
+
+export type NodeOperationApiParams = {
+  networkName: string;
+  orgName: string;
+  peerNames: String[];
+  operate: NodeOperate;
+}
+export async function nodeOperateApi(params: NodeOperationApiParams) {
+  return request(`/network/${params.networkName}/nodes/nodeOperation`, { method: 'POST', body: params });
 }

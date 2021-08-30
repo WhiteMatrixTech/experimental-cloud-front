@@ -4,18 +4,19 @@ import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Breadcrumb } from '~/components';
-import { Table, Button, Badge, Space, notification, Spin } from 'antd';
+import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
+import { Table, Button, Badge, Space, notification, Spin, Modal, Menu, Dropdown } from 'antd';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import CreateNodeModal from './components/CreateNodeModal';
 import SSHCommand from './components/SSHCommand';
 import baseConfig from '~/utils/config';
 import { Roles } from '~/utils/roles';
-import { peerStatus, availableNodeStatus } from './_config';
+import { peerStatus, availableNodeStatus, NodeOperate, NodeStatus } from './_config';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
-import { getTokenData } from '~/utils/encryptAndDecrypt';
 import { cancelCurrentRequest } from '~/utils/request';
+import { NodeOperationApiParams } from '~/services/node';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/nodes');
 
@@ -33,7 +34,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   const [columns, setColumns] = useState<ColumnsType<any>>([]);
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
-  const [nodeRecord, setNodeRecord] = useState<PeerSchema>({});
+  const [nodeRecord, setNodeRecord] = useState<PeerSchema | null>(null);
   const [sshModalVisible, setSshModalVisible] = useState(false);
   const [createNodeVisible, setCreateNodeVisible] = useState(false);
   const [downloading, setDownloading] = useState(false);
@@ -73,19 +74,10 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   const onDownLoadCertificate = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: PeerSchema) => {
       e.preventDefault();
-      // token校验
-      const { accessToken, roleToken } = getTokenData();
-
-      let headers = {
-        'Content-Type': 'text/plain',
-        Authorization: `Bearer ${accessToken}`,
-        RoleAuth: roleToken
-      };
 
       setDownloading(true);
 
       request(`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`, {
-        headers,
         mode: 'cors',
         method: 'GET',
         responseType: 'blob'
@@ -105,6 +97,112 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
     },
     [networkName]
   );
+
+  const deleteNode = useCallback((record: PeerSchema) => {
+    const params: NodeOperationApiParams = {
+      networkName,
+      orgName: record.orgName,
+      peerNames: [record.nodeName],
+      operate: NodeOperate.Delete
+    }
+    dispatch({
+      type: 'Peer/deleteNode',
+      payload: params,
+    }).then((res: boolean) => {
+      if (res) {
+        getNodeList();
+      }
+    });
+  }, [dispatch, getNodeList, networkName]);
+
+  const stopNode = useCallback((record: PeerSchema) => {
+    const params: NodeOperationApiParams = {
+      networkName,
+      orgName: record.orgName,
+      peerNames: [record.nodeName],
+      operate: NodeOperate.Stop
+    }
+    dispatch({
+      type: 'Peer/stopNode',
+      payload: params,
+    }).then((res: boolean) => {
+      if (res) {
+        getNodeList();
+      }
+    });
+  }, [dispatch, getNodeList, networkName])
+
+  const resumeNode = useCallback((record: PeerSchema) => {
+    const params: NodeOperationApiParams = {
+      networkName,
+      orgName: record.orgName,
+      peerNames: [record.nodeName],
+      operate: NodeOperate.Resume
+    }
+    dispatch({
+      type: 'Peer/resumeNode',
+      payload: params,
+    }).then((res: boolean) => {
+      if (res) {
+        getNodeList();
+      }
+    });
+  }, [dispatch, getNodeList, networkName]);
+
+  // 点击操作按钮, 进行二次确认
+  const onClickToConfirm = useCallback((record: PeerSchema, type: NodeOperate) => {
+    let tipTitle = '';
+    let callback = () => { };
+    switch (type) {
+      case NodeOperate.Delete:
+        tipTitle = `删除节点 【${record.nodeName}】 `;
+        callback = () => deleteNode(record);
+        break;
+      case NodeOperate.Resume:
+        tipTitle = `重启节点 【${record.nodeName}】 `;
+        callback = () => resumeNode(record);
+        break;
+      case NodeOperate.Stop:
+        tipTitle = `停用节点 【${record.nodeName}】 `;
+        callback = () => stopNode(record);
+        break;
+      default:
+        break;
+    }
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: `确定要${tipTitle}吗?`,
+      okText: '确认',
+      cancelText: '取消',
+      onOk: callback,
+    });
+  }, [deleteNode, resumeNode, stopNode]);
+
+  const renderMenu = useCallback((record: PeerSchema) => {
+    return (
+      <Menu>
+        {userRole === Roles.NetworkAdmin && (
+          <Menu.Item>
+            <a
+              href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`}
+              onClick={(e) => onDownLoadCertificate(e, record)}>
+              下载证书
+            </a>
+          </Menu.Item>
+        )}
+        {availableNodeStatus.includes(record.nodeStatus) && (
+          <Menu.Item>
+            <span
+              role="button"
+              onClick={() => onClickGetSSH(record)}>
+              获取ssh命令
+            </span>
+          </Menu.Item>
+        )}
+      </Menu>
+    );
+  }, [networkName, onDownLoadCertificate, userRole]);
 
   // 用户身份改变时，表格展示改变
   useEffect(() => {
@@ -153,18 +251,35 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         key: 'action',
         render: (_, record: PeerSchema) => (
           <Space size="small">
-            {userRole === Roles.NetworkAdmin && (
-              <a
-                href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`}
-                onClick={(e) => onDownLoadCertificate(e, record)}>
-                下载证书
-              </a>
-            )}
-            {availableNodeStatus.includes(record.nodeStatus) && (
-              <span role="button" className="table-action-span" onClick={() => onClickGetSSH(record)}>
-                获取ssh命令
+            {record.nodeStatus === NodeStatus.Running && (
+              <span
+                role="button"
+                className="table-action-span"
+                onClick={() => onClickToConfirm(record, NodeOperate.Stop)}>
+                停用
               </span>
             )}
+            {record.nodeStatus === NodeStatus.Stopped && (
+              <span
+                role="button"
+                className="table-action-span"
+                onClick={() => onClickToConfirm(record, NodeOperate.Resume)}>
+                重启
+              </span>
+            )}
+            {[NodeStatus.Stopped, NodeStatus.Running].includes(record.nodeStatus) && (
+              <span
+                role="button"
+                className="table-action-span"
+                onClick={() => onClickToConfirm(record, NodeOperate.Delete)}>
+                删除
+              </span>
+            )}
+            <Dropdown overlay={renderMenu(record)} trigger={['click']}>
+              <span className="table-action-span" onClick={(e) => e.preventDefault()}>
+                更多 <DownOutlined />
+              </span>
+            </Dropdown>
           </Space>
         )
       }
@@ -179,7 +294,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
       data.splice(3, 0, insertColumn);
     }
     setColumns(data);
-  }, [networkName, onDownLoadCertificate, userRole]);
+  }, [networkName, onClickToConfirm, onDownLoadCertificate, renderMenu, userRole]);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {

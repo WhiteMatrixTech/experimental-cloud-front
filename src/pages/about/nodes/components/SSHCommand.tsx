@@ -6,7 +6,7 @@ import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
 export interface SSHCommandProps {
   visible: boolean;
-  nodeRecord: PeerSchema;
+  nodeRecord: PeerSchema | null;
   onCancel: () => void;
   User: ConnectState['User'];
   Peer: ConnectState['Peer'];
@@ -21,9 +21,9 @@ function SSHCommand(props: SSHCommandProps) {
   useEffect(() => {
     dispatch({
       type: 'Peer/getNodeSSH',
-      payload: { networkName, orgName: nodeRecord.orgName, nodeName: nodeRecord.nodeName },
+      payload: { networkName, orgName: nodeRecord?.orgName, nodeName: nodeRecord?.nodeName },
     });
-  }, [dispatch, networkName, nodeRecord.nodeName, nodeRecord.orgName]);
+  }, [dispatch, networkName, nodeRecord?.nodeName, nodeRecord?.orgName]);
 
   const drawerProps = {
     visible: visible,
@@ -42,7 +42,7 @@ function SSHCommand(props: SSHCommandProps) {
   return <Modal {...drawerProps}>{realNodeSSH}</Modal>;
 }
 
-export default connect(({ User, Peer, loading }: ConnectState) => ({
+export default connect(({ User, Peer }: ConnectState) => ({
   User,
   Peer,
 }))(SSHCommand);
