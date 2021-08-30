@@ -244,6 +244,11 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
               ))}
             </Select>
           </Item>
+          <Item
+            label="共识节点数"
+            name="orderPeerNumber">
+            <InputNumber placeholder="请输入排序节点数" style={{ width: '100%' }} />
+          </Item>
           <Item label="共识机制" name="orderType">
             <Select
               allowClear
