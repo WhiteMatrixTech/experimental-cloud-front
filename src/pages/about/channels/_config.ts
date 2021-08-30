@@ -32,5 +32,5 @@ export const ChannelStatus = {
   [ChannelStatusMap.Stopped]: { color: '#E2E9F7', text: '已停用' },
   [ChannelStatusMap.Deleting]: { color: 'orange', text: '删除中' },
   [ChannelStatusMap.DeletionFailed]: { color: 'red', text: '删除失败' },
-  [ChannelStatusMap.Deleted]: { color: 'volcano', text: '已删除' },
+  [ChannelStatusMap.Deleted]: { color: 'rgba(255, 255, 255, 0.3)', text: '已删除' },
 };

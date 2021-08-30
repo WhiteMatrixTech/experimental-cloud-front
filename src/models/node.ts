@@ -1,6 +1,7 @@
 import * as API from '../services/node';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
+import { NodeStatus } from '~/pages/about/nodes/_config';
 
 export type PeerSchema = {
   networkName: string,      // 网络名称
@@ -12,7 +13,7 @@ export type PeerSchema = {
   updatedAt: Date,          // 2021-01-29T07:26:18.934Z
   nodeIp: string,           // 节点ip
   nodePort: number,              // 节点端
-  nodeStatus: string,        // 节点状态  Running
+  nodeStatus: NodeStatus,        // 节点状态  Running
 }
 
 export type PeerModelState = {
@@ -28,6 +29,9 @@ export type PeerModelType = {
     getNodeList: Effect;
     getNodeSSH: Effect;
     createNode: Effect;
+    deleteNode: Effect;
+    stopNode: Effect;
+    resumeNode: Effect;
   };
   reducers: {
     common: Reducer<PeerModelState>;
@@ -84,6 +88,48 @@ const PeerModel: PeerModelType = {
         return false;
       }
     },
+
+    *deleteNode({ payload }, { call, put }) {
+      const res = yield call(API.nodeOperateApi, payload);
+      const { statusCode, result } = res;
+      const succMessage = `节点删除成功`;
+      const failMessage = `节点删除失败`;
+      if (statusCode === 'ok') {
+        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+        return false;
+      }
+    },
+
+    *stopNode({ payload }, { call, put }) {
+      const res = yield call(API.nodeOperateApi, payload);
+      const { statusCode, result } = res;
+      const succMessage = `节点停用成功`;
+      const failMessage = `节点停用失败`;
+      if (statusCode === 'ok') {
+        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+        return false;
+      }
+    },
+
+    *resumeNode({ payload }, { call, put }) {
+      const res = yield call(API.nodeOperateApi, payload);
+      const { statusCode, result } = res;
+      const succMessage = `节点重启成功`;
+      const failMessage = `节点重启失败`;
+      if (statusCode === 'ok') {
+        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+        return false;
+      }
+    }
   },
 
   reducers: {

@@ -81,6 +81,15 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
     });
   };
 
+  const onViewSeverMonitor = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ElasticServerSchema) => {
+    e.preventDefault();
+    history.push({
+      pathname: `/common/elastic-cloud-server/${record.serverName}/server-data-monitor`,
+      state: { ...record },
+      query: { publicIp: record.publicIp }
+    });
+  };
+
   const onViewNode = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ElasticServerSchema) => {
     e.preventDefault();
     history.push({
@@ -111,9 +120,16 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
         </Menu.Item>
         <Menu.Item>
           <a
+            href={`/common/elastic-cloud-server/${record.serverName}/server-data-monitor`}
+            onClick={(e) => onViewSeverMonitor(e, record)}>
+            服务器数据监控
+          </a>
+        </Menu.Item>
+        <Menu.Item>
+          <a
             href={`/common/elastic-cloud-server/${record.serverName}/server-performance`}
             onClick={(e) => onViewPerformance(e, record)}>
-            资源使用情况
+            容器资源使用情况
           </a>
         </Menu.Item>
       </Menu>

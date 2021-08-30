@@ -7,7 +7,7 @@ export const orgStatus = {
   Stopped: { color: '#E2E9F7', text: '已停用' },
   Deleting: { color: 'orange', text: '删除中' },
   DeletionFailed: { color: 'red', text: '删除失败' },
-  Deleted: { color: 'volcano', text: '已删除' }
+  Deleted: { color: 'rgba(255, 255, 255, 0.3)', text: '已删除' }
 };
 
 export enum OrgStatusEnum {
