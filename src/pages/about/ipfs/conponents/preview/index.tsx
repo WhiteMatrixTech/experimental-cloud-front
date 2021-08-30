@@ -23,6 +23,18 @@ function Preview(props: Iprops) {
         </pre>
       )
 
+    case 'yaml':
+      return (
+        <pre>
+          {props.src}
+        </pre>
+      )
+    case 'md':
+      return (
+        <pre>
+          {props.src}
+        </pre>
+      )
     default:
       return (
         <div style={{ height: '50vh', margin: '30px auto' }}>

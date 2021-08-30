@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, request } from 'umi';
+
 import { ConnectState } from '~/models/connect';
 
 import { Table, Menu, Dropdown, Upload, Button, notification } from 'antd';
@@ -11,7 +12,6 @@ import {
   FolderOpenOutlined,
   FileOutlined,
   EllipsisOutlined,
-  BranchesOutlined,
   CopyOutlined,
   PushpinOutlined,
   DownloadOutlined,
@@ -19,29 +19,29 @@ import {
 import { Breadcrumb, SearchBar } from '~/components';
 import { saveAs } from 'file-saver';
 
-import { DelateFile, Rename, ShareLink, NewFolder, SetFixed, Preview } from './conponents'
+import { DelateFile, Rename, ShareLink, NewFolder, Preview } from './conponents'
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import styles from './index.less';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
-import FileViewer from 'react-file-viewer';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/ipfs');
+
 
 interface Iprops {
   Ipfs: {
     ipfsList: [],
-
     downloadFileRs: any,
     stat: {
       cid: string,
       type: string
     }
   }
+  qryLoading: boolean;
   User: ConnectState['User'];
   dispatch: Dispatch
 }
 function IPFS(props: Iprops) {
-  const { Ipfs, dispatch, User } = props;
+  const { Ipfs, qryLoading, dispatch, User } = props;
   const { networkName } = User;
   const { ipfsList, stat } = Ipfs;
   const { cid } = stat;
@@ -49,7 +49,7 @@ function IPFS(props: Iprops) {
   const [ipfsHash, setIpfsHash] = useState('');
   const [value, setValue] = useState('');
   const [path, setPath] = useState('');
-  const [name, setName] = useState('');
+  const [name, setName] = useState<string>('');
   const [type, setType] = useState('');
   const [visiable, setVisiable] = useState<boolean>(false);
   const [fileType, setFileType] = useState('');
@@ -57,18 +57,6 @@ function IPFS(props: Iprops) {
   const [file, setFile] = useState<string | undefined>()
 
   const { accessToken, roleToken } = getTokenData();
-
-
-  /* const uploadFile = useCallback(({ file }) => {
-    const params = {
-      networkName,
-      file
-    };
-    dispatch({
-      type: 'Ipfs/uploadFile',
-      payload: params
-    });
-  }, [dispatch, networkName]); */
 
   const uploadProps = {
     name: 'file' || 'directory',
@@ -112,18 +100,47 @@ function IPFS(props: Iprops) {
   // 搜索
   const onSearch = (value: string, event: any): void => {
     if (event.type && (event.type === 'click' || event.type === 'keydown')) {
-      setFileType('')
-      setFile('')
-      setVisiable(true);
-      setPath(`/${value}`);
-      setIpfsHash(`/ipfs/${value || pathHash}`);
+      setPath(`/ipfs/${value}`);
+      getPathHash();
+      if (type === 'directory') {
+        setIpfsHash(`/ipfs/${value || pathHash}`);
+      }
+      if (type === 'file') {
+        request(
+          `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/ipfs/catFile?ipfsPath=${value}`,
+          {
+            mode: 'cors',
+            method: 'POST',
+            responseType: 'blob'
+          }
+        )
+          .then((res: any) => {
+            const fileBlob = new Blob([res], { type: 'text/plain' });
+            let imgSrc = window.URL.createObjectURL(fileBlob);
+            const typeName = name.split('.').pop().toLowerCase()
+            if (typeName === 'txt' || 'yaml' || 'md') {
+              fileBlob.text().then(data => {
+                setFile(data)
+              })
+            }
+            if (typeName !== 'txt' || 'yaml' || 'md') {
+              setFile(imgSrc)
+            }
+            setFileType(typeName)
+          })
+      }
 
+      setVisiable(true);
       if (value === '') {
         setVisiable(false)
-        setPath('');
+        setPath('/');
+        getPathHash();
+        setFileType('')
+        setFile('')
       }
     }
   };
+
   const getPathHash = useCallback(() => {
     const params = {
       networkName,
@@ -135,31 +152,6 @@ function IPFS(props: Iprops) {
     });
   }, [dispatch, networkName, path]);
 
-  /* const downloadFile = useCallback(() => {
-    const params = {
-      networkName,
-      path: value,
-      name
-    };
-    dispatch({
-      type: 'Ipfs/downloadFile',
-      payload: params
-    });
-
-    console.log('downloadFileRs', downloadFileRs)
-
-
-    const data = new Uint8Array(downloadFileRs)
-
-    const url = window.URL.createObjectURL(new Blob([data], { type: "image/png" || "image/jpg" || "json" }))
-    const link = document.createElement('a')
-    link.style.display = 'none'
-    link.href = url
-    link.setAttribute('download', name)
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }, [dispatch, networkName, value, name, downloadFileRs]); */
   const downloadFile = () => {
     if (type === 'file') {
       request(
@@ -190,9 +182,7 @@ function IPFS(props: Iprops) {
         }
       )
         .then((res: any) => {
-          console.log('dir', res)
           const file = new File([res], `${name}.zip`, { type: 'application/tar+gzip' });
-          console.log('file111', file);
 
           saveAs(file);
         })
@@ -249,7 +239,6 @@ function IPFS(props: Iprops) {
               }
             )
               .then((res: any) => {
-                console.log('res', res)
                 const folder = res.pop()
                 request(`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/ipfs/cpFile?from=/ipfs/${folder.cid}&to=${path}/${folder.path}`, {
                   mode: 'cors',
@@ -269,7 +258,6 @@ function IPFS(props: Iprops) {
                   notification.error({ message: '文件夹上传失败', top: 64, duration: 3 });
                 }
               });
-            console.log('folderList', fd.getAll('file0'))
           }} />
           <div className={styles.import}>
             <FolderOpenOutlined
@@ -279,14 +267,6 @@ function IPFS(props: Iprops) {
           </div>
         </div>
       </Menu.Item>
-      {/* <Menu.Item key="1">
-        <div className={styles.import}>
-          <BranchesOutlined
-            style={{ color: '#69c4cd', fontSize: '20px', marginRight: '10px' }}
-          />
-        来自IPFS路径
-      </div>
-      </Menu.Item> */}
       <Menu.Item key="2">
         <NewFolder path={path} name={name} />
       </Menu.Item>
@@ -304,9 +284,9 @@ function IPFS(props: Iprops) {
           复制CID
         </div>
       </Menu.Item>
-      <Menu.Item key="c">
+      {/* <Menu.Item key="c">
         <SetFixed hash={value} />
-      </Menu.Item>
+      </Menu.Item> */}
       <Menu.Item key="d">
         <div className={styles.moreItem} onClick={downloadFile}>
           <DownloadOutlined className={styles.moreIcon} />
@@ -338,12 +318,20 @@ function IPFS(props: Iprops) {
         }
       )
         .then((res: any) => {
-          console.log('catFile', res)
           const fileBlob = new Blob([res], { type: 'text/plain' });
-          let imgSrc = window.URL.createObjectURL(fileBlob)
-
-          setFile(imgSrc)
-          setFileType(text.name.split('.').pop().toLowerCase())
+          let imgSrc = window.URL.createObjectURL(fileBlob);
+          const typeName = text.name.split('.').pop().toLowerCase()
+          if (typeName === 'txt' || 'yaml' || 'md') {
+            fileBlob.text().then(data => {
+              setFile(data)
+            })
+          }
+          if (typeName !== 'txt' || 'yaml' || 'md') {
+            setFile(imgSrc)
+          }
+          setFileType(typeName)
+          setVisiable(true)
+          setPath(`${path}/${text.name}`)
         })
         .catch((errMsg) => {
           // DOMException: The user aborted a request.
@@ -353,11 +341,10 @@ function IPFS(props: Iprops) {
         });
     }
   }
-  console.log('file', file)
   const columns = [
     {
       title: '名称',
-      key: 'action',
+      key: 'name',
       dataIndex: '',
       ellipsis: true,
       render: (text: any) => (
@@ -415,11 +402,7 @@ function IPFS(props: Iprops) {
     }
   ];
 
-  const onError = (e) => {
-    notification.error({ message: '文件不支持预览', top: 64, duration: 3 });
-  }
-
-  console.log('pathHash', pathHash);
+  console.log('path', path)
 
 
   useEffect(() => {
@@ -435,7 +418,8 @@ function IPFS(props: Iprops) {
       getIpfsList();
     }
   }, [getIpfsList, ipfsHash])
-  console.log('ipfsList', ipfsList)
+
+
 
   return (
     <div className="page-wrapper">
@@ -455,21 +439,18 @@ function IPFS(props: Iprops) {
               </a>
             </Dropdown>
           </div>}
-          {!file && <Table rowKey="ipfsHash" columns={columns} dataSource={ipfsList} pagination={
-            {
-              pageSize: 5,
-              position: ['bottomCenter']
-            }
-          } />}
-          {/* {file &&
-            <div style={{ height: '800px', margin: '50px auto' }}>
-              <FileViewer
-                fileType={fileType}
-                filePath={file}
-                onError={onError}
-              />
-            </div>
-          } */}
+          {!file &&
+            <Table
+              rowKey="ipfsHash"
+              loading={qryLoading}
+              columns={columns}
+              dataSource={ipfsList}
+              pagination={
+                {
+                  pageSize: 5,
+                  position: ['bottomCenter']
+                }
+              } />}
           {file && <Preview type={fileType} src={file} />}
 
         </div>
@@ -479,8 +460,8 @@ function IPFS(props: Iprops) {
   );
 }
 
-export default connect(({ User, Ipfs }) => ({
+export default connect(({ User, Ipfs, loading }) => ({
   User,
   Ipfs,
-
+  qryLoading: loading.effects['Ipfs/getIpfsList']
 }))(IPFS);

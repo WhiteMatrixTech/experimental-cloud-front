@@ -7,7 +7,7 @@ import { request } from '../utils/request';
  * @returns
  */
 export async function getPathHash(params: any) {
-  return request(`/network/${params.networkName}/ipfs/stat`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/ipfs/stat?path=${params.path}`, { method: 'POST' });
 }
 
 export async function rename(params: any) {

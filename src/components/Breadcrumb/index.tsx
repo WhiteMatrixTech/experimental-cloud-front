@@ -36,7 +36,7 @@ const Breadcrumb: React.FC<IProps> = (props) => {
     }
   };
 
-  const indexMenuName = useMemo(() => (location.pathname.indexOf('common') > -1 ? '通用' : '网络'), [
+  const indexMenuName = useMemo(() => (location.pathname.indexOf('common') > -1 ? '通用' : '网络') || location.pathname.indexOf('file') > -1 ? '文件' : '网络', [
     location.pathname,
   ]);
 

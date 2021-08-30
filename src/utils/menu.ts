@@ -288,6 +288,16 @@ const CommonMenuList: CommonMenuProps[] = [
   }
 ];
 
+const FileList = [
+  {
+    id: 'file',
+    menuHref: '/',
+    menuIcon: 'KBasszhengshuguanli',
+    menuName: '文件',
+    subFile: []
+  }
+]
+
 const getCurBreadcrumb = (menuList: NetworkMenuProps[] | CommonMenuProps[], keyword = '', isLeftMenu = true) => {
   const breadCrumb = [];
   const findMenu = tree2Arr(menuList).find((item) => item.menuHref === keyword);
@@ -349,5 +359,6 @@ export {
   NetworkMenuPath,
   CommonMenuPath,
   getCurBreadcrumb,
-  pageAuthControl
+  pageAuthControl,
+  FileList
 };
