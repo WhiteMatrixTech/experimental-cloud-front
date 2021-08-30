@@ -247,7 +247,7 @@ function CreateNetworkModal(props: CreateNetworkModalProps) {
           <Item
             label="共识节点数"
             name="orderPeerNumber">
-            <InputNumber placeholder="请输入排序节点数" style={{ width: '100%' }} />
+            <InputNumber min={0} placeholder="请输入共识节点数" style={{ width: '100%' }} />
           </Item>
           <Item label="共识机制" name="orderType">
             <Select
@@ -551,7 +551,10 @@ function spliceFormValues(formValue: any, template: string) {
     }
     params = { ...rest, initPeerInfo: peerList };
   }
-  const { orderType } = params;
+  const { orderType, orderPeerNumber } = params;
+  if (orderPeerNumber !== undefined) {
+    params.orderPeerNumber = orderPeerNumber.toString();
+  }
   if (orderType === OrderType.Kafka) {
     const { kafka1, kafka2, kafka3, kafka4, ...rest } = params;
     params = {
