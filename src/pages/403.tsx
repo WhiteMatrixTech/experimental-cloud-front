@@ -8,8 +8,11 @@ import { BasicComponentProps } from '~/utils/types';
 const UnAuthorizedPage = (props: BasicComponentProps) => {
   const onClickBack = () => {
     props.dispatch({
-      type: 'Layout/common',
-      payload: { selectedMenu: '/about/league-dashboard' },
+      type: 'Layout/setCurrentService',
+      payload: {
+        selectedMenu: '/about/league-dashboard',
+        currentService: '联盟总览'
+      },
     });
     history.push('/');
   };

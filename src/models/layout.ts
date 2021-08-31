@@ -6,6 +6,7 @@ export type LayoutModelState = {
   selectedMenu: string;
   commonPortalSelectedMenu: string;
   showDrawer: boolean;
+  currentService: string;
   globalLoading: boolean;
   loadingDescription: string;
 };
@@ -18,6 +19,7 @@ export type LayoutModelType = {
   };
   reducers: {
     common: Reducer<LayoutModelState>;
+    setCurrentService: Reducer<LayoutModelState>;
   };
 };
 
@@ -30,6 +32,7 @@ const LayoutModel: LayoutModelType = {
       localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.COMMON_PORTAL_SELECTED_MENU) || '/common/job-management',
     selectedMenu:
       localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_PORTAL_SELECTED_MENU) || '/about/league-dashboard', // 当前选中菜单
+    currentService: localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.DRAWER_CURRENT_SERVICE) || '',
     showDrawer: false,
     globalLoading: false,
     loadingDescription: ''
@@ -50,6 +53,14 @@ const LayoutModel: LayoutModelType = {
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
+    },
+    setCurrentService(state, action) {
+      const { currentService } = action.payload;
+      localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.DRAWER_CURRENT_SERVICE, currentService);
+      return {
+        ...state,
+        ...action.payload,
+      };
     },
   },
 };

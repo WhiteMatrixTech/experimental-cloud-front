@@ -223,8 +223,11 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   const onClickBlockDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: BlockSchema) => {
     e.preventDefault();
     dispatch({
-      type: 'Layout/common',
-      payload: { selectedMenu: '/about/block' }
+      type: 'Layout/setCurrentService',
+      payload: {
+        selectedMenu: '/about/block',
+        currentService: '区块数据'
+      }
     });
     history.push({
       pathname: `/about/block/${record.blockHash}`,
@@ -253,8 +256,11 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   const onClickTransactionDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: TransactionSchema) => {
     e.preventDefault();
     dispatch({
-      type: 'Layout/common',
-      payload: { selectedMenu: '/about/transactions' }
+      type: 'Layout/setCurrentService',
+      payload: {
+        selectedMenu: '/about/transactions',
+        currentService: '交易信息'
+      }
     });
     history.push({
       pathname: `/about/transactions/${record.txId}`,
@@ -452,8 +458,11 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       payload: {}
     });
     dispatch({
-      type: 'Layout/common',
-      payload: { selectedMenu: '/about/league-dashboard' },
+      type: 'Layout/setCurrentService',
+      payload: {
+        selectedMenu: '/about/league-dashboard',
+        currentService: '联盟总览'
+      },
     });
     localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_PORTAL_SELECTED_MENU, '/about/league-dashboard')
   }, [dispatch]);

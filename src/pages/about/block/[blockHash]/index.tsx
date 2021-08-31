@@ -117,8 +117,11 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
   const onClickDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: TransactionSchema) => {
     e.preventDefault();
     dispatch({
-      type: 'Layout/common',
-      payload: { selectedMenu: '/about/transactions' }
+      type: 'Layout/setCurrentService',
+      payload: {
+        selectedMenu: '/about/transactions',
+        currentService: '交易信息'
+      }
     });
     history.push({
       pathname: `/about/transactions/${record.txId}`,

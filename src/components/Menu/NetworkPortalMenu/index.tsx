@@ -44,8 +44,11 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
     if (pathname !== menu.menuHref) {
       history.push(menu.menuHref);
       dispatch({
-        type: 'Layout/common',
-        payload: { selectedMenu: menu.menuHref },
+        type: 'Layout/setCurrentService',
+        payload: {
+          selectedMenu: menu.menuHref,
+          currentService: menu.menuName
+        }
       });
       localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_PORTAL_SELECTED_MENU, menu.menuHref);
     }

@@ -23,7 +23,7 @@ const bodyStyle = {
 
 const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
   const { dispatch, pathname, User, Layout } = props;
-  const { showDrawer } = Layout;
+  const { showDrawer, currentService } = Layout;
   const { userInfo, userRole, networkName } = User;
 
   const onClose = () => {
@@ -48,17 +48,26 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
       type: 'User/cleanNetworkInfo',
       payload: {},
     });
+    dispatch({
+      type: 'Layout/setCurrentService',
+      payload: {
+        currentService: '切换联盟'
+      },
+    });
     onClose();
     history.replace('/selectLeague');
   };
 
-  const onClickMenuPath = (path: string) => {
+  const onClickMenuPath = (menu: IMenuPathProps) => {
     dispatch({
-      type: 'Layout/common',
-      payload: { selectedMenu: path },
+      type: 'Layout/setCurrentService',
+      payload: {
+        selectedMenu: menu.finalPath,
+        currentService: menu.finalPathName
+      },
     });
     onClose();
-    history.push(path);
+    history.push(menu.finalPath,);
   };
 
   const showNetworkMenu = useMemo(() => pathname.indexOf('/selectLeague') === -1 && networkName, [
@@ -80,32 +89,12 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
 
   const getNetworkMenu = (menuList: IMenuPathProps[]) => {
     return menuList.map((menu) => (
-      <Menu.Item key={menu.finalPath} onClick={() => onClickMenuPath(menu.finalPath)}>
+      <Menu.Item key={menu.finalPath} onClick={() => onClickMenuPath(menu)}>
         {/* {menu.allPath.join(' > ')} */}
         {menu.finalPathName}
       </Menu.Item>
     ));
   };
-
-  const currentServices = useMemo(() => {
-    const service = {
-      servicePath: '',
-      serviceName: '',
-    };
-    if (pathname === '/selectLeague') {
-      service.servicePath = '/selectLeague';
-      service.serviceName = '切换联盟';
-      return service;
-    }
-    const findResult = optionalNetworkMenuList
-      .concat(optionalCommonMenuList)
-      .find((menu) => menu.finalPath === pathname);
-    if (findResult) {
-      service.servicePath = findResult.finalPath;
-      service.serviceName = findResult.finalPathName;
-    }
-    return service;
-  }, [optionalCommonMenuList, optionalNetworkMenuList, pathname]);
 
   return (
     <Drawer
@@ -122,7 +111,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
       <div className={styles['service-wrapper']}>
         <div className={styles['left-service-wrapper']}>
           <div>当前服务</div>
-          <div className={styles['current-service']}>{currentServices.serviceName}</div>
+          <div className={styles['current-service']}>{currentService}</div>
         </div>
         <div className={styles['right-service-wrapper']}>
           <Row gutter={[16, 12]}>

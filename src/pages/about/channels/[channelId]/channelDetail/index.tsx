@@ -176,8 +176,11 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
   ) => {
     e.preventDefault();
     dispatch({
-      type: 'Layout/common',
-      payload: { selectedMenu: '/about/transactions' }
+      type: 'Layout/setCurrentService',
+      payload: {
+        selectedMenu: '/about/transactions',
+        currentService: '交易信息'
+      }
     });
     history.push({
       pathname: `/about/transactions/${record.txId}`,
@@ -207,8 +210,11 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
   const onClickBlockDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: { blockHash: string }) => {
     e.preventDefault();
     dispatch({
-      type: 'Layout/common',
-      payload: { selectedMenu: '/about/block' }
+      type: 'Layout/setCurrentService',
+      payload: {
+        selectedMenu: '/about/block',
+        currentService: '区块数据'
+      }
     });
     history.push({
       pathname: `/about/block/${record.blockHash}`,
