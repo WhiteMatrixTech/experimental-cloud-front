@@ -15,7 +15,6 @@ import { Roles } from '~/utils/roles';
 import { chainCodeStatusInfo, ChainCodeStatus, VerifyStatusList, UpdateStatusList } from './_config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
-import { getTokenData } from '~/utils/encryptAndDecrypt';
 import { cancelCurrentRequest } from '~/utils/request';
 
 const pageSize = baseConfig.pageSize;
@@ -66,7 +65,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
   // 点击操作按钮, 进行二次确认
   const onClickToConfirm = (record: any, type: any) => {
     let tipTitle = '';
-    let callback = null;
+    let callback = () => { };
     switch (type) {
       case 'install':
         tipTitle = '安装';
@@ -116,21 +115,12 @@ const MyContract: React.FC<MyContractProps> = (props) => {
 
   const onDownLoadContract = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChainCodeSchema) => {
     e.preventDefault();
-    const { networkName } = props.User;
-    const { accessToken, roleToken } = getTokenData();
-
-    const headers = {
-      'Content-Type': 'text/plain',
-      Authorization: `Bearer ${accessToken}`,
-      RoleAuth: roleToken
-    };
 
     setDownloading(true);
 
     request(
       `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`,
       {
-        headers,
         mode: 'cors',
         method: 'GET',
         responseType: 'blob'

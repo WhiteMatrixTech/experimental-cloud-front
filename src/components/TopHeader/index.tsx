@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { connect } from 'dva';
-import { history } from 'umi';
 import type { Dispatch } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined, BarsOutlined } from '@ant-design/icons';
 import { ConnectState } from '~/models/connect';
-import buaaLogo from '~/assets/images/buaa-small.png';
+import jxrjxyLogo from '~/assets/images/jiangxizhiye-small.png';
 import styles from './index.less';
 
 const { Header } = Layout;
@@ -54,8 +53,8 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
     <Header className={styles.header}>
       <div className={styles['header-left-wrapper']}>
         <div className={styles['logo-sub']}>
-          <img src={buaaLogo} alt="北京航空大学杭州创新研究院" />
-          <div className={styles.item}>区块链应用服务平台</div>
+          <img src={jxrjxyLogo} alt="江西软件职业技术大学" />
+          <div className={styles.item}>区块链实训教学平台</div>
         </div>
         <span className={styles['divider-span']}></span>
         <a className={styles['header-menu-item']} onClick={onClickShowDrawer}>

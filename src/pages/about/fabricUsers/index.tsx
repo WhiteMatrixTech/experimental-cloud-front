@@ -11,7 +11,6 @@ import baseConfig from '~/utils/config';
 import { Dispatch, FabricRoleSchema } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
-import { getTokenData } from '~/utils/encryptAndDecrypt';
 import { cancelCurrentRequest } from '~/utils/request';
 
 const { Item } = Form;
@@ -73,18 +72,12 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
 
   const onDownLoadSDK = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: FabricRoleSchema) => {
     e.preventDefault();
-    // token校验
-    const { accessToken, roleToken } = getTokenData();
-    let headers = {
-      'Content-Type': 'text/plain',
-      Authorization: `Bearer ${accessToken}`,
-      RoleAuth: roleToken
-    };
+
     setDownloading(true);
+
     request(
       `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRole/${record.orgName}/${record.userId}/getUserCcp`,
       {
-        headers,
         mode: 'cors',
         method: 'GET',
         responseType: 'blob'

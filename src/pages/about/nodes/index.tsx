@@ -13,7 +13,6 @@ import { peerStatus, availableNodeStatus } from './_config';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
-import { getTokenData } from '~/utils/encryptAndDecrypt';
 import { cancelCurrentRequest } from '~/utils/request';
 
 export interface NodeManagementProps {
@@ -70,19 +69,10 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   const onDownLoadCertificate = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: PeerSchema) => {
       e.preventDefault();
-      // token校验
-      const { accessToken, roleToken } = getTokenData();
-
-      let headers = {
-        'Content-Type': 'text/plain',
-        Authorization: `Bearer ${accessToken}`,
-        RoleAuth: roleToken
-      };
 
       setDownloading(true);
 
       request(`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`, {
-        headers,
         mode: 'cors',
         method: 'GET',
         responseType: 'blob'
