@@ -37,11 +37,6 @@ export default defineConfig({
     baseSeparator: '-'
   },
 
-  externals: {
-    echarts: 'window.echarts'
-  },
-  scripts: ['https://cdnjs.cloudflare.com/ajax/libs/echarts/5.0.0/echarts.min.js'],
-
   proxy: {
     '/api': {
       target: process.env.API_ENDPOINT || 'http://yzjszjr-chainbaas-api.test.chainide.cn',
