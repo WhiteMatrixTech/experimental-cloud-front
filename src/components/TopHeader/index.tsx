@@ -6,7 +6,7 @@ import type { Dispatch } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined, BarsOutlined } from '@ant-design/icons';
 import { ConnectState } from '~/models/connect';
-import buaaLogo from '~/assets/images/dongyin-small.png';
+import dongyinLogo from '~/assets/images/dongyin-small.png';
 import styles from './index.less';
 
 const { Header } = Layout;
@@ -54,7 +54,7 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
     <Header className={styles.header}>
       <div className={styles['header-left-wrapper']}>
         <div className={styles['logo-sub']}>
-          <img src={buaaLogo} alt="北京航空大学杭州创新研究院" />
+          <img src={dongyinLogo} alt="东印" />
           <div className={styles.item}>区块链应用服务平台</div>
         </div>
         <span className={styles['divider-span']}></span>

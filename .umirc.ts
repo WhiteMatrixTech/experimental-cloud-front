@@ -8,11 +8,12 @@ export default defineConfig({
   ignoreMomentLocale: true,
   publicPath: '/',
   chainWebpack,
-  title: '区块链实训教学平台-Fabric BaaS',
+  title: '区块链应用服务平台-Fabric BaaS',
   favicon: '/favicon.png',
 
   theme: {
-    "table-header-bg": "#ebedf0",
+    'table-header-bg': '#ebedf0',
+    '@primary-color': '#722ED1'
   },
 
   alias: {

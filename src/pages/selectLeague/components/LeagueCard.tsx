@@ -16,7 +16,7 @@ export const LeagueCard: React.FC<LeagueCardProps> = (props) => {
 
   const getShowTimeLabel = useMemo(() => {
     if (extra) {
-      return '创建时间：'
+      return '创建时间：';
     }
     return leagueInfo.role === Roles.NetworkAdmin ? '创建时间：' : '加入时间：';
   }, [leagueInfo.role, extra]);
@@ -32,7 +32,7 @@ export const LeagueCard: React.FC<LeagueCardProps> = (props) => {
     <div className={styles['league-card']} onClick={() => onClickCard(leagueInfo)}>
       <div className={styles['card-header']}>
         <span className={styles.icon}>
-          <RocketTwoTone />
+          <RocketTwoTone twoToneColor="#722ED1" />
         </span>
         <span className={styles['league-name']}>{leagueInfo.leagueName}</span>
       </div>
@@ -43,9 +43,9 @@ export const LeagueCard: React.FC<LeagueCardProps> = (props) => {
         </div>
         <div className={styles['description-item']}>
           <label>联盟描述：</label>
-          <div
-            className={styles['league-description']}
-            title={leagueInfo.description}>{leagueInfo.description}</div>
+          <div className={styles['league-description']} title={leagueInfo.description}>
+            {leagueInfo.description}
+          </div>
         </div>
       </div>
     </div>

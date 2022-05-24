@@ -1,5 +1,7 @@
 @import '~themes/variable.less';
 @import '~iconfont/iconfont.css';
+@import '~antd/es/style/themes/default.less';
+
 html,
 body,
 :global(#root) {
@@ -95,7 +97,7 @@ body {
 }
 
 .table-action-span {
-  color: #177ddc;
+  color: @primary-color;
   text-decoration: none;
   background-color: transparent;
   outline: none;
@@ -104,7 +106,7 @@ body {
   -webkit-text-decoration-skip: objects;
 }
 .table-action-span:hover {
-  color: #165996;
+  color: #9254de;
 }
 
 .ant-badge-count {
