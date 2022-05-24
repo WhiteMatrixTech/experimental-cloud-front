@@ -21,7 +21,7 @@ const codeMessage = {
   500: '服务器发生错误，请检查服务器。',
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
-  504: '网关超时。',
+  504: '网关超时。'
 };
 
 const authorization = (response: any) => {
@@ -36,9 +36,9 @@ const authorization = (response: any) => {
     // 强制刷新页面
     // window.location.reload();
     setTimeout(() => {
-      // history.push('/user/login');
-      window.location.href =
-        `${process.env.PLATFORM_SSO_AUTH_ENDPOINT}?returnUrl=${encodeURIComponent(window.location.origin)}`;
+      history.push('/user/login');
+      // window.location.href =
+      //   `${process.env.PLATFORM_SSO_AUTH_ENDPOINT}?returnUrl=${encodeURIComponent(window.location.origin)}`;
     }, 1000);
     return;
   }
@@ -66,14 +66,14 @@ const _requestFunc = extend({
   timeout: 30000,
   // parseResponse: false,
   credentials: 'include', // 默认请求是否带上cookie,
-  prefix: process.env.BAAS_BACKEND_LINK,
+  prefix: process.env.BAAS_BACKEND_LINK
 });
 
 _requestFunc.interceptors.request.use((url, options) => {
   let headers = {
     'Content-Type': 'application/json',
     Authorization: '',
-    RoleAuth: '',
+    RoleAuth: ''
   };
   // token校验
   const { accessToken, roleToken } = getTokenData();
@@ -125,7 +125,7 @@ export const request = (url: string, options?: { method: string; body?: object }
   return _requestFunc(newUrl, newOptions).then((response) => {
     const data = {
       result: response,
-      statusCode: response.statusCode || 'ok',
+      statusCode: response.statusCode || 'ok'
     };
     return data;
   });

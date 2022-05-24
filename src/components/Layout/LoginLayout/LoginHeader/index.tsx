@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
-import buaaLogo from '~/assets/images/buaa-logo.png';
+import buaaLogo from '~/assets/images/dongyin-small.png';
 import styles from './index.less';
 
 const { Header } = Layout;

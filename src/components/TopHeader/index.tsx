@@ -6,7 +6,7 @@ import type { Dispatch } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { DownOutlined, BarsOutlined } from '@ant-design/icons';
 import { ConnectState } from '~/models/connect';
-import buaaLogo from '~/assets/images/buaa-small.png';
+import buaaLogo from '~/assets/images/dongyin-small.png';
 import styles from './index.less';
 
 const { Header } = Layout;
@@ -44,9 +44,9 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
       // 清空缓存
       window.localStorage.clear();
       // 跳转至登录界面
-      // history.replace('/user/login');
-      window.location.href =
-        `${process.env.PLATFORM_SSO_AUTH_ENDPOINT}?returnUrl=${encodeURIComponent(window.location.origin)}`;
+      history.replace('/user/login');
+      // window.location.href =
+      //   `${process.env.PLATFORM_SSO_AUTH_ENDPOINT}?returnUrl=${encodeURIComponent(window.location.origin)}`;
     }
   };
 
