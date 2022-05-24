@@ -8,7 +8,7 @@ export default defineConfig({
   ignoreMomentLocale: true,
   publicPath: '/',
   chainWebpack,
-  title: 'BaaS',
+  title: '区块链应用服务平台',
   favicon: '/favicon.png',
 
   antd: {
