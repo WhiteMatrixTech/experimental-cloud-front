@@ -146,8 +146,8 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
                       切换联盟
                     </Menu.Item>
                   )}
-                  <Menu.Item key="ChainIDE" onClick={onClickIDE}>
-                    ChainIDE
+                  <Menu.Item key="MasiIDE" onClick={onClickIDE}>
+                    MasiIDE
                   </Menu.Item>
                 </Menu.ItemGroup>
               </Menu>
