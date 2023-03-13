@@ -10,7 +10,7 @@ import moment from 'moment';
 import { Roles } from '~/utils/roles';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
-const OperationalRole = [Roles.Admin, Roles.SuperUser];
+const OperationalRole = [Roles.ADMIN, Roles.SUPER];
 const pageSize = baseConfig.pageSize;
 
 export interface CustomImageProps {
@@ -124,11 +124,16 @@ function CustomImage(props: CustomImageProps) {
 
   return (
     <div className="page-wrapper">
-      <PageTitle label="自定义镜像管理" extra={OperationalRole.includes(userInfo.role) ? (
-        <Button type="primary" onClick={onClickAddMirrorImage}>
-          添加镜像
-        </Button>
-      ) : null} />
+      <PageTitle
+        label="自定义镜像管理"
+        extra={
+          OperationalRole.includes(userInfo.role) ? (
+            <Button type="primary" onClick={onClickAddMirrorImage}>
+              添加镜像
+            </Button>
+          ) : null
+        }
+      />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
           rowKey="_id"

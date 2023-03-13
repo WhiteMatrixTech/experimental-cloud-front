@@ -12,7 +12,7 @@ export default defineConfig({
   favicon: '/favicon.png',
 
   theme: {
-    "table-header-bg": "#ebedf0",
+    'table-header-bg': '#ebedf0'
   },
 
   alias: {
@@ -44,7 +44,7 @@ export default defineConfig({
 
   proxy: {
     '/api': {
-      target: process.env.API_ENDPOINT || 'http://yzjszjr-chainbaas-api.test.chainide.cn',
+      target: process.env.API_ENDPOINT,
       changeOrigin: false,
       pathRewrite: { '^/api': '' }
     }

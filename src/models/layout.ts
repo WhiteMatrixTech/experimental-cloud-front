@@ -17,6 +17,9 @@ export type LayoutModelType = {
   effects: {
     getNewMenuList: Effect;
   };
+  subscriptions: {
+    setup({ dispatch, history }: { dispatch: any; history: any }): any;
+  };
   reducers: {
     common: Reducer<LayoutModelState>;
     setCurrentService: Reducer<LayoutModelState>;
@@ -38,16 +41,32 @@ const LayoutModel: LayoutModelType = {
     loadingDescription: ''
   },
 
+  subscriptions: {
+    setup({ dispatch, history }) {
+      return history.listen(({ pathname }: { pathname: string }) => {
+        if (pathname.includes('/selectLeague')) {
+          dispatch({
+            type: 'setCurrentService',
+            payload: {
+              selectedMenu: '/selectLeague',
+              currentService: '切换联盟'
+            }
+          });
+        }
+      });
+    }
+  },
+
   effects: {
     *getNewMenuList({ payload }, { call, put }) {
       let { userType } = payload;
       yield put({
         type: 'common',
         payload: {
-          userType,
-        },
+          userType
+        }
       });
-    },
+    }
   },
 
   reducers: {
@@ -59,10 +78,10 @@ const LayoutModel: LayoutModelType = {
       localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.DRAWER_CURRENT_SERVICE, currentService);
       return {
         ...state,
-        ...action.payload,
+        ...action.payload
       };
-    },
-  },
+    }
+  }
 };
 
 export default LayoutModel;

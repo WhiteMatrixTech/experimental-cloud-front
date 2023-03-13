@@ -117,7 +117,7 @@ function OrganizationList(props: OrganizationListProps) {
   };
 
   const showAddOrg = useMemo(() => {
-    return userRole === Roles.NetworkAdmin && location?.state?.channelStatus === ChannelStatusMap.InUse;
+    return userRole === Roles.ADMIN && location?.state?.channelStatus === ChannelStatusMap.InUse;
   }, [userRole, location?.state?.channelStatus]);
 
   return (
@@ -126,13 +126,11 @@ function OrganizationList(props: OrganizationListProps) {
       <PageTitle label="通道中组织数据" />
       <div className="page-content">
         <Descriptions title="通道信息" className="descriptions-wrapper">
-          {channelInfoList.map(item =>
-            <Descriptions.Item
-              key={item.label}
-              label={item.label}>
+          {channelInfoList.map((item) => (
+            <Descriptions.Item key={item.label} label={item.label}>
               {item.value}
             </Descriptions.Item>
-          )}
+          ))}
         </Descriptions>
         <div className="page-content page-content-shadow table-wrapper">
           <div className="table-header-title">

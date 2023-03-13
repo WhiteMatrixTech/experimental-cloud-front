@@ -175,11 +175,16 @@ function ChannelManagement(props: ChannelManagementProps) {
 
   return (
     <div className="page-wrapper">
-      <PageTitle label="通道管理" extra={userRole === Roles.NetworkAdmin ? (
-        <Button type="primary" onClick={onClickCreateChannel}>
-          创建通道
-        </Button>
-      ) : null} />
+      <PageTitle
+        label="通道管理"
+        extra={
+          userRole === Roles.ADMIN ? (
+            <Button type="primary" onClick={onClickCreateChannel}>
+              创建通道
+            </Button>
+          ) : null
+        }
+      />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
           rowKey="_id"

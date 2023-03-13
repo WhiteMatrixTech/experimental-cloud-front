@@ -61,7 +61,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/league-dashboard',
     menuIcon: <CodeSandboxOutlined />,
     menuName: '联盟总览',
-    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+    accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: []
   },
   {
@@ -70,7 +70,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/data-dashboard',
     menuIcon: <DashboardOutlined />,
     menuName: '仪表盘',
-    accessRole: [Roles.NetworkAdmin],
+    accessRole: [Roles.ADMIN],
     subMenus: []
   },
   {
@@ -79,7 +79,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/block',
     menuIcon: <BlockOutlined />,
     menuName: '区块数据',
-    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+    accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: []
   },
   {
@@ -88,7 +88,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/transactions',
     menuIcon: <TransactionOutlined />,
     menuName: '交易信息',
-    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+    accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: []
   },
   {
@@ -97,7 +97,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/channels',
     menuIcon: <PartitionOutlined />,
     menuName: '通道管理',
-    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+    accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: []
   },
   {
@@ -106,7 +106,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/organizations',
     menuIcon: <ApartmentOutlined />,
     menuName: '组织管理',
-    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+    accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: []
   },
   {
@@ -115,7 +115,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/nodes',
     menuIcon: <DeploymentUnitOutlined />,
     menuName: '节点管理',
-    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+    accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: []
   },
   {
@@ -124,7 +124,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/contract',
     menuIcon: <FileTextOutlined />,
     menuName: '合约管理',
-    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+    accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: []
   },
   {
@@ -133,7 +133,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/evidence',
     menuIcon: <FileProtectOutlined />,
     menuName: '存证上链',
-    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+    accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: []
   },
   {
@@ -142,7 +142,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/enterprise-member',
     menuIcon: <TeamOutlined />,
     menuName: '成员管理',
-    accessRole: [Roles.NetworkAdmin],
+    accessRole: [Roles.ADMIN],
     subMenus: []
   },
   // {
@@ -160,7 +160,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/myinfo',
     menuIcon: <IdcardOutlined />,
     menuName: '用户信息',
-    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+    accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: [
       {
         id: 'MyLeague',
@@ -168,7 +168,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
         menuHref: '/about/myinfo/MyLeague',
         menuIcon: null,
         menuName: '我的联盟',
-        accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+        accessRole: [Roles.MEMBER, Roles.ADMIN],
         subMenus: []
       },
       {
@@ -177,7 +177,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
         menuHref: '/about/myinfo/CompanyInfo',
         menuIcon: null,
         menuName: '我的信息',
-        accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+        accessRole: [Roles.MEMBER, Roles.ADMIN],
         subMenus: []
       },
       {
@@ -186,7 +186,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
         menuHref: '/about/myinfo/MyOrgList',
         menuIcon: null,
         menuName: '我的组织',
-        accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+        accessRole: [Roles.MEMBER, Roles.ADMIN],
         subMenus: []
       }
     ]
@@ -225,7 +225,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/fabricUsers',
     menuIcon: <SolutionOutlined />,
     menuName: 'Fabric用户管理',
-    accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
+    accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: []
   },
   {
@@ -234,19 +234,28 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuHref: '/about/rbac',
     menuIcon: <SafetyCertificateOutlined />,
     menuName: '访问角色管理',
-    accessRole: [Roles.NetworkAdmin],
+    accessRole: [Roles.ADMIN],
     subMenus: []
   }
 ];
 
 const CommonMenuList: CommonMenuProps[] = [
   {
+    id: 'cluster-management',
+    menuPid: RootMenuId,
+    menuHref: '/common/cluster-management',
+    menuIcon: <ClusterOutlined />,
+    menuName: '集群管理',
+    accessRole: [Roles.ADMIN, Roles.SUPER],
+    subMenus: []
+  },
+  {
     id: 'job-management',
     menuPid: RootMenuId,
     menuHref: '/common/job-management',
     menuIcon: <FileSearchOutlined />,
     menuName: '任务管理',
-    accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
+    accessRole: [Roles.ADMIN, Roles.SUPER],
     subMenus: []
   },
   {
@@ -255,7 +264,7 @@ const CommonMenuList: CommonMenuProps[] = [
     menuHref: '/common/block-compile',
     menuIcon: <DeploymentUnitOutlined />,
     menuName: '区块链编译',
-    accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
+    accessRole: [Roles.ADMIN, Roles.SUPER],
     subMenus: [
       {
         id: 'package',
@@ -263,7 +272,7 @@ const CommonMenuList: CommonMenuProps[] = [
         menuHref: '/common/block-compile/package',
         menuIcon: null,
         menuName: '一键编译',
-        accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
+        accessRole: [Roles.ADMIN, Roles.SUPER],
         subMenus: []
       },
       {
@@ -272,7 +281,7 @@ const CommonMenuList: CommonMenuProps[] = [
         menuHref: '/common/block-compile/storage',
         menuIcon: null,
         menuName: '自定义镜像管理',
-        accessRole: [Roles.Member, Roles.Admin, Roles.SuperUser],
+        accessRole: [Roles.ADMIN, Roles.SUPER],
         subMenus: []
       }
     ]
@@ -283,25 +292,16 @@ const CommonMenuList: CommonMenuProps[] = [
   //   menuHref: '/common/elastic-cloud-server',
   //   menuIcon: <CloudServerOutlined />,
   //   menuName: '弹性云服务器管理',
-  //   accessRole: [Roles.Admin, Roles.SuperUser],
+  //   accessRole: [Roles.NetworkAdmin, Roles.SuperUser],
   //   subMenus: []
   // },
-  {
-    id: 'cluster-management',
-    menuPid: RootMenuId,
-    menuHref: '/common/cluster-management',
-    menuIcon: <ClusterOutlined />,
-    menuName: '集群管理',
-    accessRole: [Roles.Admin, Roles.SuperUser],
-    subMenus: []
-  },
   {
     id: 'user-role-management',
     menuPid: RootMenuId,
     menuHref: '/common/user-role-management',
     menuIcon: <AuditOutlined />,
     menuName: '用户角色管理',
-    accessRole: [Roles.SuperUser],
+    accessRole: [Roles.SUPER],
     subMenus: []
   }
 ];

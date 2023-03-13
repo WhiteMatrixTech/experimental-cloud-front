@@ -8,13 +8,14 @@ import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
 import { deviceId, encryptData, getInitData } from '~/utils/encryptAndDecrypt';
 
 export type UserInfoSchema = {
-  loginName: string;
-  did: string;
-  exp: number;
-  iat: number;
-  contactEmail: string;
-  companyName: string;
+  email: string;
+  name: string;
+  phoneNo: string;
+  address: string;
+  enterpriseName: string;
+  enterpriseUsci: string;
   role: Roles;
+  createTime: string;
 };
 
 export type LeagueSchema = {
@@ -37,8 +38,7 @@ export type UserModelState = {
   cacheAccount: object;
   userAndRegister: boolean;
 
-  networkList: Array<LeagueSchema>;
-  myNetworkList: Array<LeagueSchema>;
+  notJointedNetworkList: Array<LeagueSchema>;
   myCreatedNetworkList: Array<LeagueSchema>;
   myJoinedNetworkList: Array<LeagueSchema>;
 
@@ -55,7 +55,7 @@ export type UserModelType = {
     changePassword: Effect;
     login: Effect;
     getUserInfo: Effect;
-    getNetworkList: Effect;
+    getNotJointedNetworkList: Effect;
     getMyNetworkList: Effect;
     enterLeague: Effect;
     enrollInLeague: Effect;
@@ -84,8 +84,7 @@ const UserModel: UserModelType = {
     cacheAccount: {}, // 当前注册的账户
     userAndRegister: false, // 控制注册成功后的自动跳转
 
-    networkList: [], // 网络列表
-    myNetworkList: [], // 我的网络列表
+    notJointedNetworkList: [], // 未加入的网络列表
     myCreatedNetworkList: [],
     myJoinedNetworkList: [],
 
@@ -97,7 +96,7 @@ const UserModel: UserModelType = {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }: { pathname: string }) => {
-        if (pathname.indexOf('/selectLeague') > -1) {
+        if (pathname.includes('/selectLeague')) {
           dispatch({ type: 'getUserInfo' });
         }
       });
@@ -108,17 +107,18 @@ const UserModel: UserModelType = {
     *register({ payload }, { call, put }) {
       const res = yield call(API.register, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result.user) {
+
+      if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            cacheAccount: result,
+            cacheAccount: payload,
             userAndRegister: true
           }
         });
         return true;
       } else {
-        notification.error({ message: result.message || result.error || '用户注册失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '用户注册失败', top: 64, duration: 3 });
         return false;
       }
     },
@@ -157,7 +157,7 @@ const UserModel: UserModelType = {
         yield put({
           type: 'common',
           payload: {
-            loginInfo: result.message || '',
+            loginInfo: result.msg || '',
             loginStatus: LoginStatus.LOGIN_ERROR
           }
         });
@@ -168,25 +168,30 @@ const UserModel: UserModelType = {
       const res = yield call(API.getUserInfo, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.USER_INFO, encryptData(JSON.stringify(result), deviceId));
+        const userInfo = {
+          ...result,
+          // api返回两个布尔值super、admin
+          role: result.super ? Roles.SUPER : result.admin ? Roles.ADMIN : Roles.MEMBER
+        };
+        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.USER_INFO, encryptData(JSON.stringify(userInfo), deviceId));
 
-        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE, encryptData(result.role, deviceId));
+        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE, encryptData(userInfo.role, deviceId));
         yield put({
           type: 'common',
           payload: {
-            userInfo: result
+            userInfo
           }
         });
       }
     },
 
-    *getNetworkList({ payload }, { call, put }) {
-      const res = yield call(API.getNetworkList, payload);
+    *getNotJointedNetworkList({ payload }, { call, put }) {
+      const res = yield call(API.getNotJointedNetworkList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
-          payload: { networkList: result }
+          payload: { notJointedNetworkList: result }
         });
       }
     },
@@ -198,9 +203,8 @@ const UserModel: UserModelType = {
         yield put({
           type: 'common',
           payload: {
-            myNetworkList: result,
-            myCreatedNetworkList: result.filter((league: LeagueSchema) => league.role === Roles.NetworkAdmin),
-            myJoinedNetworkList: result.filter((league: LeagueSchema) => league.role === Roles.NetworkMember)
+            myCreatedNetworkList: result.filter((league: LeagueSchema) => league.role === Roles.ADMIN),
+            myJoinedNetworkList: result.filter((league: LeagueSchema) => league.role === Roles.MEMBER)
           }
         });
       }
@@ -264,7 +268,7 @@ const UserModel: UserModelType = {
         ...state,
         ...action.payload,
         roleToken: '',
-        userRole: Roles.NetworkMember,
+        userRole: Roles.MEMBER,
         networkName: '',
         leagueName: ''
       };

@@ -47,7 +47,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   const statisticsList = useMemo(() => {
     return [
       {
-        label: `${userRole === Roles.NetworkMember ? '已入联盟' : '成员'}`,
+        label: `${userRole === Roles.MEMBER ? '已入联盟' : '成员'}`,
         num: Dashboard.memberTotal
       },
       { label: '通道', num: Dashboard.channelTotal },
@@ -70,7 +70,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       networkName
     };
     dispatch({
-      type: `Dashboard/${userRole === Roles.NetworkMember ? 'getStaticInfoForMember' : 'getStaticInfoForAdmin'}`,
+      type: `Dashboard/${userRole === Roles.MEMBER ? 'getStaticInfoForMember' : 'getStaticInfoForAdmin'}`,
       payload: params
     });
     dispatch({
@@ -276,7 +276,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       dataIndex: 'blockHash',
       key: 'blockHash',
       ellipsis: true,
-      width: userRole === Roles.NetworkMember ? '17%' : '20%'
+      width: userRole === Roles.MEMBER ? '17%' : '20%'
     },
     {
       title: '所属通道',
@@ -371,7 +371,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       deleteButton: <></>,
       extraButton: <></>
     };
-    if (userRole === Roles.NetworkAdmin) {
+    if (userRole === Roles.ADMIN) {
       const status = networkStatusInfo?.networkStatus;
       switch (status) {
         case NetworkStatus.NotExist:
@@ -410,10 +410,11 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
           break;
       }
       if (status && CanDeleteNetworkStatus.includes(status)) {
-        btnShowInitValue.deleteButton =
+        btnShowInitValue.deleteButton = (
           <Button type="primary" danger onClick={onDeleteNetwork}>
             删除网络
           </Button>
+        );
       }
     }
     return btnShowInitValue;
@@ -444,13 +445,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     }, 10000);
     setPollInterval(interval);
     return () => clearInterval(interval);
-  }, [
-    getBlockList,
-    getNetworkInfo,
-    getStaticInfo,
-    getTransactionList,
-    networkStatusInfo?.networkStatus
-  ]);
+  }, [getBlockList, getNetworkInfo, getStaticInfo, getTransactionList, networkStatusInfo?.networkStatus]);
 
   useEffect(() => {
     dispatch({
@@ -462,9 +457,9 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       payload: {
         selectedMenu: '/about/league-dashboard',
         currentService: '联盟总览'
-      },
+      }
     });
-    localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_PORTAL_SELECTED_MENU, '/about/league-dashboard')
+    localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_PORTAL_SELECTED_MENU, '/about/league-dashboard');
   }, [dispatch]);
 
   return (
@@ -496,13 +491,11 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
         <div className={style['league-basic-info']}>
           <h2>链上数据</h2>
           <Row gutter={24} justify="space-between">
-            {statisticsList.map(item => <Col key={item.label} span={4}>
-              <Statistic
-                title={item.label}
-                value={item.num}
-                valueStyle={StatisticValueStyle}
-              />
-            </Col>)}
+            {statisticsList.map((item) => (
+              <Col key={item.label} span={4}>
+                <Statistic title={item.label} value={item.num} valueStyle={StatisticValueStyle} />
+              </Col>
+            ))}
           </Row>
         </div>
         <div className="page-content page-content-shadow table-wrapper">

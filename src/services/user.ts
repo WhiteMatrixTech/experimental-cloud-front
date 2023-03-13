@@ -5,13 +5,13 @@ import { request } from '../utils/request';
  * 注册
  */
 export type RegisterApiParams = {
-  username: string;
-  pass: string;
-  re_pass: string;
   email: string;
+  pass: string;
   name: string;
-  phone: string;
-  invitationCode?: string;
+  phoneNo: string;
+  address: string;
+  companyName: string;
+  companyCertBusinessNumber?: string;
 };
 export async function register(params: RegisterApiParams) {
   return request(`/register`, { method: 'POST', body: params });
@@ -71,8 +71,8 @@ export async function enterLeague(params: BasicApiParams) {
 /**
  * 获取联盟列表
  */
-export async function getNetworkList() {
-  return request(`/networkList`);
+export async function getNotJointedNetworkList() {
+  return request(`/networkNotJoined`);
 }
 
 /**

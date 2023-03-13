@@ -150,7 +150,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         key: 'action',
         render: (_, record: PeerSchema) => (
           <Space size="small">
-            {userRole === Roles.NetworkAdmin && (
+            {userRole === Roles.ADMIN && (
               <a
                 href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`}
                 onClick={(e) => onDownLoadCertificate(e, record)}>
@@ -166,7 +166,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         )
       }
     ];
-    if (userRole === Roles.NetworkAdmin) {
+    if (userRole === Roles.ADMIN) {
       const insertColumn = {
         title: '所属组织',
         dataIndex: 'orgName',
@@ -189,11 +189,12 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
       <Spin spinning={downloading} tip="下载中...">
         <PageTitle
           label="节点管理"
-          extra={<Button
-            type="primary"
-            onClick={onClickCreateNode}>
-            创建节点
-          </Button>} />
+          extra={
+            <Button type="primary" onClick={onClickCreateNode}>
+              创建节点
+            </Button>
+          }
+        />
         <div className="page-content page-content-shadow table-wrapper">
           <Table
             rowKey="_id"

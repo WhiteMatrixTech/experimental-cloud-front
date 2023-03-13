@@ -48,7 +48,7 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
   }, [dispatch, networkName]);
 
   const orgList = useMemo(() => {
-    if (userRole === Roles.NetworkAdmin) {
+    if (userRole === Roles.ADMIN) {
       return orgInUseList;
     }
     if (myOrgInfo) {
@@ -179,7 +179,7 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
         <Item
           label="所属组织"
           name="orgName"
-          initialValue={userRole === Roles.NetworkMember ? myOrgInfo && myOrgInfo.orgName : null}
+          initialValue={userRole === Roles.MEMBER ? myOrgInfo && myOrgInfo.orgName : null}
           rules={[
             {
               required: true,
@@ -189,7 +189,7 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
           <Select
             allowClear
             placeholder="请选择所属组织"
-            disabled={userRole === Roles.NetworkMember}
+            disabled={userRole === Roles.MEMBER}
             getPopupContainer={(triggerNode) => triggerNode.parentNode}>
             {orgList.map((item) => (
               <Option key={item.orgName} value={item.orgName}>

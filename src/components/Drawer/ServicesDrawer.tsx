@@ -18,7 +18,7 @@ export type ServicesDrawerProps = {
 const bodyStyle = {
   padding: 0,
   margin: 24,
-  overflow: 'hidden auto',
+  overflow: 'hidden auto'
 };
 
 const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
@@ -29,7 +29,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
   const onClose = () => {
     dispatch({
       type: 'Layout/common',
-      payload: { showDrawer: false },
+      payload: { showDrawer: false }
     });
   };
 
@@ -46,13 +46,13 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
     localStorage.removeItem(LOCAL_STORAGE_ITEM_KEY.ROLE_TOKEN);
     dispatch({
       type: 'User/cleanNetworkInfo',
-      payload: {},
+      payload: {}
     });
     dispatch({
       type: 'Layout/setCurrentService',
       payload: {
         currentService: '切换联盟'
-      },
+      }
     });
     onClose();
     history.replace('/selectLeague');
@@ -64,17 +64,16 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
       payload: {
         selectedMenu: menu.finalPath,
         currentService: menu.finalPathName
-      },
+      }
     });
     onClose();
-    history.push(menu.finalPath,);
+    history.push(menu.finalPath);
   };
 
   const showNetworkMenu = useMemo(() => pathname.indexOf('/selectLeague') === -1 && networkName, [
     pathname,
-    networkName,
+    networkName
   ]);
-  const showChangeLeague = useMemo(() => pathname.indexOf('/selectLeague') === -1, [pathname]);
 
   const optionalNetworkMenuList = useMemo(() => {
     return NetworkMenuPath.filter((path) => path.pathAccess.includes(userRole));
@@ -106,8 +105,7 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
       bodyStyle={bodyStyle}
       getContainer={false}
       style={{ position: 'absolute' }}
-      className={styles['services-drawer']}
-    >
+      className={styles['services-drawer']}>
       <div className={styles['service-wrapper']}>
         <div className={styles['left-service-wrapper']}>
           <div>当前服务</div>
@@ -131,11 +129,9 @@ const ServicesDrawer: React.FC<ServicesDrawerProps> = (props) => {
             <Col span={4}>
               <Menu theme="dark">
                 <Menu.ItemGroup title="其他">
-                  {showChangeLeague && (
-                    <Menu.Item key="/selectLeague" onClick={onClickChangeLeague}>
-                      切换联盟
-                    </Menu.Item>
-                  )}
+                  <Menu.Item key="/selectLeague" onClick={onClickChangeLeague}>
+                    切换联盟
+                  </Menu.Item>
                   <Menu.Item key="ChainIDE" onClick={onClickIDE}>
                     ChainIDE
                   </Menu.Item>

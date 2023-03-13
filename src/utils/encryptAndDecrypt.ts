@@ -20,7 +20,7 @@ export function getInitData() {
   const userInfo = storageUserInfo ? JSON.parse(storageUserInfo) : {};
 
   let userRole = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE_IN_NETWORK);
-  userRole = userRole ? decryptData(userRole, deviceId) : Roles.NetworkMember;
+  userRole = userRole ? decryptData(userRole, deviceId) : Roles.MEMBER;
 
   let networkName = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_NAME);
   networkName = networkName ? decryptData(networkName, deviceId) : '';
@@ -28,7 +28,7 @@ export function getInitData() {
   let leagueName = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.LEAGUE_NAME);
   leagueName = leagueName ? decryptData(leagueName, deviceId) : '';
 
-  return { userInfo, userRole, networkName, leagueName }
+  return { userInfo, userRole, networkName, leagueName };
 }
 
 export function getTokenData() {
@@ -38,5 +38,5 @@ export function getTokenData() {
   let roleToken = localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.ROLE_TOKEN);
   roleToken = roleToken && decryptData(roleToken, deviceId);
 
-  return { accessToken, roleToken }
+  return { accessToken, roleToken };
 }

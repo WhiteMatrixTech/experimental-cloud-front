@@ -37,7 +37,7 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
       unavailableNetworkStatus.includes(networkStatusInfo.networkStatus) &&
       !availableMenu.includes(menu.menuHref)
     ) {
-      const warnMes = userRole === Roles.NetworkAdmin ? '请先创建网络' : '请等待盟主创建网络';
+      const warnMes = userRole === Roles.ADMIN ? '请先创建网络' : '请等待盟主创建网络';
       message.warn(warnMes);
       return;
     }
@@ -64,19 +64,13 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
     }
     if (isEmpty(item.subMenus)) {
       return (
-        <Menu.Item
-          icon={item.menuIcon}
-          key={item.menuHref}
-          onClick={() => hashChange(item)}>
+        <Menu.Item icon={item.menuIcon} key={item.menuHref} onClick={() => hashChange(item)}>
           {item.menuName}
         </Menu.Item>
       );
     } else {
       return (
-        <SubMenu
-          key={item.menuHref}
-          icon={item.menuIcon}
-          title={item.menuName}>
+        <SubMenu key={item.menuHref} icon={item.menuIcon} title={item.menuName}>
           {item.subMenus.map((subItem) => {
             if (!item.accessRole.includes(userRole)) {
               return '';
@@ -109,18 +103,14 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
     dispatch({
       type: 'Dashboard/getNetworkInfo',
       payload: {
-        networkName: networkName,
-      },
+        networkName: networkName
+      }
     });
   }, [dispatch, networkName]);
 
   return (
     <div className={styles.leftMenu}>
-      <Menu
-        onOpenChange={onOpenChange}
-        openKeys={openKeys}
-        selectedKeys={[selectedMenu]}
-        mode="inline">
+      <Menu onOpenChange={onOpenChange} openKeys={openKeys} selectedKeys={[selectedMenu]} mode="inline">
         {MenuList.map((item) => getMenuItem(item))}
       </Menu>
     </div>
@@ -130,5 +120,5 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
 export default connect(({ Layout, User, Dashboard }: ConnectState) => ({
   Layout,
   User,
-  Dashboard,
+  Dashboard
 }))(NetworkPortalMenu);

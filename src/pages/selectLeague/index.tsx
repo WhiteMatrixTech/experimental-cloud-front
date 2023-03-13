@@ -1,17 +1,17 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { history, connect, Dispatch, LeagueSchema } from 'umi';
+import { useRafInterval, useUnmount } from 'ahooks';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Row, Col, Button, Spin, Empty, Divider, Pagination, Tooltip } from 'antd';
+import { Row, Col, Button, Spin, Empty, Divider, Pagination, Tooltip, Alert } from 'antd';
 import CreateLeague from './components/CreateLeague';
 import { LeagueCard } from './components/LeagueCard';
 import { ConnectState } from '~/models/connect';
-import { getDifferenceSet } from '~/utils';
 import { Roles } from '~/utils/roles';
 import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
 import { deviceId, encryptData } from '~/utils/encryptAndDecrypt';
 import styles from './index.less';
 
-const AdminRole = [Roles.Admin, Roles.SuperUser];
+const AdminRole = [Roles.ADMIN, Roles.SUPER];
 
 export type SelectLeagueProps = {
   qryLoading: boolean;
@@ -21,13 +21,7 @@ export type SelectLeagueProps = {
 
 const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   const { dispatch, User, qryLoading = false } = props;
-  const {
-    userInfo,
-    networkList,
-    myNetworkList,
-    myCreatedNetworkList,
-    myJoinedNetworkList
-  } = User;
+  const { userInfo, notJointedNetworkList, myCreatedNetworkList, myJoinedNetworkList } = User;
 
   const [createVisible, setCreateVisible] = useState(false);
   const [myLeaguePageNum, setMyLeaguePageNum] = useState(1);
@@ -36,7 +30,7 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
 
   const getLeagueList = useCallback(() => {
     dispatch({
-      type: 'User/getNetworkList',
+      type: 'User/getNotJointedNetworkList',
       payload: {}
     });
     dispatch({
@@ -45,11 +39,17 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
     });
   }, [dispatch]);
 
-  useEffect(() => {
-    getLeagueList();
-    const interval = setInterval(getLeagueList, 10000);
-    return () => clearInterval(interval);
-  }, [getLeagueList]);
+  const clearInterval = useRafInterval(
+    () => {
+      getLeagueList();
+    },
+    10000,
+    { immediate: true }
+  );
+
+  useUnmount(() => {
+    clearInterval();
+  });
 
   const onMyLeaguePageChange = (page: number) => {
     setMyLeaguePageNum(page);
@@ -74,33 +74,22 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   // 点击联盟进入系统
   const onClickLeague = (league: LeagueSchema) => {
     dispatch({
-      type: 'User/enterLeague',
+      type: 'User/common',
       payload: {
-        role: league.role,
-        email: userInfo.contactEmail,
-        networkName: league.networkName
-      }
-    }).then((res: any) => {
-      if (res) {
-        dispatch({
-          type: 'User/common',
-          payload: {
-            userRole: league.role,
-            networkName: league.networkName,
-            leagueName: league.leagueName
-          }
-        });
-        dispatch({
-          type: 'Layout/common',
-          payload: { selectedMenu: '/about/league-dashboard' }
-        });
-        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE_IN_NETWORK, encryptData(league.role as Roles, deviceId));
-        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.LEAGUE_NAME, encryptData(league.leagueName, deviceId));
-        localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_NAME, encryptData(league.networkName, deviceId));
-
-        history.push('/about/league-dashboard');
+        userRole: league.role,
+        networkName: league.networkName,
+        leagueName: league.leagueName
       }
     });
+    dispatch({
+      type: 'Layout/common',
+      payload: { selectedMenu: '/about/league-dashboard' }
+    });
+    localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.USER_ROLE_IN_NETWORK, encryptData(league.role as Roles, deviceId));
+    localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.LEAGUE_NAME, encryptData(league.leagueName, deviceId));
+    localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_NAME, encryptData(league.networkName, deviceId));
+
+    history.push('/about/league-dashboard');
   };
 
   // 点击加入联盟
@@ -125,13 +114,10 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   const getJoinLeagueListFromPage = useMemo((): LeagueSchema[] => {
     return myJoinedNetworkList.slice((joinedLeaguePageNum - 1) * 8, joinedLeaguePageNum * 8);
   }, [myJoinedNetworkList, joinedLeaguePageNum]);
-  // 可加入的联盟
-  const optionalNetworkList: LeagueSchema[] = useMemo(() => {
-    return getDifferenceSet(networkList, myNetworkList, 'networkName');
-  }, [networkList, myNetworkList]);
+  // 分页
   const getOptionLeagueListFromPage = useMemo((): LeagueSchema[] => {
-    return optionalNetworkList.slice((optionLeaguePageNum - 1) * 8, optionLeaguePageNum * 8);
-  }, [optionalNetworkList, optionLeaguePageNum]);
+    return notJointedNetworkList.slice((optionLeaguePageNum - 1) * 8, optionLeaguePageNum * 8);
+  }, [notJointedNetworkList, optionLeaguePageNum]);
 
   // 不同状态展示不同的内容
   const isAdminWithEmpty = useMemo(() => {
@@ -144,11 +130,21 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
 
   return (
     <div className={styles.main}>
-      <div className={styles['page-title-wrapper']}>
-        我的联盟
-      </div>
+      <div className={styles['page-title-wrapper']}>我的联盟</div>
+      {AdminRole.includes(userInfo.role) && (
+        <Alert
+          message="暂无集群，请先创建"
+          type="warning"
+          action={
+            <Button size="small" type="link">
+              去创建
+            </Button>
+          }
+          style={{ marginBottom: '20px' }}
+        />
+      )}
       <Spin spinning={qryLoading}>
-        {AdminRole.includes(userInfo.role) &&
+        {AdminRole.includes(userInfo.role) && (
           <div className="page-content page-content-shadow table-wrapper">
             <div className="table-header-title">我创建的联盟</div>
             <Divider />
@@ -184,19 +180,22 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
                 style={{ textAlign: 'center' }}
               />
             )}
-          </div>}
+          </div>
+        )}
         <div className="page-content page-content-shadow table-wrapper">
           <div className="table-header-title">我加入的联盟</div>
           <Divider />
-          {myJoinedNetworkList.length > 0 ?
+          {myJoinedNetworkList.length > 0 ? (
             <Row gutter={16} className={styles['league-wrapper']}>
               {getJoinLeagueListFromPage.map((league, i) => (
                 <Col span={6} key={`${league.leagueName}_${i}`}>
                   <LeagueCard onClickCard={onClickLeague} leagueInfo={league} />
                 </Col>
               ))}
-            </Row> :
-            <Empty description="暂未加入其他联盟" />}
+            </Row>
+          ) : (
+            <Empty description="暂未加入其他联盟" />
+          )}
           {myJoinedNetworkList.length > 8 && (
             <Pagination
               showSizeChanger={false}
@@ -219,21 +218,23 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
             </div>
           </div>
           <Divider />
-          {optionalNetworkList.length > 0 ?
+          {notJointedNetworkList.length > 0 ? (
             <Row gutter={16} className={styles['league-wrapper']}>
               {getOptionLeagueListFromPage.map((league, i) => (
                 <Col span={6} key={`${league.leagueName}_${i}`}>
                   <LeagueCard onClickCard={onJoinLeague} leagueInfo={league} extra={true} />
                 </Col>
               ))}
-            </Row> :
-            <Empty description="暂无联盟可加入" />}
-          {optionalNetworkList.length > 8 && (
+            </Row>
+          ) : (
+            <Empty description="暂无联盟可加入" />
+          )}
+          {notJointedNetworkList.length > 8 && (
             <Pagination
               showSizeChanger={false}
               current={optionLeaguePageNum}
               pageSize={7}
-              total={optionalNetworkList.length}
+              total={notJointedNetworkList.length}
               onChange={onOptionLeaguePageChange}
               showTotal={(total) => `共 ${total} 条`}
               style={{ textAlign: 'center' }}
@@ -246,9 +247,9 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   );
 };
 
-export default connect(({ User, Layout, loading }: ConnectState) => ({
+export default connect(({ User, Cluster, Layout, loading }: ConnectState) => ({
   User,
   Layout,
-  qryLoading: loading.effects['User/getNetworkList'] ||
-    loading.effects['User/getMyNetworkList']
+  Cluster,
+  qryLoading: loading.effects['User/getNetworkList'] || loading.effects['User/getMyNetworkList']
 }))(SelectLeague);

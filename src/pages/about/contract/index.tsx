@@ -264,7 +264,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
               下载合约
             </a>
           )}
-          {VerifyStatusList.includes(record.chainCodeStatus) && userRole === Roles.NetworkAdmin && (
+          {VerifyStatusList.includes(record.chainCodeStatus) && userRole === Roles.ADMIN && (
             <span role="button" className="table-action-span" onClick={() => onClickApprove(record)}>
               审核
             </span>
@@ -320,10 +320,13 @@ const MyContract: React.FC<MyContractProps> = (props) => {
   return (
     <div className="page-wrapper">
       <Spin spinning={downloading} tip="下载中...">
-        <PageTitle label="合约管理" extra={
-          <Button type="primary" onClick={onClickAdd}>
-            创建合约
-          </Button>}
+        <PageTitle
+          label="合约管理"
+          extra={
+            <Button type="primary" onClick={onClickAdd}>
+              创建合约
+            </Button>
+          }
         />
         <div className="page-content page-content-shadow table-wrapper">
           <Table

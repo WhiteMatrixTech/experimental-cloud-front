@@ -1,17 +1,13 @@
 export enum Roles {
-  SuperUser = 'superuser',
-  Admin = 'admin',
-  Member = 'member',
-  NetworkAdmin = 'networkAdmin',
-  NetworkMember = 'networkMember',
-  NetworkAssociateMember = 'networkAssociateMember'
+  SUPER = 'SUPER',
+  ADMIN = 'ADMIN',
+  MEMBER = 'MEMBER',
+  USER = 'USER'
 }
 
 export const RolesMapNames = {
-  [Roles.SuperUser]: '超级管理员',
-  [Roles.Admin]: '管理员',
-  [Roles.Member]: '普通成员',
-  [Roles.NetworkAdmin]: '网络管理员',
-  [Roles.NetworkMember]: '网络成员',
-  [Roles.NetworkAssociateMember]: '准网络成员'
+  [Roles.SUPER]: '超级管理员',
+  [Roles.ADMIN]: '网络管理员',
+  [Roles.MEMBER]: '网络成员',
+  [Roles.USER]: '普通用户' // 未被授权加入组织
 };
