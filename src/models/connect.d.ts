@@ -2,6 +2,7 @@ import { BlockChainCompileModelState } from './block-chain-compile';
 import { BlockModelState } from './block';
 import { CertificateModelState } from './certificate';
 import { ChannelModelState } from './channel';
+import { ClusterModelState } from './cluster';
 import { ContractModelState } from './contract';
 import { CustomImageModelState } from './custom-image';
 import { DashboardModelState } from './dashboard';
@@ -26,6 +27,7 @@ export declare type ConnectState = {
   BlockChainCompile: BlockChainCompileModelState;
   Certificate: CertificateModelState;
   Channel: ChannelModelState;
+  Cluster: ClusterModelState;
   Contract: ContractModelState;
   CustomImage: CustomImageModelState;
   Dashboard: DashboardModelState;

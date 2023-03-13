@@ -91,7 +91,7 @@ const UserModel: UserModelType = {
 
     userRole: userRole as Roles, // 进入系统的身份
     networkName: networkName, // 进入系统时的网络
-    leagueName: leagueName, // 进入系统时的联盟
+    leagueName: leagueName // 进入系统时的联盟
   },
 
   subscriptions: {
@@ -101,7 +101,7 @@ const UserModel: UserModelType = {
           dispatch({ type: 'getUserInfo' });
         }
       });
-    },
+    }
   },
 
   effects: {
@@ -113,8 +113,8 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             cacheAccount: result,
-            userAndRegister: true,
-          },
+            userAndRegister: true
+          }
         });
         return true;
       } else {
@@ -131,8 +131,8 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             cacheAccount: result,
-            userAndRegister: true,
-          },
+            userAndRegister: true
+          }
         });
         return true;
       } else {
@@ -149,8 +149,8 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             userInfo: payload,
-            accessToken: result.access_token,
-          },
+            accessToken: result.access_token
+          }
         });
         return result;
       } else {
@@ -158,11 +158,12 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             loginInfo: result.message || '',
-            loginStatus: LoginStatus.LOGIN_ERROR,
-          },
+            loginStatus: LoginStatus.LOGIN_ERROR
+          }
         });
       }
     },
+
     *getUserInfo({ payload }, { call, put }) {
       const res = yield call(API.getUserInfo, payload);
       const { statusCode, result } = res;
@@ -173,21 +174,23 @@ const UserModel: UserModelType = {
         yield put({
           type: 'common',
           payload: {
-            userInfo: result,
-          },
+            userInfo: result
+          }
         });
       }
     },
+
     *getNetworkList({ payload }, { call, put }) {
       const res = yield call(API.getNetworkList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
-          payload: { networkList: result },
+          payload: { networkList: result }
         });
       }
     },
+
     *getMyNetworkList({ payload }, { call, put }) {
       const res = yield call(API.getMyNetworkList, payload);
       const { statusCode, result } = res;
@@ -196,14 +199,13 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             myNetworkList: result,
-            myCreatedNetworkList: result.filter((league: LeagueSchema) =>
-              league.role === Roles.NetworkAdmin),
-            myJoinedNetworkList: result.filter((league: LeagueSchema) =>
-              league.role === Roles.NetworkMember)
-          },
+            myCreatedNetworkList: result.filter((league: LeagueSchema) => league.role === Roles.NetworkAdmin),
+            myJoinedNetworkList: result.filter((league: LeagueSchema) => league.role === Roles.NetworkMember)
+          }
         });
       }
     },
+
     *enterLeague({ payload }, { call, put }) {
       const res = yield call(API.enterLeague, payload);
       const { statusCode, result } = res;
@@ -211,8 +213,8 @@ const UserModel: UserModelType = {
         yield put({
           type: 'common',
           payload: {
-            roleToken: result.role_token,
-          },
+            roleToken: result.role_token
+          }
         });
         localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.ROLE_TOKEN, encryptData(result.role_token, deviceId));
 
@@ -222,6 +224,7 @@ const UserModel: UserModelType = {
         return false;
       }
     },
+
     *enrollInLeague({ payload }, { call, put }) {
       const res = yield call(API.enrollInLeague, payload);
       const { statusCode, result } = res;
@@ -238,6 +241,7 @@ const UserModel: UserModelType = {
         return false;
       }
     },
+
     *createLeague({ payload }, { call, put }) {
       const res = yield call(API.createLeague, payload);
       const { statusCode, result } = res;
@@ -248,7 +252,7 @@ const UserModel: UserModelType = {
         notification.error({ message: result.message || '联盟创建失败', top: 64, duration: 3 });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
@@ -262,10 +266,10 @@ const UserModel: UserModelType = {
         roleToken: '',
         userRole: Roles.NetworkMember,
         networkName: '',
-        leagueName: '',
+        leagueName: ''
       };
-    },
-  },
+    }
+  }
 };
 
 export default UserModel;

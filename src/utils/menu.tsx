@@ -13,7 +13,7 @@ import {
   PartitionOutlined,
   ApartmentOutlined,
   FileSearchOutlined,
-  CloudServerOutlined,
+  ClusterOutlined,
   AuditOutlined
 } from '@ant-design/icons';
 import { LOCAL_STORAGE_ITEM_KEY } from './const';
@@ -131,7 +131,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     id: 'evidence',
     menuPid: RootMenuId,
     menuHref: '/about/evidence',
-    menuIcon: < FileProtectOutlined />,
+    menuIcon: <FileProtectOutlined />,
     menuName: '存证上链',
     accessRole: [Roles.NetworkMember, Roles.NetworkAdmin],
     subMenus: []
@@ -277,12 +277,21 @@ const CommonMenuList: CommonMenuProps[] = [
       }
     ]
   },
+  // {
+  //   id: 'elastic-cloud-server',
+  //   menuPid: RootMenuId,
+  //   menuHref: '/common/elastic-cloud-server',
+  //   menuIcon: <CloudServerOutlined />,
+  //   menuName: '弹性云服务器管理',
+  //   accessRole: [Roles.Admin, Roles.SuperUser],
+  //   subMenus: []
+  // },
   {
-    id: 'elastic-cloud-server',
+    id: 'cluster-management',
     menuPid: RootMenuId,
-    menuHref: '/common/elastic-cloud-server',
-    menuIcon: <CloudServerOutlined />,
-    menuName: '弹性云服务器管理',
+    menuHref: '/common/cluster-management',
+    menuIcon: <ClusterOutlined />,
+    menuName: '集群管理',
     accessRole: [Roles.Admin, Roles.SuperUser],
     subMenus: []
   },

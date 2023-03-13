@@ -43,25 +43,28 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
     setPageNum(pageInfo.current);
   };
 
-  const onClickDelete = useCallback((record: ElasticServerSchema) => {
-    const callback = async () => {
-      const res = await dispatch({
-        type: 'ElasticServer/deleteServer',
-        payload: { serverName: record.serverName }
+  const onClickDelete = useCallback(
+    (record: ElasticServerSchema) => {
+      const callback = async () => {
+        const res = await dispatch({
+          type: 'ElasticServer/deleteServer',
+          payload: { serverName: record.serverName }
+        });
+        if (res) {
+          getServerList();
+        }
+      };
+      Modal.confirm({
+        title: 'Confirm',
+        icon: <ExclamationCircleOutlined />,
+        content: `确认要删除服务器 【${record.serverName}】 吗?`,
+        okText: '确认',
+        cancelText: '取消',
+        onOk: callback
       });
-      if (res) {
-        getServerList();
-      }
-    };
-    Modal.confirm({
-      title: 'Confirm',
-      icon: <ExclamationCircleOutlined />,
-      content: `确认要删除服务器 【${record.serverName}】 吗?`,
-      okText: '确认',
-      cancelText: '取消',
-      onOk: callback
-    });
-  }, [dispatch, getServerList]);
+    },
+    [dispatch, getServerList]
+  );
 
   const onClickModifyServer = (record: ElasticServerSchema) => {
     setServerRecord(record);
@@ -157,7 +160,7 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
         title: '创建时间',
         dataIndex: 'createAt',
         key: 'createAt',
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+        render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
         ellipsis: true
       },
       {
@@ -189,11 +192,14 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <PageTitle label="弹性云服务器管理" extra={
-        <Button type="primary" onClick={onClickCreateServer}>
-          创建服务器
-        </Button>
-      } />
+      <PageTitle
+        label="弹性云服务器管理"
+        extra={
+          <Button type="primary" onClick={onClickCreateServer}>
+            创建服务器
+          </Button>
+        }
+      />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
           rowKey="_id"

@@ -151,16 +151,19 @@ export function getRoutes(): RouteProps[] {
           path: '/common/block-compile/storage'
         },
         {
-          path: '/common/elastic-cloud-server'
+          path: '/common/cluster-management'
         },
-        {
-          path: '/common/elastic-cloud-server/:serverName/resource-usage',
-          exact: true
-        },
-        {
-          path: '/common/elastic-cloud-server/:serverName/server-performance',
-          exact: true
-        },
+        // {
+        //   path: '/common/elastic-cloud-server'
+        // },
+        // {
+        //   path: '/common/elastic-cloud-server/:serverName/resource-usage',
+        //   exact: true
+        // },
+        // {
+        //   path: '/common/elastic-cloud-server/:serverName/server-performance',
+        //   exact: true
+        // },
         {
           path: '/common'
         },
