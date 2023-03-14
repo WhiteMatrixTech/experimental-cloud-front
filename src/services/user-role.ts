@@ -1,4 +1,3 @@
-import { UserRoleObject } from '~/models/user-role';
 import { request } from '~/utils/request';
 import { BasicPaginationParams } from '~/utils/types';
 
@@ -6,36 +5,32 @@ import { BasicPaginationParams } from '~/utils/types';
  * 获取用户列表
  */
 export async function getUserList(params: BasicPaginationParams) {
-  return request('/superuser/listUsers', { method: 'POST', body: params });
+  return request('/super/query', { method: 'POST', body: params });
 }
 /**
  * 获取用户总数
  */
 export async function getUserTotal() {
-  return request('/superuser/userTotalCount', { method: 'POST', body: {} });
+  return request('/super/countAll', { method: 'GET' });
 }
 
 /**
- * 获取角色名列表
+ * 充值用户登录密码
  */
-export async function getRoleNameList() {
-  return request('/superuser/listRoleNames', { method: 'POST', body: {} });
+export async function resetPassword(params: { email: string }) {
+  return request(`/super/resetPassword`, { method: 'POST', body: params });
 }
 
 /**
- * 获取用户角色
+ * 配置用户为ADMIN角色
  */
-export type UserRoleParams = {
-  companyName: string;
-  accessRoles?: UserRoleObject[];
-};
-export async function getUserRoles(params: UserRoleParams) {
-  return request(`/superuser/customRole/${params.companyName}`);
+export async function setUserAdmin(params: { email: string }) {
+  return request(`/super/setAdmin`, { method: 'POST', body: params });
 }
 
 /**
- * 配置用户角色
+ * 移除用户的ADMIN角色
  */
-export async function configUserRoles(params: UserRoleParams) {
-  return request(`/superuser/customRole/${params.companyName}`, { method: 'POST', body: params });
+export async function unsetUserAdmin(params: { email: string }) {
+  return request(`/super/unsetAdmin`, { method: 'POST', body: params });
 }

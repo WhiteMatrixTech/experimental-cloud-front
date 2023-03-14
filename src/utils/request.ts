@@ -103,7 +103,7 @@ export function cancelCurrentRequest() {
  * @param  {string} url       The URL we want to request
  * @param  {object} [options] The options we want to pass to "fetch"
  */
-export const request = (url: string, options?: { method: string; body?: object }) => {
+export const request = <R>(url: string, options?: { method: string; body?: object }) => {
   let newOptions = { method: options ? options.method : 'GET', data: options?.body };
   let newUrl = url;
   if (options?.method === 'GET') {
@@ -111,7 +111,7 @@ export const request = (url: string, options?: { method: string; body?: object }
   }
   return _requestFunc(newUrl, newOptions).then((response) => {
     const data = {
-      result: response,
+      result: response as R,
       statusCode: response.statusCode || 'ok'
     };
     return data;

@@ -1,27 +1,11 @@
 import * as API from '../services/user-role';
-import type { Reducer, Effect } from 'umi';
-import { notification } from 'antd';
+import type { Reducer, Effect, UserInfoSchema } from 'umi';
 import { Roles } from '~/utils/roles';
-
-export type UserRoleObject = {
-  networkName: string;
-  roleName: string;
-};
-export type UserInfo = {
-  loginName: string;
-  companyName: string;
-  contactEmail: string;
-  contactName: string;
-  role: Roles;
-  did?: string;
-  createTimeStamp: string;
-};
+import { notification } from 'antd';
 
 export type UserRoleModelState = {
-  userList: Array<UserInfo>;
+  userList: Array<UserInfoSchema>;
   userTotal: number;
-  roleNameList: string[];
-  userRoles: UserRoleObject[];
 };
 
 export type UserRoleModelType = {
@@ -30,9 +14,9 @@ export type UserRoleModelType = {
   effects: {
     getUserList: Effect;
     getUserTotal: Effect;
-    getRoleNameList: Effect;
-    getUserRoles: Effect;
-    configUserRoles: Effect;
+    resetPassword: Effect;
+    setUserAdmin: Effect;
+    unsetUserAdmin: Effect;
   };
   reducers: {
     common: Reducer<UserRoleModelState>;
@@ -43,83 +27,92 @@ const UserRoleModel: UserRoleModelType = {
   namespace: 'UserRole',
 
   state: {
-    userList: [], // 用户列表
-    userTotal: 0,
-    roleNameList: [],
-    userRoles: [],
+    userList: [],
+    userTotal: 0
   },
 
   effects: {
-    *getUserList({ payload }, { call, put }) {
+    *getUserList({ payload }, { call, put }): any {
       const res = yield call(API.getUserList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
+        const userList = result.items.map((user: any) => {
+          return {
+            ...user,
+            // api返回两个布尔值super、admin
+            role: user.super ? Roles.SUPER : user.admin ? Roles.ADMIN : Roles.MEMBER
+          };
+        });
         yield put({
           type: 'common',
           payload: {
-            userList: result,
-          },
+            userList
+          }
         });
       }
     },
 
-    *getUserTotal({ payload }, { call, put }) {
+    *getUserTotal({ payload }, { call, put }): any {
       const res = yield call(API.getUserTotal, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            userTotal: result.count,
-          },
+            userTotal: result.count
+          }
         });
       }
     },
 
-    *getUserRoles({ payload }, { call, put }) {
-      const res = yield call(API.getUserRoles, payload);
+    *resetPassword({ payload }, { call, put }): any {
+      const res = yield call(API.resetPassword, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            userRoles: result,
-          },
-        });
-      }
-    },
-
-    *getRoleNameList({ payload }, { call, put }) {
-      const res = yield call(API.getRoleNameList, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            roleNameList: result,
-          },
-        });
-      }
-    },
-
-    *configUserRoles({ payload }, { call, put }) {
-      const res = yield call(API.configUserRoles, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        notification.success({ message: result.message || '用户角色配置成功', top: 64, duration: 3 });
+      const succMessage = `密码重置成功`;
+      const failMessage = `密码重置失败`;
+      if (statusCode === 'ok' && result) {
+        notification.success({ message: succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '用户角色配置失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || failMessage, top: 64, duration: 3 });
         return false;
       }
     },
+
+    *setUserAdmin({ payload }, { call, put }): any {
+      const res = yield call(API.setUserAdmin, payload);
+      const { statusCode, result } = res;
+      const succMessage = `设置管理员成功`;
+      const failMessage = `设置管理员失败`;
+      if (statusCode === 'ok' && result) {
+        notification.success({ message: succMessage, top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.msg || failMessage, top: 64, duration: 3 });
+        return false;
+      }
+    },
+
+    *unsetUserAdmin({ payload }, { call, put }): any {
+      const res = yield call(API.unsetUserAdmin, payload);
+      const { statusCode, result } = res;
+      const succMessage = `设置为普通用户成功`;
+      const failMessage = `设置为普通用户失败`;
+      if (statusCode === 'ok' && result) {
+        notification.success({ message: succMessage, top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.msg || failMessage, top: 64, duration: 3 });
+        return false;
+      }
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default UserRoleModel;

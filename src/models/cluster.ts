@@ -37,7 +37,7 @@ const ClusterModel: ClusterModelType = {
   },
 
   effects: {
-    *getClusterList({ payload }, { call, put }) {
+    *getClusterList({ payload }, { call, put }): any {
       const res = yield call(API.getClusterList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -51,7 +51,7 @@ const ClusterModel: ClusterModelType = {
       }
     },
 
-    *createCluster({ payload }, { call, put }) {
+    *createCluster({ payload }, { call, put }): any {
       const res = yield call(API.createCluster, payload);
       const { statusCode, result } = res;
       const succMessage = `创建集群成功`;
@@ -60,12 +60,12 @@ const ClusterModel: ClusterModelType = {
         notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+        notification.error({ message: result.msg || failMessage, top: 64, duration: 3 });
         return false;
       }
     },
 
-    *untieCluster({ payload }, { call, put }) {
+    *untieCluster({ payload }, { call, put }): any {
       const res = yield call(API.untieCluster, payload);
       const { statusCode, result } = res;
       const succMessage = `集群解绑成功`;
@@ -74,7 +74,7 @@ const ClusterModel: ClusterModelType = {
         notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+        notification.error({ message: result.msg || failMessage, top: 64, duration: 3 });
         return false;
       }
     }

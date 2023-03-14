@@ -175,11 +175,7 @@ export function getRoutes(): RouteProps[] {
           exact: true
         },
         {
-          path: '/common/user-role-management'
-        },
-        {
-          path: '/common/user-role-management/user-roles',
-          exact: true
+          path: '/common/user-management'
         }
       ]
     },

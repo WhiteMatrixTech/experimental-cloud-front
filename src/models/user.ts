@@ -104,7 +104,7 @@ const UserModel: UserModelType = {
   },
 
   effects: {
-    *register({ payload }, { call, put }) {
+    *register({ payload }, { call, put }): any {
       const res = yield call(API.register, payload);
       const { statusCode, result } = res;
 
@@ -123,7 +123,7 @@ const UserModel: UserModelType = {
       }
     },
 
-    *changePassword({ payload }, { call, put }) {
+    *changePassword({ payload }, { call, put }): any {
       const res = yield call(API.changePassword, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -141,7 +141,7 @@ const UserModel: UserModelType = {
       }
     },
 
-    *login({ payload }, { call, put }) {
+    *login({ payload }, { call, put }): any {
       const res = yield call(API.login, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result.access_token) {
@@ -164,7 +164,7 @@ const UserModel: UserModelType = {
       }
     },
 
-    *getUserInfo({ payload }, { call, put }) {
+    *getUserInfo({ payload }, { call, put }): any {
       const res = yield call(API.getUserInfo, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -185,7 +185,7 @@ const UserModel: UserModelType = {
       }
     },
 
-    *getNotJointedNetworkList({ payload }, { call, put }) {
+    *getNotJointedNetworkList({ payload }, { call, put }): any {
       const res = yield call(API.getNotJointedNetworkList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -196,7 +196,7 @@ const UserModel: UserModelType = {
       }
     },
 
-    *getMyNetworkList({ payload }, { call, put }) {
+    *getMyNetworkList({ payload }, { call, put }): any {
       const res = yield call(API.getMyNetworkList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -210,7 +210,7 @@ const UserModel: UserModelType = {
       }
     },
 
-    *enterLeague({ payload }, { call, put }) {
+    *enterLeague({ payload }, { call, put }): any {
       const res = yield call(API.enterLeague, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result.role_token) {
@@ -224,36 +224,36 @@ const UserModel: UserModelType = {
 
         return true;
       } else {
-        notification.error({ message: result.message || '无法进入联盟', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '无法进入联盟', top: 64, duration: 3 });
         return false;
       }
     },
 
-    *enrollInLeague({ payload }, { call, put }) {
+    *enrollInLeague({ payload }, { call, put }): any {
       const res = yield call(API.enrollInLeague, payload);
       const { statusCode, result } = res;
-      const { message } = result;
+      const { msg } = result;
       if (statusCode === 'ok') {
-        if (message.includes('enroll again')) {
+        if (msg.includes('enroll again')) {
           notification.warn({ message: '已申请过加入联盟，请等待盟主审批，勿重复申请', top: 64, duration: 3 });
         } else {
           notification.success({ message: '已成功申请加入联盟，请等待盟主审批', top: 64, duration: 3 });
         }
         return true;
       } else {
-        notification.error({ message: message || '申请加入联盟失败', top: 64, duration: 3 });
+        notification.error({ message: msg || '申请加入联盟失败', top: 64, duration: 3 });
         return false;
       }
     },
 
-    *createLeague({ payload }, { call, put }) {
+    *createLeague({ payload }, { call, put }): any {
       const res = yield call(API.createLeague, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         notification.success({ message: '联盟创建成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '联盟创建失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '联盟创建失败', top: 64, duration: 3 });
         return false;
       }
     }

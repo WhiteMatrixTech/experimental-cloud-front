@@ -25,9 +25,7 @@ export const dva = {
   }
 };
 
-
 export function render(oldRender: () => void) {
-  // const routes = getRoutes();
   const { pathname } = history.location;
 
   // 路由切换时，取消当前页面的请求

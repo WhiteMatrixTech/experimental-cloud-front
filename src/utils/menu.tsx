@@ -241,6 +241,15 @@ const NetworkMenuList: NetworkMenuProps[] = [
 
 const CommonMenuList: CommonMenuProps[] = [
   {
+    id: 'user-management',
+    menuPid: RootMenuId,
+    menuHref: '/common/user-management',
+    menuIcon: <AuditOutlined />,
+    menuName: '用户管理',
+    accessRole: [Roles.SUPER],
+    subMenus: []
+  },
+  {
     id: 'cluster-management',
     menuPid: RootMenuId,
     menuHref: '/common/cluster-management',
@@ -285,7 +294,7 @@ const CommonMenuList: CommonMenuProps[] = [
         subMenus: []
       }
     ]
-  },
+  }
   // {
   //   id: 'elastic-cloud-server',
   //   menuPid: RootMenuId,
@@ -295,15 +304,6 @@ const CommonMenuList: CommonMenuProps[] = [
   //   accessRole: [Roles.NetworkAdmin, Roles.SuperUser],
   //   subMenus: []
   // },
-  {
-    id: 'user-role-management',
-    menuPid: RootMenuId,
-    menuHref: '/common/user-role-management',
-    menuIcon: <AuditOutlined />,
-    menuName: '用户角色管理',
-    accessRole: [Roles.SUPER],
-    subMenus: []
-  }
 ];
 
 const getCurBreadcrumb = (menuList: NetworkMenuProps[] | CommonMenuProps[], keyword = '', isLeftMenu = true) => {
