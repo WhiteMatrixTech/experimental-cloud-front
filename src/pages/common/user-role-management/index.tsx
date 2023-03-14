@@ -19,23 +19,23 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
   const [pageNum, setPageNum] = useState(1);
   const columns = [
     {
-      title: '用户名',
-      dataIndex: 'companyName',
-      key: 'companyName',
+      title: '用户名称',
+      dataIndex: 'name',
+      key: 'name',
       ellipsis: true
     },
     {
-      title: '联系邮箱',
-      dataIndex: 'contactEmail',
-      key: 'contactEmail'
+      title: '邮箱',
+      dataIndex: 'email',
+      key: 'email'
     },
     {
-      title: '联系人',
-      dataIndex: 'contactName',
-      key: 'contactName'
+      title: '手机号',
+      dataIndex: 'phoneNo',
+      key: 'phoneNo'
     },
     {
-      title: '注册角色',
+      title: '系统角色',
       dataIndex: 'role',
       key: 'role',
       render: (text: string) => <span>{RolesMapNames[text]}</span>
@@ -92,7 +92,7 @@ const UserManagement: React.FC<UserManagementProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <PageTitle label="用户角色管理" />
+      <PageTitle label="用户管理" />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
           rowKey="companyName"

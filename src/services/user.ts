@@ -21,7 +21,7 @@ export async function register(params: RegisterApiParams) {
  * 修改密码
  */
 export async function changePassword(params: RegisterApiParams) {
-  return request(`/changePassword`, { method: 'POST', body: params });
+  return request(`/user/modifyPassword`, { method: 'POST', body: params });
 }
 
 /**

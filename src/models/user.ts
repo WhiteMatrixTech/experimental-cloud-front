@@ -136,7 +136,7 @@ const UserModel: UserModelType = {
         });
         return true;
       } else {
-        notification.error({ message: result.message || result.error || '密码修改失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '密码修改失败', top: 64, duration: 3 });
         return false;
       }
     },

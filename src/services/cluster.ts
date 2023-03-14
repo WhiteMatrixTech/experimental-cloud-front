@@ -5,7 +5,7 @@ import { request } from '../utils/request';
  * 获取集群列表
  */
 export async function getClusterList(params: AllPaginationParams) {
-  return request('/cluster/query', { method: 'POST', body: params });
+  return request('/clusters', { method: 'GET', body: params });
 }
 
 /**
@@ -24,7 +24,7 @@ export type CreateClusterApiParams = {
   kubeConfig: string;
 };
 export async function createCluster(params: CreateClusterApiParams) {
-  return request('/cluster/create', { method: 'POST', body: params });
+  return request('/clusters', { method: 'PUT', body: params });
 }
 
 /**

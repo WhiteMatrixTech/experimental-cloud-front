@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
 import { Dispatch, ClusterSchema } from 'umi';
 import { ConnectState } from '~/models/connect';
 
 const { Item } = Form;
+const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: {
@@ -16,7 +17,7 @@ const formItemLayout = {
 };
 
 export interface CreateClusterModalProps {
-  record?: ClusterSchema;
+  clusterRecord?: ClusterSchema;
   visible: boolean;
   onCancel: () => void;
   submitLoading: boolean;
@@ -25,7 +26,7 @@ export interface CreateClusterModalProps {
 }
 
 function CreateClusterModal(props: CreateClusterModalProps) {
-  const { record, visible, onCancel, submitLoading = false, dispatch, getClusterList } = props;
+  const { clusterRecord, visible, onCancel, submitLoading = false, dispatch, getClusterList } = props;
 
   const [form] = Form.useForm();
 
@@ -35,14 +36,14 @@ function CreateClusterModal(props: CreateClusterModalProps) {
       .then(async (values) => {
         let params = { ...values };
         let apiProgress = false;
-        if (record) {
+        if (clusterRecord) {
           apiProgress = await dispatch({
-            type: 'ElasticServer/modifyServer',
+            type: 'Cluster/modifyCluster',
             payload: params
           });
         } else {
           apiProgress = await dispatch({
-            type: 'ElasticServer/createServer',
+            type: 'Cluster/createCluster',
             payload: params
           });
         }
@@ -60,7 +61,7 @@ function CreateClusterModal(props: CreateClusterModalProps) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: record ? '修改集群信息' : '创建集群',
+    title: clusterRecord ? '配置集群' : '添加集群',
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
@@ -72,24 +73,37 @@ function CreateClusterModal(props: CreateClusterModalProps) {
     ]
   };
 
+  useEffect(() => {
+    form.setFieldsValue(clusterRecord);
+  }, [clusterRecord, form]);
+
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
         <Item
           label="集群名称"
-          name="clusterName"
-          initialValue={record?.clusterName}
+          name="name"
           rules={[
             {
               required: true,
               message: '请输入集群名称'
-            },
-            {
-              pattern: /^[a-zA-Z0-9\-_]\w{4,20}$/,
-              message: '集群名称由4-20位字母、数字、下划线组成，小写字母开头'
             }
           ]}>
-          <Input disabled={!!(record && record.clusterName)} placeholder="请输入集群名称" />
+          <Input placeholder="请输入集群名称" />
+        </Item>
+        <Item label="集群描述" name="description">
+          <Input placeholder="请输入集群名称" />
+        </Item>
+        <Item
+          label="Kube Config"
+          name="kubeConfig"
+          rules={[
+            {
+              required: true,
+              message: '请输入集群Kube Config'
+            }
+          ]}>
+          <TextArea rows={5} placeholder="请输入集群Kube Config" />
         </Item>
       </Form>
     </Modal>
@@ -99,5 +113,5 @@ function CreateClusterModal(props: CreateClusterModalProps) {
 export default connect(({ User, Cluster, loading }: ConnectState) => ({
   User,
   Cluster,
-  submitLoading: loading.effects['Cluster/createCluster']
+  submitLoading: loading.effects['Cluster/createCluster'] || loading.effects['Cluster/modifyCluster']
 }))(CreateClusterModal);

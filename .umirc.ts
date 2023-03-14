@@ -45,7 +45,7 @@ export default defineConfig({
   proxy: {
     '/api': {
       target: process.env.API_ENDPOINT,
-      changeOrigin: false,
+      changeOrigin: true,
       pathRewrite: { '^/api': '' }
     }
   },

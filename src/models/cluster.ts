@@ -3,11 +3,11 @@ import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
 export type ClusterSchema = {
-  clusterId: string;
-  clusterName: string;
-  clusterDesc: string;
+  id: string;
+  name: string;
+  description: string;
   kubeConfig: string;
-  createdAt: Date;
+  createTime: Date;
 };
 
 export type ClusterModelState = {
@@ -20,7 +20,6 @@ export type ClusterModelType = {
   state: ClusterModelState;
   effects: {
     getClusterList: Effect;
-    getClusterTotal: Effect;
     createCluster: Effect;
     untieCluster: Effect;
   };
@@ -45,20 +44,8 @@ const ClusterModel: ClusterModelType = {
         yield put({
           type: 'common',
           payload: {
-            clusterList: result.items
-          }
-        });
-      }
-    },
-
-    *getClusterTotal({ payload }, { call, put }) {
-      const res = yield call(API.getClusterTotal, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            clusterTotal: result.count
+            clusterList: result,
+            clusterTotal: result?.length
           }
         });
       }
@@ -82,7 +69,7 @@ const ClusterModel: ClusterModelType = {
       const res = yield call(API.untieCluster, payload);
       const { statusCode, result } = res;
       const succMessage = `集群解绑成功`;
-      const failMessage = `删除解绑失败`;
+      const failMessage = `集群解绑失败`;
       if (statusCode === 'ok' && result) {
         notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
         return true;
