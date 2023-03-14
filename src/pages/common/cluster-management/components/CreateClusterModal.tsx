@@ -34,17 +34,16 @@ function CreateClusterModal(props: CreateClusterModalProps) {
     form
       .validateFields()
       .then(async (values) => {
-        let params = { ...values };
         let apiProgress = false;
         if (clusterRecord) {
           apiProgress = await dispatch({
             type: 'Cluster/modifyCluster',
-            payload: params
+            payload: { id: clusterRecord.id, ...values }
           });
         } else {
           apiProgress = await dispatch({
             type: 'Cluster/createCluster',
-            payload: params
+            payload: values
           });
         }
         if (apiProgress) {
@@ -103,7 +102,7 @@ function CreateClusterModal(props: CreateClusterModalProps) {
               message: '请输入集群Kube Config'
             }
           ]}>
-          <TextArea rows={5} placeholder="请输入集群Kube Config" />
+          <TextArea rows={8} placeholder="请输入集群Kube Config" />
         </Item>
       </Form>
     </Modal>

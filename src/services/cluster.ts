@@ -9,27 +9,24 @@ export async function getClusterList(params: AllPaginationParams) {
 }
 
 /**
- * 获取集群总数
- */
-export async function getClusterTotal(params: object) {
-  return request('/cluster/totalCount', { method: 'POST', body: params });
-}
-
-/**
  * 创建集群
  */
 export type CreateClusterApiParams = {
-  clusterName: string;
-  clusterDesc: string;
+  name: string;
+  description: string;
   kubeConfig: string;
 };
 export async function createCluster(params: CreateClusterApiParams) {
-  return request('/clusters', { method: 'PUT', body: params });
+  return request('/clusters', { method: 'POST', body: params });
+}
+
+export async function modifyCluster(params: CreateClusterApiParams & { id: string }) {
+  return request(`/clusters/${params.id}`, { method: 'PUT', body: params });
 }
 
 /**
  * 解绑集群
  */
-export async function untieCluster(params: { clusterName: string }) {
-  return request(`/cluster/${params.clusterName}`, { method: 'DELETE', body: params });
+export async function untieCluster(params: { id: string }) {
+  return request(`/clusters/${params.id}`, { method: 'DELETE', body: params });
 }

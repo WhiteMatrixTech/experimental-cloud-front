@@ -17,10 +17,12 @@ export type SelectLeagueProps = {
   qryLoading: boolean;
   dispatch: Dispatch;
   User: ConnectState['User'];
+  Cluster: ConnectState['Cluster'];
 };
 
 const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
-  const { dispatch, User, qryLoading = false } = props;
+  const { dispatch, User, Cluster, qryLoading = false } = props;
+  const { clusterTotal } = Cluster;
   const { userInfo, notJointedNetworkList, myCreatedNetworkList, myJoinedNetworkList } = User;
 
   const [createVisible, setCreateVisible] = useState(false);
@@ -131,12 +133,12 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   return (
     <div className={styles.main}>
       <div className={styles['page-title-wrapper']}>我的联盟</div>
-      {AdminRole.includes(userInfo.role) && (
+      {AdminRole.includes(userInfo.role) && clusterTotal === 0 && (
         <Alert
           message="暂无集群，请先创建"
           type="warning"
           action={
-            <Button size="small" type="link">
+            <Button size="small" type="link" onClick={() => history.push('/common/cluster-management')}>
               去创建
             </Button>
           }

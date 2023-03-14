@@ -76,7 +76,7 @@ const ClusterManagement: React.FC<ClusterManagementProps> = (props) => {
       const callback = async () => {
         const res = await dispatch({
           type: 'Cluster/untieCluster',
-          payload: { clusterName: record.name }
+          payload: { id: record.id }
         });
         if (res) {
           getClusterList();

@@ -21,7 +21,11 @@ export type ClusterModelType = {
   effects: {
     getClusterList: Effect;
     createCluster: Effect;
+    modifyCluster: Effect;
     untieCluster: Effect;
+  };
+  subscriptions: {
+    setup({ dispatch, history }: { dispatch: any; history: any }): any;
   };
   reducers: {
     common: Reducer<ClusterModelState>;
@@ -34,6 +38,16 @@ const ClusterModel: ClusterModelType = {
   state: {
     clusterList: [],
     clusterTotal: 0
+  },
+
+  subscriptions: {
+    setup({ dispatch, history }) {
+      return history.listen(({ pathname }: { pathname: string }) => {
+        if (pathname.includes('/selectLeague')) {
+          dispatch({ type: 'getClusterList' });
+        }
+      });
+    }
   },
 
   effects: {
@@ -51,7 +65,7 @@ const ClusterModel: ClusterModelType = {
       }
     },
 
-    *createCluster({ payload }, { call, put }): any {
+    *createCluster({ payload }, { call }): any {
       const res = yield call(API.createCluster, payload);
       const { statusCode, result } = res;
       const succMessage = `创建集群成功`;
@@ -65,7 +79,21 @@ const ClusterModel: ClusterModelType = {
       }
     },
 
-    *untieCluster({ payload }, { call, put }): any {
+    *modifyCluster({ payload }, { call }): any {
+      const res = yield call(API.modifyCluster, payload);
+      const { statusCode, result } = res;
+      const succMessage = `配置集群成功`;
+      const failMessage = `配置集群失败`;
+      if (statusCode === 'ok' && result) {
+        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.msg || failMessage, top: 64, duration: 3 });
+        return false;
+      }
+    },
+
+    *untieCluster({ payload }, { call }): any {
       const res = yield call(API.untieCluster, payload);
       const { statusCode, result } = res;
       const succMessage = `集群解绑成功`;
