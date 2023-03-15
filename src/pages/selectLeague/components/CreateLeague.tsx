@@ -9,11 +9,11 @@ const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
 
 export type CreateLeagueProps = {
@@ -34,11 +34,11 @@ const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
       .then(async (values) => {
         let params = {
           ...values,
-          role: 'networkAdmin',
+          role: 'networkAdmin'
         };
         const res = await dispatch({
           type: 'User/createLeague',
-          payload: params,
+          payload: params
         });
         if (res) {
           onCancel(true);
@@ -61,8 +61,8 @@ const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
       </Button>,
       <Button key="submit" onClick={handleSubmit} type="primary" loading={addLoading}>
         提交
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
@@ -74,10 +74,9 @@ const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
           rules={[
             {
               required: true,
-              message: '请输入联盟名称',
-            },
-          ]}
-        >
+              message: '请输入联盟名称'
+            }
+          ]}>
           <Input placeholder="请输入联盟名称" />
         </Item>
         <Item
@@ -86,17 +85,16 @@ const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
           rules={[
             {
               required: true,
-              message: '请输入网络名称',
+              message: '请输入网络名称'
             },
             {
-              min: 6,
-              max: 15,
+              min: 4,
+              max: 20,
               type: 'string',
-              pattern: /^[a-zA-Z0-9]+$/,
-              message: '网络名称由6~15位英文字母或数字组成',
-            },
-          ]}
-        >
+              pattern: /^[a-z0-9]+$/,
+              message: '网络名称由4~20位小写英文字母或数字组成'
+            }
+          ]}>
           <Input placeholder="请输入网络名称" />
         </Item>
         <Item
@@ -106,16 +104,15 @@ const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
           rules={[
             {
               required: true,
-              message: '请输入联盟描述',
+              message: '请输入联盟描述'
             },
             {
               min: 1,
               max: 100,
               type: 'string',
-              message: '联盟描述由1~100个字符组成',
-            },
-          ]}
-        >
+              message: '联盟描述由1~100个字符组成'
+            }
+          ]}>
           <TextArea placeholder="请输入联盟描述" />
         </Item>
       </Form>
@@ -125,5 +122,5 @@ const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
 
 export default connect(({ User, loading }: ConnectState) => ({
   User,
-  addLoading: loading.effects['User/createLeague'],
+  addLoading: loading.effects['User/createLeague']
 }))(CreateLeague);

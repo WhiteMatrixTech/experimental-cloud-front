@@ -10,7 +10,7 @@ const authorization = (response: Response) => {
   if (response.status === 401 && !response.url.includes('/login')) {
     if (!isSendNotification) {
       // 登录已过期
-      notification.error({ message: '登录已过期', top: 64, duration: 3 });
+      notification.error({ message: '登录已过期', top: 64, duration: 1 });
       isSendNotification = true;
     }
     // 清空缓存

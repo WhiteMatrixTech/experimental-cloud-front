@@ -10,11 +10,11 @@ const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
 export interface handleSubmitParams {
   networkName: string;
@@ -43,22 +43,22 @@ function CreateNodeModal(props: CreateNodeModalProps) {
 
   const filteredServerList = useMemo(
     () => serverList.filter((server) => server.serverPurpose !== serverPurpose.SwarmManager),
-    [serverList],
+    [serverList]
   );
 
   useEffect(() => {
     const params = {
       limit: 100,
       offset: 0,
-      ascend: false,
+      ascend: false
     };
     dispatch({
       type: 'ElasticServer/getServerList',
-      payload: params,
+      payload: params
     });
     dispatch({
       type: 'Organization/getOrgInUseList',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, [dispatch, networkName]);
 
@@ -71,14 +71,14 @@ function CreateNodeModal(props: CreateNodeModalProps) {
           networkName,
           orgName: values.orgName,
           peerName: values.peerName,
-          peerNameAlias: values.peerNameAlias,
+          peerNameAlias: values.peerNameAlias
         };
         if (values.serverName) {
           params.serverName = values.serverName;
         }
         dispatch({
           type: 'Peer/createNode',
-          payload: params,
+          payload: params
         }).then((res: any) => {
           if (res) {
             onCancel();
@@ -104,8 +104,8 @@ function CreateNodeModal(props: CreateNodeModalProps) {
       </Button>,
       <Button key="submit" type="primary" onClick={handleSubmit} loading={addLoading}>
         提交
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
@@ -117,10 +117,9 @@ function CreateNodeModal(props: CreateNodeModalProps) {
           rules={[
             {
               required: true,
-              message: '请选择所属组织',
-            },
-          ]}
-        >
+              message: '请选择所属组织'
+            }
+          ]}>
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择所属组织">
             {orgInUseList.map((item) => (
               <Option key={item.orgName} value={item.orgName}>
@@ -136,17 +135,16 @@ function CreateNodeModal(props: CreateNodeModalProps) {
           rules={[
             {
               required: true,
-              message: '请输入节点名称',
+              message: '请输入节点名称'
             },
             {
               min: 4,
               max: 20,
               type: 'string',
-              pattern: /^[a-zA-Z0-9]{4,20}$/,
-              message: '节点名必须由4~20位数字与英文字母组合,英文字母开头',
-            },
-          ]}
-        >
+              pattern: /^[a-z0-9]{4,20}$/,
+              message: '节点名必须由4~20位数字与英文字母组合,英文字母开头'
+            }
+          ]}>
           <Input placeholder="输入节点名称" />
         </Item>
         <Item
@@ -156,17 +154,16 @@ function CreateNodeModal(props: CreateNodeModalProps) {
           rules={[
             {
               required: true,
-              message: '请输入节点别名',
+              message: '请输入节点别名'
             },
             {
               min: 1,
               max: 50,
               type: 'string',
               pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]{1,50}$/,
-              message: '节点别名由1-50位数字英文字母与汉字组合',
-            },
-          ]}
-        >
+              message: '节点别名由1-50位数字英文字母与汉字组合'
+            }
+          ]}>
           <Input placeholder="输入节点别名" />
         </Item>
         <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
@@ -188,5 +185,5 @@ export default connect(({ User, Peer, Organization, ElasticServer, loading }: Co
   Peer,
   Organization,
   ElasticServer,
-  addLoading: loading.effects['Peer/createNode'],
+  addLoading: loading.effects['Peer/createNode']
 }))(CreateNodeModal);

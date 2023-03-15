@@ -1,5 +1,3 @@
-import { OrderType } from './../utils/networkStatus';
-import { ImageDetail } from '~/models/custom-image';
 import { BasicApiParams } from '~/utils/types';
 import { request } from '../utils/request';
 
@@ -11,39 +9,66 @@ export async function getNetworkInfo(params: BasicApiParams) {
 }
 
 /**
- * 创建网络
+ * 创建网络--默认配置
  */
-export type CreateNodeInfo = {
-  nodeAliasName: string;
-  nodeName: string;
-  serverName?: string;
-  isAnchor?: boolean;
+export type CreateDefaultNetworkRequest = {
+  cluster: string;
+  network: string;
+  orgName: string;
+  channel: {
+    name: string;
+    description: string;
+  };
 };
-export type CreateNetworkRequest = {
-  initOrgAliasName: string;
-  initOrgName: string;
-  initPeerInfo: CreateNodeInfo[];
-  imageInfo?: ImageDetail[];
-  orderType?: OrderType;
-  kafkaServerList?: string[]; // orderType === OrderType.Kafka时必填
-  companyName?: string;
-  networkName?: string;
-};
-export async function createNetwork(params: CreateNetworkRequest) {
-  return request(`/network/${params.networkName}/createNetwork`, { method: 'POST', body: params });
+
+export async function createNetworkDefault(params: CreateDefaultNetworkRequest) {
+  return request(`/network/createDefault`, { method: 'POST', body: params });
 }
 
-export async function stopNetwork(params: CreateNetworkRequest) {
+/**
+ * 创建网络--自定义配置
+ */
+export type CreateCustomNetworkRequest = {
+  cluster: string;
+  network: string;
+  caCertExpiryTime: string;
+  ordererNodeNum: number;
+  orgName: string;
+  peerNodeImage: string;
+  peerNodeImageVersion: string;
+  nodeAddMode: 'NORMAL" | "BATCH ';
+  nodeList: Array<{
+    name: string;
+    description?: string;
+  }>;
+  nodeNamePrefix: string;
+  nodeDescription: string;
+  nodeNum: number;
+  channel: {
+    name: string;
+    description: string;
+    consensusMechanism: 'etcdraft' | 'solo';
+    endorsementPolicy: string;
+    maxMessageCount: number; // 1 ~ 500
+    batchTimeout: string;
+  };
+};
+
+export async function createNetworkCustom(params: CreateCustomNetworkRequest) {
+  return request(`/network/createCustom`, { method: 'POST', body: params });
+}
+
+export async function stopNetwork(params: { networkName: string }) {
   return request(`/network/${params.networkName}/stopOrRestart`, { method: 'GET', body: params });
 }
 
-export async function restartNetwork(params: CreateNetworkRequest) {
+export async function restartNetwork(params: { networkName: string }) {
   return request(`/network/${params.networkName}/stopOrRestart`, { method: 'GET', body: params });
 }
 
 /**
  * 删除网络
  */
-export async function deleteNetwork(params: CreateNetworkRequest) {
+export async function deleteNetwork(params: { networkName: string }) {
   return request(`/network/${params.networkName}/delete`, { method: 'DELETE', body: params });
 }

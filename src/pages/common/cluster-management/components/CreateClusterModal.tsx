@@ -88,7 +88,7 @@ function CreateClusterModal(props: CreateClusterModalProps) {
               message: '请输入集群名称'
             }
           ]}>
-          <Input placeholder="请输入集群名称" />
+          <Input disabled={!!clusterRecord} placeholder="请输入集群名称" />
         </Item>
         <Item label="集群描述" name="description">
           <Input placeholder="请输入集群名称" />

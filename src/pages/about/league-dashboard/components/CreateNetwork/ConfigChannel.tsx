@@ -1,0 +1,129 @@
+import React, { useEffect, useCallback } from 'react';
+import { Form, Input, InputNumber, Select } from 'antd';
+import { EStepType } from './index';
+
+const { Item } = Form;
+const { Option } = Select;
+const { TextArea } = Input;
+
+const formItemLayout = {
+  labelCol: {
+    sm: { span: 6 }
+  },
+  wrapperCol: {
+    sm: { span: 18 }
+  }
+};
+
+interface ConfigChannelProps {
+  shouldCheck: boolean;
+  networkChannelInfo: any;
+  afterFormCheck: (values: any, step: EStepType) => void;
+}
+
+export function ConfigChannel(props: ConfigChannelProps) {
+  const { shouldCheck, networkChannelInfo, afterFormCheck } = props;
+
+  const [form] = Form.useForm();
+
+  const checkFormValue = useCallback(() => {
+    form.validateFields().then((values) => {
+      afterFormCheck(values, EStepType.CONFIG_CHANNEL);
+    });
+  }, [afterFormCheck, form]);
+
+  useEffect(() => {
+    if (shouldCheck) {
+      checkFormValue();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldCheck]);
+
+  useEffect(() => {
+    form.setFieldsValue(networkChannelInfo);
+  }, [networkChannelInfo, form]);
+
+  return (
+    <Form {...formItemLayout} form={form}>
+      <Item
+        label="通道名称"
+        name="name"
+        rules={[
+          {
+            required: true,
+            message: '请输入通道名称'
+          },
+          {
+            min: 4,
+            max: 20,
+            type: 'string',
+            pattern: /^[a-z0-9]{4,20}$/,
+            message: '通道名称由4~20位小写英文或数字组成'
+          }
+        ]}>
+        <Input placeholder="请输入通道名称" />
+      </Item>
+      <Item
+        label="通道描述"
+        name="description"
+        rules={[
+          {
+            required: true,
+            message: '请输入通道描述'
+          }
+        ]}>
+        <TextArea rows={3} placeholder="请输入通道描述" />
+      </Item>
+      <Item
+        label="共识机制"
+        name="consensusMechanism"
+        rules={[
+          {
+            required: true,
+            message: '请选择共识机制'
+          }
+        ]}>
+        <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择共识机制">
+          <Option value="etcdraft">Etcdraft</Option>
+          <Option value="solo">Solo</Option>
+        </Select>
+      </Item>
+      <Item
+        label="背书策略"
+        name="endorsementPolicy"
+        rules={[
+          {
+            required: true,
+            message: '请输入背书策略'
+          }
+        ]}>
+        <Input placeholder="请输入背书策略" />
+      </Item>
+      <Item
+        label="区块最大交易数"
+        name="maxMessageCount"
+        rules={[
+          {
+            required: true,
+            message: '请输入区块最大交易数'
+          }
+        ]}>
+        <InputNumber step={1} min={1} max={500} style={{ width: '100%' }} placeholder="请输入区块最大交易数" />
+      </Item>
+      <Item label="打包超时时长" tooltip="最长10分钟">
+        <Input.Group compact>
+          <Item name={['batchTimeout', 'timeout']} noStyle rules={[{ required: true, message: '请输入打包超时时长' }]}>
+            <Input style={{ width: '50%' }} placeholder="时长" />
+          </Item>
+          <Item name={['batchTimeout', 'unit']} noStyle initialValue="ms">
+            <Select placeholder="单位">
+              <Option value="ms">ms</Option>
+              <Option value="s">s</Option>
+              <Option value="m">m</Option>
+            </Select>
+          </Item>
+        </Input.Group>
+      </Item>
+    </Form>
+  );
+}

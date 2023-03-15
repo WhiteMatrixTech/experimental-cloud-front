@@ -32,7 +32,8 @@ export type DashboardModelType = {
   state: DashboardModelState;
   effects: {
     getNetworkInfo: Effect;
-    createNetwork: Effect;
+    createNetworkDefault: Effect;
+    createNetworkCustom: Effect;
     stopNetwork: Effect;
     restartNetwork: Effect;
     deleteNetwork: Effect;
@@ -63,7 +64,7 @@ const DashboardModel: DashboardModelType = {
   },
 
   effects: {
-    *getNetworkInfo({ payload }, { call, put }) {
+    *getNetworkInfo({ payload }, { call, put }): any {
       const res = yield call(API.getNetworkInfo, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -76,43 +77,55 @@ const DashboardModel: DashboardModelType = {
       }
     },
 
-    *createNetwork({ payload }, { call, put }) {
-      const res = yield call(API.createNetwork, payload);
+    *createNetworkDefault({ payload }, { call, put }): any {
+      const res = yield call(API.createNetworkDefault, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' || result.status === 'Starting') {
         notification.success({ message: '创建网络请求发起成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '创建网络请求发起失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '创建网络请求发起失败', top: 64, duration: 3 });
         return false;
       }
     },
 
-    *stopNetwork({ payload }, { call, put }) {
+    *createNetworkCustom({ payload }, { call, put }): any {
+      const res = yield call(API.createNetworkCustom, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok' || result.status === 'Starting') {
+        notification.success({ message: '创建网络请求发起成功', top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.msg || '创建网络请求发起失败', top: 64, duration: 3 });
+        return false;
+      }
+    },
+
+    *stopNetwork({ payload }, { call, put }): any {
       const res = yield call(API.stopNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' || result.status === 'Starting') {
         notification.success({ message: '停用网络请求发起成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '停用网络请求发起失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '停用网络请求发起失败', top: 64, duration: 3 });
         return false;
       }
     },
 
-    *restartNetwork({ payload }, { call, put }) {
+    *restartNetwork({ payload }, { call, put }): any {
       const res = yield call(API.restartNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' || result.status === 'Starting') {
         notification.success({ message: '重启网络请求发起成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '重启网络请求发起失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '重启网络请求发起失败', top: 64, duration: 3 });
         return false;
       }
     },
 
-    *deleteNetwork({ payload }, { call, put }) {
+    *deleteNetwork({ payload }, { call, put }): any {
       const res = yield call(API.deleteNetwork, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -122,12 +135,12 @@ const DashboardModel: DashboardModelType = {
         });
         return true;
       } else {
-        notification.error({ message: result.message || '删除网络请求提交失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '删除网络请求提交失败', top: 64, duration: 3 });
         return false;
       }
     },
 
-    *getBlockList({ payload }, { call, put }) {
+    *getBlockList({ payload }, { call, put }): any {
       const res = yield call(getBlockList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -140,7 +153,7 @@ const DashboardModel: DashboardModelType = {
       }
     },
 
-    *getTransactionList({ payload }, { call, put }) {
+    *getTransactionList({ payload }, { call, put }): any {
       const res = yield call(getTransactionList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {

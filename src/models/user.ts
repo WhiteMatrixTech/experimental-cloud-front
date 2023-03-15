@@ -234,11 +234,7 @@ const UserModel: UserModelType = {
       const { statusCode, result } = res;
       const { msg } = result;
       if (statusCode === 'ok') {
-        if (msg.includes('enroll again')) {
-          notification.warn({ message: '已申请过加入联盟，请等待盟主审批，勿重复申请', top: 64, duration: 3 });
-        } else {
-          notification.success({ message: '已成功申请加入联盟，请等待盟主审批', top: 64, duration: 3 });
-        }
+        notification.success({ message: '已成功申请加入联盟，请等待盟主审批', top: 64, duration: 3 });
         return true;
       } else {
         notification.error({ message: msg || '申请加入联盟失败', top: 64, duration: 3 });

@@ -127,7 +127,7 @@ function CreateOrgModal(props: CreateOrgModalProps) {
               min: 4,
               max: 20,
               type: 'string',
-              pattern: /^[a-zA-Z0-9]{4,20}$/,
+              pattern: /^[a-z0-9]{4,20}$/,
               message: '组织名必须由4-20位数字英文字母或字符组成'
             }
           ]}>
@@ -157,7 +157,7 @@ function CreateOrgModal(props: CreateOrgModalProps) {
               min: 4,
               max: 20,
               type: 'string',
-              pattern: /^[a-zA-Z0-9]{4,20}$/,
+              pattern: /^[a-z0-9]{4,20}$/,
               message: '初始化节点名必须由4-20位数字英文字母或字符组成'
             }
           ]}>

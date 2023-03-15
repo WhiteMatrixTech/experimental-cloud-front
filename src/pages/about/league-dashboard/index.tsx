@@ -7,7 +7,7 @@ import moment from 'moment';
 import { Roles } from '~/utils/roles';
 import { WelcomeBanner } from '~/components';
 import { NetworkStatus, NetworkInfo, StopOrRestart, CanDeleteNetworkStatus } from '~/utils/networkStatus';
-import CreateNetworkModal from './components/CreateNetworkModal';
+import CreateNetwork from './components/CreateNetwork';
 import config from '~/utils/config';
 import style from './index.less';
 import { ConnectState } from '~/models/connect';
@@ -25,11 +25,12 @@ export interface LeagueDashboardProps {
   stopNetworkLoading: boolean;
   restartNetworkLoading: boolean;
   qryTransactionLoading: boolean;
-  ElasticServer: ConnectState['ElasticServer'];
+  Cluster: ConnectState['Cluster'];
 }
 const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   const {
     User,
+    Cluster,
     dispatch,
     Dashboard,
     qryBlockLoading,
@@ -38,8 +39,8 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     restartNetworkLoading = false,
     qryTransactionLoading
   } = props;
+  const { clusterTotal } = Cluster;
   const { leagueName, networkName, userRole } = User;
-  const { serverTotal } = props.ElasticServer;
   const { networkStatusInfo, transactionList, blockList, channelTotal } = Dashboard;
   const [createVisible, setCreateVisible] = useState(false);
   const [pollInterval, setPollInterval] = useState<NodeJS.Timeout | null>(null);
@@ -66,20 +67,9 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
 
   // 获取统计信息
   const getStaticInfo = useCallback(() => {
-    const params = {
-      networkName
-    };
     dispatch({
       type: `Dashboard/${userRole === Roles.MEMBER ? 'getStaticInfoForMember' : 'getStaticInfoForAdmin'}`,
-      payload: params
-    });
-    dispatch({
-      type: 'ElasticServer/getServerList',
-      payload: {
-        limit: 100,
-        offset: 0,
-        ascend: false
-      }
+      payload: { networkName }
     });
   }, [dispatch, networkName, userRole]);
 
@@ -103,12 +93,12 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
 
   // 点击创建网络
   const onCreateNetwork = useCallback(() => {
-    if (serverTotal === 0) {
-      message.warn('请先在【弹性云服务器管理中创建服务器】');
+    if (clusterTotal === 0) {
+      message.warn('请先在【集群管理中创建集群】');
       return;
     }
     setCreateVisible(true);
-  }, [serverTotal]);
+  }, [clusterTotal]);
 
   const onRestartNetwork = useCallback(() => {
     dispatch({
@@ -429,27 +419,28 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     userRole
   ]);
 
-  useEffect(() => {
-    getBlockList();
-    getNetworkInfo();
-    getStaticInfo();
-    getTransactionList();
-    // 轮询
-    const interval = setInterval(() => {
-      if (networkStatusInfo?.networkStatus !== NetworkStatus.NotExist) {
-        getBlockList();
-        getStaticInfo();
-        getTransactionList();
-      }
-      getNetworkInfo();
-    }, 10000);
-    setPollInterval(interval);
-    return () => clearInterval(interval);
-  }, [getBlockList, getNetworkInfo, getStaticInfo, getTransactionList, networkStatusInfo?.networkStatus]);
+  // todo query
+  // useEffect(() => {
+  //   getBlockList();
+  //   getNetworkInfo();
+  //   getStaticInfo();
+  //   getTransactionList();
+  //   // 轮询
+  //   const interval = setInterval(() => {
+  //     if (networkStatusInfo?.networkStatus !== NetworkStatus.NotExist) {
+  //       getBlockList();
+  //       getStaticInfo();
+  //       getTransactionList();
+  //     }
+  //     getNetworkInfo();
+  //   }, 10000);
+  //   setPollInterval(interval);
+  //   return () => clearInterval(interval);
+  // }, [getBlockList, getNetworkInfo, getStaticInfo, getTransactionList, networkStatusInfo?.networkStatus]);
 
   useEffect(() => {
     dispatch({
-      type: 'ElasticServer/getServerTotal',
+      type: 'Cluster/getClusterList',
       payload: {}
     });
     dispatch({
@@ -517,16 +508,16 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
           />
         </div>
       </div>
-      {createVisible && <CreateNetworkModal visible={createVisible} onCancel={onClickCancel} />}
+      {createVisible && <CreateNetwork visible={createVisible} onCancel={onClickCancel} />}
     </div>
   );
 };
 
-export default connect(({ Layout, Dashboard, ElasticServer, User, loading }: ConnectState) => ({
+export default connect(({ Layout, Dashboard, Cluster, User, loading }: ConnectState) => ({
   User,
   Layout,
+  Cluster,
   Dashboard,
-  ElasticServer,
   qryBlockLoading: loading.effects['Dashboard/getBlockList'],
   qryNetworkLoading: loading.effects['Dashboard/getNetworkInfo'],
   stopNetworkLoading: loading.effects['Dashboard/stopNetwork'],
