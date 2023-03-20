@@ -3,7 +3,7 @@ import { checkOrgInUse } from '../services/contract';
 import type { Reducer, Effect } from 'umi';
 import { NetworkStatus } from '~/utils/networkStatus';
 import { MemberApprovalStatus } from '~/pages/about/enterprise-member/_config';
-import { OrgStatusEnum } from '~/pages/about/organizations/_config';
+import { OrgStatus } from '~/pages/about/organizations/_config';
 
 export type MyLeagueSchema = {
   leagueName: string;
@@ -33,7 +33,7 @@ export type MyOrganizationSchema = {
   orgAliasName: string;
   orgMspId: string;
   orgAddress: string;
-  orgStatus: OrgStatusEnum;
+  orgStatus: OrgStatus;
   companyName: string;
   updatedAt: string;
   orgFullName: string;

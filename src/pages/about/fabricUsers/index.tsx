@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 import { Table, Button, Space, Form, Row, Col, Select, message, notification, Spin } from 'antd';
 import { PageTitle } from '~/components';
 import CreateFabricUserModal from './components/CreateFabricUserModal';
-import { OrgStatusEnum } from '../organizations/_config';
+import { OrgStatus } from '../organizations/_config';
 import baseConfig from '~/utils/config';
 import { Dispatch, FabricRoleSchema } from 'umi';
 import { ConnectState } from '~/models/connect';
@@ -60,7 +60,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
   };
 
   const onClickCreate = () => {
-    if (myOrgInfo && myOrgInfo.orgStatus && myOrgInfo.orgStatus === OrgStatusEnum.InUse) {
+    if (myOrgInfo && myOrgInfo.orgStatus && myOrgInfo.orgStatus === OrgStatus.InUse) {
       setCreateModalVisible(true);
     } else {
       message.warn('请先在【组织管理】中添加您的组织，并确保您的组织在使用中');
@@ -194,10 +194,13 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
   return (
     <div className="page-wrapper">
       <Spin spinning={downloading} tip="下载中...">
-        <PageTitle label="Fabric用户管理" extra={
-          <Button type="primary" onClick={onClickCreate}>
-            新增Fabric角色
-          </Button>}
+        <PageTitle
+          label="Fabric用户管理"
+          extra={
+            <Button type="primary" onClick={onClickCreate}>
+              新增Fabric角色
+            </Button>
+          }
         />
         <div className="table-wrapper page-content-shadow">
           <Spin spinning={qryLoading}>
@@ -206,7 +209,10 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
                 <Row gutter={24}>
                   <Col span={8}>
                     <Item label="组织名称" name="orgNameSearch" initialValue={null}>
-                      <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择组织">
+                      <Select
+                        allowClear
+                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                        placeholder="选择组织">
                         {orgList.map((item) => (
                           <Option key={item.orgName} value={item.orgName}>
                             {item.orgName}
@@ -249,7 +255,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
           />
         )}
       </Spin>
-    </div >
+    </div>
   );
 };
 
@@ -258,6 +264,5 @@ export default connect(({ User, Organization, Layout, FabricRole, loading }: Con
   Organization,
   Layout,
   FabricRole,
-  qryLoading: loading.effects['FabricRole/getFabricRoleList'] ||
-    loading.effects['FabricRole/getFabricRoleListWithOrg']
+  qryLoading: loading.effects['FabricRole/getFabricRoleList'] || loading.effects['FabricRole/getFabricRoleListWithOrg']
 }))(FabricRoleManagement);

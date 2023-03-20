@@ -1,25 +1,27 @@
 import * as API from '../services/organization';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
+import { OrgStatus } from '~/pages/about/organizations/_config';
 
 export type OrganizationSchema = {
-  _id: string,
-  networkName: string,      // 网络名称
-  orgName: string,          // 组织名成
-  companyName: string,      // 企业名称
-  createdAt: Date,          // 创建日期  2021-01-29T02:23:02.141Z
-  orgAddress: string,       // 组织地址
-  orgAliasName: string,     // 组织别名
-  orgMspId: string,         //
-  orgStatus: string,        // 组织状态
-  updatedAt: Date           // 更新日期 2021-01-29T02:23:02.141Z
-}
+  networkName: string;
+  orgName: string;
+  orgAliasName: string;
+  orgMspId: string;
+  orgAddress: string;
+  orgStatus: OrgStatus;
+  companyName: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  orgFullName: string;
+};
 
 export type OrganizationModelState = {
-  orgList: Array<OrganizationSchema>,
-  orgTotal: number,
-  orgInUseList: Array<OrganizationSchema>,
-}
+  orgList: Array<OrganizationSchema>;
+  orgTotal: number;
+  orgInUseList: Array<OrganizationSchema>;
+};
 
 export type OrganizationModelType = {
   namespace: 'Organization';
@@ -41,11 +43,11 @@ const OrganizationModel: OrganizationModelType = {
     orgList: [], // 用户列表
     orgTotal: 0,
 
-    orgInUseList: [],
+    orgInUseList: []
   },
 
   effects: {
-    *createOrg({ payload }, { call, put }) {
+    *createOrg({ payload }, { call, put }): any {
       const res = yield call(API.createOrg, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -57,7 +59,7 @@ const OrganizationModel: OrganizationModelType = {
       }
     },
 
-    *getOrgList({ payload }, { call, put }) {
+    *getOrgList({ payload }, { call, put }): any {
       const res = yield call(API.getOrgList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -65,30 +67,30 @@ const OrganizationModel: OrganizationModelType = {
           type: 'common',
           payload: {
             orgList: result,
-            orgTotal: result.length,
-          },
+            orgTotal: result.length
+          }
         });
       }
     },
-    *getOrgInUseList({ payload }, { call, put }) {
+    *getOrgInUseList({ payload }, { call, put }): any {
       const res = yield call(API.getOrgInUseList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            orgInUseList: result,
-          },
+            orgInUseList: result
+          }
         });
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default OrganizationModel;
