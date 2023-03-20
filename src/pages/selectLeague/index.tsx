@@ -133,7 +133,7 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
   return (
     <div className={styles.main}>
       <div className={styles['page-title-wrapper']}>我的联盟</div>
-      {AdminRole.includes(userInfo.role) && clusterTotal === 0 && (
+      {userInfo.role === Roles.SUPER && clusterTotal === 0 && (
         <Alert
           message="暂无集群，请先创建"
           type="warning"

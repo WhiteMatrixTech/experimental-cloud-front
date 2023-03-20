@@ -22,21 +22,27 @@ interface ConfigNetworkProps {
   networkBaseInfo: any;
   configMode: 'default' | 'custom';
   Cluster: ConnectState['Cluster'];
+  failCheck: () => void;
   setConfigMode: (mode: 'default' | 'custom') => void;
   afterFormCheck: (values: any, step: EStepType, isDefaultMode?: boolean) => void;
 }
 
 export function ConfigNetwork(props: ConfigNetworkProps) {
-  const { configMode, shouldCheck, networkBaseInfo, Cluster, setConfigMode, afterFormCheck } = props;
+  const { configMode, shouldCheck, networkBaseInfo, Cluster, setConfigMode, failCheck, afterFormCheck } = props;
   const { clusterList } = Cluster;
 
   const [form] = Form.useForm();
 
   const checkFormValue = useCallback(() => {
-    form.validateFields().then((values) => {
-      afterFormCheck(values, EStepType.CONFIG_NETWORK, values.configMode === 'default');
-    });
-  }, [afterFormCheck, form]);
+    form
+      .validateFields()
+      .then((values) => {
+        afterFormCheck(values, EStepType.CONFIG_NETWORK, values.configMode === 'default');
+      })
+      .catch(() => {
+        failCheck();
+      });
+  }, [afterFormCheck, failCheck, form]);
 
   const onChangeMode = (e: any) => {
     setConfigMode(e.target.value);
@@ -95,7 +101,7 @@ export function ConfigNetwork(props: ConfigNetworkProps) {
                 min: 4,
                 max: 20,
                 type: 'string',
-                pattern: /^[a-z0-9]+$/,
+                pattern: /^[a-z0-9]{4,20}$/,
                 message: '组织名称由4~20位小写英文或数字组成'
               }
             ]}>
@@ -110,11 +116,11 @@ export function ConfigNetwork(props: ConfigNetworkProps) {
                 message: '请输入通道名称'
               },
               {
-                min: 3,
-                max: 15,
+                min: 4,
+                max: 20,
                 type: 'string',
-                pattern: /^[a-zA-Z0-9]+$/,
-                message: '通道名称由3~15位英文或数字组成'
+                pattern: /^[a-z0-9]{4,20}$/,
+                message: '通道名称由4~20位小写英文或数字组成'
               }
             ]}>
             <Input placeholder="请输入通道名称" />

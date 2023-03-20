@@ -83,9 +83,13 @@ function CreateNetwork(props: CreateNetworkProps) {
     }
 
     if (createResult) {
-      onCancel();
+      onCancel(true);
     }
   };
+
+  const failCheck = useCallback(() => {
+    setCheckFalse();
+  }, [setCheckFalse]);
 
   const afterFormCheck = (values: any, step: EStepType, isDefaultMode?: boolean) => {
     setCheckFalse();
@@ -176,16 +180,23 @@ function CreateNetwork(props: CreateNetworkProps) {
           networkBaseInfo={networkBaseInfo}
           setConfigMode={setConfigMode}
           afterFormCheck={afterFormCheck}
+          failCheck={failCheck}
         />
       )}
       {currentStep === EStepType.CONFIG_ORG && (
-        <ConfigOrg shouldCheck={shouldCheck} networkOrgInfo={networkOrgInfo} afterFormCheck={afterFormCheck} />
+        <ConfigOrg
+          shouldCheck={shouldCheck}
+          networkOrgInfo={networkOrgInfo}
+          afterFormCheck={afterFormCheck}
+          failCheck={failCheck}
+        />
       )}
       {currentStep === EStepType.CONFIG_CHANNEL && (
         <ConfigChannel
           shouldCheck={shouldCheck}
           networkChannelInfo={networkChannelInfo}
           afterFormCheck={afterFormCheck}
+          failCheck={failCheck}
         />
       )}
     </Modal>

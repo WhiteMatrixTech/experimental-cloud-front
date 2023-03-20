@@ -5,7 +5,7 @@ import { request } from '../utils/request';
  * 获取网络信息
  */
 export async function getNetworkInfo(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/status`);
+  return request(`/network/${params.networkName}`);
 }
 
 /**

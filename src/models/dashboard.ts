@@ -10,11 +10,17 @@ import moment from 'moment';
 import type { Reducer, Effect, BlockSchema, TransactionSchema } from 'umi';
 import { NetworkStatus } from '~/utils/networkStatus';
 
+interface INetworkInfo {
+  name: string;
+  description: string;
+  clusterName?: string;
+  createTime?: string;
+  updateTime?: string;
+  status: NetworkStatus;
+}
+
 export type DashboardModelState = {
-  networkStatusInfo: {
-    networkStatus: NetworkStatus;
-    createdAt: Date;
-  } | null; // 网络状态信息
+  networkStatusInfo: INetworkInfo | null; // 网络状态信息
 
   // 统计信息
   blockTotal: number;

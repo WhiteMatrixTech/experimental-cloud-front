@@ -91,7 +91,7 @@ const CreateLeague: React.FC<CreateLeagueProps> = (props) => {
               min: 4,
               max: 20,
               type: 'string',
-              pattern: /^[a-z0-9]+$/,
+              pattern: /^[a-z0-9]{4,20}$/,
               message: '网络名称由4~20位小写英文字母或数字组成'
             }
           ]}>

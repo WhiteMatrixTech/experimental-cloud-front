@@ -255,7 +255,7 @@ const CommonMenuList: CommonMenuProps[] = [
     menuHref: '/common/cluster-management',
     menuIcon: <ClusterOutlined />,
     menuName: '集群管理',
-    accessRole: [Roles.ADMIN, Roles.SUPER],
+    accessRole: [Roles.SUPER],
     subMenus: []
   },
   {

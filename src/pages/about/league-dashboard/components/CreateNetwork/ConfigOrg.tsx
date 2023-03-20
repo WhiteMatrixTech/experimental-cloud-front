@@ -24,20 +24,26 @@ const inlineItemLayout = {
 interface ConfigOrgProps {
   shouldCheck: boolean;
   networkOrgInfo: any;
+  failCheck: () => void;
   afterFormCheck: (values: any, step: EStepType) => void;
 }
 
 export function ConfigOrg(props: ConfigOrgProps) {
-  const { shouldCheck, networkOrgInfo, afterFormCheck } = props;
+  const { shouldCheck, networkOrgInfo, failCheck, afterFormCheck } = props;
 
   const [form] = Form.useForm();
   const [nodeAddMode, setNodeAddMode] = useState('NORMAL');
 
   const checkFormValue = useCallback(() => {
-    form.validateFields().then((values) => {
-      afterFormCheck(values, EStepType.CONFIG_ORG);
-    });
-  }, [afterFormCheck, form]);
+    form
+      .validateFields()
+      .then((values) => {
+        afterFormCheck(values, EStepType.CONFIG_ORG);
+      })
+      .catch(() => {
+        failCheck();
+      });
+  }, [afterFormCheck, failCheck, form]);
 
   useEffect(() => {
     if (shouldCheck) {
@@ -71,7 +77,7 @@ export function ConfigOrg(props: ConfigOrgProps) {
             min: 4,
             max: 20,
             type: 'string',
-            pattern: /^[a-zA-Z0-9]+$/,
+            pattern: /^[a-z0-9]{4,20}$/,
             message: '组织名称由4~20位小写英文或数字组成'
           }
         ]}>
@@ -80,6 +86,7 @@ export function ConfigOrg(props: ConfigOrgProps) {
       <Item
         label="配置镜像"
         name="peerNodeImage"
+        tooltip="目前支持Fabric peer的官方节点镜像，也可在一键编译中，更改Fabric 源码，创建自己的镜像"
         rules={[
           {
             required: true,
@@ -202,7 +209,7 @@ export function ConfigOrg(props: ConfigOrgProps) {
                 min: 3,
                 max: 15,
                 type: 'string',
-                pattern: /^[a-zA-Z0-9]+$/,
+                pattern: /^[a-z0-9]+$/,
                 message: '节点名称由3~15位英文或数字组成'
               }
             ]}>

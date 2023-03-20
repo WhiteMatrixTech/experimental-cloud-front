@@ -1,14 +1,15 @@
 export enum NetworkStatus {
-  Running = 'Running',
-  Creating = 'Creating',
+  Running = 'RUNNING',
+  Creating = 'CREATING',
+  NotExist = 'NOT_EXIST',
+  CreationFailed = 'CREATE_FAILED',
+  // 老状态
   Updating = 'Updating',
-  CreationFailed = 'CreationFailed',
   AddChannelFailed = 'AddChannelFailed',
   AddOrgFailed = 'AddOrgFailed',
   AddPeerFailed = 'AddPeerFailed',
   OrgJoinChannelFailed = 'OrgJoinChannelFailed',
   UnknownError = 'UnknownError',
-  NotExist = 'NotExist',
   Stopped = 'Stopped'
 }
 
@@ -45,4 +46,4 @@ export const CanDeleteNetworkStatus = [
   NetworkStatus.OrgJoinChannelFailed,
   NetworkStatus.UnknownError,
   NetworkStatus.Stopped
-]
+];

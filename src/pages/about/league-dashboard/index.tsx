@@ -362,7 +362,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       extraButton: <></>
     };
     if (userRole === Roles.ADMIN) {
-      const status = networkStatusInfo?.networkStatus;
+      const status = networkStatusInfo?.status;
       switch (status) {
         case NetworkStatus.NotExist:
           btnShowInitValue.extraButton = (
@@ -411,7 +411,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   }, [
     channelTotal,
     linkToCreateChannel,
-    networkStatusInfo?.networkStatus,
+    networkStatusInfo?.status,
     onCreateNetwork,
     onDeleteNetwork,
     onRestartNetwork,
@@ -420,23 +420,23 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   ]);
 
   // todo query
-  // useEffect(() => {
-  //   getBlockList();
-  //   getNetworkInfo();
-  //   getStaticInfo();
-  //   getTransactionList();
-  //   // 轮询
-  //   const interval = setInterval(() => {
-  //     if (networkStatusInfo?.networkStatus !== NetworkStatus.NotExist) {
-  //       getBlockList();
-  //       getStaticInfo();
-  //       getTransactionList();
-  //     }
-  //     getNetworkInfo();
-  //   }, 10000);
-  //   setPollInterval(interval);
-  //   return () => clearInterval(interval);
-  // }, [getBlockList, getNetworkInfo, getStaticInfo, getTransactionList, networkStatusInfo?.networkStatus]);
+  useEffect(() => {
+    getBlockList();
+    getNetworkInfo();
+    getStaticInfo();
+    getTransactionList();
+    // 轮询
+    const interval = setInterval(() => {
+      if (networkStatusInfo?.status !== NetworkStatus.NotExist) {
+        getBlockList();
+        getStaticInfo();
+        getTransactionList();
+      }
+      getNetworkInfo();
+    }, 10000);
+    setPollInterval(interval);
+    return () => clearInterval(interval);
+  }, [getBlockList, getNetworkInfo, getStaticInfo, getTransactionList, networkStatusInfo?.status]);
 
   useEffect(() => {
     dispatch({
@@ -465,10 +465,12 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
             <Descriptions.Item label="联盟名称">{leagueName}</Descriptions.Item>
             <Descriptions.Item label="网络名称">{networkName}</Descriptions.Item>
             <Descriptions.Item label="创建时间">
-              {networkStatusInfo ? moment(networkStatusInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
+              {networkStatusInfo?.createTime
+                ? moment(networkStatusInfo.createTime).format('YYYY-MM-DD HH:mm:ss')
+                : '--'}
             </Descriptions.Item>
             <Descriptions.Item label="网络状态">
-              {networkStatusInfo ? NetworkInfo[networkStatusInfo.networkStatus] : ''}
+              {networkStatusInfo?.status ? NetworkInfo[networkStatusInfo.status] : '--'}
               {btnShow.createChannelLink}
             </Descriptions.Item>
             <Descriptions.Item label="网络操作">
