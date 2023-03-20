@@ -83,6 +83,7 @@ export function ConfigOrg(props: ConfigOrgProps) {
         ]}>
         <Input placeholder="请输入组织名称" />
       </Item>
+      {/* todo 后续接口查询 */}
       <Item
         label="配置镜像"
         name="peerNodeImage"

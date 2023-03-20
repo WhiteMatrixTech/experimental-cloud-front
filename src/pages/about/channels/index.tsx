@@ -6,7 +6,7 @@ import { Table, Button, Badge, Space } from 'antd';
 import CreateChannelModal from './components/CreateChannelModal';
 import baseConfig from '~/utils/config';
 import { Roles } from '~/utils/roles';
-import { ChannelStatus } from './_config';
+import { ChannelStatusTag } from './_config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { ChannelSchema } from '~/models/channel';
@@ -16,7 +16,7 @@ export interface ChannelManagementProps {
   qryLoading: boolean;
   User: ConnectState['User'];
   Channel: ConnectState['Channel'];
-  location: Location<ChannelSchema>;
+  location: Location<ChannelSchema & { openModal: boolean }>;
 }
 function ChannelManagement(props: ChannelManagementProps) {
   const { dispatch, qryLoading = false, location, User, Channel } = props;
@@ -104,8 +104,8 @@ function ChannelManagement(props: ChannelManagementProps) {
   const columns: ColumnsType<any> = [
     {
       title: '通道名称',
-      dataIndex: 'channelId',
-      key: 'channelId'
+      dataIndex: 'channelName',
+      key: 'channelName'
     },
     {
       title: '通道别名',
@@ -119,9 +119,9 @@ function ChannelManagement(props: ChannelManagementProps) {
       render: (text) =>
         text ? (
           <Badge
-            color={ChannelStatus[text].color}
-            text={ChannelStatus[text].text}
-            style={{ color: ChannelStatus[text].color }}
+            color={ChannelStatusTag[text].color}
+            text={ChannelStatusTag[text].text}
+            style={{ color: ChannelStatusTag[text].color }}
           />
         ) : (
           ''
@@ -140,8 +140,8 @@ function ChannelManagement(props: ChannelManagementProps) {
     },
     {
       title: '创建时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
+      dataIndex: 'createTime',
+      key: 'createTime',
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {

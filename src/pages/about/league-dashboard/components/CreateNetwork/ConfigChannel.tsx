@@ -99,7 +99,7 @@ export function ConfigChannel(props: ConfigChannelProps) {
         label="背书策略"
         name="endorsementPolicy"
         tooltip="fabric中策略的写法：
-签名语法：AND, OR和OutOf如 AND('Org1.member', 'Org2.member')表示需要Org1和Org2的同时签名、OR('Org1.member', 'Org2.member')表示需要Org1和Org2中的任何一个组织签名、OutOf(2, 'Org1.member', 'Org2.member', 'Org2.member')表示三个组织中至少有2个签名"
+签名语法：AND, OR和OutOf如 AND('Org1MSP.admin', 'Org2MSP.admin')表示需要Org1和Org2的同时签名、OR('Org1MSP.admin', 'Org2MSP.admin')表示需要Org1和Org2中的任何一个组织签名、OutOf(2, 'Org1MSP.admin', 'Org2MSP.admin', 'Org2MSP.admin')表示三个组织中至少有2个签名"
         rules={[
           {
             required: true,

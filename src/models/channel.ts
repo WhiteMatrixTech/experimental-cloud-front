@@ -7,20 +7,19 @@ import type {
   TransactionSchema,
   OrganizationSchema,
   PeerSchema,
-  ChainCodeSchema,
+  ChainCodeSchema
 } from 'umi';
 
 export type ChannelSchema = {
-  _id: string;
-  networkName: string; // 网络名称
-  channelAliasName: string; // 通道别名
-  channelDesc: string; // 通道描述
-  channelId: string; // 通道id
-  channelStatus: string; // 通道状态
-  createUser: string; // 创建用户
-  updatedAt: Date; // 更新时间 2021-01-29T02:47:00.959Z
-  createdAt: Date; // 创建时间 2021-01-27T06:08:08.216Z
-  openModal?: boolean;
+  networkName: string;
+  channelName: string;
+  channelAliasName: string;
+  channelDesc: string;
+  channelId: string;
+  channelStatus: string;
+  createUser: string;
+  createTime: string;
+  updateTime: string;
 };
 
 export type ChannelModelState = {
@@ -83,11 +82,11 @@ const ChannelModel: ChannelModelType = {
     blockTotalOfChannel: 0,
 
     transactionListOfChannel: [],
-    transactionTotalOfChannel: 0,
+    transactionTotalOfChannel: 0
   },
 
   effects: {
-    *createChannel({ payload }, { call, put }) {
+    *createChannel({ payload }, { call, put }): any {
       const res = yield call(API.createChannel, payload);
       const { statusCode, result } = res;
       console.log(res, '创建成功！');
@@ -100,7 +99,7 @@ const ChannelModel: ChannelModelType = {
       }
     },
 
-    *getChannelList({ payload }, { call, put }) {
+    *getChannelList({ payload }, { call, put }): any {
       const res = yield call(API.getChannelList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -108,8 +107,8 @@ const ChannelModel: ChannelModelType = {
           type: 'common',
           payload: {
             channelList: result,
-            channelTotal: result.length,
-          },
+            channelTotal: result.length
+          }
         });
       }
     },
@@ -125,7 +124,7 @@ const ChannelModel: ChannelModelType = {
       }
     },
 
-    *getOrgListOfChannel({ payload }, { call, put }) {
+    *getOrgListOfChannel({ payload }, { call, put }): any {
       const res = yield call(API.getOrgListOfChannel, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -133,13 +132,13 @@ const ChannelModel: ChannelModelType = {
           type: 'common',
           payload: {
             orgListOfChannel: result,
-            orgTotalOfChannel: result.length,
-          },
+            orgTotalOfChannel: result.length
+          }
         });
       }
     },
 
-    *getNodeListOfChannel({ payload }, { call, put }) {
+    *getNodeListOfChannel({ payload }, { call, put }): any {
       const res = yield call(API.getNodeListOfChannel, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -147,60 +146,60 @@ const ChannelModel: ChannelModelType = {
           type: 'common',
           payload: {
             nodeListOfChannel: result,
-            nodeTotalOfChannel: result.length,
-          },
+            nodeTotalOfChannel: result.length
+          }
         });
       }
     },
 
-    *getContractListOfChannel({ payload }, { call, put }) {
+    *getContractListOfChannel({ payload }, { call, put }): any {
       const res = yield call(API.getContractListOfChannel, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            contractListOfChannel: result.items,
-          },
+            contractListOfChannel: result.items
+          }
         });
       }
     },
 
-    *getContractTotalOfChannel({ payload }, { call, put }) {
+    *getContractTotalOfChannel({ payload }, { call, put }): any {
       const res = yield call(API.getContractTotalOfChannel, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            contractTotalOfChannel: result.count,
-          },
+            contractTotalOfChannel: result.count
+          }
         });
       }
     },
 
-    *getBlockListOfChannel({ payload }, { call, put }) {
+    *getBlockListOfChannel({ payload }, { call, put }): any {
       const res = yield call(API.getBlockListOfChannel, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            blockListOfChannel: result.items,
-          },
+            blockListOfChannel: result.items
+          }
         });
       }
     },
 
-    *getTransactionsListOfChannel({ payload }, { call, put }) {
+    *getTransactionsListOfChannel({ payload }, { call, put }): any {
       const res = yield call(API.getTransactionsListOfChannel, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            transactionListOfChannel: result.items,
-          },
+            transactionListOfChannel: result.items
+          }
         });
       }
     },
@@ -211,7 +210,7 @@ const ChannelModel: ChannelModelType = {
         call(API.getTransactionsTotalOfChannel, payload),
         call(API.getOrgListOfChannel, payload),
         call(API.getNodeListOfChannel, payload),
-        call(API.getContractTotalOfChannel, payload),
+        call(API.getContractTotalOfChannel, payload)
       ]);
       const blockTotalOfChannel = blockRes.statusCode === 'ok' ? blockRes.result.count : 0;
       const transactionTotalOfChannel = transactionRes.statusCode === 'ok' ? transactionRes.result.count : 0;
@@ -225,17 +224,17 @@ const ChannelModel: ChannelModelType = {
           nodeTotalOfChannel,
           blockTotalOfChannel,
           contractTotalOfChannel,
-          transactionTotalOfChannel,
-        },
+          transactionTotalOfChannel
+        }
       });
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default ChannelModel;

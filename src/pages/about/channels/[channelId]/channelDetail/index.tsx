@@ -5,7 +5,7 @@ import { ChannelSchema, Dispatch, history, Location } from 'umi';
 import moment from 'moment';
 import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
-import { ChannelStatus } from '../../_config';
+import { ChannelStatusTag } from '../../_config';
 import style from './index.less';
 import config from '~/utils/config';
 import { ConnectState } from '~/models/connect';
@@ -82,7 +82,9 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
       key: 'action',
       render: (text, record) => (
         <Space size="small">
-          <a href={`/about/block/${record.blockHash}`} onClick={(e) => onClickBlockDetail(e, record)}>详情</a>
+          <a href={`/about/block/${record.blockHash}`} onClick={(e) => onClickBlockDetail(e, record)}>
+            详情
+          </a>
         </Space>
       )
     }
@@ -126,7 +128,9 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
       render: (text, record) => (
         <Space size="small">
           {record.channelId || record.txEndorseMsp ? (
-            <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickTransactionDetail(e, record)}>详情</a>
+            <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickTransactionDetail(e, record)}>
+              详情
+            </a>
           ) : (
             <a
               href={`/about/transactions/${record.txId}`}
@@ -170,10 +174,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
   }, [User, channelId, dispatch]);
 
   // 查看交易详情
-  const onClickTransactionDetail = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    record: { txId: string }
-  ) => {
+  const onClickTransactionDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: { txId: string }) => {
     e.preventDefault();
     dispatch({
       type: 'Layout/setCurrentService',
@@ -243,19 +244,17 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
             {location?.state?.createdAt ? moment(location?.state?.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
           </Descriptions.Item>
           <Descriptions.Item label="状态">
-            {location?.state?.channelStatus ? ChannelStatus[location?.state?.channelStatus].text : ''}
+            {location?.state?.channelStatus ? ChannelStatusTag[location?.state?.channelStatus].text : ''}
           </Descriptions.Item>
         </Descriptions>
         <div className={style['channel-basic-info']}>
           <h2>通道内数据</h2>
           <Row gutter={24} justify="space-between">
-            {statisticsList.map(item => <Col key={item.label} span={4}>
-              <Statistic
-                title={item.label}
-                value={item.num}
-                valueStyle={StatisticValueStyle}
-              />
-            </Col>)}
+            {statisticsList.map((item) => (
+              <Col key={item.label} span={4}>
+                <Statistic title={item.label} value={item.num} valueStyle={StatisticValueStyle} />
+              </Col>
+            ))}
           </Row>
         </div>
         <div className="page-content page-content-shadow table-wrapper">
@@ -280,10 +279,10 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
             pagination={false}
           />
         </div>
-      </div >
-    </div >
+      </div>
+    </div>
   );
-}
+};
 
 export default connect(({ Layout, Channel, User, loading }: ConnectState) => ({
   Layout,

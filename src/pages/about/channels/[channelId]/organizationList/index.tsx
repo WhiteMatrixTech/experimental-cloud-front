@@ -4,7 +4,7 @@ import { Table, Button, Descriptions, Divider } from 'antd';
 import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import AddOrg from '../../components/AddOrg';
-import { ChannelStatusMap } from '../../_config';
+import { ChannelStatusTag } from '../../_config';
 import baseConfig from '~/utils/config';
 import { Roles } from '~/utils/roles';
 import { ColumnsType } from 'antd/lib/table';
@@ -117,7 +117,7 @@ function OrganizationList(props: OrganizationListProps) {
   };
 
   const showAddOrg = useMemo(() => {
-    return userRole === Roles.ADMIN && location?.state?.channelStatus === ChannelStatusMap.InUse;
+    return userRole === Roles.ADMIN && location?.state?.channelStatus === ChannelStatusTag.InUse;
   }, [userRole, location?.state?.channelStatus]);
 
   return (
