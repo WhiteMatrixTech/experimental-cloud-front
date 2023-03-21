@@ -1,15 +1,17 @@
 /**
  * 访问策略配置(rbac)，相关设计文档 https://www.yuque.com/whitematrix/baas-v1/xpq7pz#6CxuL
  */
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { connect } from 'dva';
 import { Space, Row, Col, Form, Radio, Button, Select, Spin, Modal, Input, message } from 'antd';
 import { CaretDownOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { useRequest } from 'ahooks';
+import * as rbacApi from '~/services/rbac';
 import { Breadcrumb, PageTitle } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
-import { Dispatch, Location, RbacRole } from 'umi';
-import { configValueState, setParams } from '../../_config';
+import { Dispatch, RbacRole, useParams } from 'umi';
+import { AccessOperation, AccessResource, AccessScope, configValueState, setParams } from '../../_config';
 import styles from '../../new/index.less';
 
 const { Item } = Form;
@@ -23,34 +25,39 @@ breadCrumbItem.push({
 
 export interface RbacConfigProps {
   dispatch: Dispatch;
-  location: Location<RbacRole>;
   User: ConnectState['User'];
   RBAC: ConnectState['RBAC'];
   configLoading: boolean;
-  resetLoading: boolean;
 }
 function RbacConfig(props: RbacConfigProps) {
-  const { dispatch, location, User, RBAC, configLoading = false, resetLoading = false } = props;
+  const { dispatch, User, RBAC, configLoading = false } = props;
   const { networkName } = User;
-  const { roleNameList, chaincodeList, rbacPolicy } = RBAC;
+  const { roleNameList, chaincodeList } = RBAC;
 
   const [form] = Form.useForm();
+
+  const routerParams = useParams() as any;
+  const roleName = useMemo(() => routerParams.roleName, [routerParams]);
+
   const [configType, setConfigType] = useState('FormConfig');
   const [jsonPolicy, setJsonPolicy] = useState('');
+  const [viewChaincode, setViewChaincode] = useState<string | undefined>(AccessScope.CHANNEL);
+  const [invokeChaincodeCustom, setInvokeChaincodeCustom] = useState<string>(AccessScope.CHANNEL);
 
-  const [viewChaincode, setViewChaincode] = useState<string | undefined>('InChannel');
-  const [invokeChaincodeCustom, setInvokeChaincodeCustom] = useState<string>('InChannel');
-
-  const getConfig = useCallback((value: string) => {
-    dispatch({
-      type: 'RBAC/getRbacConfigWithRole',
-      payload: { networkName, roleName: value }
-    });
-  }, [dispatch, networkName]);
+  const { data: rbacPolicy, loading: queryLoading } = useRequest(
+    async () => {
+      const res = await rbacApi.getRbacConfigWithRole({ networkName, roleName });
+      const { result } = res;
+      return (result as RbacRole[])?.length > 0 ? (result as RbacRole[])[0] : null;
+    },
+    {
+      refreshDeps: [roleName]
+    }
+  );
 
   //TODO 自定义合约调用
   const getChaincodeList = useCallback(() => {
-    const apiName = viewChaincode === 'Own' ? 'RBAC/getMyselfChainCodeList' : 'RBAC/getChainCodeList';
+    const apiName = viewChaincode === AccessScope.SELF ? 'RBAC/getMyselfChainCodeList' : 'RBAC/getChainCodeList';
     dispatch({
       type: apiName,
       payload: { networkName, companyName: 'todo' }
@@ -67,18 +74,18 @@ function RbacConfig(props: RbacConfigProps) {
 
   const onChangeViewChaincode = (e: any) => {
     setViewChaincode(e.target.value);
-    if (e.target.value === 'Own') {
+    if (e.target.value === AccessScope.SELF) {
       form.setFields([
-        { name: 'downloadChaincode', value: 'Own' },
-        { name: 'invokeChaincode', value: 'None' }
+        { name: 'downloadChaincode', value: AccessScope.SELF },
+        { name: 'invokeChaincode', value: AccessScope.NONE }
       ]);
-      setInvokeChaincodeCustom('None');
+      setInvokeChaincodeCustom(AccessScope.NONE);
     }
   };
 
   const onChangeInvokeChaincode = (e: any) => {
     setInvokeChaincodeCustom(e.target.value);
-    if (e.target.value === 'Custom') {
+    if (e.target.value === AccessScope.CUSTOM) {
       getChaincodeList();
     }
   };
@@ -89,9 +96,9 @@ function RbacConfig(props: RbacConfigProps) {
         .validateFields()
         .then((values) => {
           const callback = () => {
-            const params = setParams(values, location.state?.roleName, networkName, chaincodeList);
+            const params = setParams(values, roleName, networkName);
             dispatch({
-              type: 'RBAC/setConfig',
+              type: 'RBAC/configRbac',
               payload: params
             });
           };
@@ -113,7 +120,7 @@ function RbacConfig(props: RbacConfigProps) {
         const callback = () => {
           dispatch({
             type: 'RBAC/setConfigByJson',
-            payload: { networkName, roleName: location.state?.roleName, policy: params }
+            payload: { networkName, roleName, policy: params }
           });
         };
         Modal.confirm({
@@ -135,24 +142,23 @@ function RbacConfig(props: RbacConfigProps) {
     if (rbacPolicy && rbacPolicy.policy) {
       const configValue: configValueState = {};
       const policy = rbacPolicy.policy || [];
-      const BlockInfo = policy.find((item) => item.subject === 'BlockInfo');
-      const Transaction = policy.find((item) => item.subject === 'Transaction');
-      const viewChaincode = policy.find((item) => item.action === 'Read' && item.subject === 'ChainCode');
-      const downloadChaincode = policy.find((item) => item.action === 'Download' && item.subject === 'ChainCode');
-      const InvokeChainCodeMethod = policy.find((item) => item.action === 'InvokeChainCodeMethod');
-      if (InvokeChainCodeMethod?.field === 'Custom') {
-        getChaincodeList();
-        setInvokeChaincodeCustom('Custom');
-        configValue.invokeChaincodeSubject = InvokeChainCodeMethod.custom?.map((item) => item.chainCodeName);
-      }
-      configValue.BlockInfo = BlockInfo?.field;
-      configValue.Transaction = Transaction?.field;
-      configValue.viewChaincode = viewChaincode?.field;
-      configValue.downloadChaincode = downloadChaincode?.field;
-      configValue.invokeChaincode = InvokeChainCodeMethod?.field;
+      const BlockInfo = policy.find((item) => item.resource === AccessResource.BLOCK);
+      const Transaction = policy.find((item) => item.resource === AccessResource.TRANSACTION);
+      const viewChaincode = policy.find(
+        (item) => item.operation === AccessOperation.QUERY && item.resource === AccessResource.CHAIN_CODE
+      );
+      const downloadChaincode = policy.find(
+        (item) => item.operation === AccessOperation.DOWNLOAD && item.resource === AccessResource.CHAIN_CODE
+      );
+      const InvokeChainCodeMethod = policy.find((item) => item.operation === AccessOperation.INTERACT);
+      configValue.BlockInfo = BlockInfo?.scope;
+      configValue.Transaction = Transaction?.scope;
+      configValue.viewChaincode = viewChaincode?.scope;
+      configValue.downloadChaincode = downloadChaincode?.scope;
+      configValue.invokeChaincode = InvokeChainCodeMethod?.scope;
 
       setJsonPolicy(JSON.stringify(policy, null, 2));
-      setViewChaincode(viewChaincode?.field);
+      setViewChaincode(viewChaincode?.scope);
       form.setFieldsValue(configValue);
     }
   }, [form, rbacPolicy]);
@@ -165,18 +171,12 @@ function RbacConfig(props: RbacConfigProps) {
     });
   }, [dispatch, networkName]);
 
-  useEffect(() => {
-    if (location.state?.roleName) {
-      getConfig(location.state?.roleName);
-    }
-  }, [location.state, configType, getConfig]);
-
   return (
     <div className={styles['rbac-config-wrapper']}>
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
       <PageTitle label="配置访问角色" />
       <div className="page-content page-content-shadow table-wrapper">
-        <Spin spinning={configLoading || resetLoading}>
+        <Spin spinning={configLoading || queryLoading}>
           <div className={styles['rbac-config-content']}>
             <Row>
               <Col span={18} className={styles['company-selector']}>
@@ -184,7 +184,7 @@ function RbacConfig(props: RbacConfigProps) {
                 <Select
                   disabled
                   allowClear
-                  value={location.state?.roleName}
+                  value={roleName}
                   placeholder="选择角色"
                   style={{ width: '40%' }}
                   getPopupContainer={(triggerNode) => triggerNode.parentNode}>
@@ -199,7 +199,9 @@ function RbacConfig(props: RbacConfigProps) {
                 <label>配置方式</label>
                 <Radio.Group defaultValue={configType} onChange={onChangeConfigType}>
                   <Radio value="FormConfig">表单配置</Radio>
-                  <Radio value="InputJson">输入JSON配置</Radio>
+                  <Radio value="InputJson" disabled>
+                    输入JSON配置
+                  </Radio>
                 </Radio.Group>
               </Col>
               <Col span={24} className={styles['company-selector']}>
@@ -223,10 +225,10 @@ function RbacConfig(props: RbacConfigProps) {
                             }
                             name="BlockInfo">
                             <Radio.Group>
-                              <Radio className={styles.radio} value="All">
+                              <Radio className={styles.radio} value={AccessScope.ALL}>
                                 可查看网络下所有区块
                               </Radio>
-                              <Radio className={styles.radio} value="None">
+                              <Radio className={styles.radio} value={AccessScope.NONE}>
                                 不能查看区块信息
                               </Radio>
                             </Radio.Group>
@@ -242,13 +244,13 @@ function RbacConfig(props: RbacConfigProps) {
                             }
                             name="Transaction">
                             <Radio.Group>
-                              <Radio className={styles.radio} value="All">
+                              <Radio className={styles.radio} value={AccessScope.ALL}>
                                 可查看网络下所有交易
                               </Radio>
-                              <Radio className={styles.radio} value="Own">
+                              <Radio className={styles.radio} value={AccessScope.SELF}>
                                 只能查看自己创建的交易
                               </Radio>
-                              <Radio className={styles.radio} value="None">
+                              <Radio className={styles.radio} value={AccessScope.NONE}>
                                 不能查看网络下的交易（不推荐）
                               </Radio>
                             </Radio.Group>
@@ -264,13 +266,13 @@ function RbacConfig(props: RbacConfigProps) {
                             }
                             name="viewChaincode">
                             <Radio.Group onChange={onChangeViewChaincode}>
-                              <Radio className={styles.radio} value="All">
+                              <Radio className={styles.radio} value={AccessScope.ALL}>
                                 可查看网络下所有合约（不推荐）
                               </Radio>
-                              <Radio className={styles.radio} value="InChannel">
+                              <Radio className={styles.radio} value={AccessScope.CHANNEL}>
                                 只能查看组织所属通道下的合约
                               </Radio>
-                              <Radio className={styles.radio} value="Own">
+                              <Radio className={styles.radio} value={AccessScope.SELF}>
                                 只能查看自己创建的合约
                               </Radio>
                             </Radio.Group>
@@ -286,12 +288,12 @@ function RbacConfig(props: RbacConfigProps) {
                             }
                             name="downloadChaincode">
                             <Radio.Group>
-                              {viewChaincode !== 'Own' && (
-                                <Radio className={styles.radio} value="InChannel">
+                              {viewChaincode !== AccessScope.SELF && (
+                                <Radio className={styles.radio} value={AccessScope.CHANNEL}>
                                   可下载通道下的所有合约
                                 </Radio>
                               )}
-                              <Radio className={styles.radio} value="Own">
+                              <Radio className={styles.radio} value={AccessScope.SELF}>
                                 只可下载自己创建的合约
                               </Radio>
                             </Radio.Group>
@@ -305,24 +307,24 @@ function RbacConfig(props: RbacConfigProps) {
                                 <span className={styles['form-label']}>合约（调用）</span>
                               </>
                             }
-                            className={invokeChaincodeCustom === 'Custom' ? styles['inline-form-item'] : ''}
+                            className={invokeChaincodeCustom === AccessScope.CUSTOM ? styles['inline-form-item'] : ''}
                             name="invokeChaincode">
                             <Radio.Group onChange={onChangeInvokeChaincode}>
                               {viewChaincode !== 'Own' && (
-                                <Radio className={styles.radio} value="InChannel">
+                                <Radio className={styles.radio} value={AccessScope.CHANNEL}>
                                   可调用通道下安装合约
                                 </Radio>
                               )}
-                              <Radio className={styles.radio} value="None">
+                              <Radio className={styles.radio} value={AccessScope.NONE}>
                                 禁止调用合约
                               </Radio>
-                              {/* <Radio className={styles.radio} value="Custom">
+                              {/* <Radio className={styles.radio} value={AccessScope.CUSTOM}>
                                 自定义可调用的合约
                               </Radio> */}
                             </Radio.Group>
                           </Item>
                         </Col>
-                        {invokeChaincodeCustom === 'Custom' && (
+                        {invokeChaincodeCustom === AccessScope.CUSTOM && (
                           <Col span={24} className={styles['dynamic-form-item']}>
                             <Item
                               name="invokeChaincodeSubject"
@@ -372,6 +374,5 @@ function RbacConfig(props: RbacConfigProps) {
 export default connect(({ User, RBAC, loading }: ConnectState) => ({
   User,
   RBAC,
-  configLoading: loading.effects['RBAC/setConfig'],
-  resetLoading: loading.effects['RBAC/resetConfig']
+  configLoading: loading.effects['RBAC/configRbac']
 }))(RbacConfig);

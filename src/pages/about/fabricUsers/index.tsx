@@ -195,7 +195,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
     <div className="page-wrapper">
       <Spin spinning={downloading} tip="下载中...">
         <PageTitle
-          label="Fabric用户管理"
+          label="Fabric角色管理"
           extra={
             <Button type="primary" onClick={onClickCreate}>
               新增Fabric角色

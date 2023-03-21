@@ -38,15 +38,15 @@ export async function getRbacConfigWithRole(params: BasicApiParams & { roleName:
 }
 
 /**
- * 添加配置 角色
+ * 创建访问策略
  */
-export async function setConfig(params: RbacRole & { networkName: string }) {
+export async function createRbac(params: RbacRole & { networkName: string }) {
   return request(`/network/${params.networkName}/accessPolicy/create`, { method: 'POST', body: params });
 }
 
 /**
- * 输入JSON配置访问策略
+ * 配置访问策略
  */
-export async function setConfigByJson(params: RbacRole & { networkName: string }) {
-  return request(`/network/${params.networkName}/accessPolicy/createByJson`, { method: 'POST', body: params });
+export async function configRbac(params: RbacRole & { networkName: string }) {
+  return request(`/network/${params.networkName}/accessPolicy/configure`, { method: 'POST', body: params });
 }

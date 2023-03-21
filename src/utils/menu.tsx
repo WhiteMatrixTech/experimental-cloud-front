@@ -224,7 +224,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuPid: RootMenuId,
     menuHref: '/about/fabricUsers',
     menuIcon: <SolutionOutlined />,
-    menuName: 'Fabric用户管理',
+    menuName: 'Fabric角色管理',
     accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: []
   },
@@ -233,7 +233,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuPid: RootMenuId,
     menuHref: '/about/rbac',
     menuIcon: <SafetyCertificateOutlined />,
-    menuName: '访问角色管理',
+    menuName: '访问策略管理',
     accessRole: [Roles.ADMIN],
     subMenus: []
   }

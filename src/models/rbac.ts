@@ -1,7 +1,7 @@
 import * as API from '../services/rbac';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
-import { ChainCodeIndex, UserAccessPolicy } from '~/pages/about/rbac/_config';
+import { UserAccessPolicy } from '~/pages/about/rbac/_config';
 
 export type RbacRole = {
   roleName: string;
@@ -11,8 +11,8 @@ export type RbacRole = {
 export type RBACModelState = {
   roleList: Array<RbacRole>;
   roleNameList: Array<string>;
-  chaincodeList: Array<ChainCodeIndex>;
   rbacPolicy: RbacRole | null;
+  chaincodeList: any[];
 };
 
 export type RBACModelType = {
@@ -23,9 +23,8 @@ export type RBACModelType = {
     getRoleNameList: Effect;
     getChainCodeList: Effect;
     getMyselfChainCodeList: Effect;
-    getRbacConfigWithRole: Effect;
-    setConfig: Effect;
-    setConfigByJson: Effect;
+    createRbac: Effect;
+    configRbac: Effect;
   };
   reducers: {
     common: Reducer<RBACModelState>;
@@ -38,108 +37,95 @@ const RBACModel: RBACModelType = {
   state: {
     roleList: [], // 角色列表
     roleNameList: [], // 角色名列表
-    chaincodeList: [], // 合约列表
-    rbacPolicy: null,
+    chaincodeList: [],
+    rbacPolicy: null
   },
 
   effects: {
-    *getRoleList({ payload }, { call, put }) {
+    *getRoleList({ payload }, { call, put }): any {
       const res = yield call(API.getRoleList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            roleList: result,
-          },
+            roleList: result
+          }
         });
         return result;
       }
     },
 
-    *getRoleNameList({ payload }, { call, put }) {
+    *getRoleNameList({ payload }, { call, put }): any {
       const res = yield call(API.getRoleNameList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            roleNameList: result,
-          },
+            roleNameList: result
+          }
         });
         return result;
       }
     },
 
-    *getChainCodeList({ payload }, { call, put }) {
+    *getChainCodeList({ payload }, { call, put }): any {
       const res = yield call(API.getChaincodeList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            chaincodeList: result,
-          },
+            chaincodeList: result
+          }
         });
       }
     },
 
-    *getMyselfChainCodeList({ payload }, { call, put }) {
+    *getMyselfChainCodeList({ payload }, { call, put }): any {
       const res = yield call(API.getMyselfChainCodeList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            chaincodeList: result,
-          },
+            chaincodeList: result
+          }
         });
       }
     },
 
-    *getRbacConfigWithRole({ payload }, { call, put }) {
-      const res = yield call(API.getRbacConfigWithRole, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok' && result) {
-        yield put({
-          type: 'common',
-          payload: {
-            rbacPolicy: result,
-          },
-        });
-      }
-    },
-
-    *setConfig({ payload }, { call, put }) {
-      const res = yield call(API.setConfig, payload);
+    *createRbac({ payload }, { call, put }): any {
+      const res = yield call(API.createRbac, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '配置角色访问策略成功', top: 64, duration: 3 });
+        notification.success({ message: result.msg || '创建角色访问策略成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '配置角色访问策略失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '创建角色访问策略失败', top: 64, duration: 3 });
         return false;
       }
     },
 
-    *setConfigByJson({ payload }, { call, put }) {
-      const res = yield call(API.setConfigByJson, payload);
+    *configRbac({ payload }, { call, put }): any {
+      const res = yield call(API.configRbac, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '配置角色访问策略成功', top: 64, duration: 3 });
+        notification.success({ message: result.msg || '配置角色访问策略成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '配置角色访问策略失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '配置角色访问策略失败', top: 64, duration: 3 });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default RBACModel;

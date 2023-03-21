@@ -1,106 +1,76 @@
 import { RbacRole } from 'umi';
 
 // 访问行为
-export enum AccessAction {
-  Read = 'Read', // 查看
-  QueryMethod = 'QueryChainCodeMethod', // 链码调用方法
-  InvokeMethod = 'InvokeChainCodeMethod', // 链码查询方法
-  Download = 'Download', // 合约下载
+export enum AccessOperation {
+  QUERY = 'QUERY', // 查看
+  INTERACT = 'INTERACT', // 链码调用方法
+  DOWNLOAD = 'DOWNLOAD' // 合约下载
 }
 
 // 资源类型
-export enum AccessSubject {
-  BlockInfo = 'BlockInfo',
-  Transaction = 'Transaction',
-  ChainCode = 'ChainCode',
+export enum AccessResource {
+  BLOCK = 'BLOCK',
+  TRANSACTION = 'TRANSACTION',
+  CHAIN_CODE = 'CHAIN_CODE'
 }
 
 // 访问范围
-export enum AccessField {
-  All = 'All', // 可访问网络下所有资源
-  InChannel = 'InChannel', // 可访问通道下的所有资源
-  Own = 'Own', // 可访问自己创建的资源
-  None = 'None', // 任何资源无法访问
-  Custom = 'Custom', // 只能访问指定资源
+export enum AccessScope {
+  ALL = 'ALL', // 可访问网络下所有资源
+  CHANNEL = 'CHANNEL', // 可访问通道下的所有资源
+  SELF = 'SELF', // 可访问自己创建的资源
+  NONE = 'NONE', // 任何资源无法访问
+  CUSTOM = 'CUSTOM'
 }
 
-// chainCode唯一标识符
-export type ChainCodeIndex = {
-  networkName: string;
-  channelId: string;
-  chainCodeName: string;
-};
-
 export type UserAccessPolicy = {
-  action: AccessAction; // 访问行为
-  subject: AccessSubject; // 访问资源类型
-  field: AccessField; // 可访问的范围
-  custom?: ChainCodeIndex[]; // 如果自定义，则为链码的index
+  operation: AccessOperation; // 访问行为
+  resource: AccessResource; // 访问资源类型
+  scope: AccessScope; // 可访问的范围
 };
 
 export const DisabledRole = ['NetworkAdmin', 'NetworkMember', 'OrgMember'];
 
-export const defaultValue = {
-  BlockInfo: AccessField.All,
-  Transaction: AccessField.All,
-  viewChaincode: AccessField.InChannel,
-  downloadChaincode: AccessField.InChannel,
-  invokeChaincode: AccessField.InChannel,
+export const defaultAccessValue = {
+  BlockInfo: AccessScope.ALL,
+  Transaction: AccessScope.ALL,
+  viewChaincode: AccessScope.CHANNEL,
+  downloadChaincode: AccessScope.CHANNEL,
+  invokeChaincode: AccessScope.CHANNEL
 };
 
-export function setParams(formValue: any, roleName: string, networkName: string, chaincodeList: ChainCodeIndex[]) {
+export function setParams(formValue: any, roleName: string, networkName: string) {
   let params: RbacRole & { networkName: string } = {
     networkName,
     roleName,
     policy: [
       {
-        action: AccessAction.Read,
-        subject: AccessSubject.BlockInfo,
-        field: formValue.BlockInfo,
+        operation: AccessOperation.QUERY,
+        resource: AccessResource.BLOCK,
+        scope: formValue.BlockInfo
       },
       {
-        action: AccessAction.Read,
-        subject: AccessSubject.Transaction,
-        field: formValue.Transaction,
+        operation: AccessOperation.QUERY,
+        resource: AccessResource.TRANSACTION,
+        scope: formValue.Transaction
       },
       {
-        action: AccessAction.Read,
-        subject: AccessSubject.ChainCode,
-        field: formValue.viewChaincode,
+        operation: AccessOperation.QUERY,
+        resource: AccessResource.CHAIN_CODE,
+        scope: formValue.viewChaincode
       },
       {
-        action: AccessAction.Download,
-        subject: AccessSubject.ChainCode,
-        field: formValue.downloadChaincode,
+        operation: AccessOperation.DOWNLOAD,
+        resource: AccessResource.CHAIN_CODE,
+        scope: formValue.downloadChaincode
       },
       {
-        action: AccessAction.QueryMethod,
-        subject: AccessSubject.ChainCode,
-        field: formValue.invokeChaincode,
-      },
-      {
-        action: AccessAction.InvokeMethod,
-        subject: AccessSubject.ChainCode,
-        field: formValue.invokeChaincode,
-      },
-    ],
-  };
-  if (formValue.invokeChaincode === 'Custom') {
-    const customList: any[] = [];
-    formValue.invokeChaincodeSubject.forEach((chainCodeName: string) => {
-      const chaincode = chaincodeList.find((item: ChainCodeIndex) => item.chainCodeName === chainCodeName);
-      if (chaincode) {
-        const chaincodeInfo = {
-          networkName,
-          channelId: chaincode.channelId,
-          chainCodeName: chaincode.chainCodeName,
-        };
-        customList.push(chaincodeInfo);
+        operation: AccessOperation.INTERACT,
+        resource: AccessResource.CHAIN_CODE,
+        scope: formValue.invokeChaincode
       }
-    });
-    params.policy[4].custom = customList;
-    params.policy[5].custom = customList;
-  }
+    ]
+  };
   return params;
 }
 export interface configValueState {

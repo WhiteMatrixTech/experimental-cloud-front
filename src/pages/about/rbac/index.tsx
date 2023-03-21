@@ -113,11 +113,14 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <PageTitle label="访问角色管理" extra={
-        <Button type="primary" onClick={onClickCreateConfig}>
-          创建访问角色
-        </Button>
-      } />
+      <PageTitle
+        label="访问策略管理"
+        extra={
+          <Button type="primary" onClick={onClickCreateConfig}>
+            新增访问策略
+          </Button>
+        }
+      />
       <div className="page-content table-wrapper page-content-shadow">
         <Table
           rowKey="roleName"
