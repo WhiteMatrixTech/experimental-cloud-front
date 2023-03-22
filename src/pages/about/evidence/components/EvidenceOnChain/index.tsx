@@ -7,7 +7,7 @@ import { ConnectState } from '~/models/connect';
 
 const { Option } = Select;
 const editorOptions = {
-  selectOnLineNumbers: true,
+  selectOnLineNumbers: true
 };
 export interface EvidenceOnChainProps {
   visible: boolean;
@@ -27,7 +27,7 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
   useEffect(() => {
     dispatch({
       type: 'Contract/getChannelList',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, [dispatch, networkName]);
 
@@ -39,8 +39,8 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
           type: 'Evidence/evidenceOnChain',
           payload: {
             ...values,
-            networkName,
-          },
+            networkName
+          }
         });
         if (res) {
           onCancel('refresh');
@@ -80,8 +80,8 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
       </Button>,
       <Button key="submit" loading={addLoading} onClick={handleSubmit} type="primary">
         提交
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
@@ -94,14 +94,13 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
           rules={[
             {
               required: true,
-              message: '请选择通道',
-            },
-          ]}
-        >
+              message: '请选择通道'
+            }
+          ]}>
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择通道">
             {Contract.channelList.map((item) => (
-              <Option key={item.channelId} value={item.channelId}>
-                {item.channelId}
+              <Option key={item.channelName} value={item.channelName}>
+                {item.channelName}
               </Option>
             ))}
           </Select>
@@ -114,10 +113,9 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
           rules={[
             {
               validateTrigger: 'submit',
-              validator: checkJSON,
-            },
-          ]}
-        >
+              validator: checkJSON
+            }
+          ]}>
           <MonacoEditor
             width="100%"
             height="200"
@@ -138,5 +136,5 @@ export default connect(({ Contract, User, Evidence, loading }: ConnectState) => 
   Contract,
   User,
   Evidence,
-  addLoading: loading.effects['Evidence/evidenceOnChain'],
+  addLoading: loading.effects['Evidence/evidenceOnChain']
 }))(EvidenceOnChain);

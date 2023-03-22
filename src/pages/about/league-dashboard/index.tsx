@@ -265,9 +265,9 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       }
     });
     history.push({
-      pathname: `/about/transactions/${record.txId}`,
+      pathname: `/about/transactions/${record.txHash}`,
       query: {
-        channelId: record.txId
+        channelId: record.txHash
       }
     });
   };
@@ -292,8 +292,8 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     },
     {
       title: '生成时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
@@ -310,9 +310,9 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   ];
   const transactionColumns: ColumnsType<any> = [
     {
-      title: '交易ID',
-      dataIndex: 'txId',
-      key: 'txId',
+      title: '交易哈希',
+      dataIndex: 'txHash',
+      key: 'txHash',
       ellipsis: true,
       width: '17%'
     },
@@ -347,12 +347,12 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       render: (text, record: TransactionSchema) => (
         <Space size="small">
           {record.channelId || record.txMsp ? (
-            <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickTransactionDetail(e, record)}>
+            <a href={`/about/transactions/${record.txHash}`} onClick={(e) => onClickTransactionDetail(e, record)}>
               详情
             </a>
           ) : (
             <a
-              href={`/about/transactions/${record.txId}`}
+              href={`/about/transactions/${record.txHash}`}
               className="a-forbidden-style"
               onClick={(e) => e.preventDefault()}>
               详情
@@ -498,7 +498,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
         </div>
         <div className="page-content page-content-shadow table-wrapper">
           <Table
-            rowKey="txId"
+            rowKey="txHash"
             columns={transactionColumns}
             loading={qryTransactionLoading}
             dataSource={transactionList}

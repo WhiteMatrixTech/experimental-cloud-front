@@ -66,7 +66,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
   // 点击操作按钮, 进行二次确认
   const onClickToConfirm = (record: any, type: any) => {
     let tipTitle = '';
-    let callback = null;
+    let callback;
     switch (type) {
       case 'install':
         tipTitle = '安装';
@@ -117,13 +117,12 @@ const MyContract: React.FC<MyContractProps> = (props) => {
   const onDownLoadContract = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChainCodeSchema) => {
     e.preventDefault();
     const { networkName } = props.User;
-    const { accessToken, roleToken } = getTokenData();
+    const { accessToken } = getTokenData();
 
     const headers = {
       'Content-Type': 'text/plain',
-      Authorization: `Bearer ${accessToken}`,
-      RoleAuth: roleToken
-    };
+      Authorization: `Bearer ${accessToken}`
+    } as HeadersInit;
 
     setDownloading(true);
 
@@ -269,12 +268,12 @@ const MyContract: React.FC<MyContractProps> = (props) => {
               审核
             </span>
           )}
-          {record.chainCodeStatus === ChainCodeStatus.Verified && record.createdAt && (
+          {record.chainCodeStatus === ChainCodeStatus.APPROVED && record.createdAt && (
             <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'install')}>
               安装
             </span>
           )}
-          {record.chainCodeStatus === ChainCodeStatus.Installed && record.createdAt && (
+          {record.chainCodeStatus === ChainCodeStatus.INSTALLED && record.createdAt && (
             <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'approve')}>
               发布
             </span>
@@ -284,7 +283,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
               升级
             </span>
           )}
-          {record.chainCodeStatus === ChainCodeStatus.Approved && record.canInvoke && (
+          {record.chainCodeStatus === ChainCodeStatus.PUBLISHED && record.canInvoke && (
             <span role="button" className="table-action-span" onClick={() => onClickInvoke(record)}>
               调用
             </span>

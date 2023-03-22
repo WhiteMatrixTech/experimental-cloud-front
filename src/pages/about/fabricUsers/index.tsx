@@ -60,7 +60,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
   };
 
   const onClickCreate = () => {
-    if (myOrgInfo && myOrgInfo.orgStatus && myOrgInfo.orgStatus === OrgStatus.InUse) {
+    if (myOrgInfo && myOrgInfo.orgStatus && myOrgInfo.orgStatus === OrgStatus.IN_USE) {
       setCreateModalVisible(true);
     } else {
       message.warn('请先在【组织管理】中添加您的组织，并确保您的组织在使用中');
@@ -73,13 +73,11 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
 
   const onDownLoadSDK = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: FabricRoleSchema) => {
     e.preventDefault();
-    // token校验
-    const { accessToken, roleToken } = getTokenData();
+    const { accessToken } = getTokenData();
     let headers = {
       'Content-Type': 'text/plain',
-      Authorization: `Bearer ${accessToken}`,
-      RoleAuth: roleToken
-    };
+      Authorization: `Bearer ${accessToken}`
+    } as HeadersInit;
     setDownloading(true);
     request(
       `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRole/${record.orgName}/${record.userId}/getUserCcp`,

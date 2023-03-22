@@ -9,7 +9,7 @@ import isEmpty from 'lodash/isEmpty';
 import { PageTitle } from '~/components';
 import baseConfig from '~/utils/config';
 import styles from './index.less';
-import { statusList, validStatus } from './_config';
+import { MemberApprovalStatus, statusList } from './_config';
 import ConfigMemberRole from './components/ConfigMemberRole';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
@@ -118,9 +118,9 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     },
     {
       title: '可用状态',
-      dataIndex: 'isValid',
-      key: 'isValid',
-      render: (text) => validStatus[text],
+      dataIndex: 'disabled',
+      key: 'disabled',
+      render: (text: boolean) => (text ? '停用' : '启用'),
       ellipsis: true,
       width: 120
     },
@@ -131,7 +131,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       width: 120,
       render: (text, record: EnterpriseMemberSchema) => (
         <Space size="small">
-          {record.approvalStatus === 'pending' && (
+          {record.approvalStatus === MemberApprovalStatus.PENDING && (
             <>
               <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'agree')}>
                 通过
@@ -141,20 +141,20 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
               </span>
             </>
           )}
-          {record.isValid === 'valid' && record.approvalStatus === 'approved' && (
+          {!record.disabled && record.approvalStatus === MemberApprovalStatus.PASSED && (
             <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'invalidate')}>
               停用
             </span>
           )}
-          {record.isValid === 'invalid' && record.approvalStatus === 'approved' && (
+          {record.disabled && record.approvalStatus === MemberApprovalStatus.PASSED && (
             <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'validate')}>
               启用
             </span>
           )}
           <Dropdown overlay={renderMenu(record)} trigger={['click']}>
-            <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            <span className="ant-dropdown-link">
               更多 <DownOutlined />
-            </a>
+            </span>
           </Dropdown>
         </Space>
       )

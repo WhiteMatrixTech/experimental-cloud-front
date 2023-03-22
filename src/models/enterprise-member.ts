@@ -1,6 +1,7 @@
 import * as API from '../services/enterprise-member';
 import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
+import { MemberApprovalStatus } from '~/pages/about/enterprise-member/_config';
 
 export type EnterpriseMemberSchema = {
   companyName: string;
@@ -15,8 +16,8 @@ export type EnterpriseMemberSchema = {
   contactEmail: string;
   createTimestamp: Date;
   did: string;
-  approvalStatus: string;
-  isValid: string;
+  approvalStatus: MemberApprovalStatus;
+  disabled: boolean;
 };
 
 export type MemberModelState = {

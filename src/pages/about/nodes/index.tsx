@@ -30,7 +30,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   const [columns, setColumns] = useState<ColumnsType<any>>([]);
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
-  const [nodeRecord, setNodeRecord] = useState<PeerSchema>({});
+  const [nodeRecord, setNodeRecord] = useState<PeerSchema>();
   const [sshModalVisible, setSshModalVisible] = useState(false);
   const [createNodeVisible, setCreateNodeVisible] = useState(false);
   const [downloading, setDownloading] = useState(false);
@@ -71,12 +71,11 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
     (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: PeerSchema) => {
       e.preventDefault();
       // token校验
-      const { accessToken, roleToken } = getTokenData();
+      const { accessToken } = getTokenData();
 
       let headers = {
         'Content-Type': 'text/plain',
-        Authorization: `Bearer ${accessToken}`,
-        RoleAuth: roleToken
+        Authorization: `Bearer ${accessToken}`
       };
 
       setDownloading(true);

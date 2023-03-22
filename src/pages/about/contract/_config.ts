@@ -1,45 +1,43 @@
-export const chainCodeStatusInfo = {
-  Installing: { color: 'gold', text: '安装中' },
-  Installed: { color: '#87d068', text: '已安装' },
-  InstallationFailed: { color: 'red', text: '安装失败' },
-  Approving: { color: 'gold', text: '发布中' },
-  Approved: { color: '#87d068', text: '已发布' },
-  ApproveFailed: { color: 'red', text: '发布失败' },
-  Archived: { color: '#d9d9d9', text: '已归档' },
-  Pending: { color: 'gold', text: '待审核' },
-  Verified: { color: '#87d068', text: '审核通过' },
-  Rejected: { color: 'red', text: '被驳回' },
-};
-
-export enum ChainCodeStatus {
-  Installing = 'Installing',
-  Installed = 'Installed',
-  InstallationFailed = 'InstallationFailed',
-  Approving = 'Approving',
-  Approved = 'Approved',
-  ApproveFailed = 'ApproveFailed',
-  Archived = 'Archived',
-  Pending = 'Pending',
-  Verified = 'Verified',
-  Rejected = 'Rejected',
+enum EndorsementPolicyType {
+  DEFAULT = 'DEFAULT',
+  ANYONE = 'ANYONE',
+  SELECTED_ORGS = 'SELECTED_ORGS',
+  CUSTOM = 'CUSTOM '
 }
 
-export const VerifyChainCodeStatus = {
-  Pending: 'Pending', // 待审核
-  Verified: 'Verified', // 通过
-  Rejected: 'Rejected', // 驳回
+enum ChainCodeStatus {
+  INSTALLING = 'INSTALLING',
+  INSTALLED = 'INSTALLED',
+  INSTALL_FAILED = 'INSTALL_FAILED',
+  PUBLISHING = 'PUBLISHING',
+  PUBLISHED = 'PUBLISHED',
+  PUBLISH_FAILED = 'PUBLISH_FAILED',
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED'
+}
+
+export const chainCodeStatusInfo = {
+  [ChainCodeStatus.INSTALLING]: { color: 'gold', text: '安装中' },
+  [ChainCodeStatus.INSTALLED]: { color: '#87d068', text: '已安装' },
+  [ChainCodeStatus.INSTALL_FAILED]: { color: 'red', text: '安装失败' },
+  [ChainCodeStatus.PUBLISHING]: { color: 'gold', text: '发布中' },
+  [ChainCodeStatus.PUBLISHED]: { color: '#87d068', text: '已发布' },
+  [ChainCodeStatus.PUBLISH_FAILED]: { color: 'red', text: '发布失败' },
+  // Archived: { color: '#d9d9d9', text: '已归档' },
+  [ChainCodeStatus.PENDING]: { color: 'gold', text: '待审核' },
+  [ChainCodeStatus.APPROVED]: { color: '#87d068', text: '审核通过' },
+  [ChainCodeStatus.REJECTED]: { color: 'red', text: '被驳回' }
 };
 
-export const VerifyStatusList = [
-  VerifyChainCodeStatus.Pending,
-  VerifyChainCodeStatus.Rejected,
-  VerifyChainCodeStatus.Verified,
-];
+export const VerifyStatusList = [ChainCodeStatus.PENDING, ChainCodeStatus.APPROVED, ChainCodeStatus.REJECTED];
 
 export const UpdateStatusList = [
-  ChainCodeStatus.Pending,
-  ChainCodeStatus.Rejected,
-  ChainCodeStatus.Installed,
-  ChainCodeStatus.InstallationFailed,
-  ChainCodeStatus.Approved,
+  ChainCodeStatus.PENDING,
+  ChainCodeStatus.REJECTED,
+  ChainCodeStatus.INSTALLED,
+  ChainCodeStatus.INSTALL_FAILED,
+  ChainCodeStatus.PUBLISHED
 ];
+
+export { EndorsementPolicyType, ChainCodeStatus };

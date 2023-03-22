@@ -23,7 +23,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
 
   const [form] = Form.useForm();
   const [pageNum, setPageNum] = useState(1);
-  const [searchParams, setSearchParams] = useState({ txId: '' });
+  const [searchParams, setSearchParams] = useState({ txHash: '' });
 
   const getTransactionTotalDocs = useCallback(() => {
     const params = {
@@ -55,7 +55,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       .validateFields()
       .then((values) => {
         setPageNum(1);
-        setSearchParams({ txId: values.txId });
+        setSearchParams({ txHash: values.txHash });
       })
       .catch((info) => {
         console.log('校验失败:', info);
@@ -66,21 +66,21 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   const resetForm = () => {
     form.resetFields();
     setPageNum(1);
-    setSearchParams({ txId: '' });
+    setSearchParams({ txHash: '' });
   };
 
   //搜索列表
   const onSearchList = useCallback(() => {
-    const { txId } = searchParams;
+    const { txHash } = searchParams;
     const params = {
       networkName,
-      txId
+      txHash
     };
     dispatch({
       type: 'Transactions/onSearch',
       payload: params
     });
-  }, [dispatch, networkName, searchParams])
+  }, [dispatch, networkName, searchParams]);
 
   const onPageChange = (pageInfo: any): void => {
     setPageNum(pageInfo.current);
@@ -90,17 +90,17 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   const onClickDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: TransactionSchema): void => {
     e.preventDefault();
     history.push({
-      pathname: `/about/transactions/${record.txId}`,
+      pathname: `/about/transactions/${record.txHash}`,
       query: {
-        channelId: record.txId
+        channelId: record.txHash
       }
     });
   };
   const columns: ColumnsType<any> = [
     {
-      title: '交易ID',
-      dataIndex: 'txId',
-      key: 'txId',
+      title: '交易哈希',
+      dataIndex: 'txHash',
+      key: 'txHash',
       ellipsis: true,
       width: '20%'
     },
@@ -136,12 +136,12 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       render: (text, record: TransactionSchema) => (
         <Space size="small">
           {record.channelId || record.txMsp ? (
-            <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickDetail(e, record)}>
+            <a href={`/about/transactions/${record.txHash}`} onClick={(e) => onClickDetail(e, record)}>
               详情
             </a>
           ) : (
             <a
-              href={`/about/transactions/${record.txId}`}
+              href={`/about/transactions/${record.txHash}`}
               className="a-forbidden-style"
               onClick={(e) => e.preventDefault()}>
               详情
@@ -153,8 +153,8 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   ];
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
-    const { txId } = searchParams;
-    if (txId) {
+    const { txHash } = searchParams;
+    if (txHash) {
       onSearchList();
     } else {
       getTransactionList();
@@ -171,8 +171,8 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
             <Form form={form}>
               <Row>
                 <Col span={8}>
-                  <Form.Item label="交易ID" name="txId" initialValue="">
-                    <Input placeholder="输入交易ID" />
+                  <Form.Item label="交易哈希" name="txHash" initialValue="">
+                    <Input placeholder="输入交易哈希" />
                   </Form.Item>
                 </Col>
                 <Col span={8} offset={8} style={{ textAlign: 'right' }}>
@@ -187,7 +187,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
             </Form>
           </div>
           <Table
-            rowKey="txId"
+            rowKey="txHash"
             columns={columns}
             dataSource={transactionList}
             onChange={onPageChange}

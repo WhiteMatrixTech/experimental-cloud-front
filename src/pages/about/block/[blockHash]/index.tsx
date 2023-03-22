@@ -156,7 +156,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
         },
         {
           label: '前序哈希值',
-          value: blockDetail.prevBlockHash
+          value: blockDetail.prevHash
         },
         {
           label: '所属通道',

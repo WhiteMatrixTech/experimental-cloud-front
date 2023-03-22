@@ -48,7 +48,7 @@ const FabricRoleModel: FabricRoleModelType = {
   },
 
   effects: {
-    *getFabricRoleList({ payload }, { call, put }) {
+    *getFabricRoleList({ payload }, { call, put }): any {
       const res = yield call(API.getFabricRoleList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -62,7 +62,7 @@ const FabricRoleModel: FabricRoleModelType = {
       }
     },
 
-    *getFabricRoleListWithOrg({ payload }, { call, put }) {
+    *getFabricRoleListWithOrg({ payload }, { call, put }): any {
       const res = yield call(API.getFabricRoleListWithOrg, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -76,7 +76,7 @@ const FabricRoleModel: FabricRoleModelType = {
       }
     },
 
-    *getMyOrgInfo({ payload }, { call, put }) {
+    *getMyOrgInfo({ payload }, { call, put }): any {
       const res = yield call(getMyOrgInfo, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -89,7 +89,7 @@ const FabricRoleModel: FabricRoleModelType = {
       }
     },
 
-    *createFabricRole({ payload }, { call, put }) {
+    *createFabricRole({ payload }, { call }): any {
       const res = yield call(API.createFabricUser, payload);
       const { statusCode, result } = res;
       const succMessage = `新增Fabric角色成功`;

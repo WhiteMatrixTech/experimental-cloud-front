@@ -237,12 +237,12 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
       <PageTitle label="通道详情" />
       <div className="page-content">
         <Descriptions title="基本信息" className={style['channel-basic-info']}>
-          <Descriptions.Item label="通道ID">{location?.state?._id}</Descriptions.Item>
-          <Descriptions.Item label="通道名称">{location?.state?.channelId}</Descriptions.Item>
+          <Descriptions.Item label="通道名称">{location?.state?.channelName}</Descriptions.Item>
           <Descriptions.Item label="通道别名">{location?.state?.channelAliasName}</Descriptions.Item>
           <Descriptions.Item label="创建时间">
-            {location?.state?.createdAt ? moment(location?.state?.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''}
+            {location?.state?.createTime ? moment(location?.state?.createTime).format('YYYY-MM-DD HH:mm:ss') : ''}
           </Descriptions.Item>
+          <Descriptions.Item label="创建用户">{location?.state?.createUser}</Descriptions.Item>
           <Descriptions.Item label="状态">
             {location?.state?.channelStatus ? ChannelStatusTag[location?.state?.channelStatus].text : ''}
           </Descriptions.Item>

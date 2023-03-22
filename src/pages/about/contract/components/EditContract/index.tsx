@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Input, Select, Form, Switch, Button, Upload, Modal, notification } from 'antd';
 import { normFile, handleBeforeUpload } from './_func';
 import { ConnectState } from '~/models/connect';
-import { ChainCodeSchema } from '~/models/contract';
+import { ChainCodePackageMetaData, ChainCodeSchema } from '~/models/contract';
 import { Dispatch } from 'umi';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
 
@@ -13,17 +13,17 @@ const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
 
 const modalTitle = {
   new: '新增合约',
   modify: '修改合约',
-  upgrade: '升级合约',
+  upgrade: '升级合约'
 };
 export interface EditContractProps {
   visible: boolean;
@@ -38,7 +38,7 @@ export interface EditContractProps {
 
 function EditContract(props: EditContractProps) {
   const [form] = Form.useForm();
-  const [fileJson, setFileJson] = useState(null);
+  const [fileJson, setFileJson] = useState<ChainCodePackageMetaData | null>(null);
   const [initRequired, setInitRequired] = useState(false);
   const { visible, editParams, onCancel, operateType, dispatch, Contract, User, btnLoading = false } = props;
   const { myChannelList } = Contract;
@@ -57,12 +57,12 @@ function EditContract(props: EditContractProps) {
         params.networkName = networkName;
         params.endorsementPolicy = {
           policyType: 'Default',
-          orgsToApprove: [],
+          orgsToApprove: []
         };
         if (operateType === 'new') {
           dispatch({
             type: 'Contract/addContract',
-            payload: params,
+            payload: params
           }).then((res: any) => {
             if (res) {
               onCancel(true);
@@ -71,7 +71,7 @@ function EditContract(props: EditContractProps) {
         } else {
           dispatch({
             type: 'Contract/upgradeContract',
-            payload: params,
+            payload: params
           }).then((res: any) => {
             if (res) {
               onCancel(true);
@@ -91,7 +91,7 @@ function EditContract(props: EditContractProps) {
   const onChangeChannel = (value: any) => {
     dispatch({
       type: 'Contract/getOrgListWithChannel',
-      payload: { networkName, channelId: value },
+      payload: { networkName, channelId: value }
     });
     form.setFieldsValue({ endorsementOrgName: null });
   };
@@ -99,11 +99,11 @@ function EditContract(props: EditContractProps) {
   useEffect(() => {
     dispatch({
       type: 'Contract/getChannelListByOrg',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, [dispatch, networkName]);
 
-  const { accessToken, roleToken } = getTokenData();
+  const { accessToken } = getTokenData();
   const uploadProps = {
     name: 'file',
     listType: 'text',
@@ -112,10 +112,9 @@ function EditContract(props: EditContractProps) {
     multiple: false,
     beforeUpload: handleBeforeUpload,
     headers: {
-      Authorization: `Bearer ${accessToken}`,
-      RoleAuth: roleToken,
+      Authorization: `Bearer ${accessToken}`
     },
-    onChange(info: { file: { status: string; name: any; response: React.SetStateAction<null> } }) {
+    onChange(info: { file: { status: string; name: any; response: ChainCodePackageMetaData | any } }) {
       if (info.file.status === 'done') {
         notification.success({ message: `Succeed in uploading contract ${info.file.name}`, top: 64, duration: 3 });
         setFileJson(info.file.response);
@@ -123,11 +122,11 @@ function EditContract(props: EditContractProps) {
         notification.error({
           message: info.file.response ? info.file.response.message : '合约上传出错',
           top: 64,
-          duration: 3,
+          duration: 3
         });
         setFileJson(null);
       }
-    },
+    }
   };
 
   const checkChaincodeVersion = (_: any, value: number) => {
@@ -154,8 +153,8 @@ function EditContract(props: EditContractProps) {
       </Button>,
       <Button key="submit" loading={btnLoading} onClick={handleSubmit} disabled={!fileJson} type="primary">
         提交
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
@@ -174,17 +173,15 @@ function EditContract(props: EditContractProps) {
           rules={[
             {
               required: true,
-              message: '请选择通道',
-            },
-          ]}
-        >
+              message: '请选择通道'
+            }
+          ]}>
           <Select
             allowClear
             getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
             disabled={operateType !== 'new'}
             onChange={onChangeChannel}
-            placeholder="请选择通道"
-          >
+            placeholder="请选择通道">
             {myChannelList.map((item) => (
               <Option key={item.channelId} value={item.channelId}>
                 {item.channelId}
@@ -199,10 +196,9 @@ function EditContract(props: EditContractProps) {
           rules={[
             {
               required: true,
-              message: '请输入合约名称',
-            },
-          ]}
-        >
+              message: '请输入合约名称'
+            }
+          ]}>
           <Input placeholder="请输入合约名称" disabled={operateType !== 'new'} />
         </Item>
         {operateType !== 'new' && <Item label="当前版本">{editParams && editParams.chainCodeVersion}</Item>}
@@ -213,10 +209,9 @@ function EditContract(props: EditContractProps) {
           rules={[
             {
               validateTrigger: 'submit',
-              validator: checkChaincodeVersion,
-            },
-          ]}
-        >
+              validator: checkChaincodeVersion
+            }
+          ]}>
           <Input type="number" step={0.1} placeholder="请输入合约版本" />
         </Item>
         <Item
@@ -227,10 +222,9 @@ function EditContract(props: EditContractProps) {
           rules={[
             {
               required: true,
-              message: '请选择是否需要初始化',
-            },
-          ]}
-        >
+              message: '请选择是否需要初始化'
+            }
+          ]}>
           <Switch onChange={onChangeInit} />
         </Item>
         {initRequired && (
@@ -241,16 +235,15 @@ function EditContract(props: EditContractProps) {
             rules={[
               {
                 required: true,
-                message: '请输入参数列表',
+                message: '请输入参数列表'
               },
               {
                 min: 1,
                 max: 1000,
                 type: 'string',
-                message: '参数由1~1000位组成',
-              },
-            ]}
-          >
+                message: '参数由1~1000位组成'
+              }
+            ]}>
             <TextArea placeholder="请输入参数列表" />
           </Item>
         )}
@@ -263,10 +256,9 @@ function EditContract(props: EditContractProps) {
               min: 1,
               max: 100,
               type: 'string',
-              message: '合约描述由0~100个字符组成',
-            },
-          ]}
-        >
+              message: '合约描述由0~100个字符组成'
+            }
+          ]}>
           <TextArea placeholder="请输入合约描述" />
         </Item>
       </Form>
@@ -277,5 +269,5 @@ function EditContract(props: EditContractProps) {
 export default connect(({ Contract, User, loading }: ConnectState) => ({
   Contract,
   User,
-  btnLoading: loading.effects['Contract/addContract'] || loading.effects['Contract/upgradeContract'],
+  btnLoading: loading.effects['Contract/addContract'] || loading.effects['Contract/upgradeContract']
 }))(EditContract);

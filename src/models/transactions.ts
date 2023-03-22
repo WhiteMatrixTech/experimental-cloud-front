@@ -3,16 +3,19 @@ import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
 export type TransactionSchema = {
-  blockHash: string; // 区块哈希
-  chainCodeName: string; // 合约名称
-  channelId: string; // 通道ID
-  txArgs: string; // 交易参数
-  txMsp: string; // 交易组织
-  txEndorseMsp: string; // 背书组织
-  createdAt: string; // 创建时间
-  txId: string; // 交易id
-  leagueName: string; // 联盟名
-  networkName: string; // 网络名称
+  id: number;
+  blockHash: string;
+  chainCodeName: string;
+  channelId: string;
+  createdAt: string;
+  txArgs: string[];
+  txEndorseMsp: string[];
+  txMsp: string;
+  blockNumber: number;
+  txIndex: number;
+  txHash: string;
+  leagueName: string;
+  networkName: string;
 };
 
 export type TransactionsModelState = {

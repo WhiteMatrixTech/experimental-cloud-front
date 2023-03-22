@@ -2,25 +2,29 @@ import * as API from '../services/contract';
 import { getAllUserId } from '../services/fabric-role';
 import { notification } from 'antd';
 import type { Reducer, Effect, ChannelSchema } from 'umi';
-import { ChainCodeStatus } from '~/pages/about/contract/_config';
+import { ChainCodeStatus, EndorsementPolicyType } from '~/pages/about/contract/_config';
+
+export type ChainCodePackageMetaData = {
+  uri: string; // 合约包链接
+  label: string; // 合约包标签
+  language: string; // 合约包语言
+};
 
 export type ChainCodeSchema = {
+  canDownload: boolean;
+  canInvoke: boolean;
   networkName: string; // 网络名称
   channelId: string; // 通道名称
   chainCodeName: string; // 合约名称
   chainCodeVersion: string; // 合约版本
   chainCodeStatus: ChainCodeStatus; // 合约状态
   initArgs: string; // 初始参数
-  chainCodePackageMetaData: {
-    uri: string; // 合约包链接
-    label: string; // 合约包标签
-    language: string; // 合约包语言
-  };
+  chainCodePackageMetaData: ChainCodePackageMetaData;
   createOrgName?: string; // 创建组织名称
   initRequired: boolean; // 是否必需
   description: string; // 合约描述
   endorsementPolicy: {
-    policyType: 'Default';
+    policyType: EndorsementPolicyType;
     expression?: string;
     orgsToApprove: string[];
   };
@@ -39,9 +43,8 @@ export type ContractModelState = {
 
   invokeResult: {
     status: any;
-    message: { result: any; error: any }
-  }
-  | null;
+    message: { result: any; error: any };
+  } | null;
 
   allUserId: Array<string>; // fabric角色用户列表
 };
@@ -81,76 +84,76 @@ const ContractModel: ContractModelType = {
 
     invokeResult: null,
 
-    allUserId: [], // fabric角色用户列表
+    allUserId: [] // fabric角色用户列表
   },
 
   effects: {
-    *getChainCodeList({ payload }, { call, put }) {
+    *getChainCodeList({ payload }, { call, put }): any {
       const res = yield call(API.getChainCodeList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            myContractList: result.items,
-          },
+            myContractList: result.items
+          }
         });
       }
     },
 
-    *getChainCodeTotal({ payload }, { call, put }) {
+    *getChainCodeTotal({ payload }, { call, put }): any {
       const res = yield call(API.getChainCodeTotal, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            myContractTotal: result.count,
-          },
+            myContractTotal: result.count
+          }
         });
       }
     },
 
-    *getChannelList({ payload }, { call, put }) {
+    *getChannelList({ payload }, { call, put }): any {
       const res = yield call(API.getChannelList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            channelList: result,
-          },
+            channelList: result
+          }
         });
       }
     },
 
-    *getChannelListByOrg({ payload }, { call, put }) {
+    *getChannelListByOrg({ payload }, { call, put }): any {
       const res = yield call(API.getChannelListByOrg, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            myChannelList: result,
-          },
+            myChannelList: result
+          }
         });
       }
     },
 
-    *checkOrgInUse({ payload }, { call, put }) {
+    *checkOrgInUse({ payload }, { call, put }): any {
       const res = yield call(API.checkOrgInUse, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            userOrgInuse: result.result,
-          },
+            userOrgInuse: result.result
+          }
         });
       }
     },
 
-    *addContract({ payload }, { call, put }) {
+    *addContract({ payload }, { call }): any {
       const res = yield call(API.addContract, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -162,7 +165,7 @@ const ContractModel: ContractModelType = {
       }
     },
 
-    *verifyContract({ payload }, { call, put }) {
+    *verifyContract({ payload }, { call }): any {
       const res = yield call(API.verifyContract, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -174,7 +177,7 @@ const ContractModel: ContractModelType = {
       }
     },
 
-    *installContract({ payload }, { call, put }) {
+    *installContract({ payload }, { call }): any {
       const res = yield call(API.installContract, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -186,7 +189,7 @@ const ContractModel: ContractModelType = {
       }
     },
 
-    *upgradeContract({ payload }, { call, put }) {
+    *upgradeContract({ payload }, { call }): any {
       const res = yield call(API.upgradeContract, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -198,7 +201,7 @@ const ContractModel: ContractModelType = {
       }
     },
 
-    *releaseContract({ payload }, { call, put }) {
+    *releaseContract({ payload }, { call }): any {
       const res = yield call(API.releaseContract, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -210,20 +213,20 @@ const ContractModel: ContractModelType = {
       }
     },
 
-    *getAllUserId({ payload }, { call, put }) {
+    *getAllUserId({ payload }, { call, put }): any {
       const res = yield call(getAllUserId, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            allUserId: result,
-          },
+            allUserId: result
+          }
         });
       }
     },
 
-    *invokeChainCodeMethod({ payload }, { call, put }) {
+    *invokeChainCodeMethod({ payload }, { call, put }): any {
       const res = yield call(API.invokeChainCodeMethod, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -232,9 +235,9 @@ const ContractModel: ContractModelType = {
           payload: {
             invokeResult: {
               status: 'Success',
-              message: result || {},
-            },
-          },
+              message: result || {}
+            }
+          }
         });
         notification.success({ message: '调用合约成功', top: 64, duration: 3 });
         return true;
@@ -244,16 +247,16 @@ const ContractModel: ContractModelType = {
           payload: {
             invokeResult: {
               status: 'Failed',
-              message: { error: result.message },
-            },
-          },
+              message: { error: result.message }
+            }
+          }
         });
         notification.error({ message: result.message || '调用合约失败', top: 64, duration: 3 });
         return false;
       }
     },
 
-    *queryChainCodeMethod({ payload }, { call, put }) {
+    *queryChainCodeMethod({ payload }, { call, put }): any {
       const res = yield call(API.queryChainCodeMethod, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -262,9 +265,9 @@ const ContractModel: ContractModelType = {
           payload: {
             invokeResult: {
               status: 'Success',
-              message: result || {},
-            },
-          },
+              message: result || {}
+            }
+          }
         });
         notification.success({ message: '调用合约成功', top: 64, duration: 3 });
         return true;
@@ -274,21 +277,21 @@ const ContractModel: ContractModelType = {
           payload: {
             invokeResult: {
               status: 'Failed',
-              message: { error: result.message },
-            },
-          },
+              message: { error: result.message }
+            }
+          }
         });
         notification.error({ message: result.message || '调用合约失败', top: 64, duration: 3 });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default ContractModel;
