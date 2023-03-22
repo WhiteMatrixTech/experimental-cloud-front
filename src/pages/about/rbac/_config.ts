@@ -29,8 +29,6 @@ export type UserAccessPolicy = {
   scope: AccessScope; // 可访问的范围
 };
 
-export const DisabledRole = ['NetworkAdmin', 'NetworkMember', 'OrgMember'];
-
 export const defaultAccessValue = {
   BlockInfo: AccessScope.ALL,
   Transaction: AccessScope.ALL,

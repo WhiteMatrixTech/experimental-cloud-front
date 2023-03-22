@@ -119,8 +119,8 @@ const Block: React.FC<BlockProps> = (props) => {
     },
     {
       title: '生成时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
       render: (text) =>
         text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
     },

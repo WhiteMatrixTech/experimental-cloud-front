@@ -97,10 +97,8 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
     const params = {
       blockHash,
       networkName,
-      from: Number(moment(new Date()).format('x')),
       offset: (pageNum - 1) * pageSize,
-      limit: pageSize,
-      ascend: false
+      limit: pageSize
     };
     dispatch({
       type: 'Block/getTransactionList',
@@ -158,7 +156,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
         },
         {
           label: '前序哈希值',
-          value: blockDetail.previousHash
+          value: blockDetail.prevBlockHash
         },
         {
           label: '所属通道',
@@ -166,7 +164,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
         },
         {
           label: '生成时间',
-          value: moment(blockDetail.createdAt).format('YYYY-MM-DD HH:mm:ss')
+          value: moment(blockDetail.timestamp).format('YYYY-MM-DD HH:mm:ss')
         },
         {
           label: '交易笔数',
@@ -184,13 +182,11 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
       <Spin spinning={qryLoading}>
         <div className="page-content">
           <Descriptions column={2} title="基本信息" className="descriptions-wrapper">
-            {detailList.map(item =>
-              <Descriptions.Item
-                key={item.label}
-                label={item.label}>
+            {detailList.map((item) => (
+              <Descriptions.Item key={item.label} label={item.label}>
                 {item.value}
               </Descriptions.Item>
-            )}
+            ))}
           </Descriptions>
           <div className="table-wrapper page-content-shadow">
             <div className="table-header-title">交易数据</div>

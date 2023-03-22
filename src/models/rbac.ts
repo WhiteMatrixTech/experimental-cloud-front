@@ -100,10 +100,10 @@ const RBACModel: RBACModelType = {
       const res = yield call(API.createRbac, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.msg || '创建角色访问策略成功', top: 64, duration: 3 });
+        notification.success({ message: '新增角色访问策略成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.msg || '创建角色访问策略失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '新增角色访问策略失败', top: 64, duration: 3 });
         return false;
       }
     },
@@ -112,7 +112,7 @@ const RBACModel: RBACModelType = {
       const res = yield call(API.configRbac, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.msg || '配置角色访问策略成功', top: 64, duration: 3 });
+        notification.success({ message: '配置角色访问策略成功', top: 64, duration: 3 });
         return true;
       } else {
         notification.error({ message: result.msg || '配置角色访问策略失败', top: 64, duration: 3 });

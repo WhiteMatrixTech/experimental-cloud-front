@@ -2,11 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, history, RbacRole } from 'umi';
 import { Table, Space, Button } from 'antd';
+import { useRequest } from 'ahooks';
+import { ColumnsType } from 'antd/lib/table';
 import { PageTitle } from '~/components';
 import baseConfig from '~/utils/config';
-import { DisabledRole } from './_config';
 import { ConnectState } from '~/models/connect';
-import { ColumnsType } from 'antd/lib/table';
+import * as rbacApi from '~/services/rbac';
 
 export interface RbacConfigProps {
   RBAC: ConnectState['RBAC'];
@@ -22,6 +23,17 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
 
+  const { data: defaultRoleList, loading: queryDefaultRoleLoading } = useRequest(
+    async () => {
+      const res = await rbacApi.getDefaultRoleList({ networkName });
+      const { result } = res;
+      return result as string[];
+    },
+    {
+      refreshDeps: [networkName]
+    }
+  );
+
   const columns: ColumnsType<any> = [
     {
       title: '角色名称',
@@ -35,7 +47,7 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
       key: 'roleType',
       ellipsis: true,
       render: (_: any, record: RbacRole) => {
-        if (DisabledRole.includes(record.roleName)) {
+        if (defaultRoleList?.includes(record.roleName)) {
           return '默认角色';
         }
         return '自定义角色';
@@ -46,7 +58,7 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
       key: 'action',
       render: (text, record: RbacRole) => (
         <Space size="small">
-          {!DisabledRole.includes(record.roleName) && (
+          {!defaultRoleList?.includes(record.roleName) && (
             <a href={`/about/rbac/${record.roleName}/config`} onClick={(e) => onClickRbacConfig(e, record)}>
               配置
             </a>
@@ -125,7 +137,6 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
         <Table
           rowKey="roleName"
           columns={columns}
-          loading={qryLoading}
           dataSource={roleList}
           onChange={onPageChange}
           pagination={{
@@ -134,6 +145,7 @@ const RbacConfig: React.FC<RbacConfigProps> = (props) => {
             total: roleList.length,
             position: ['bottomCenter']
           }}
+          loading={qryLoading || queryDefaultRoleLoading}
         />
       </div>
     </div>

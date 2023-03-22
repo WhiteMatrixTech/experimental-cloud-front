@@ -33,7 +33,6 @@ export type MemberModelType = {
     getMemberTotalDocs: Effect;
     getPageListOfCompanyMember: Effect;
     getMemberDetail: Effect;
-    resetPassword: Effect;
     setStatusOfLeagueCompany: Effect;
     setCompanyApprove: Effect;
     getMemberRole: Effect;
@@ -52,62 +51,50 @@ const MemberModel: MemberModelType = {
     memberTotal: 0,
 
     memberDetail: {},
-    memberRole: '',
+    memberRole: ''
   },
 
   effects: {
-    *getMemberTotalDocs({ payload }, { call, put }) {
+    *getMemberTotalDocs({ payload }, { call, put }): any {
       const res = yield call(API.getMemberTotalDocs, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            memberTotal: result.count,
-          },
+            memberTotal: result.count
+          }
         });
       }
     },
 
-    *getPageListOfCompanyMember({ payload }, { call, put }) {
+    *getPageListOfCompanyMember({ payload }, { call, put }): any {
       const res = yield call(API.getPageListOfCompanyMember, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            memberList: result.items,
-          },
+            memberList: result.items
+          }
         });
       }
     },
 
-    *getMemberDetail({ payload }, { call, put }) {
+    *getMemberDetail({ payload }, { call, put }): any {
       const res = yield call(API.getMemberDetail, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            memberDetail: result,
-          },
+            memberDetail: result
+          }
         });
       }
     },
 
-    *resetPassword({ payload }, { call, put }) {
-      const res = yield call(API.resetPassword, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        notification.success({ message: '重置成员公司登陆密码成功', top: 64, duration: 3 });
-        return true;
-      } else {
-        notification.error({ message: result.message || '重置成员公司登陆密码失败', top: 64, duration: 3 });
-        return false
-      }
-    },
-
-    *setStatusOfLeagueCompany({ payload }, { call, put }) {
+    *setStatusOfLeagueCompany({ payload }, { call, put }): any {
       const res = yield call(API.setStatusOfLeagueCompany, payload);
       const { statusCode, result } = res;
       const { isValid } = payload;
@@ -122,7 +109,7 @@ const MemberModel: MemberModelType = {
       }
     },
 
-    *setCompanyApprove({ payload }, { call, put }) {
+    *setCompanyApprove({ payload }, { call }): any {
       const res = yield call(API.setCompanyApprove, payload);
       const { statusCode, result } = res;
       const { approvalStatus } = payload;
@@ -137,20 +124,20 @@ const MemberModel: MemberModelType = {
       }
     },
 
-    *getMemberRole({ payload }, { call, put }) {
+    *getMemberRole({ payload }, { call, put }): any {
       const res = yield call(API.getMemberRole, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
           type: 'common',
           payload: {
-            memberRole: result?.roleName || '',
-          },
+            memberRole: result?.roleName || ''
+          }
         });
       }
     },
 
-    *setRoleToMember({ payload }, { call, put }) {
+    *setRoleToMember({ payload }, { call, put }): any {
       const res = yield call(API.setRoleToMember, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -160,14 +147,14 @@ const MemberModel: MemberModelType = {
         notification.error({ message: result.message || '成员访问权限配置失败', top: 64, duration: 3 });
         return false;
       }
-    },
+    }
   },
 
   reducers: {
     common(state, action) {
       return { ...state, ...action.payload };
-    },
-  },
+    }
+  }
 };
 
 export default MemberModel;

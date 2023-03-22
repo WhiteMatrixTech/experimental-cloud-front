@@ -69,7 +69,7 @@ function ChannelManagement(props: ChannelManagementProps) {
   const onViewOrg = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
     e.preventDefault();
     history.push({
-      pathname: `/about/channels/${record.channelId}/organizationList`,
+      pathname: `/about/channels/${record.channelName}/organizationList`,
       state: { ...record }
     });
   };
@@ -78,7 +78,7 @@ function ChannelManagement(props: ChannelManagementProps) {
   const onViewPeer = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
     e.preventDefault();
     history.push({
-      pathname: `/about/channels/${record.channelId}/nodeList`,
+      pathname: `/about/channels/${record.channelName}/nodeList`,
       state: { ...record }
     });
   };
@@ -87,7 +87,7 @@ function ChannelManagement(props: ChannelManagementProps) {
   const onViewContract = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
     e.preventDefault();
     history.push({
-      pathname: `/about/channels/${record.channelId}/chaincodeList`,
+      pathname: `/about/channels/${record.channelName}/chaincodeList`,
       state: { ...record }
     });
   };
@@ -96,7 +96,7 @@ function ChannelManagement(props: ChannelManagementProps) {
   const onViewDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
     e.preventDefault();
     history.push({
-      pathname: `/about/channels/${record.channelId}/channelDetail`,
+      pathname: `/about/channels/${record.channelName}/channelDetail`,
       state: { ...record }
     });
   };
@@ -150,16 +150,16 @@ function ChannelManagement(props: ChannelManagementProps) {
       width: '22%',
       render: (text, record: ChannelSchema) => (
         <Space size="small">
-          <a href={`/about/channels/${record.channelId}/organizationList`} onClick={(e) => onViewOrg(e, record)}>
+          <a href={`/about/channels/${record.channelName}/organizationList`} onClick={(e) => onViewOrg(e, record)}>
             查看组织
           </a>
-          <a href={`/about/channels/${record.channelId}/nodeList`} onClick={(e) => onViewPeer(e, record)}>
+          <a href={`/about/channels/${record.channelName}/nodeList`} onClick={(e) => onViewPeer(e, record)}>
             查看节点
           </a>
-          <a href={`/about/channels/${record.channelId}/chaincodeList`} onClick={(e) => onViewContract(e, record)}>
+          <a href={`/about/channels/${record.channelName}/chaincodeList`} onClick={(e) => onViewContract(e, record)}>
             查看合约
           </a>
-          <a href={`/about/channels/${record.channelId}/channelDetail`} onClick={(e) => onViewDetail(e, record)}>
+          <a href={`/about/channels/${record.channelName}/channelDetail`} onClick={(e) => onViewDetail(e, record)}>
             详情
           </a>
         </Space>

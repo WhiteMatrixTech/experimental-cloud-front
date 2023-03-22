@@ -9,13 +9,6 @@ export async function getBlockTotalDocs(params: BasicApiParams) {
 }
 
 /**
- * 交易
- */
-export async function getTransactionsTotalDocs(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/transactions/totalCount`);
-}
-
-/**
  * 查询区块链列表
  */
 export async function getBlockList(params: BasicApiParams & AllPaginationParams) {
@@ -37,7 +30,7 @@ export async function getBlockDetail(params: GetTransactionParams) {
 export async function getTransactionList(params: GetTransactionParams & AllPaginationParams) {
   return request(`/network/${params.networkName}/transactions/queryWithBlockHash`, {
     method: 'POST',
-    body: params,
+    body: params
   });
 }
 
@@ -45,5 +38,5 @@ export async function getTransactionList(params: GetTransactionParams & AllPagin
  * 根据blockHash查询交易列表totalCount
  */
 export async function getTxCountByBlockHash(params: GetTransactionParams) {
-  return request(`/network/${params.networkName}/transactions/totalCount/${params.blockHash}`);
+  return request(`/network/${params.networkName}/transactions/${params.blockHash}`);
 }

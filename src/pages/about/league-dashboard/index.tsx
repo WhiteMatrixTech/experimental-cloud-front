@@ -14,6 +14,7 @@ import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
 import { StatisticValueStyle } from './_style';
+import { useRafInterval } from 'ahooks';
 
 export interface LeagueDashboardProps {
   Dashboard: ConnectState['Dashboard'];
@@ -43,7 +44,6 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   const { leagueName, networkName, userRole } = User;
   const { networkStatusInfo, transactionList, blockList, channelTotal } = Dashboard;
   const [createVisible, setCreateVisible] = useState(false);
-  const [pollInterval, setPollInterval] = useState<NodeJS.Timeout | null>(null);
 
   const statisticsList = useMemo(() => {
     return [
@@ -82,6 +82,20 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       }
     });
   }, [dispatch, networkName]);
+
+  // todo query
+  const clearInterval = useRafInterval(
+    () => {
+      if (networkStatusInfo?.status !== NetworkStatus.NotExist) {
+        getBlockList();
+        getStaticInfo();
+        getTransactionList();
+      }
+      getNetworkInfo();
+    },
+    10000,
+    { immediate: true }
+  );
 
   // 取消创建网络
   const onClickCancel = (res: any) => {
@@ -149,9 +163,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
         setTimeout(() => {
           localStorage.removeItem(LOCAL_STORAGE_ITEM_KEY.ROLE_TOKEN);
 
-          if (pollInterval) {
-            clearInterval(pollInterval);
-          }
+          clearInterval();
 
           dispatch({
             type: 'User/cleanNetworkInfo',
@@ -176,7 +188,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       cancelText: '取消',
       onOk: confirm
     });
-  }, [dispatch, networkName, pollInterval]);
+  }, [clearInterval, dispatch, networkName]);
 
   // 点击去创建通道
   const linkToCreateChannel = useCallback(
@@ -419,25 +431,6 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     userRole
   ]);
 
-  // todo query
-  useEffect(() => {
-    getBlockList();
-    getNetworkInfo();
-    getStaticInfo();
-    getTransactionList();
-    // 轮询
-    const interval = setInterval(() => {
-      if (networkStatusInfo?.status !== NetworkStatus.NotExist) {
-        getBlockList();
-        getStaticInfo();
-        getTransactionList();
-      }
-      getNetworkInfo();
-    }, 10000);
-    setPollInterval(interval);
-    return () => clearInterval(interval);
-  }, [getBlockList, getNetworkInfo, getStaticInfo, getTransactionList, networkStatusInfo?.status]);
-
   useEffect(() => {
     dispatch({
       type: 'Cluster/getClusterList',
@@ -451,7 +444,10 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       }
     });
     localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_PORTAL_SELECTED_MENU, '/about/league-dashboard');
-  }, [dispatch]);
+    return () => {
+      clearInterval();
+    };
+  }, [clearInterval, dispatch]);
 
   return (
     <div className="page-wrapper">

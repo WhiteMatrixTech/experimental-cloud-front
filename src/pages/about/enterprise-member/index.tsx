@@ -22,7 +22,7 @@ const initSearchObj = {
   companyName: '',
   createTimeStart: 0,
   createTimeEnd: 0,
-  approvalStatus: 'any'
+  approvalStatus: ''
 };
 
 export interface EnterpriseMemberProps {
@@ -49,11 +49,6 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
         <Menu.Item>
           <span role="button" onClick={() => onClickRbacConfig(record)}>
             配置访问权限
-          </span>
-        </Menu.Item>
-        <Menu.Item>
-          <span role="button" onClick={() => onClickToConfirm(record, 'resetPassword')}>
-            重置密码
           </span>
         </Menu.Item>
         <Menu.Item>
@@ -204,7 +199,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
           companyName: values.companyName,
           createTimeStart: isEmpty(values.createTime) ? 0 : Number(values.createTime[0].format('x')),
           createTimeEnd: isEmpty(values.createTime) ? 0 : Number(values.createTime[1].format('x')),
-          approvalStatus: values.approvalStatus === null ? 'any' : values.approvalStatus
+          approvalStatus: values.approvalStatus === null ? '' : values.approvalStatus
         };
         setQueryParams(params);
       })
@@ -228,7 +223,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   // 点击操作按钮, 进行二次确认
   const onClickToConfirm = (record: EnterpriseMemberSchema, type: string) => {
     let tipTitle = '';
-    let callback = () => { };
+    let callback = () => {};
     switch (type) {
       case 'validate':
         tipTitle = `启用成员 【${record.companyName}】 `;
@@ -246,10 +241,6 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
         tipTitle = `驳回成员 【${record.companyName}】 `;
         callback = () => approvalMember(record, 'rejected');
         break;
-      case 'resetPassword':
-        tipTitle = `为成员 【${record.companyName}】 重置密码`;
-        callback = () => resetPassword(record);
-        break;
       default:
         break;
     }
@@ -260,22 +251,6 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       okText: '确认',
       cancelText: '取消',
       onOk: callback
-    });
-  };
-
-  const resetPassword = (record: EnterpriseMemberSchema) => {
-    const params = {
-      networkName,
-      companyName: record.companyName
-    };
-    dispatch({
-      type: 'Member/resetPassword',
-      payload: params
-    }).then((res: boolean) => {
-      if (res) {
-        getMemberList();
-        getMemberTotalDocs();
-      }
     });
   };
 

@@ -10,6 +10,13 @@ export async function getRoleList(params: BasicApiParams & BasicPaginationParams
 }
 
 /**
+ * 获取网络默认角色名列表
+ */
+export async function getDefaultRoleList(params: BasicApiParams) {
+  return request(`/network/${params.networkName}/accessPolicy/defaultRoles`);
+}
+
+/**
  * 获取角色名列表
  */
 export async function getRoleNameList(params: BasicApiParams) {
