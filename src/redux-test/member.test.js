@@ -13,48 +13,48 @@ describe('member->test', () => {
           {
             type: 'common',
             payload: {
-              memberTotal: 1,
-            },
-          },
-        ),
+              memberTotal: 1
+            }
+          }
+        )
       ).toEqual({ ...state, memberTotal: 1 });
     });
   });
 
   describe('memberModel->effects', () => {
-    test('getMemberTotalDocs->test', () => {
-      const saga = effects.getMemberTotalDocs;
+    test('getMemberTotal->test', () => {
+      const saga = effects.getMemberTotal;
       const actionCreator = {
         type: 'common',
         payload: {
-          memberTotal: 0,
-        },
+          memberTotal: 0
+        }
       };
       const generator = saga(actionCreator, { call, put });
       let next = generator.next();
-      expect(next.value).toEqual(call(API.getMemberTotalDocs, actionCreator.payload));
+      expect(next.value).toEqual(call(API.getMemberTotal, actionCreator.payload));
       generator.next({
         statusCode: 'ok',
-        result: 9,
+        result: 9
       });
       next = generator.next();
       expect(next.done).toEqual(true);
     });
 
     test('getPageListOfCompanyMember->test', () => {
-      const saga = effects.getPageListOfCompanyMember;
+      const saga = effects.getMemberList;
       const actionCreator = {
         type: 'common',
         payload: {
-          memberList: [],
-        },
+          memberList: []
+        }
       };
       const generator = saga(actionCreator, { call, put });
       let next = generator.next();
       expect(next.value).toEqual(call(API.getPageListOfCompanyMember, actionCreator.payload));
       generator.next({
         statusCode: 'ok',
-        result: 9,
+        result: 9
       });
       next = generator.next();
       expect(next.done).toEqual(true);
@@ -63,13 +63,13 @@ describe('member->test', () => {
       const saga = effects.setStatusOfLeagueCompany;
       const actionCreator = {
         type: 'common',
-        payload: {},
+        payload: {}
       };
       const generator = saga(actionCreator, { call, put });
       let next = generator.next();
       expect(next.value).toEqual(call(API.setStatusOfLeagueCompany, actionCreator.payload));
       generator.next({
-        statusCode: 'ok',
+        statusCode: 'ok'
       });
       next = generator.next();
       expect(next.done).toEqual(true);
@@ -78,13 +78,13 @@ describe('member->test', () => {
       const saga = effects.setCompanyApprove;
       const actionCreator = {
         type: 'common',
-        payload: {},
+        payload: {}
       };
       const generator = saga(actionCreator, { call, put });
       let next = generator.next();
       expect(next.value).toEqual(call(API.setCompanyApprove, actionCreator.payload));
       generator.next({
-        statusCode: 'ok',
+        statusCode: 'ok'
       });
       next = generator.next();
       expect(next.done).toEqual(true);

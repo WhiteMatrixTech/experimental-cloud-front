@@ -19,10 +19,9 @@ const Option = Select.Option;
 const { RangePicker } = DatePicker;
 
 const initSearchObj = {
-  companyName: '',
-  createTimeStart: 0,
-  createTimeEnd: 0,
-  approvalStatus: ''
+  email: '',
+  applicationTimeStart: 0,
+  applicationTimeEnd: 0
 };
 
 export interface EnterpriseMemberProps {
@@ -48,13 +47,11 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       <Menu>
         <Menu.Item>
           <span role="button" onClick={() => onClickRbacConfig(record)}>
-            配置访问权限
+            配置访问策略
           </span>
         </Menu.Item>
         <Menu.Item>
-          <a
-            href={`/about/enterprise-member/${record.companyCertBusinessNumber}`}
-            onClick={(e) => onClickDetail(e, record)}>
+          <a href={`/about/member/${record.name}`} onClick={(e) => onClickDetail(e, record)}>
             详情
           </a>
         </Menu.Item>
@@ -65,53 +62,38 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   const columns: ColumnsType<any> = [
     {
       title: '用户名',
-      dataIndex: 'companyName',
-      key: 'companyName',
+      dataIndex: 'name',
+      key: 'name',
       ellipsis: true,
       fixed: 'left',
-      width: 160
+      width: 120
     },
     {
-      title: '联系人姓名',
-      dataIndex: 'contactName',
-      key: 'contactName',
+      title: '手机号',
+      dataIndex: 'phoneNo',
+      key: 'phoneNo',
       ellipsis: true,
       width: 120
     },
     {
-      title: '联系人手机号',
-      dataIndex: 'contactPhone',
-      key: 'contactPhone',
-      ellipsis: true,
-      width: 120
-    },
-    {
-      title: '联系人邮箱',
-      dataIndex: 'contactEmail',
-      key: 'contactEmail',
+      title: '邮箱',
+      dataIndex: 'email',
+      key: 'email',
       ellipsis: true,
       width: 180
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTimestamp',
-      key: 'createTimestamp',
-      render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
-      ellipsis: true,
-      width: 150
     },
     {
       title: '审批时间',
       dataIndex: 'approveTime',
       key: 'approveTime',
-      render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : ''),
+      render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--'),
       ellipsis: true,
       width: 150
     },
     {
       title: '审批状态',
-      dataIndex: 'approvalStatus',
-      key: 'approvalStatus',
+      dataIndex: 'status',
+      key: 'status',
       render: (text) => statusList[text],
       ellipsis: true,
       width: 120
@@ -131,7 +113,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       width: 120,
       render: (text, record: EnterpriseMemberSchema) => (
         <Space size="small">
-          {record.approvalStatus === MemberApprovalStatus.PENDING && (
+          {record.status === MemberApprovalStatus.PENDING && (
             <>
               <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'agree')}>
                 通过
@@ -141,18 +123,18 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
               </span>
             </>
           )}
-          {!record.disabled && record.approvalStatus === MemberApprovalStatus.PASSED && (
+          {!record.disabled && record.status === MemberApprovalStatus.PASSED && (
             <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'invalidate')}>
               停用
             </span>
           )}
-          {record.disabled && record.approvalStatus === MemberApprovalStatus.PASSED && (
+          {record.disabled && record.status === MemberApprovalStatus.PASSED && (
             <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'validate')}>
               启用
             </span>
           )}
-          <Dropdown overlay={renderMenu(record)} trigger={['click']}>
-            <span className="ant-dropdown-link">
+          <Dropdown overlay={renderMenu(record)} trigger={['hover', 'click']}>
+            <span role="button" className="table-action-span">
               更多 <DownOutlined />
             </span>
           </Dropdown>
@@ -161,14 +143,14 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     }
   ];
 
-  const getMemberTotalDocs = useCallback(() => {
+  const getMemberTotal = useCallback(() => {
     const params = {
       ...queryParams,
       networkName,
       from: Number(moment(new Date()).format('x'))
     };
     dispatch({
-      type: 'Member/getMemberTotalDocs',
+      type: 'Member/getMemberTotal',
       payload: params
     });
   }, [dispatch, networkName, queryParams]);
@@ -180,12 +162,10 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       ...queryParams,
       networkName,
       offset,
-      //isLeague: -1,
-      limit: pageSize,
-      from: Number(moment(new Date()).format('x'))
+      limit: pageSize
     };
     dispatch({
-      type: 'Member/getPageListOfCompanyMember',
+      type: 'Member/getMemberList',
       payload: params
     });
   }, [dispatch, networkName, pageNum, pageSize, queryParams]);
@@ -196,11 +176,14 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       .validateFields()
       .then((values) => {
         const params = {
-          companyName: values.companyName,
-          createTimeStart: isEmpty(values.createTime) ? 0 : Number(values.createTime[0].format('x')),
-          createTimeEnd: isEmpty(values.createTime) ? 0 : Number(values.createTime[1].format('x')),
-          approvalStatus: values.approvalStatus === null ? '' : values.approvalStatus
+          email: values.email,
+          applicationTimeStart: isEmpty(values.createTime) ? 0 : Number(values.createTime[0].format('x')),
+          applicationTimeEnd: isEmpty(values.createTime) ? 0 : Number(values.createTime[1].format('x')),
+          approvalStatus: values.approvalStatus
         };
+        if (!params.approvalStatus) {
+          delete params.approvalStatus;
+        }
         setQueryParams(params);
       })
       .catch((info) => {
@@ -226,20 +209,20 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
     let callback = () => {};
     switch (type) {
       case 'validate':
-        tipTitle = `启用成员 【${record.companyName}】 `;
-        callback = () => invalidateMember(record, 'valid');
+        tipTitle = `启用成员 【${record.name}】 `;
+        callback = () => invalidateMember(record, false);
         break;
       case 'invalidate':
-        tipTitle = `停用成员 【${record.companyName}】 `;
-        callback = () => invalidateMember(record, 'invalid');
+        tipTitle = `停用成员 【${record.name}】 `;
+        callback = () => invalidateMember(record, true);
         break;
       case 'agree':
-        tipTitle = `通过成员 【${record.companyName}】 `;
-        callback = () => approvalMember(record, 'approved');
+        tipTitle = `通过成员 【${record.name}】 `;
+        callback = () => approvalMember(record, true);
         break;
       case 'reject':
-        tipTitle = `驳回成员 【${record.companyName}】 `;
-        callback = () => approvalMember(record, 'rejected');
+        tipTitle = `驳回成员 【${record.name}】 `;
+        callback = () => approvalMember(record, false);
         break;
       default:
         break;
@@ -255,14 +238,14 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   };
 
   // 停用 & 启用 用户成员
-  const invalidateMember = (record: EnterpriseMemberSchema, isValid: string) => {
+  const invalidateMember = (record: EnterpriseMemberSchema, disable: boolean) => {
     const params = {
       networkName,
-      isValid,
-      companyName: record.companyName
+      disable,
+      email: record.email
     };
     dispatch({
-      type: 'Member/setStatusOfLeagueCompany',
+      type: 'Member/validateMember',
       payload: params
     }).then((res: any) => {
       if (res) {
@@ -272,14 +255,14 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   };
 
   // 通过 & 驳回 用户成员
-  const approvalMember = (record: EnterpriseMemberSchema, approvalStatus: string) => {
+  const approvalMember = (record: EnterpriseMemberSchema, passed: boolean) => {
     const params = {
       networkName,
-      approvalStatus,
-      companyName: record.companyName
+      passed,
+      email: record.email
     };
     dispatch({
-      type: 'Member/setCompanyApprove',
+      type: 'Member/approveMember',
       payload: params
     }).then((res: any) => {
       if (res) {
@@ -303,7 +286,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   const onClickDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: EnterpriseMemberSchema) => {
     e.preventDefault();
     history.push({
-      pathname: `/about/enterprise-member/${record.companyCertBusinessNumber}`,
+      pathname: `/about/member/${record.email}`,
       state: record
     });
   };
@@ -311,8 +294,8 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
     getMemberList();
-    getMemberTotalDocs();
-  }, [queryParams, pageNum, getMemberList, getMemberTotalDocs]);
+    getMemberTotal();
+  }, [queryParams, pageNum, getMemberList, getMemberTotal]);
 
   return (
     <div className="page-wrapper">
@@ -323,12 +306,12 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
             <Form form={form}>
               <Row gutter={24} justify="space-between">
                 <Col span={7}>
-                  <Item label="用户名" name="companyName" initialValue="">
-                    <Input placeholder="请输入用户名" />
+                  <Item label="用户邮箱" name="email" initialValue="">
+                    <Input placeholder="请输入用户邮箱" />
                   </Item>
                 </Col>
                 <Col span={7}>
-                  <Item label="创建时间" name="createTime" initialValue={[]}>
+                  <Item label="审批时间" name="createTime" initialValue={[]}>
                     <RangePicker
                       getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
                       style={{ width: '100%' }}
@@ -363,11 +346,10 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
           </div>
           <div className="table-wrapper page-content-shadow">
             <Table
-              rowKey="contactEmail"
+              rowKey="email"
               columns={columns}
               dataSource={memberList}
               onChange={onPageChange}
-              scroll={{ x: 1540, y: 300 }}
               pagination={{
                 pageSize,
                 total: memberTotal,
@@ -387,5 +369,5 @@ export default connect(({ User, Layout, Member, loading }: ConnectState) => ({
   User,
   Layout,
   Member,
-  qryLoading: loading.effects['Member/getPageListOfCompanyMember']
+  qryLoading: loading.effects['Member/getMemberList']
 }))(EnterpriseMember);

@@ -1,6 +1,6 @@
 import { getBlockList, getBlockTotalDocs } from '../services/block';
 import { getTransactionList, getTransactionTotalDocs } from '../services/transactions';
-import { getMemberTotalDocs } from '../services/enterprise-member';
+import { getMemberTotal } from '../services/member';
 import { getChannelList } from '../services/channel';
 import { getChainCodeList } from '../services/contract';
 import { getMyNetworkList } from '../services/user';
@@ -176,13 +176,10 @@ const DashboardModel: DashboardModelType = {
       const [res1, res2, res3, res4, res5] = yield all([
         call(getBlockTotalDocs, payload),
         call(getTransactionTotalDocs, payload),
-        call(getMemberTotalDocs, {
+        call(getMemberTotal, {
           ...payload,
-          approvalStatus: 'any',
-          companyName: '',
           createTimeEnd: 0,
-          createTimeStart: 0,
-          from: Number(moment(new Date()).format('x'))
+          createTimeStart: 0
         }),
         call(getChannelList, payload),
         call(getChainCodeList, {

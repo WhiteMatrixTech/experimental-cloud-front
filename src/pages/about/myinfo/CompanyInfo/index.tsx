@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Descriptions, Spin } from 'antd';
 import { PageTitle } from '~/components';
-import { statusList } from '../../enterprise-member/_config';
+import { statusList } from '../../member/_config';
 import { injectIntl, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { DetailViewAttr } from '~/utils/types';
@@ -65,22 +65,18 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
       <Spin spinning={qryLoading}>
         <div className="page-content">
           <Descriptions title="基本信息" className="descriptions-wrapper">
-            {basicInfo.map(item =>
-              <Descriptions.Item
-                key={item.label}
-                label={item.label}>
+            {basicInfo.map((item) => (
+              <Descriptions.Item key={item.label} label={item.label}>
                 {item.value}
               </Descriptions.Item>
-            )}
+            ))}
           </Descriptions>
           <Descriptions title="联系信息" className="descriptions-wrapper">
-            {contactsInfo.map(item =>
-              <Descriptions.Item
-                key={item.label}
-                label={item.label}>
+            {contactsInfo.map((item) => (
+              <Descriptions.Item key={item.label} label={item.label}>
                 {item.value}
               </Descriptions.Item>
-            )}
+            ))}
           </Descriptions>
         </div>
       </Spin>

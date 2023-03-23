@@ -137,9 +137,9 @@ const NetworkMenuList: NetworkMenuProps[] = [
     subMenus: []
   },
   {
-    id: 'enterprise-member',
+    id: 'member',
     menuPid: RootMenuId,
-    menuHref: '/about/enterprise-member',
+    menuHref: '/about/member',
     menuIcon: <TeamOutlined />,
     menuName: '成员管理',
     accessRole: [Roles.ADMIN],

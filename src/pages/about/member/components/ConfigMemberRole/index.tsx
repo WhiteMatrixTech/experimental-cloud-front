@@ -7,50 +7,40 @@ import { ConnectState } from '~/models/connect';
 const { Option } = Select;
 const formItemLayout = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 16 },
+  wrapperCol: { span: 16 }
 };
 export interface ConfigMemberRoleProps {
   visible: boolean;
   onCancel: () => void;
   dispatch: Dispatch;
   RBAC: ConnectState['RBAC'];
-  Member: ConnectState['Member'];
   User: ConnectState['User'];
   record: EnterpriseMemberSchema | null;
   setLoading: boolean;
 }
 function ConfigMemberRole(props: ConfigMemberRoleProps) {
-  const { visible, onCancel, dispatch, RBAC, Member, User, record, setLoading = false } = props;
+  const { visible, onCancel, dispatch, RBAC, User, record, setLoading = false } = props;
   const { networkName } = User;
-  const { memberRole } = Member;
 
   const [form] = Form.useForm();
 
   useEffect(() => {
     dispatch({
       type: 'RBAC/getRoleNameList',
-      payload: { networkName },
+      payload: { networkName }
     });
-    dispatch({
-      type: 'Member/getMemberRole',
-      payload: { networkName, companyName: record?.companyName },
-    });
-  }, [dispatch, networkName, record?.companyName]);
-
-  useEffect(() => {
-    form.setFieldsValue({ companyName: record?.companyName, roleName: memberRole });
-  }, [form, memberRole, record?.companyName]);
+  }, [dispatch, networkName]);
 
   const handleSubmit = () => {
     form
       .validateFields()
       .then(async (values) => {
         const res = await dispatch({
-          type: 'Member/setRoleToMember',
+          type: 'Member/configUserRole',
           payload: {
             ...values,
-            networkName,
-          },
+            networkName
+          }
         });
         if (res) {
           onCancel();
@@ -65,7 +55,7 @@ function ConfigMemberRole(props: ConfigMemberRoleProps) {
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '配置访问权限',
+    title: '配置访问策略',
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
@@ -73,26 +63,29 @@ function ConfigMemberRole(props: ConfigMemberRoleProps) {
       </Button>,
       <Button key="submit" loading={setLoading} onClick={handleSubmit} type="primary">
         配置
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
-        <Form.Item label="用户名" name="companyName" initialValue={record?.companyName}>
+        <Form.Item label="用户名称" name="name" initialValue={record?.name}>
+          <Input disabled />
+        </Form.Item>
+        <Form.Item label="用户邮箱" name="email" initialValue={record?.email}>
           <Input disabled />
         </Form.Item>
         <Form.Item
           label="访问角色"
           name="roleName"
+          initialValue={record?.roleName}
           rules={[
             {
               required: true,
-              message: '请选择访问角色',
-            },
-          ]}
-        >
+              message: '请选择访问角色'
+            }
+          ]}>
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择访问角色">
             {RBAC.roleNameList.map((role) => (
               <Option key={role} value={role}>
@@ -106,10 +99,9 @@ function ConfigMemberRole(props: ConfigMemberRoleProps) {
   );
 }
 
-export default connect(({ Contract, User, RBAC, Member, loading }: ConnectState) => ({
+export default connect(({ Contract, User, RBAC, loading }: ConnectState) => ({
   Contract,
   User,
   RBAC,
-  Member,
-  setLoading: loading.effects['Member/setRoleToMember'],
+  setLoading: loading.effects['Member/configUserRole']
 }))(ConfigMemberRole);

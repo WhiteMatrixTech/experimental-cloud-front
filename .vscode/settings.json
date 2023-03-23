@@ -9,6 +9,7 @@
     ​"extensions": [".js", ".jsx", ".vue", ".ts", ".tsx"]
   },
   "cSpell.words": [
-    "etcdraft"
+    "etcdraft",
+    "Usci"
   ],
 }

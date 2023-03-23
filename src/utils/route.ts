@@ -67,10 +67,10 @@ export function getRoutes(): RouteProps[] {
         //   path: "/about/did/did-query",
         // },
         {
-          path: '/about/enterprise-member'
+          path: '/about/member'
         },
         {
-          path: '/about/enterprise-member/:memberDetail'
+          path: '/about/member/:memberDetail'
         },
         {
           path: '/about/evidence'

@@ -2,7 +2,7 @@ import * as API from '../services/my-info';
 import { checkOrgInUse } from '../services/contract';
 import type { Reducer, Effect } from 'umi';
 import { NetworkStatus } from '~/utils/networkStatus';
-import { MemberApprovalStatus } from '~/pages/about/enterprise-member/_config';
+import { MemberApprovalStatus } from '~/pages/about/member/_config';
 import { OrgStatus } from '~/pages/about/organizations/_config';
 
 export type MyLeagueSchema = {
@@ -70,7 +70,7 @@ const MyInfoModel: MyInfoModelType = {
   },
 
   effects: {
-    *getMyLeagueInfo({ payload }, { call, put }) {
+    *getMyLeagueInfo({ payload }, { call, put }): any {
       const res = yield call(API.getMyLeagueInfo, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -83,7 +83,7 @@ const MyInfoModel: MyInfoModelType = {
       }
     },
 
-    *checkOrgInUse({ payload }, { call, put }) {
+    *checkOrgInUse({ payload }, { call, put }): any {
       const res = yield call(checkOrgInUse, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -91,7 +91,7 @@ const MyInfoModel: MyInfoModelType = {
       }
     },
 
-    *getMyCompanyInfo({ payload }, { call, put }) {
+    *getMyCompanyInfo({ payload }, { call, put }): any {
       const res = yield call(API.getMyCompanyInfo, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -104,7 +104,7 @@ const MyInfoModel: MyInfoModelType = {
       }
     },
 
-    *getMyOrgInfo({ payload }, { call, put }) {
+    *getMyOrgInfo({ payload }, { call, put }): any {
       const res = yield call(API.getMyOrgInfo, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {

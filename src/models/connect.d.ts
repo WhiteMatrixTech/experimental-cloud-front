@@ -8,7 +8,7 @@ import { CustomImageModelState } from './custom-image';
 import { DashboardModelState } from './dashboard';
 import { DIDModelState } from './did';
 import { ElasticServerModelState } from './elastic-cloud-server';
-import { MemberModelState } from './enterprise-member';
+import { MemberModelState } from './member';
 import { EvidenceModelState } from './evidence';
 import { FabricRoleModelState } from './fabric-role';
 import { LayoutModelState } from './layout';
