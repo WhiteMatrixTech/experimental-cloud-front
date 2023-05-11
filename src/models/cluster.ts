@@ -7,6 +7,14 @@ export type ClusterSchema = {
   name: string;
   description: string;
   kubeConfig: string;
+  domain?: string;
+  storageClass: string;
+  ordererCaCapacity?: string;
+  ordererNodeCapacity?: string;
+  peerCaCapacity?: string;
+  peerNodeCapacity?: string;
+  peerDbCapacity?: string;
+  peerChaincodeCapacity?: string;
   createTime: Date;
 };
 
