@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 
 const { Option } = Select;
 
-type Unit = 'Mi' | 'M' | 'Gi' | 'G';
+export type CapacityUnit = 'Mi' | 'M' | 'Gi' | 'G';
 
 export interface IUnitValue {
   number?: number;
-  unit?: Unit;
+  unit?: CapacityUnit;
 }
 
 interface CapacityInputProps {
@@ -17,9 +17,9 @@ interface CapacityInputProps {
 
 const CapacityInput: React.FC<CapacityInputProps> = ({ value = {}, onChange }) => {
   const [number, setNumber] = useState<number>();
-  const [unit, setUnit] = useState<Unit>('Gi');
+  const [unit, setUnit] = useState<CapacityUnit>('Gi');
 
-  const triggerChange = (changedValue: { number?: number; unit?: Unit }) => {
+  const triggerChange = (changedValue: { number?: number; unit?: CapacityUnit }) => {
     onChange?.({ number, unit, ...value, ...changedValue });
   };
 
@@ -28,7 +28,7 @@ const CapacityInput: React.FC<CapacityInputProps> = ({ value = {}, onChange }) =
     triggerChange({ number: value });
   };
 
-  const onUnitChange = (newUnit: Unit) => {
+  const onUnitChange = (newUnit: CapacityUnit) => {
     if (!('unit' in value)) {
       setUnit(newUnit);
     }

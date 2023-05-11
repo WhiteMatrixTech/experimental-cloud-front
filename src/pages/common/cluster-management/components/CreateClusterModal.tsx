@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { Dispatch, ClusterSchema } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { CapacityInput } from '~/components';
-import { IUnitValue } from '~/components/CapacityInput';
+import { IUnitValue, CapacityUnit } from '~/components/CapacityInput';
 
 const { Item } = Form;
 const { TextArea } = Input;
@@ -64,7 +64,6 @@ function CreateClusterModal(props: CreateClusterModalProps) {
     form
       .validateFields()
       .then(async (values: IFormData) => {
-        console.log('values', values);
         const {
           name,
           description,
@@ -132,7 +131,35 @@ function CreateClusterModal(props: CreateClusterModalProps) {
   };
 
   useEffect(() => {
-    form.setFieldsValue(clusterRecord);
+    if (clusterRecord) {
+      const {
+        name,
+        description,
+        kubeConfig,
+        domain,
+        storageClass,
+        ordererCaCapacity,
+        ordererNodeCapacity,
+        peerCaCapacity,
+        peerNodeCapacity,
+        peerDbCapacity,
+        peerChaincodeCapacity
+      } = clusterRecord;
+      const newClusterRecode: IFormData = {
+        name,
+        description,
+        kubeConfig,
+        domain,
+        storageClass,
+        ordererCaCapacity: splitCapacityValue(ordererCaCapacity),
+        ordererNodeCapacity: splitCapacityValue(ordererNodeCapacity),
+        peerCaCapacity: splitCapacityValue(peerCaCapacity),
+        peerNodeCapacity: splitCapacityValue(peerNodeCapacity),
+        peerDbCapacity: splitCapacityValue(peerDbCapacity),
+        peerChaincodeCapacity: splitCapacityValue(peerChaincodeCapacity)
+      };
+      form.setFieldsValue(newClusterRecode);
+    }
   }, [clusterRecord, form]);
 
   return (
@@ -217,6 +244,18 @@ export default connect(({ User, Cluster, loading }: ConnectState) => ({
 function getCapacityValue(value?: IUnitValue) {
   if (value && value.number && value.unit) {
     return `${value.number}${value.unit}`;
+  }
+  return undefined;
+}
+function splitCapacityValue(value?: string) {
+  if (!value) return undefined;
+  const reg = /(\d+)(\w+)/;
+  const result = reg.exec(value);
+  if (result) {
+    return {
+      number: Number(result[1]),
+      unit: result[2] as CapacityUnit
+    };
   }
   return undefined;
 }
