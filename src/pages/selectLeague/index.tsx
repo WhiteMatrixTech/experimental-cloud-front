@@ -213,10 +213,10 @@ const SelectLeague: React.FC<SelectLeagueProps> = (props) => {
         <div className="page-content page-content-shadow table-wrapper">
           <div className="table-header-title">
             <div>
-              <span style={{ paddingRight: '4px' }}>可加入的联盟</span>
-              <Tooltip title="点击联盟卡片，申请加入联盟">
+              <span style={{ paddingRight: '4px' }}>可加入的联盟（ 点击下方卡片，申请加入联盟 ）</span>
+              {/* <Tooltip title="点击联盟卡片，申请加入联盟">
                 <QuestionCircleOutlined />
-              </Tooltip>
+              </Tooltip> */}
             </div>
           </div>
           <Divider />
