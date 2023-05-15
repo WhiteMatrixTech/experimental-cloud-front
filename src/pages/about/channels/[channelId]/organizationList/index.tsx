@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
 import { Table, Button, Descriptions, Divider } from 'antd';
-import { Breadcrumb, PageTitle } from '~/components';
+import { Breadcrumb, PageTitle, PlaceHolder } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import AddOrg from '../../components/AddOrg';
 import { ChannelStatus } from '../../_config';
@@ -27,7 +27,8 @@ const columns: ColumnsType<any> = [
   {
     title: '组织别名',
     dataIndex: 'orgAliasName',
-    key: 'orgAliasName'
+    key: 'orgAliasName',
+    render: (text) => <PlaceHolder text={text} />
   },
   {
     title: '组织MSPID',
@@ -37,12 +38,14 @@ const columns: ColumnsType<any> = [
   {
     title: '所属用户',
     dataIndex: 'companyName',
-    key: 'companyName'
+    key: 'companyName',
+    render: (text) => <PlaceHolder text={text} />
   },
   {
     title: '组织地址',
     dataIndex: 'orgAddress',
-    key: 'orgAddress'
+    key: 'orgAddress',
+    render: (text) => <PlaceHolder text={text} />
   }
 ];
 
@@ -60,7 +63,7 @@ function OrganizationList(props: OrganizationListProps) {
     location,
     dispatch,
     match: {
-      params: { channelId }
+      params: { channelId:channelName }
     }
   } = props;
   const { userRole, networkName } = props.User;
@@ -72,7 +75,7 @@ function OrganizationList(props: OrganizationListProps) {
     const list: DetailViewAttr[] = [
       {
         label: '通道名称',
-        value: channelId
+        value: channelName
       },
       {
         label: '组织数量',
@@ -84,19 +87,19 @@ function OrganizationList(props: OrganizationListProps) {
       }
     ];
     return list;
-  }, [channelId, orgTotalOfChannel, nodeTotalOfChannel]);
+  }, [channelName, orgTotalOfChannel, nodeTotalOfChannel]);
 
   // 获取 通道下的组织
   const getOrgListOfChannel = useCallback(() => {
     const params = {
       networkName,
-      channelId
+      channelName
     };
     dispatch({
       type: 'Channel/getOrgListOfChannel',
       payload: params
     });
-  }, [channelId, dispatch, networkName]);
+  }, [channelName, dispatch, networkName]);
 
   useEffect(() => {
     getOrgListOfChannel();
@@ -117,8 +120,8 @@ function OrganizationList(props: OrganizationListProps) {
   };
 
   const showAddOrg = useMemo(() => {
-    return userRole === Roles.ADMIN && location?.state?.channelStatus === ChannelStatus.IN_USE;
-  }, [userRole, location?.state?.channelStatus]);
+    return userRole === Roles.ADMIN && location?.state?.status === ChannelStatus.IN_USE;
+  }, [userRole, location?.state?.status]);
 
   return (
     <div className="page-wrapper">
@@ -157,7 +160,7 @@ function OrganizationList(props: OrganizationListProps) {
           />
         </div>
       </div>
-      {addOrgVisible && <AddOrg visible={addOrgVisible} channelId={channelId} onCancel={onCloseModal} />}
+      {addOrgVisible && <AddOrg visible={addOrgVisible} channelName={channelName} onCancel={onCloseModal} />}
     </div>
   );
 }

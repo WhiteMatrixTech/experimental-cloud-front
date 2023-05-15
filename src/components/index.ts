@@ -18,7 +18,7 @@ import ServicesDrawer from './Drawer/ServicesDrawer';
 import PageTitle from './PageTitle';
 import WelcomeBanner from './WelcomeBanner';
 import CapacityInput from './CapacityInput'
-
+import { PlaceHolder } from './PlaceHolder'
 export {
   NetworkPortalLayout,
   CommonPortalLayout,
@@ -39,5 +39,6 @@ export {
   Field,
   LoginMessage,
   WelcomeBanner,
-  CapacityInput
+  CapacityInput,
+  PlaceHolder
 };

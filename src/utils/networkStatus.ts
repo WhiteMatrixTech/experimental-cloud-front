@@ -3,28 +3,19 @@ export enum NetworkStatus {
   Creating = 'CREATING',
   NotExist = 'NOT_EXIST',
   CreationFailed = 'CREATE_FAILED',
-  // 老状态
-  Updating = 'Updating',
-  AddChannelFailed = 'AddChannelFailed',
-  AddOrgFailed = 'AddOrgFailed',
-  AddPeerFailed = 'AddPeerFailed',
-  OrgJoinChannelFailed = 'OrgJoinChannelFailed',
-  UnknownError = 'UnknownError',
-  Stopped = 'Stopped'
+  Deleting = 'DELETING',
+  Stopping = 'STOPPING',
+  Stopped = 'STOPPED'
 }
 
 export const NetworkInfo = {
   [NetworkStatus.Running]: '运行中',
   [NetworkStatus.Creating]: '创建中',
-  [NetworkStatus.Updating]: '升级中',
   [NetworkStatus.CreationFailed]: '创建失败, 请联系技术人员排查',
-  [NetworkStatus.AddChannelFailed]: '创建通道失败',
-  [NetworkStatus.AddOrgFailed]: '创建组织失败',
-  [NetworkStatus.AddPeerFailed]: '创建节点失败',
-  [NetworkStatus.OrgJoinChannelFailed]: '组织加入通道失败',
-  [NetworkStatus.UnknownError]: '发生未知错误',
-  [NetworkStatus.NotExist]: '网络不存在',
-  [NetworkStatus.Stopped]: '已停用'
+  [NetworkStatus.NotExist]: '未创建',
+  [NetworkStatus.Deleting]: '删除中',
+  [NetworkStatus.Stopping]: '停止中',
+  [NetworkStatus.Stopped]: '已停止'
 };
 
 export enum StopOrRestart {
@@ -40,10 +31,7 @@ export enum OrderType {
 export const CanDeleteNetworkStatus = [
   NetworkStatus.Running,
   NetworkStatus.CreationFailed,
-  NetworkStatus.AddChannelFailed,
-  NetworkStatus.AddOrgFailed,
-  NetworkStatus.AddPeerFailed,
-  NetworkStatus.OrgJoinChannelFailed,
-  NetworkStatus.UnknownError,
-  NetworkStatus.Stopped
+  NetworkStatus.Creating,
+  NetworkStatus.Stopped,
+  NetworkStatus.Stopping
 ];

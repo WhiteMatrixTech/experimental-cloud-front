@@ -19,7 +19,7 @@ const formItemLayout = {
 export interface AddOrgProps {
   visible: boolean;
   onCancel: () => void;
-  channelId: string | undefined;
+  channelName: string | undefined;
   addLoading: boolean;
   dispatch: Dispatch;
   User: ConnectState['User'];
@@ -27,7 +27,7 @@ export interface AddOrgProps {
   Organization: ConnectState['Organization'];
 }
 function AddOrg(props: AddOrgProps) {
-  const { visible, onCancel, channelId, addLoading = false, dispatch, User, Channel, Organization } = props;
+  const { visible, onCancel, channelName, addLoading = false, dispatch, User, Channel, Organization } = props;
   const { networkName } = User;
   const { orgList } = Organization;
   const { orgListOfChannel } = Channel;
@@ -57,7 +57,7 @@ function AddOrg(props: AddOrgProps) {
       .then(async (values) => {
         const res = await dispatch({
           type: 'Channel/addOrgForChannel',
-          payload: { networkName, channelId, orgName: values.peerOrgNames }
+          payload: { networkName, channelName, orgName: values.peerOrgNames }
         });
         if (res) {
           onCancel();

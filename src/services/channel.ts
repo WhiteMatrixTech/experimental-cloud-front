@@ -6,10 +6,10 @@ import { request } from '../utils/request';
  */
 export type CreateChannelApiParams = {
   networkName: string;
+  channelName: string; //通道名
   channelNameAlias: string; // 通道别名
-  channelId: string; // 通道id
   peerOrgNames: string[]; // 组织别名
-  description: string; // 通道描述
+  description?: string; // 通道描述
 };
 
 export async function createChannel(params: CreateChannelApiParams) {
@@ -51,7 +51,7 @@ export async function addOrgForChannel(params: BasicApiParams & { orgName: strin
  * 获取 通道下的节点列表
  */
 export async function getNodeListOfChannel(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/nodes/listNodes/${params.channelId}`);
+  return request(`/network/${params.networkName}/nodes`, { method: 'GET', body: params });
 }
 
 /**

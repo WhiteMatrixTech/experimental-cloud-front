@@ -5,7 +5,7 @@ import { BasicApiParams } from '~/utils/types';
  * 获取节点的列表
  */
 export async function getNodeList(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/nodes/listNodes`);
+  return request(`/network/${params.networkName}/nodes`);
 }
 
 /**
@@ -27,9 +27,8 @@ export type CreateNodeApiParams = {
   networkName: string;
   orgName: string;
   peerName: string;
-  peerNameAlias: string;
-  serverName?: string;
+  description?: string;
 };
 export async function createNode(params: CreateNodeApiParams) {
-  return request(`/network/${params.networkName}/nodes/createNode`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/nodes`, { method: 'POST', body: params });
 }

@@ -204,7 +204,7 @@ const UserModel: UserModelType = {
           type: 'common',
           payload: {
             myCreatedNetworkList: result.filter((league: LeagueSchema) => league.role === Roles.ADMIN),
-            myJoinedNetworkList: result.filter((league: LeagueSchema) => league.role === Roles.MEMBER)
+            myJoinedNetworkList: result
           }
         });
       }

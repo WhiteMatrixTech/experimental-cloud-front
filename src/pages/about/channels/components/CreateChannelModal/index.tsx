@@ -78,7 +78,7 @@ function CreateChannelModal({ visible, User, onCancel, dispatch, addLoading, Org
       <Form {...formItemLayout} form={form}>
         <Item
           label="通道名称"
-          name="channelId"
+          name="channelName"
           initialValue=""
           rules={[
             {

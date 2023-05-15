@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
-import { serverPurpose } from '~/pages/common/elastic-cloud-server/_config';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -26,17 +25,11 @@ export interface CreateOrgModalProps {
   ElasticServer: ConnectState['ElasticServer'];
 }
 function CreateOrgModal(props: CreateOrgModalProps) {
-  const { dispatch, visible, onCancel, addLoading = false, User, Contract, ElasticServer } = props;
+  const { dispatch, visible, onCancel, addLoading = false, User, Contract } = props;
   const { networkName } = User;
   const { channelList } = Contract;
-  const { serverList } = ElasticServer;
 
   const [form] = Form.useForm();
-
-  const filteredServerList = useMemo(
-    () => serverList.filter((server) => server.serverPurpose !== serverPurpose.SwarmManager),
-    [serverList]
-  );
 
   useEffect(() => {
     // const params = {
@@ -58,14 +51,10 @@ function CreateOrgModal(props: CreateOrgModalProps) {
     form
       .validateFields()
       .then(async (values) => {
-        const { serverName, ...rest } = values;
         let params = {
-          ...rest,
+          ...values,
           networkName
         };
-        if (values.serverName) {
-          params.serverName = values.serverName;
-        }
         const res = await dispatch({
           type: 'Organization/createOrg',
           payload: params
@@ -100,7 +89,7 @@ function CreateOrgModal(props: CreateOrgModalProps) {
       <Form {...formItemLayout} form={form}>
         <Item
           label="所属通道"
-          name="channelId"
+          name="name"
           rules={[
             {
               required: true,
@@ -109,8 +98,8 @@ function CreateOrgModal(props: CreateOrgModalProps) {
           ]}>
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择通道">
             {channelList.map((item) => (
-              <Option key={item.channelId} value={item.channelId}>
-                {item.channelId}
+              <Option key={item.name} value={item.name}>
+                {item.name}
               </Option>
             ))}
           </Select>
@@ -165,7 +154,7 @@ function CreateOrgModal(props: CreateOrgModalProps) {
         </Item>
         <Item
           label="初始化节点别名"
-          name="initPeerAliasName"
+          name="initPeerDescription"
           rules={[
             {
               required: true,
@@ -174,15 +163,6 @@ function CreateOrgModal(props: CreateOrgModalProps) {
           ]}>
           <Input placeholder="输入初始化节点别名" />
         </Item>
-        {/* <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
-          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择服务器">
-            {filteredServerList.map((item) => (
-              <Option key={item.serverName} value={item.serverName}>
-                {item.serverName}
-              </Option>
-            ))}
-          </Select>
-        </Item> */}
       </Form>
     </Modal>
   );

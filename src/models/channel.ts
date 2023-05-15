@@ -11,15 +11,16 @@ import type {
 } from 'umi';
 
 export type ChannelSchema = {
-  networkName: string;
-  channelName: string;
-  channelAliasName: string;
-  channelDesc: string;
-  channelId: string;
-  channelStatus: string;
-  createUser: string;
+  network: string;
+  name: string;
+  alias: string;
+  description: string;
+  id: string;
+  status: string;
+  creatorName: string;
   createTime: string;
   updateTime: string;
+  creatorEmail: string;
 };
 
 export type ChannelModelState = {

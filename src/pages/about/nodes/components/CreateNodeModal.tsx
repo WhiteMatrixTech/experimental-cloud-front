@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
-import { serverPurpose } from '~/pages/common/elastic-cloud-server/_config';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 
@@ -20,8 +19,7 @@ export interface handleSubmitParams {
   networkName: string;
   orgName: string;
   peerName: string;
-  peerNameAlias: string;
-  serverName?: string;
+  description?: string;
 }
 export interface CreateNodeModalProps {
   Organization: ConnectState['Organization'];
@@ -34,28 +32,13 @@ export interface CreateNodeModalProps {
   getNodeList: () => void;
 }
 function CreateNodeModal(props: CreateNodeModalProps) {
-  const { Organization, ElasticServer, visible, onCancel, addLoading = false, User, dispatch } = props;
+  const { Organization, visible, onCancel, addLoading = false, User, dispatch } = props;
   const { networkName } = User;
   const { orgInUseList } = Organization;
-  const { serverList } = ElasticServer;
 
   const [form] = Form.useForm();
 
-  const filteredServerList = useMemo(
-    () => serverList.filter((server) => server.serverPurpose !== serverPurpose.SwarmManager),
-    [serverList]
-  );
-
   useEffect(() => {
-    // const params = {
-    //   limit: 100,
-    //   offset: 0,
-    //   ascend: false
-    // };
-    // dispatch({
-    //   type: 'ElasticServer/getServerList',
-    //   payload: params
-    // });
     dispatch({
       type: 'Organization/getOrgInUseList',
       payload: { networkName }
@@ -71,11 +54,8 @@ function CreateNodeModal(props: CreateNodeModalProps) {
           networkName,
           orgName: values.orgName,
           peerName: values.peerName,
-          peerNameAlias: values.peerNameAlias
+          description: values.description
         };
-        if (values.serverName) {
-          params.serverName = values.serverName;
-        }
         dispatch({
           type: 'Peer/createNode',
           payload: params
@@ -149,7 +129,7 @@ function CreateNodeModal(props: CreateNodeModalProps) {
         </Item>
         <Item
           label="节点别名"
-          name="peerNameAlias"
+          name="description"
           initialValue=""
           rules={[
             {
@@ -166,15 +146,6 @@ function CreateNodeModal(props: CreateNodeModalProps) {
           ]}>
           <Input placeholder="输入节点别名" />
         </Item>
-        {/* <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
-          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择服务器">
-            {filteredServerList.map((item) => (
-              <Option key={item.serverName} value={item.serverName}>
-                {item.serverName}
-              </Option>
-            ))}
-          </Select>
-        </Item> */}
       </Form>
     </Modal>
   );

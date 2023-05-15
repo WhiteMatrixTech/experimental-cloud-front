@@ -44,13 +44,8 @@ function NodeList(props: NodeListProps) {
     },
     {
       title: '节点别名',
-      dataIndex: 'nodeAliasName',
-      key: 'peerAliasName'
-    },
-    {
-      title: '节点全名',
-      dataIndex: 'nodeFullName',
-      key: 'nodeFullName'
+      dataIndex: 'description',
+      key: 'description'
     },
     {
       title: '所属组织',

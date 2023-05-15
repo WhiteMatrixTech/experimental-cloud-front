@@ -8,7 +8,6 @@ export type PeerSchema = {
   nodeName: string,         // 节点名称
   nodeAliasName: string,    // 节点别名
   orgFullName: string,      // 组织全名
-  nodeFullName: string,     // 节点全名
   updatedAt: Date,          // 2021-01-29T07:26:18.934Z
   nodeIp: string,           // 节点ip
   nodePort: number,              // 节点端

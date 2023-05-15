@@ -30,11 +30,11 @@ const NetworkPortalMenu: React.FC<LeftMenuProps> = (props) => {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   const hashChange = (menu: NetworkMenuProps) => {
-    const unavailableNetworkStatus = [NetworkStatus.NotExist, NetworkStatus.UnknownError];
+    const unavailableNetworkStatus = [NetworkStatus.NotExist];
     const availableMenu = ['/about/league-dashboard', '/about/elastic-cloud-server'];
     if (
       networkStatusInfo &&
-      unavailableNetworkStatus.includes(networkStatusInfo.networkStatus) &&
+      unavailableNetworkStatus.includes(networkStatusInfo.status) &&
       !availableMenu.includes(menu.menuHref)
     ) {
       const warnMes = userRole === Roles.ADMIN ? '请先创建网络' : '请等待盟主创建网络';

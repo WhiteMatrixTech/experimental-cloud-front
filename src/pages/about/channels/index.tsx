@@ -10,7 +10,7 @@ import { ChannelStatusTag } from './_config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { ChannelSchema } from '~/models/channel';
-import { PageTitle } from '~/components';
+import { PageTitle, PlaceHolder } from '~/components';
 export interface ChannelManagementProps {
   dispatch: Dispatch;
   qryLoading: boolean;
@@ -69,7 +69,7 @@ function ChannelManagement(props: ChannelManagementProps) {
   const onViewOrg = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
     e.preventDefault();
     history.push({
-      pathname: `/about/channels/${record.channelName}/organizationList`,
+      pathname: `/about/channels/${record.name}/organizationList`,
       state: { ...record }
     });
   };
@@ -78,7 +78,7 @@ function ChannelManagement(props: ChannelManagementProps) {
   const onViewPeer = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
     e.preventDefault();
     history.push({
-      pathname: `/about/channels/${record.channelName}/nodeList`,
+      pathname: `/about/channels/${record.name}/nodeList`,
       state: { ...record }
     });
   };
@@ -87,7 +87,7 @@ function ChannelManagement(props: ChannelManagementProps) {
   const onViewContract = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
     e.preventDefault();
     history.push({
-      pathname: `/about/channels/${record.channelName}/chaincodeList`,
+      pathname: `/about/channels/${record.name}/chaincodeList`,
       state: { ...record }
     });
   };
@@ -96,7 +96,7 @@ function ChannelManagement(props: ChannelManagementProps) {
   const onViewDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: ChannelSchema) => {
     e.preventDefault();
     history.push({
-      pathname: `/about/channels/${record.channelName}/channelDetail`,
+      pathname: `/about/channels/${record.name}/channelDetail`,
       state: { ...record }
     });
   };
@@ -104,18 +104,19 @@ function ChannelManagement(props: ChannelManagementProps) {
   const columns: ColumnsType<any> = [
     {
       title: '通道名称',
-      dataIndex: 'channelName',
-      key: 'channelName'
+      dataIndex: 'name',
+      key: 'name'
     },
     {
       title: '通道别名',
-      dataIndex: 'channelAliasName',
-      key: 'channelAliasName'
+      dataIndex: 'alias',
+      key: 'alias',
+      render: (text) => <PlaceHolder text={text} />
     },
     {
       title: '通道状态',
-      dataIndex: 'channelStatus',
-      key: 'channelStatus',
+      dataIndex: 'status',
+      key: 'status',
       render: (text) =>
         text ? (
           <Badge
@@ -129,14 +130,15 @@ function ChannelManagement(props: ChannelManagementProps) {
     },
     {
       title: '通道描述',
-      dataIndex: 'channelDesc',
-      key: 'channelDesc',
+      dataIndex: 'description',
+      key: 'description',
       ellipsis: true
     },
     {
       title: '创建者',
-      dataIndex: 'createUser',
-      key: 'createUser'
+      dataIndex: 'creatorName',
+      key: 'creatorName',
+      render: (text, record: ChannelSchema) => <PlaceHolder text={text || record.creatorEmail} />
     },
     {
       title: '创建时间',
@@ -150,16 +152,16 @@ function ChannelManagement(props: ChannelManagementProps) {
       width: '22%',
       render: (text, record: ChannelSchema) => (
         <Space size="small">
-          <a href={`/about/channels/${record.channelName}/organizationList`} onClick={(e) => onViewOrg(e, record)}>
+          <a href={`/about/channels/${record.name}/organizationList`} onClick={(e) => onViewOrg(e, record)}>
             查看组织
           </a>
-          <a href={`/about/channels/${record.channelName}/nodeList`} onClick={(e) => onViewPeer(e, record)}>
+          <a href={`/about/channels/${record.name}/nodeList`} onClick={(e) => onViewPeer(e, record)}>
             查看节点
           </a>
-          <a href={`/about/channels/${record.channelName}/chaincodeList`} onClick={(e) => onViewContract(e, record)}>
+          <a href={`/about/channels/${record.name}/chaincodeList`} onClick={(e) => onViewContract(e, record)}>
             查看合约
           </a>
-          <a href={`/about/channels/${record.channelName}/channelDetail`} onClick={(e) => onViewDetail(e, record)}>
+          <a href={`/about/channels/${record.name}/channelDetail`} onClick={(e) => onViewDetail(e, record)}>
             详情
           </a>
         </Space>

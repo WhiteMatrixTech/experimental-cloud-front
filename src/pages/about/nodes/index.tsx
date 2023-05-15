@@ -6,10 +6,9 @@ import { saveAs } from 'file-saver';
 import { PageTitle } from '~/components';
 import { Table, Button, Badge, Space, notification, Spin } from 'antd';
 import CreateNodeModal from './components/CreateNodeModal';
-import SSHCommand from './components/SSHCommand';
 import baseConfig from '~/utils/config';
 import { Roles } from '~/utils/roles';
-import { peerStatus, availableNodeStatus } from './_config';
+import { peerStatus } from './_config';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
@@ -30,8 +29,6 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   const [columns, setColumns] = useState<ColumnsType<any>>([]);
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
-  const [nodeRecord, setNodeRecord] = useState<PeerSchema>();
-  const [sshModalVisible, setSshModalVisible] = useState(false);
   const [createNodeVisible, setCreateNodeVisible] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
@@ -59,12 +56,6 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   // 关闭 创建节点、获取ssh命令 弹窗
   const onCloseModal = () => {
     setCreateNodeVisible(false);
-    setSshModalVisible(false);
-  };
-
-  const onClickGetSSH = (record: PeerSchema) => {
-    setNodeRecord(record);
-    setSshModalVisible(true);
   };
 
   const onDownLoadCertificate = useCallback(
@@ -109,18 +100,19 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         title: '节点名称',
         dataIndex: 'nodeName',
         key: 'nodeName',
-        ellipsis: true
+        ellipsis: true,
+        render: (text: string) => text.split('-')[1]
       },
       {
         title: '节点别名',
-        dataIndex: 'nodeAliasName',
-        key: 'nodeAliasName',
+        dataIndex: 'description',
+        key: 'description',
         ellipsis: true
       },
       {
-        title: '节点全名',
-        dataIndex: 'nodeFullName',
-        key: 'nodeFullName',
+        title: '所属组织',
+        dataIndex: 'orgName',
+        key: 'orgName',
         ellipsis: true
       },
       {
@@ -149,31 +141,18 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         key: 'action',
         render: (_, record: PeerSchema) => (
           <Space size="small">
-            {userRole === Roles.ADMIN && (
+            {record.nodeStatus === 'RUNNING' && (
               <a
-                href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`}
-                onClick={(e) => onDownLoadCertificate(e, record)}>
-                下载证书
+                onClick={() => {
+                  alert('TODO');
+                }}>
+                停止
               </a>
-            )}
-            {availableNodeStatus.includes(record.nodeStatus) && (
-              <span role="button" className="table-action-span" onClick={() => onClickGetSSH(record)}>
-                获取ssh命令
-              </span>
             )}
           </Space>
         )
       }
     ];
-    if (userRole === Roles.ADMIN) {
-      const insertColumn = {
-        title: '所属组织',
-        dataIndex: 'orgName',
-        key: 'orgName',
-        ellipsis: true
-      };
-      data.splice(3, 0, insertColumn);
-    }
     setColumns(data);
   }, [networkName, onDownLoadCertificate, userRole]);
 
@@ -213,7 +192,6 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         {createNodeVisible && (
           <CreateNodeModal getNodeList={getNodeList} visible={createNodeVisible} onCancel={onCloseModal} />
         )}
-        {sshModalVisible && <SSHCommand nodeRecord={nodeRecord} visible={sshModalVisible} onCancel={onCloseModal} />}
       </Spin>
     </div>
   );
