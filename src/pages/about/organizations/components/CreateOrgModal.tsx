@@ -39,15 +39,15 @@ function CreateOrgModal(props: CreateOrgModalProps) {
   );
 
   useEffect(() => {
-    const params = {
-      limit: 100,
-      offset: 0,
-      ascend: false
-    };
-    dispatch({
-      type: 'ElasticServer/getServerList',
-      payload: params
-    });
+    // const params = {
+    //   limit: 100,
+    //   offset: 0,
+    //   ascend: false
+    // };
+    // dispatch({
+    //   type: 'ElasticServer/getServerList',
+    //   payload: params
+    // });
     dispatch({
       type: 'Contract/getChannelList',
       payload: { networkName }
@@ -174,7 +174,7 @@ function CreateOrgModal(props: CreateOrgModalProps) {
           ]}>
           <Input placeholder="输入初始化节点别名" />
         </Item>
-        <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
+        {/* <Item label="服务器" name="serverName" tooltip="不选择则使用默认服务器">
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择服务器">
             {filteredServerList.map((item) => (
               <Option key={item.serverName} value={item.serverName}>
@@ -182,7 +182,7 @@ function CreateOrgModal(props: CreateOrgModalProps) {
               </Option>
             ))}
           </Select>
-        </Item>
+        </Item> */}
       </Form>
     </Modal>
   );

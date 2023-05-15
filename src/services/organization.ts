@@ -14,19 +14,19 @@ export type CreateOrgApiParams = {
   serverName?: string;
 };
 export async function createOrg(params: CreateOrgApiParams) {
-  return request(`/network/${params.networkName}/orgs/createOrg`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/orgs`, { method: 'POST', body: params });
 }
 
 /**
  * 查询组织列表
  */
 export async function getOrgList(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/orgs/listOrgs`);
+  return request(`/network/${params.networkName}/orgs`);
 }
 
 /**
  * 查询使用中的组织列表
  */
 export async function getOrgInUseList(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/orgs/listOrgsInUse`);
+  return request(`/network/${params.networkName}/orgs`, { method: 'GET', body: { inUse: true } });
 }

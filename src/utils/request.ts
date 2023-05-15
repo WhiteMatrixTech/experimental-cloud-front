@@ -53,7 +53,7 @@ const _requestFunc = extend({
   timeout: 30000,
   // parseResponse: false,
   credentials: 'include', // 默认请求是否带上cookie,
-  prefix: process.env.NODE_ENV === 'development' ? '/api' : process.env.BAAS_BACKEND_LINK
+  prefix: process.env.BAAS_BACKEND_LINK
 });
 
 _requestFunc.interceptors.request.use((url, options) => {

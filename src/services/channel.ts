@@ -20,7 +20,7 @@ export async function createChannel(params: CreateChannelApiParams) {
  * 获取 通道列表
  */
 export async function getChannelList(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/channels/listChannels`);
+  return request(`/network/${params.networkName}/channels`);
 }
 
 /**
