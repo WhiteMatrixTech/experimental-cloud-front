@@ -253,7 +253,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       title: '操作',
       key: 'action',
       width: '20%',
-      render: (_, record) => (
+      render: (_, record:ChainCodeSchema) => (
         // 非当前合约组织成员不可操作
         <Space size="small">
           {record.canDownload && (
@@ -268,17 +268,17 @@ const MyContract: React.FC<MyContractProps> = (props) => {
               审核
             </span>
           )}
-          {record.chainCodeStatus === ChainCodeStatus.APPROVED && record.createdAt && (
+          {record.chainCodeStatus === ChainCodeStatus.APPROVED && record.createTime && (
             <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'install')}>
               安装
             </span>
           )}
-          {record.chainCodeStatus === ChainCodeStatus.INSTALLED && record.createdAt && (
+          {record.chainCodeStatus === ChainCodeStatus.INSTALLED && record.createTime && (
             <span role="button" className="table-action-span" onClick={() => onClickToConfirm(record, 'approve')}>
               发布
             </span>
           )}
-          {UpdateStatusList.includes(record.chainCodeStatus) && record.createdAt && (
+          {UpdateStatusList.includes(record.chainCodeStatus) && record.createTime && (
             <span role="button" className="table-action-span" onClick={() => onClickUpgrade(record)}>
               升级
             </span>
@@ -288,7 +288,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
               调用
             </span>
           )}
-          {record.createdAt || record.createOrgName ? (
+          {record.createTime || record.createOrgName ? (
             <a
               href={`/about/contract/contractDetail/${record.chainCodeName}`}
               onClick={(e) => onClickDetail(e, record)}>
