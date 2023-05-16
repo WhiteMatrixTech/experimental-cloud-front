@@ -99,8 +99,8 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
           ]}>
           <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择通道">
             {Contract.channelList.map((item) => (
-              <Option key={item.channelName} value={item.channelName}>
-                {item.channelName}
+              <Option key={item.name} value={item.name}>
+                {item.name}
               </Option>
             ))}
           </Select>

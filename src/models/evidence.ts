@@ -10,6 +10,8 @@ export type EvidenceSchema = {
   companyName: string;
   createUser: string;
   createdAt: string;
+  confirmTime: string;
+  synced: boolean;
 };
 
 export type EvidenceModelState = {
@@ -50,7 +52,7 @@ const EvidenceModel: EvidenceModelType = {
         yield put({
           type: 'common',
           payload: {
-            evidenceDataList: result.items
+            evidenceDataList: result.items || []
           }
         });
       }

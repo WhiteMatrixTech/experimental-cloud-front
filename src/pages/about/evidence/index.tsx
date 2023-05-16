@@ -46,8 +46,8 @@ function EvidenceDataList(props: EvidenceDataListProps) {
     },
     {
       title: '上链时间',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
       render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '')
     },
     {
