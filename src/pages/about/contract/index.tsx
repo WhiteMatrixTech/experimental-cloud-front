@@ -16,7 +16,8 @@ import { chainCodeStatusInfo, ChainCodeStatus, VerifyStatusList, UpdateStatusLis
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
-import { cancelCurrentRequest } from '~/utils/request';
+import { cancelCurrentRequest, chaincodeRequest } from '~/utils/request';
+import { isArrayBuffer } from 'lodash';
 
 const pageSize = baseConfig.pageSize;
 export interface MyContractProps {
@@ -126,8 +127,8 @@ const MyContract: React.FC<MyContractProps> = (props) => {
 
     setDownloading(true);
 
-    request(
-      `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`,
+    chaincodeRequest(
+      `/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`,
       {
         headers,
         mode: 'cors',
@@ -136,16 +137,15 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       }
     )
       .then((res: any) => {
-        setDownloading(false);
-        const file = new File([res], `${record.chainCodeName}.tar.gz`, { type: 'application/tar+gzip' });
+        console.log(res);
+        const file = new File([res], `${record.chainCodeName}.tgz`, { type: 'application/tar+gzip' });
         saveAs(file);
+        setDownloading(false);
       })
-      .catch((errMsg) => {
+      .catch((errMsg: string) => {
         // DOMException: The user aborted a request.
-        if (!errMsg) {
-          setDownloading(false);
-          notification.error({ message: '合约下载失败', top: 64, duration: 3 });
-        }
+        notification.error({ message: '合约下载失败', top: 64, duration: 3 });
+        setDownloading(false);
       });
   };
 
@@ -173,7 +173,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       networkName,
       channelId: record.channelId,
       chainCodeName: record.chainCodeName,
-      endorsementPolicy: { ...record.endorsementPolicy }
+      endorsementPolicy: record.endorsementPolicy
     };
     const res = await dispatch({
       type: 'Contract/releaseContract',
@@ -229,8 +229,8 @@ const MyContract: React.FC<MyContractProps> = (props) => {
     },
     {
       title: '创建时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
+      dataIndex: 'createTime',
+      key: 'createTime',
       render: (text) =>
         text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
     },
@@ -258,7 +258,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
         <Space size="small">
           {record.canDownload && (
             <a
-              href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`}
+              // href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`}
               onClick={(e) => onDownLoadContract(e, record)}>
               下载合约
             </a>

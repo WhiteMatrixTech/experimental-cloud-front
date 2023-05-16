@@ -35,7 +35,7 @@ function CreateNetwork(props: CreateNetworkProps) {
   const [networkBaseInfo, setNetworkBaseInfo, getNetworkBaseInfo] = useGetState<Record<string, any>>({
     network: User.networkName,
     ordererNodeNum: 1,
-    caCertExpiryTime: 1
+    caCertExpiryTime: 131400
   });
   const [networkOrgInfo, setNetworkOrgInfo, getNetworkOrgInfo] = useGetState<Record<string, any>>();
   const [networkChannelInfo, setNetworkChannelInfo, getNetworkChannelInfo] = useGetState<Record<string, any>>();

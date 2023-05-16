@@ -77,14 +77,14 @@ export async function getChannelList(params: BasicApiParams) {
  * 当前用户所在通道列表
  */
 export async function getChannelListByOrg(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/channels/listChannelsOfOrg`);
+  return request(`/network/${params.networkName}/channels`, { method: 'GET', body: { ...params, inUse: true } });
 }
 
 /**
  * 检查是否有组织 且组织在使用中
  */
 export async function checkOrgInUse(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/orgs/checkOrgInUse`, { method: 'POST' });
+  return request(`/network/${params.networkName}/orgs`, { method: 'GET', body: { inUse: true } });
 }
 
 /**

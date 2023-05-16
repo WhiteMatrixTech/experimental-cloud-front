@@ -107,8 +107,10 @@ function EditContract(props: EditContractProps) {
   const uploadProps = {
     name: 'file',
     listType: 'text',
-    action: `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/uploadPackageArchive`,
-    accept: '.zip, .jar, .rar, .gz',
+    action: `${process.env.BAAS_BACKEND_LINK}${
+      process.env.NODE_ENV === 'development' ? '/api' : ''
+    }/network/${networkName}/chainCodes/uploadPackageArchive`,
+    accept: '.zip, .jar, .rar, .gz, .tgz',
     multiple: false,
     beforeUpload: handleBeforeUpload,
     headers: {
@@ -162,7 +164,7 @@ function EditContract(props: EditContractProps) {
       <Form {...formItemLayout} form={form}>
         <Item label="上传方式">本地上传</Item>
         <Item name="upload" label="本地合约" valuePropName="fileList" getValueFromEvent={normFile}>
-          <Upload {...uploadProps}>
+          <Upload {...(uploadProps as any)}>
             <Button type="primary">上传合约</Button>
           </Upload>
         </Item>
@@ -182,9 +184,9 @@ function EditContract(props: EditContractProps) {
             disabled={operateType !== 'new'}
             onChange={onChangeChannel}
             placeholder="请选择通道">
-            {myChannelList.map((item) => (
-              <Option key={item.channelId} value={item.channelId}>
-                {item.channelId}
+            {myChannelList?.map((item) => (
+              <Option key={item.name} value={item.name}>
+                {item.name}
               </Option>
             ))}
           </Select>

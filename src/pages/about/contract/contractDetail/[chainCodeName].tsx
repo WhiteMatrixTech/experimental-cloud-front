@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Dispatch, Location } from 'umi';
 import moment from 'moment';
-import { Breadcrumb, DetailCard, PageTitle } from '~/components';
+import { Breadcrumb, DetailCard, PageTitle, PlaceHolder } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { DetailViewAttr } from '~/utils/types';
 import { ConnectState } from '~/models/connect';
@@ -34,10 +34,6 @@ const ContractDetail: React.FC<ContractDetailProps> = (props) => {
       value: chaincodeInfo.channelId
     },
     {
-      label: '合约语言类型',
-      value: chaincodeInfo.chainCodePackageMetaData ? chaincodeInfo.chainCodePackageMetaData.language : ''
-    },
-    {
       label: '当前版本',
       value: chaincodeInfo.chainCodeVersion
     },
@@ -46,18 +42,18 @@ const ContractDetail: React.FC<ContractDetailProps> = (props) => {
       value: chaincodeInfo.createOrgName
     },
     {
-      label: '背书组织',
+      label: '背书策略',
       fullRow: true,
-      value: chaincodeInfo.endorsementPolicy ? JSON.stringify(chaincodeInfo.endorsementPolicy.orgsToApprove) : ''
+      value: chaincodeInfo.endorsementPolicy
     },
     {
       label: '创建时间',
-      value: chaincodeInfo.createdAt ? moment(chaincodeInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -'
+      value: moment(chaincodeInfo.createTime).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       label: '合约描述',
       fullRow: true,
-      value: chaincodeInfo.description
+      value: <PlaceHolder text={chaincodeInfo.description} />
     }
   ];
   return (
@@ -66,13 +62,11 @@ const ContractDetail: React.FC<ContractDetailProps> = (props) => {
       <PageTitle label="合约详情" />
       <div className="page-content">
         <Descriptions title="合约信息" className="descriptions-wrapper">
-          {contractInfoList.map(item =>
-            <Descriptions.Item
-              key={item.label}
-              label={item.label}>
+          {contractInfoList.map((item) => (
+            <Descriptions.Item key={item.label} label={item.label}>
               {item.value}
             </Descriptions.Item>
-          )}
+          ))}
         </Descriptions>
       </div>
     </div>

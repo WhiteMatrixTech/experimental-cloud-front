@@ -87,7 +87,7 @@ const MyInfoModel: MyInfoModelType = {
       const res = yield call(checkOrgInUse, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        return result.result;
+        return !!result.length;
       }
     },
 

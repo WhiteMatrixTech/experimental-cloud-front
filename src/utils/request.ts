@@ -117,3 +117,12 @@ export const request = <R>(url: string, options?: { method: string; body?: objec
     return data;
   });
 };
+
+
+export const chaincodeRequest = extend({
+  errorHandler, // 默认错误处理
+  mode: 'cors',
+  timeout: 30000,
+  credentials: 'include', // 默认请求是否带上cookie,
+  prefix: process.env.NODE_ENV === "development" ? `/api` : process.env.BAAS_BACKEND_LINK
+});

@@ -10,11 +10,11 @@ const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
-    sm: { span: 6 },
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 18 },
-  },
+    sm: { span: 18 }
+  }
 };
 export interface InvokeContractProps {
   visible: boolean;
@@ -38,7 +38,7 @@ function InvokeContract(props: InvokeContractProps) {
       const { invokeType, ...params } = values;
       dispatch({
         type: `Contract/${invokeType}`,
-        payload: params,
+        payload: params
       });
     });
   };
@@ -46,20 +46,20 @@ function InvokeContract(props: InvokeContractProps) {
   useEffect(() => {
     dispatch({
       type: 'Contract/getChannelList',
-      payload: { networkName },
+      payload: { networkName }
     });
     dispatch({
       type: 'Contract/getAllUserId',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, [dispatch, networkName]);
 
   const resultMessage = useMemo(() => {
     if (invokeResult?.message?.result) {
-      return <span className={style['invoke-success']}>{invokeResult?.message?.result}</span>
+      return <span className={style['invoke-success']}>{invokeResult?.message?.result}</span>;
     }
-    return <span className={style['invoke-error']}>{invokeResult?.message?.error}</span>
-  }, [invokeResult])
+    return <span className={style['invoke-error']}>{invokeResult?.message?.error}</span>;
+  }, [invokeResult]);
 
   const drawerProps = {
     visible: visible,
@@ -73,8 +73,8 @@ function InvokeContract(props: InvokeContractProps) {
       </Button>,
       <Button key="submit" loading={invokeLoading} onClick={handleSubmit} type="primary">
         提交
-      </Button>,
-    ],
+      </Button>
+    ]
   };
 
   return (
@@ -87,19 +87,17 @@ function InvokeContract(props: InvokeContractProps) {
           rules={[
             {
               required: true,
-              message: '请选择通道',
-            },
-          ]}
-        >
+              message: '请选择通道'
+            }
+          ]}>
           <Select
             allowClear
             getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
             placeholder="请选择通道"
-            disabled
-          >
+            disabled>
             {channelList.map((item) => (
-              <Option key={item.channelId} value={item.channelId}>
-                {item.channelId}
+              <Option key={item.name} value={item.name}>
+                {item.name}
               </Option>
             ))}
           </Select>
@@ -114,10 +112,9 @@ function InvokeContract(props: InvokeContractProps) {
           rules={[
             {
               required: true,
-              message: '请输入方法名',
-            },
-          ]}
-        >
+              message: '请输入方法名'
+            }
+          ]}>
           <Input placeholder="请输入方法名" />
         </Item>
         <Item label="参数列表" name="params" initialValue={[]}>
@@ -126,7 +123,7 @@ function InvokeContract(props: InvokeContractProps) {
             placeholder="请输入参数"
             mode="tags"
             allowClear
-          ></Select>
+          />
         </Item>
         <Item
           label="调用类型"
@@ -135,10 +132,9 @@ function InvokeContract(props: InvokeContractProps) {
           rules={[
             {
               required: true,
-              message: '请选择调用类型',
-            },
-          ]}
-        >
+              message: '请选择调用类型'
+            }
+          ]}>
           <Radio.Group>
             <Radio value="invokeChainCodeMethod">invoke</Radio>
             <Radio value="queryChainCodeMethod">query</Radio>
@@ -150,15 +146,13 @@ function InvokeContract(props: InvokeContractProps) {
           rules={[
             {
               required: true,
-              message: '请选择fabric角色',
-            },
-          ]}
-        >
+              message: '请选择fabric角色'
+            }
+          ]}>
           <Select
             allowClear
             getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
-            placeholder="请选择fabric角色"
-          >
+            placeholder="请选择fabric角色">
             {allUserId.map((item) => (
               <Option key={item} value={item}>
                 {item}
@@ -174,10 +168,9 @@ function InvokeContract(props: InvokeContractProps) {
           rules={[
             {
               required: true,
-              message: '请选择是否需要初始化',
-            },
-          ]}
-        >
+              message: '请选择是否需要初始化'
+            }
+          ]}>
           <Switch />
         </Item>
       </Form>
@@ -199,5 +192,5 @@ function InvokeContract(props: InvokeContractProps) {
 export default connect(({ Contract, User, loading }: ConnectState) => ({
   Contract,
   User,
-  invokeLoading: loading.effects['Contract/invokeChainCodeMethod'] || loading.effects['Contract/queryChainCodeMethod'],
+  invokeLoading: loading.effects['Contract/invokeChainCodeMethod'] || loading.effects['Contract/queryChainCodeMethod']
 }))(InvokeContract);

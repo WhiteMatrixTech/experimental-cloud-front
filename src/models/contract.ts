@@ -19,20 +19,17 @@ export type ChainCodeSchema = {
   chainCodeVersion: string; // 合约版本
   chainCodeStatus: ChainCodeStatus; // 合约状态
   initArgs: string; // 初始参数
-  chainCodePackageMetaData: ChainCodePackageMetaData;
+  label: string; // 标签
+  // chainCodePackageMetaData: ChainCodePackageMetaData;
   createOrgName?: string; // 创建组织名称
   initRequired: boolean; // 是否必需
   description: string; // 合约描述
-  endorsementPolicy: {
-    policyType: EndorsementPolicyType;
-    expression?: string;
-    orgsToApprove: string[];
-  };
-  approvedOrgs: string[];
+  endorsementPolicy: string; //背书策略
+  // approvedOrgs: string[];
   chainCodeSequence: number; // 合约序列
-  updatedAt?: Date;
-  _id: string;
-  createdAt: string;
+  installOn: string[]; // 安装目标列表
+  updateTime: string;  // 更新时间
+  createTime: string;  // 创建时间
 };
 export type ContractModelState = {
   userOrgInuse: boolean; // 用户是否有组织 且组织在使用中
@@ -134,7 +131,7 @@ const ContractModel: ContractModelType = {
         yield put({
           type: 'common',
           payload: {
-            myChannelList: result
+            myChannelList: result || []
           }
         });
       }
@@ -147,7 +144,7 @@ const ContractModel: ContractModelType = {
         yield put({
           type: 'common',
           payload: {
-            userOrgInuse: result.result
+            userOrgInuse: !!result.length
           }
         });
       }
