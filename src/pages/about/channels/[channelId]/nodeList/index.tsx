@@ -40,7 +40,8 @@ function NodeList(props: NodeListProps) {
     {
       title: '节点名称',
       dataIndex: 'nodeName',
-      key: 'peerName'
+      key: 'nodeName',
+      render: (text: string) => text.split('-')[1]
     },
     {
       title: '节点别名',
@@ -124,13 +125,11 @@ function NodeList(props: NodeListProps) {
       <PageTitle label="通道中节点数据" />
       <div className="page-content">
         <Descriptions title="通道信息" className="descriptions-wrapper">
-          {channelInfoList.map(item =>
-            <Descriptions.Item
-              key={item.label}
-              label={item.label}>
+          {channelInfoList.map((item) => (
+            <Descriptions.Item key={item.label} label={item.label}>
               {item.value}
             </Descriptions.Item>
-          )}
+          ))}
         </Descriptions>
         <div className="table-wrapper page-content-shadow">
           <div className="table-header-title">节点列表</div>

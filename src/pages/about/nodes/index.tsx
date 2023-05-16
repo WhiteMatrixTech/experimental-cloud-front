@@ -136,22 +136,22 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         key: 'updatedAt',
         render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
       },
-      {
-        title: '操作',
-        key: 'action',
-        render: (_, record: PeerSchema) => (
-          <Space size="small">
-            {record.nodeStatus === 'RUNNING' && (
-              <a
-                onClick={() => {
-                  alert('TODO');
-                }}>
-                停止
-              </a>
-            )}
-          </Space>
-        )
-      }
+      // {
+      //   title: '操作',
+      //   key: 'action',
+      //   render: (_, record: PeerSchema) => (
+      //     <Space size="small">
+      //       {record.nodeStatus === 'RUNNING' && (
+      //         <a
+      //           onClick={() => {
+      //             alert('TODO');
+      //           }}>
+      //           停止
+      //         </a>
+      //       )}
+      //     </Space>
+      //   )
+      // }
     ];
     setColumns(data);
   }, [networkName, onDownLoadCertificate, userRole]);
