@@ -17,7 +17,11 @@ class LoginLayout extends React.PureComponent<LoginLayoutProps> {
     return (
       <Layout
         className={styles['main-container']}
-        style={{ backgroundImage: `url("${require('~/assets/images/loginBg.png')}")` }}>
+        style={{
+          backgroundImage: `url("${require('~/assets/images/loginBg.png')}")`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}>
         <div className={styles['background-mask']}> </div>
         <LoginHeader />
         <Content className={styles['section-container']}>

@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
-import { PageTitle } from '~/components';
+import { PageTitle, PlaceHolder } from '~/components';
 import { Table, Button, Badge, Space, notification, Spin } from 'antd';
 import CreateNodeModal from './components/CreateNodeModal';
 import baseConfig from '~/utils/config';
@@ -107,7 +107,8 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         title: '节点别名',
         dataIndex: 'description',
         key: 'description',
-        ellipsis: true
+        ellipsis: true,
+        render: (text: string) => <PlaceHolder text={text} />
       },
       {
         title: '所属组织',
@@ -135,7 +136,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
-      },
+      }
       // {
       //   title: '操作',
       //   key: 'action',
