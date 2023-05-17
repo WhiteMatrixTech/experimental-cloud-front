@@ -34,7 +34,7 @@ export async function getChannelInfo(params: BasicApiParams) {
  * 获取 通道下的组织列表
  */
 export async function getOrgListOfChannel(params: BasicApiParams & { channelName: string }) {
-  return request(`/network/${params.networkName}/orgs/listOrgs/${params.channelName}`);
+  return request(`/network/${params.networkName}/orgs`, { method: 'GET', body: { channel: params.channelName || params.channelId } });
 }
 
 /**

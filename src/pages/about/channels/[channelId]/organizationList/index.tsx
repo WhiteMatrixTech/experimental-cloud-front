@@ -40,7 +40,7 @@ const columns: ColumnsType<any> = [
     dataIndex: 'companyName',
     key: 'companyName',
     render: (text) => <PlaceHolder text={text} />
-  },
+  }
 ];
 
 export interface OrganizationListProps {
@@ -57,7 +57,7 @@ function OrganizationList(props: OrganizationListProps) {
     location,
     dispatch,
     match: {
-      params: { channelId:channelName }
+      params: { channelId: channelName }
     }
   } = props;
   const { userRole, networkName } = props.User;
@@ -83,6 +83,18 @@ function OrganizationList(props: OrganizationListProps) {
     return list;
   }, [channelName, orgTotalOfChannel, nodeTotalOfChannel]);
 
+  // 获取 通道下的节点
+  const getNodeListOfChannel = useCallback(() => {
+    let params: { networkName: string; channelName?: string; orgName?: string } = {
+      networkName,
+      channelName
+    };
+    dispatch({
+      type: 'Channel/getNodeListOfChannel',
+      payload: params
+    });
+  }, [channelName, dispatch, networkName]);
+
   // 获取 通道下的组织
   const getOrgListOfChannel = useCallback(() => {
     const params = {
@@ -97,7 +109,8 @@ function OrganizationList(props: OrganizationListProps) {
 
   useEffect(() => {
     getOrgListOfChannel();
-  }, [getOrgListOfChannel]);
+    getNodeListOfChannel();
+  }, [getNodeListOfChannel, getOrgListOfChannel]);
 
   // 翻页
   const onPageChange = (pageInfo: any) => {
