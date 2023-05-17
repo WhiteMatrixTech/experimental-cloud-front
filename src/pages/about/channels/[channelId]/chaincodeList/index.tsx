@@ -105,7 +105,8 @@ function ChaincodeList(props: ChaincodeListProps) {
   useEffect(() => {
     const params = {
       networkName,
-      channelId
+      channelId,
+      channelName: channelId
     };
     dispatch({
       type: 'Channel/getOrgListOfChannel',
@@ -153,13 +154,11 @@ function ChaincodeList(props: ChaincodeListProps) {
       <PageTitle label="通道中合约数据" />
       <div className="page-content">
         <Descriptions title="通道信息" className="descriptions-wrapper">
-          {channelInfoList.map(item =>
-            <Descriptions.Item
-              key={item.label}
-              label={item.label}>
+          {channelInfoList.map((item) => (
+            <Descriptions.Item key={item.label} label={item.label}>
               {item.value}
             </Descriptions.Item>
-          )}
+          ))}
         </Descriptions>
         <div className="table-wrapper page-content-shadow">
           <div className="table-header-title">合约列表</div>

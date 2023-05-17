@@ -12,9 +12,10 @@ export type OrganizationSchema = {
   orgStatus: OrgStatus;
   companyName: string;
   email: string;
-  createdAt: string;
-  updatedAt: string;
+  createTime: string;
+  updateTime: string;
   orgFullName: string;
+  orgType: "PEER" | "ORDERER"
 };
 
 export type OrganizationModelState = {

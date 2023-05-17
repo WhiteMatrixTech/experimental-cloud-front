@@ -41,12 +41,6 @@ const columns: ColumnsType<any> = [
     key: 'companyName',
     render: (text) => <PlaceHolder text={text} />
   },
-  {
-    title: '组织地址',
-    dataIndex: 'orgAddress',
-    key: 'orgAddress',
-    render: (text) => <PlaceHolder text={text} />
-  }
 ];
 
 export interface OrganizationListProps {

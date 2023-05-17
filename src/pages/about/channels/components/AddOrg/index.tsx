@@ -4,6 +4,7 @@ import { Select, Form, Button, Modal } from 'antd';
 import { Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { OrganizationSchema } from '~/models/organization';
+import { OrgStatus } from '~/pages/about/organizations/_config';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -36,11 +37,15 @@ function AddOrg(props: AddOrgProps) {
 
   const optionalOrgList = useMemo(() => {
     let orgData: OrganizationSchema[] = [];
-    return orgList.reduce(function (pre, cur) {
-      if (orgListOfChannel.every((item) => item.orgName !== cur.orgName)) {
-        pre.push(cur);
+    return orgList.reduce(function (total, cur) {
+      if (
+        orgListOfChannel.every(
+          (item) => item.orgName !== cur.orgName && cur.orgType === 'PEER' && cur.orgStatus === OrgStatus.IN_USE
+        )
+      ) {
+        total.push(cur);
       }
-      return pre;
+      return total;
     }, orgData);
   }, [orgList, orgListOfChannel]);
 

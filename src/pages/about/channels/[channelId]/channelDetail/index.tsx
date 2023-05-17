@@ -149,7 +149,8 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
     const { networkName } = User;
     const params = {
       networkName,
-      channelId
+      channelId,
+      channelName: channelId
     };
     dispatch({
       type: 'Channel/getStaticInfo',

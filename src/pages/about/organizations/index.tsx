@@ -45,11 +45,6 @@ function OrganizationManagement(props: OrganizationManagementProps) {
       key: 'companyName'
     },
     {
-      title: '组织地址',
-      dataIndex: 'orgAddress',
-      key: 'orgAddress'
-    },
-    {
       title: '当前状态',
       dataIndex: 'orgStatus',
       key: 'orgStatus',

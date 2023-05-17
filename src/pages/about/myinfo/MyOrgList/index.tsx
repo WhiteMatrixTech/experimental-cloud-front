@@ -37,10 +37,6 @@ function MyOrgInfo(props: MyOrgInfoProps) {
       value: myOrgInfo && myOrgInfo.orgMspId,
     },
     {
-      label: '组织地址',
-      value: myOrgInfo && myOrgInfo.orgAddress,
-    },
-    {
       label: '组织状态',
       value: myOrgInfo && myOrgInfo.orgStatus ? orgStatus[myOrgInfo.orgStatus].text : '',
     },

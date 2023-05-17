@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'dva';
 import { Table, Badge, Descriptions, Divider } from 'antd';
 import moment from 'moment';
-import { Breadcrumb, PageTitle } from '~/components';
+import { Breadcrumb, PageTitle, PlaceHolder } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { peerStatus } from '../../../nodes/_config';
 import baseConfig from '~/utils/config';
@@ -46,7 +46,8 @@ function NodeList(props: NodeListProps) {
     {
       title: '节点别名',
       dataIndex: 'description',
-      key: 'description'
+      key: 'description',
+      render: (text: string) => <PlaceHolder text={text} />
     },
     {
       title: '所属组织',
@@ -96,7 +97,7 @@ function NodeList(props: NodeListProps) {
   useEffect(() => {
     const params = {
       networkName,
-      channelId
+      channelName: channelId
     };
     dispatch({
       type: 'Channel/getOrgListOfChannel',
