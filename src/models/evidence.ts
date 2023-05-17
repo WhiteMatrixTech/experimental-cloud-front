@@ -97,7 +97,7 @@ const EvidenceModel: EvidenceModelType = {
     *evidenceOnChain({ payload }, { call }): any {
       const res = yield call(API.evidenceOnChain, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result) {
+      if (statusCode === 'ok') {
         notification.success({ message: '存证上链成功', top: 64, duration: 3 });
         return true;
       } else {

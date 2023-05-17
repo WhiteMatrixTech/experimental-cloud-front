@@ -41,8 +41,8 @@ function OrganizationManagement(props: OrganizationManagementProps) {
     },
     {
       title: '所属用户',
-      dataIndex: 'companyName',
-      key: 'companyName'
+      dataIndex: 'enterpriseName',
+      key: 'enterpriseName'
     },
     {
       title: '当前状态',
@@ -114,7 +114,7 @@ function OrganizationManagement(props: OrganizationManagementProps) {
       />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
-          rowKey="_id"
+          rowKey="orgMspId"
           columns={columns}
           loading={qryLoading}
           dataSource={orgList}

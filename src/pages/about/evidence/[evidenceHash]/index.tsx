@@ -55,12 +55,8 @@ function EvidenceDataDetail({
     },
     {
       label: '创建用户',
-      value: evidenceDataDetail && evidenceDataDetail.companyName,
-    },
-    {
-      label: '存证用户',
       value: evidenceDataDetail && evidenceDataDetail.createUser,
-    },
+    }
   ];
 
   const getEvidenceData = () => {

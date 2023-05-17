@@ -41,8 +41,8 @@ function EvidenceDataList(props: EvidenceDataListProps) {
     },
     {
       title: '创建用户',
-      dataIndex: 'companyName',
-      key: 'companyName'
+      dataIndex: 'createUser',
+      key: 'createUser'
     },
     {
       title: '上链时间',
@@ -100,11 +100,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
       from: Number(moment(new Date()).format('x'))
     };
     if (evidenceHash) {
-      dispatch({
-        type: 'Evidence/getEvidenceDataByHash',
-        payload: { networkName, evidenceHash }
-      });
-      return;
+      params['evidenceHash'] = evidenceHash;
     }
     dispatch({
       type: 'Evidence/getEvidenceDataList',
@@ -158,10 +154,13 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 
   return (
     <div className="page-wrapper">
-      <PageTitle label="存证上链" extra={
-        <Button type="primary" onClick={onClickUpload}>
-          存证上链
-        </Button>}
+      <PageTitle
+        label="存证上链"
+        extra={
+          <Button type="primary" onClick={onClickUpload}>
+            存证上链
+          </Button>
+        }
       />
       <div className="page-content page-content-shadow table-wrapper">
         <Spin spinning={qryLoading}>
@@ -200,7 +199,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
         </Spin>
       </div>
       {uploadVisible && <EvidenceOnChain visible={uploadVisible} onCancel={onCloseUpload} />}
-    </div >
+    </div>
   );
 }
 

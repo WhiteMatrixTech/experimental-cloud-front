@@ -32,15 +32,6 @@ function CreateOrgModal(props: CreateOrgModalProps) {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    // const params = {
-    //   limit: 100,
-    //   offset: 0,
-    //   ascend: false
-    // };
-    // dispatch({
-    //   type: 'ElasticServer/getServerList',
-    //   payload: params
-    // });
     dispatch({
       type: 'Contract/getChannelList',
       payload: { networkName }
