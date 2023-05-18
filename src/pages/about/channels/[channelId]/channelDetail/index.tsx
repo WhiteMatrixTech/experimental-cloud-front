@@ -282,7 +282,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
           <div className="table-header-title">区块列表</div>
           <Divider />
           <Table
-            rowKey="_id"
+            rowKey="blockHash"
             columns={blockColumns}
             loading={qryBlockLoading}
             dataSource={blockListOfChannel}

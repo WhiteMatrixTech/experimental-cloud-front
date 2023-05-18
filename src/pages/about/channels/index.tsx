@@ -189,7 +189,7 @@ function ChannelManagement(props: ChannelManagementProps) {
       />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
-          rowKey="_id"
+          rowKey="name"
           loading={qryLoading}
           columns={columns}
           dataSource={channelList}

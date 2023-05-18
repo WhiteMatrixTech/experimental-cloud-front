@@ -202,7 +202,7 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
       />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
-          rowKey="_id"
+          rowKey="serverName"
           loading={qryLoading}
           columns={columns}
           dataSource={serverList}

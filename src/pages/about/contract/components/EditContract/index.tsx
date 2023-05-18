@@ -112,7 +112,7 @@ function EditContract(props: EditContractProps) {
     },
     onChange(info: { file: { status: string; name: any; response: ChainCodePackageMetaData | any } }) {
       if (info.file.status === 'done') {
-        notification.success({ message: `Succeed in uploading contract ${info.file.name}`, top: 64, duration: 3 });
+        notification.success({ message: `上传合约 ${info.file.name} 成功`, top: 64, duration: 3 });
         setUploadedFile(info.file.response);
       } else if (info.file.status === 'error') {
         notification.error({

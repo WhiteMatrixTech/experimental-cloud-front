@@ -136,7 +136,7 @@ function NodeList(props: NodeListProps) {
           <div className="table-header-title">节点列表</div>
           <Divider />
           <Table
-            rowKey="_id"
+            rowKey="nodeName"
             loading={qryLoading}
             columns={columns}
             dataSource={nodeListOfChannel}

@@ -30,6 +30,7 @@ const ApproveContract: React.FC<ApproveContractProps> = (props) => {
   const handleSubmit = () => {
     form.validateFields().then(async (values: { networkName: string }) => {
       values.networkName = networkName;
+      console.log(values);
       const params = {
         ...values,
         networkName,
@@ -67,8 +68,8 @@ const ApproveContract: React.FC<ApproveContractProps> = (props) => {
       <Form {...formItemLayout} form={form}>
         <Item
           label="审核状态"
-          name="VerifyStatus"
-          initialValue={editParams && editParams.chainCodeStatus}
+          name="passed"
+          initialValue={true}
           rules={[
             {
               required: true,
@@ -77,9 +78,8 @@ const ApproveContract: React.FC<ApproveContractProps> = (props) => {
           ]}
         >
           <Radio.Group>
-            <Radio value="Pending">待审核</Radio>
-            <Radio value="Verified">通过</Radio>
-            <Radio value="Rejected">驳回</Radio>
+            <Radio value={true}>通过</Radio>
+            <Radio value={false}>驳回</Radio>
           </Radio.Group>
         </Item>
       </Form>

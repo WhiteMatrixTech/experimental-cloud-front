@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { ChainCodeSchema, Dispatch, history } from 'umi';
@@ -173,7 +174,6 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       networkName,
       channelId: record.channelId,
       chainCodeName: record.chainCodeName,
-      endorsementPolicy: record.endorsementPolicy
     };
     const res = await dispatch({
       type: 'Contract/releaseContract',
@@ -258,7 +258,6 @@ const MyContract: React.FC<MyContractProps> = (props) => {
         <Space size="small">
           {record.canDownload && (
             <a
-              // href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`}
               onClick={(e) => onDownLoadContract(e, record)}>
               下载合约
             </a>

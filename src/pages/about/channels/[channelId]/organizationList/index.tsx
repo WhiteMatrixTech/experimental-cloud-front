@@ -153,7 +153,7 @@ function OrganizationList(props: OrganizationListProps) {
           </div>
           <Divider />
           <Table
-            rowKey="_id"
+            rowKey="orgName"
             loading={qryLoading}
             columns={columns}
             dataSource={orgListOfChannel}

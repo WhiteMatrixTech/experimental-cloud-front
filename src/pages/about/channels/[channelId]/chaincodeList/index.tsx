@@ -39,11 +39,6 @@ function ChaincodeList(props: ChaincodeListProps) {
   const [pageNum, setPageNum] = useState(1);
   const columns: ColumnsType<any> = [
     {
-      title: '合约ID',
-      dataIndex: '_id',
-      key: '_id'
-    },
-    {
       title: '合约名称',
       dataIndex: 'chainCodeName',
       key: 'chainCodeName',
@@ -164,7 +159,7 @@ function ChaincodeList(props: ChaincodeListProps) {
           <div className="table-header-title">合约列表</div>
           <Divider />
           <Table
-            rowKey="_id"
+            rowKey="chainCodeName"
             loading={qryLoading}
             columns={columns}
             dataSource={contractListOfChannel}

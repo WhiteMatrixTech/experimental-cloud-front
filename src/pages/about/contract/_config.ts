@@ -30,7 +30,7 @@ export const chainCodeStatusInfo = {
   [ChainCodeStatus.REJECTED]: { color: 'red', text: '被驳回' }
 };
 
-export const VerifyStatusList = [ChainCodeStatus.PENDING, ChainCodeStatus.APPROVED, ChainCodeStatus.REJECTED];
+export const VerifyStatusList = [ChainCodeStatus.PENDING];
 
 export const UpdateStatusList = [
   ChainCodeStatus.PENDING,

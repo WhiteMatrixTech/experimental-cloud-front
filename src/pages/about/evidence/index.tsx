@@ -184,7 +184,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
             </Form>
           </div>
           <Table
-            rowKey="_id"
+            rowKey="evidenceHash"
             columns={columns}
             dataSource={evidenceDataList}
             onChange={onPageChange}

@@ -16,10 +16,11 @@ export async function addContract(params: ChainCodeSchema) {
 export async function verifyContract(
   params: BasicApiParams & {
     chainCodeName: string;
-    VerifyStatus: ChainCodeStatus;
+    chainId: string;
+    passwd: boolean;
   }
 ) {
-  return request(`/network/${params.networkName}/chainCodes/verifyChainCode`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/chainCodes/approve`, { method: 'POST', body: params });
 }
 
 /**
@@ -40,7 +41,7 @@ export async function upgradeContract(params: ChainCodeSchema) {
  * 发布合约
  */
 export async function releaseContract(params: any) {
-  return request(`/network/${params.networkName}/chainCodes/approve`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/chainCodes/publish`, { method: 'POST', body: params });
 }
 
 export interface InvokeChainCodeRequest {

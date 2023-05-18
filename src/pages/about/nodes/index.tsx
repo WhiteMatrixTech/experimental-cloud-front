@@ -136,23 +136,23 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      },
+      {
+        title: '操作',
+        key: 'action',
+        render: (_, record: PeerSchema) => (
+          <Space size="small">
+            {record.nodeStatus === 'RUNNING' && (
+              <span
+                onClick={() => {
+                  alert('TODO');
+                }}>
+                停止
+              </span>
+            )}
+          </Space>
+        )
       }
-      // {
-      //   title: '操作',
-      //   key: 'action',
-      //   render: (_, record: PeerSchema) => (
-      //     <Space size="small">
-      //       {record.nodeStatus === 'RUNNING' && (
-      //         <a
-      //           onClick={() => {
-      //             alert('TODO');
-      //           }}>
-      //           停止
-      //         </a>
-      //       )}
-      //     </Space>
-      //   )
-      // }
     ];
     setColumns(data);
   }, [networkName, onDownLoadCertificate, userRole]);
@@ -176,7 +176,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         />
         <div className="page-content page-content-shadow table-wrapper">
           <Table
-            rowKey="_id"
+            rowKey="nodeName"
             loading={qryLoading}
             columns={columns}
             dataSource={nodeList}
