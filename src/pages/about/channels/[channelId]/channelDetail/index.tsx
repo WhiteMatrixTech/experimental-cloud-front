@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { Table, Space, Col, Row, Descriptions, Statistic, Divider } from 'antd';
 import { connect } from 'dva';
 import { ChannelSchema, Dispatch, history, Location } from 'umi';
@@ -11,6 +11,8 @@ import config from '~/utils/config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { StatisticValueStyle } from '~/pages/about/league-dashboard/_style';
+import baseConfig from '~/utils/config';
+import { cancelCurrentRequest } from '~/utils/request';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
@@ -62,11 +64,6 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
       ellipsis: true
     },
     {
-      title: '所属通道',
-      dataIndex: 'channelId',
-      key: 'channelId'
-    },
-    {
       title: '交易数量',
       dataIndex: 'txCount',
       key: 'txCount'
@@ -91,17 +88,11 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
   ];
   const transactionColumns: ColumnsType<any> = [
     {
-      title: '交易ID',
-      dataIndex: 'txId',
-      key: 'txId',
+      title: '交易哈希',
+      dataIndex: 'txHash',
+      key: 'txHash',
       ellipsis: true,
       width: '17%'
-    },
-    {
-      title: '所属通道',
-      dataIndex: 'channelId',
-      key: 'channelId',
-      render: (text) => text || <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '交易组织',
@@ -144,13 +135,26 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
     }
   ];
 
+  const [blockPageNum, setBlockPageNum] = useState(1);
+  const [blockPageSize] = useState(baseConfig.pageSize);
+  // 翻页
+  const onBlockPageChange = (pageInfo: any) => {
+    setBlockPageNum(pageInfo.current);
+  };
+
+  const [txPageNum, setTXPageNum] = useState(1);
+  const [txPageSize] = useState(baseConfig.pageSize);
+  // 翻页
+  const onTXPageChange = (pageInfo: any) => {
+    setTXPageNum(pageInfo.current);
+  };
+
   // 获取汇总信息
   const getStaticInfo = useCallback(() => {
     const { networkName } = User;
     const params = {
       networkName,
-      channelId,
-      channelName: channelId
+      channel: channelId
     };
     dispatch({
       type: 'Channel/getStaticInfo',
@@ -163,16 +167,16 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
     const { networkName } = User;
     const params = {
       networkName,
-      offset: 0,
-      limit: config.pageSize,
+      offset: (txPageNum - 1) * txPageSize,
+      limit: txPageSize,
       ascend: false,
-      channelId
+      channel: channelId
     };
     dispatch({
       type: 'Channel/getTransactionsListOfChannel',
       payload: params
     });
-  }, [User, channelId, dispatch]);
+  }, [User, channelId, dispatch, txPageNum, txPageSize]);
 
   // 查看交易详情
   const onClickTransactionDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: { txId: string }) => {
@@ -197,16 +201,26 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
     const { networkName } = User;
     const params = {
       networkName,
-      offset: 0,
-      limit: config.pageSize,
+      offset: (blockPageNum - 1) * blockPageSize,
+      limit: blockPageSize,
       ascend: false,
-      channelId
+      channel: channelId
     };
     dispatch({
       type: 'Channel/getBlockListOfChannel',
       payload: params
     });
-  }, [User, channelId, dispatch]);
+  }, [User, blockPageNum, blockPageSize, channelId, dispatch]);
+
+  useEffect(() => {
+    getBlockList();
+    return () => cancelCurrentRequest();
+  }, [getBlockList, blockPageNum]);
+
+  useEffect(() => {
+    getTransactionList();
+    return () => cancelCurrentRequest();
+  }, [getTransactionList, txPageNum]);
 
   // 查看区块详情
   const onClickBlockDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: { blockHash: string }) => {
@@ -272,18 +286,32 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
             columns={blockColumns}
             loading={qryBlockLoading}
             dataSource={blockListOfChannel}
-            pagination={false}
+            onChange={onBlockPageChange}
+            pagination={{
+              pageSize: blockPageSize,
+              total: blockTotalOfChannel,
+              current: blockPageNum,
+              showSizeChanger: false,
+              position: ['bottomCenter']
+            }}
           />
         </div>
         <div className="page-content page-content-shadow table-wrapper">
           <div className="table-header-title">交易列表</div>
           <Divider />
           <Table
-            rowKey="_id"
+            rowKey="txHash"
             columns={transactionColumns}
             loading={qryTransactionLoading}
             dataSource={transactionListOfChannel}
-            pagination={false}
+            onChange={onTXPageChange}
+            pagination={{
+              pageSize: txPageSize,
+              total: transactionTotalOfChannel,
+              current: txPageNum,
+              showSizeChanger: false,
+              position: ['bottomCenter']
+            }}
           />
         </div>
       </div>

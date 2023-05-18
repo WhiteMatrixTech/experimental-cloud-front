@@ -205,29 +205,35 @@ const ChannelModel: ChannelModelType = {
       }
     },
 
-    *getStaticInfo({ payload }, { call, put, all }) {
-      const [blockRes, transactionRes, orgRes, nodeRes, contractRes] = yield all([
-        call(API.getBlockTotalOfChannel, payload),
-        call(API.getTransactionsTotalOfChannel, payload),
-        call(API.getOrgListOfChannel, payload),
-        call(API.getNodeListOfChannel, payload),
-        call(API.getContractTotalOfChannel, payload)
-      ]);
-      const blockTotalOfChannel = blockRes.statusCode === 'ok' ? blockRes.result.count : 0;
-      const transactionTotalOfChannel = transactionRes.statusCode === 'ok' ? transactionRes.result.count : 0;
-      const orgTotalOfChannel = orgRes.statusCode === 'ok' ? orgRes.result.length : 0;
-      const nodeTotalOfChannel = nodeRes.statusCode === 'ok' ? nodeRes.result.length : 0;
-      const contractTotalOfChannel = contractRes.statusCode === 'ok' ? contractRes.result.count : 0;
-      yield put({
-        type: 'common',
-        payload: {
-          orgTotalOfChannel,
-          nodeTotalOfChannel,
-          blockTotalOfChannel,
-          contractTotalOfChannel,
-          transactionTotalOfChannel
-        }
-      });
+    *getStaticInfo({ payload }, { call, put, all }): any {
+      const { statusCode, result } = yield call(API.getChannelStatics, payload);
+      if (statusCode === "ok") {
+        yield put({
+          type: 'common',
+          payload: {
+            orgTotalOfChannel: result.orgCount,
+            nodeTotalOfChannel: result.nodeCount,
+            blockTotalOfChannel: result.blockCount,
+            contractTotalOfChannel: result.chainCodeCount,
+            transactionTotalOfChannel: result.transactionCount
+          }
+        })
+      }
+      // const blockTotalOfChannel = blockRes.statusCode === 'ok' ? blockRes.result.count : 0;
+      // const transactionTotalOfChannel = transactionRes.statusCode === 'ok' ? transactionRes.result.count : 0;
+      // const orgTotalOfChannel = orgRes.statusCode === 'ok' ? orgRes.result.length : 0;
+      // const nodeTotalOfChannel = nodeRes.statusCode === 'ok' ? nodeRes.result.length : 0;
+      // const contractTotalOfChannel = contractRes.statusCode === 'ok' ? contractRes.result.count : 0;
+      // yield put({
+      //   type: 'common',
+      //   payload: {
+      //     orgTotalOfChannel,
+      //     nodeTotalOfChannel,
+      //     blockTotalOfChannel,
+      //     contractTotalOfChannel,
+      //     transactionTotalOfChannel
+      //   }
+      // });
     }
   },
 

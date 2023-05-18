@@ -75,7 +75,7 @@ export async function getContractTotalOfChannel(params: BasicApiParams) {
  * 获取 通道下的区块列表
  */
 export async function getBlockListOfChannel(params: BasicApiParams & AllPaginationParams) {
-  return request(`/network/${params.networkName}/blocks/query`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/blocks`, { method: 'GET', body: params });
 }
 
 /**
@@ -89,7 +89,7 @@ export async function getBlockTotalOfChannel(params: BasicApiParams) {
  * 获取 通道下的交易列表
  */
 export async function getTransactionsListOfChannel(params: BasicApiParams & AllPaginationParams) {
-  return request(`/network/${params.networkName}/transactions/query`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/transactions`, { method: 'GET', body: params });
 }
 
 /**
@@ -97,4 +97,8 @@ export async function getTransactionsListOfChannel(params: BasicApiParams & AllP
  */
 export async function getTransactionsTotalOfChannel(params: BasicApiParams) {
   return request(`/network/${params.networkName}/transactions/totalCount/channel/${params.channelId}`);
+}
+
+export async function getChannelStatics(params: { networkName: string, channel: string }) {
+  return request(`/network/${params.networkName}/channels/${params.channel}`)
 }

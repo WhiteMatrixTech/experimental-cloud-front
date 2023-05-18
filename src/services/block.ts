@@ -5,14 +5,14 @@ import { AllPaginationParams, BasicApiParams } from '~/utils/types';
  * 获取block的totalDocs
  */
 export async function getBlockTotalDocs(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/blocks/totalCount`);
+  return request(`/network/${params.networkName}/blocks/count`);
 }
 
 /**
  * 查询区块链列表
  */
 export async function getBlockList(params: BasicApiParams & AllPaginationParams) {
-  return request(`/network/${params.networkName}/blocks/query`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/blocks`, { method: 'GET', body: params });
 }
 
 export type GetTransactionParams = BasicApiParams & { blockHash: string };
@@ -28,8 +28,8 @@ export async function getBlockDetail(params: GetTransactionParams) {
  * 查询交易列表
  */
 export async function getTransactionList(params: GetTransactionParams & AllPaginationParams) {
-  return request(`/network/${params.networkName}/transactions/queryWithBlockHash`, {
-    method: 'POST',
+  return request(`/network/${params.networkName}/transactions`, {
+    method: 'GET',
     body: params
   });
 }

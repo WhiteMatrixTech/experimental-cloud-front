@@ -39,9 +39,9 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
 
   const columns = [
     {
-      title: '交易ID',
-      dataIndex: 'txId',
-      key: 'txId',
+      title: '交易哈希',
+      dataIndex: 'txHash',
+      key: 'txHash',
       ellipsis: true,
       width: '20%'
     },
@@ -76,12 +76,12 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
       render: (text: string, record: TransactionSchema) => (
         <Space size="small">
           {record.channelId || record.txMsp ? (
-            <a href={`/about/transactions/${record.txId}`} onClick={(e) => onClickDetail(e, record)}>
+            <a href={`/about/transactions/${record.txHash}`} onClick={(e) => onClickDetail(e, record)}>
               详情
             </a>
           ) : (
             <a
-              href={`/about/transactions/${record.txId}`}
+              href={`/about/transactions/${record.txHash}`}
               className="a-forbidden-style"
               onClick={(e) => e.preventDefault()}>
               详情
@@ -122,9 +122,9 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
       }
     });
     history.push({
-      pathname: `/about/transactions/${record.txId}`,
+      pathname: `/about/transactions/${record.txHash}`,
       query: {
-        channelId: record.txId
+        channelId: record.channelId
       }
     });
   };
@@ -192,7 +192,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
             <div className="table-header-title">交易数据</div>
             <Divider />
             <Table
-              rowKey="txId"
+              rowKey="txHash"
               columns={columns}
               dataSource={transactionList}
               onChange={onPageChange}
