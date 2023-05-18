@@ -12,8 +12,11 @@ export type CreateChannelApiParams = {
   description?: string; // 通道描述
 };
 
+/**
+ * 创建通道
+ */
 export async function createChannel(params: CreateChannelApiParams) {
-  return request(`/network/${params.networkName}/channels/createChannel`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/channels`, { method: 'POST', body: params });
 }
 
 /**

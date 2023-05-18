@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'dva';
 import { Input, Select, Form, Button, Modal } from 'antd';
 import { ConnectState } from '~/models/connect';

@@ -38,7 +38,7 @@ export interface EditContractProps {
 
 function EditContract(props: EditContractProps) {
   const [form] = Form.useForm();
-  const [fileJson, setFileJson] = useState<ChainCodePackageMetaData | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<string>("");
   const [initRequired, setInitRequired] = useState(false);
   const { visible, editParams, onCancel, operateType, dispatch, Contract, User, btnLoading = false } = props;
   const { myChannelList } = Contract;
@@ -48,17 +48,13 @@ function EditContract(props: EditContractProps) {
     form
       .validateFields()
       .then((values: any) => {
-        values.chainCodePackageMetaData = fileJson;
+        values.packageFilename = uploadedFile;
         const { upload, ...rest } = values;
         const params = rest;
         if (!initRequired) {
           params.initArgs = '';
         }
         params.networkName = networkName;
-        params.endorsementPolicy = {
-          policyType: 'Default',
-          orgsToApprove: []
-        };
         if (operateType === 'new') {
           dispatch({
             type: 'Contract/addContract',
@@ -117,14 +113,14 @@ function EditContract(props: EditContractProps) {
     onChange(info: { file: { status: string; name: any; response: ChainCodePackageMetaData | any } }) {
       if (info.file.status === 'done') {
         notification.success({ message: `Succeed in uploading contract ${info.file.name}`, top: 64, duration: 3 });
-        setFileJson(info.file.response);
+        setUploadedFile(info.file.response);
       } else if (info.file.status === 'error') {
         notification.error({
           message: info.file.response ? info.file.response.message : '合约上传出错',
           top: 64,
           duration: 3
         });
-        setFileJson(null);
+        setUploadedFile("");
       }
     }
   };
@@ -151,7 +147,7 @@ function EditContract(props: EditContractProps) {
       <Button key="cancel" onClick={onCancel}>
         取消
       </Button>,
-      <Button key="submit" loading={btnLoading} onClick={handleSubmit} disabled={!fileJson} type="primary">
+      <Button key="submit" loading={btnLoading} onClick={handleSubmit} disabled={!uploadedFile} type="primary">
         提交
       </Button>
     ]
@@ -160,7 +156,7 @@ function EditContract(props: EditContractProps) {
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
-        <Item label="上传方式">本地上传</Item>
+        <Item label="上传方式">本地上传（最大10M）</Item>
         <Item name="upload" label="本地合约" valuePropName="fileList" getValueFromEvent={normFile}>
           <Upload {...(uploadProps as any)}>
             <Button type="primary">上传合约</Button>
@@ -201,6 +197,18 @@ function EditContract(props: EditContractProps) {
           ]}>
           <Input placeholder="请输入合约名称" disabled={operateType !== 'new'} />
         </Item>
+        <Item
+          label="合约Label"
+          name="label"
+          initialValue={editParams && editParams.label}
+          rules={[
+            {
+              required: true,
+              message: '请输入合约Label'
+            }
+          ]}>
+          <Input placeholder="请输入Label" disabled={operateType !== 'new'} />
+        </Item>
         {operateType !== 'new' && <Item label="当前版本">{editParams && editParams.chainCodeVersion}</Item>}
         <Item
           label="合约版本"
@@ -210,6 +218,10 @@ function EditContract(props: EditContractProps) {
             {
               validateTrigger: 'submit',
               validator: checkChaincodeVersion
+            },
+            {
+              required: true,
+              message: '请输入合约版本'
             }
           ]}>
           <Input type="number" step={0.1} placeholder="请输入合约版本" />
@@ -252,6 +264,10 @@ function EditContract(props: EditContractProps) {
           name="description"
           initialValue=""
           rules={[
+            {
+              required: true,
+              message: '请输入合约描述'
+            },
             {
               min: 1,
               max: 100,
