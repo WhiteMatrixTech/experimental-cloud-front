@@ -31,16 +31,50 @@ export type MyCompanySchema = {
 };
 
 export type MyOrganizationSchema = {
+  /**
+   * 网络名称
+   */
   networkName: string;
+  /**
+   * 组织名称
+   */
   orgName: string;
+  /**
+   * 组织别名
+   */
   orgAliasName: string;
+  /**
+   * 组织MspId
+   */
   orgMspId: string;
+  /**
+   * 组织地址
+   */
   orgAddress: string;
+  /**
+   * 组织状态
+   */
   orgStatus: OrgStatus;
-  companyName: string;
-  updatedAt: string;
+  /**
+   * 所属人公司名称
+   */
+  enterpriseName: string;
+  /**
+   * 所属人邮箱
+   */
+  email: string;
+  /**
+   * 创建时间
+   */
+  createTime: string;
+  /**
+   * 更新时间
+   */
+  updateTime: string;
+  /**
+   * 组织全名
+   */
   orgFullName: string;
-  createdAt: string;
 };
 
 export type MyInfoModelState = {

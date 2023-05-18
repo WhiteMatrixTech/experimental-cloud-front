@@ -42,7 +42,7 @@ function MyOrgInfo(props: MyOrgInfoProps) {
     },
     {
       label: '创建时间',
-      value: myOrgInfo && myOrgInfo.createdAt ? moment(myOrgInfo.createdAt).format('YYYY-MM-DD HH:mm:ss') : '- -',
+      value: myOrgInfo && myOrgInfo.createTime ? moment(myOrgInfo.createTime).format('YYYY-MM-DD HH:mm:ss') : '- -',
     },
   ];
 

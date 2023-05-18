@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { ConnectState } from '~/models/connect';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
 import { Dispatch } from 'umi';
-import { Roles } from '~/utils/roles';
 import { CreateFabricRole } from '../_config';
 
 const { Item } = Form;
@@ -29,33 +28,21 @@ export interface CreateFabricUserModalProps {
   getFabricRoleList: () => void;
 }
 function CreateFabricUserModal(props: CreateFabricUserModalProps) {
-  const { FabricRole, Organization, visible, onCancel, addLoading = false, User, dispatch } = props;
-  const { networkName, userRole } = User;
-  const { myOrgInfo } = FabricRole;
-  const { orgInUseList } = Organization;
+  const { visible, onCancel, addLoading = false, User, dispatch } = props;
+  const { networkName } = User;
 
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    dispatch({
-      type: 'FabricRole/getMyOrgInfo',
-      payload: { networkName }
-    });
-    dispatch({
-      type: 'Organization/getOrgInUseList',
-      payload: { networkName }
-    });
-  }, [dispatch, networkName]);
-
-  const orgList = useMemo(() => {
-    if (userRole === Roles.ADMIN) {
-      return orgInUseList;
-    }
-    if (myOrgInfo) {
-      return [myOrgInfo];
-    }
-    return [];
-  }, [userRole, myOrgInfo, orgInUseList]);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'FabricRole/getMyOrgInfo',
+  //     payload: { networkName }
+  //   });
+  //   dispatch({
+  //     type: 'Organization/getOrgInUseList',
+  //     payload: { networkName }
+  //   });
+  // }, [dispatch, networkName]);
 
   const handleSubmit = () => {
     form
@@ -82,16 +69,6 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
       });
   };
 
-  const checkConfirm = (_: any, value: string) => {
-    const promise = Promise;
-
-    if (value && value !== form.getFieldValue('pass')) {
-      return promise.reject('两次输入的密码不匹配');
-    }
-
-    return promise.resolve();
-  };
-
   const drawerProps = {
     visible: visible,
     closable: true,
@@ -113,7 +90,7 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
       <Form {...formItemLayout} form={form}>
         <Item
           label="Fabric角色名"
-          name="userId"
+          name="userName"
           initialValue=""
           rules={[
             {
@@ -129,7 +106,7 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
         </Item>
         <Item
           label="密码"
-          name="pass"
+          name="userSecret"
           initialValue=""
           rules={[
             {
@@ -142,22 +119,7 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
               message: '密码长度为6-18位'
             }
           ]}>
-          <Input type="password" placeholder="请输入密码" />
-        </Item>
-        <Item
-          name="re_pass"
-          label="确认密码"
-          initialValue=""
-          rules={[
-            {
-              required: true,
-              message: '请确认密码!'
-            },
-            {
-              validator: checkConfirm
-            }
-          ]}>
-          <Input type="password" placeholder="请确认密码" />
+          <Input.Password placeholder="请输入密码" />
         </Item>
         <Item
           label="角色类型"
@@ -172,28 +134,6 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
             {Object.keys(CreateFabricRole).map((role) => (
               <Option key={role} value={CreateFabricRole[role]}>
                 {CreateFabricRole[role]}
-              </Option>
-            ))}
-          </Select>
-        </Item>
-        <Item
-          label="所属组织"
-          name="orgName"
-          initialValue={userRole === Roles.MEMBER ? myOrgInfo && myOrgInfo.orgName : null}
-          rules={[
-            {
-              required: true,
-              message: '请选择所属组织'
-            }
-          ]}>
-          <Select
-            allowClear
-            placeholder="请选择所属组织"
-            disabled={userRole === Roles.MEMBER}
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}>
-            {orgList.map((item) => (
-              <Option key={item.orgName} value={item.orgName}>
-                {item && item.orgName}
               </Option>
             ))}
           </Select>

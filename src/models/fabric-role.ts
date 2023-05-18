@@ -2,25 +2,22 @@ import * as API from '../services/fabric-role';
 import { getMyOrgInfo } from '../services/my-info';
 import { notification } from 'antd';
 import type { Reducer, Effect, OrganizationSchema } from 'umi';
-import { Roles } from '~/utils/roles';
-import { FabricRole } from '~/pages/about/fabricUsers/_config';
+import { getMyAccessibleOrgs } from '../services/fabric-role';
 
 export type FabricRoleSchema = {
-  networkName: string; // 网络名称
-  userId: string; // 用户ID
-  mspId: string; // MSP ID
-  explorerRole: FabricRole; // fabric网络角色
-  credentials: string; // 证书凭据
-  type: string; // 证书类型
-  orgName: string; // 组织名
-  companyName: string; // 公司名
-  networkRole: Roles; // baas网络角色
+  orgName?: string;
+  roleType: "peer" | "client" | "orderer" | "admin",
+  networkName?: string;
+  username?: string;
+  attrs?: string;
+  createTime?: string;
 };
 
 export type FabricRoleModelState = {
   fabricRoleList: Array<FabricRoleSchema>;
   fabricRoleTotal: number;
   myOrgInfo: OrganizationSchema | null;
+  myAccessibleOrgs: Array<string>;
 };
 
 export type FabricRoleModelType = {
@@ -30,6 +27,7 @@ export type FabricRoleModelType = {
     getFabricRoleList: Effect;
     getFabricRoleListWithOrg: Effect;
     getMyOrgInfo: Effect;
+    getMyAccessibleOrgs: Effect;
     createFabricRole: Effect;
   };
   reducers: {
@@ -44,7 +42,8 @@ const FabricRoleModel: FabricRoleModelType = {
     fabricRoleList: [],
     fabricRoleTotal: 0,
 
-    myOrgInfo: null // 我的组织信息
+    myOrgInfo: null, // 我的组织信息
+    myAccessibleOrgs: []
   },
 
   effects: {
@@ -84,6 +83,19 @@ const FabricRoleModel: FabricRoleModelType = {
           type: 'common',
           payload: {
             myOrgInfo: result
+          }
+        });
+      }
+    },
+
+    *getMyAccessibleOrgs({ payload }, { call, put }): any {
+      const res = yield call(getMyAccessibleOrgs, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            myAccessibleOrgs: result
           }
         });
       }

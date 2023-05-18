@@ -4,7 +4,7 @@ import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Table, Button, Space, Form, Row, Col, Select, message, notification, Spin } from 'antd';
-import { PageTitle } from '~/components';
+import { PageTitle, PlaceHolder } from '~/components';
 import CreateFabricUserModal from './components/CreateFabricUserModal';
 import { OrgStatus } from '../organizations/_config';
 import baseConfig from '~/utils/config';
@@ -25,9 +25,8 @@ export interface FabricRoleManagementProps {
 }
 const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
   const { dispatch, qryLoading = false } = props;
-  const { orgList } = props.Organization;
   const { networkName } = props.User;
-  const { fabricRoleList, fabricRoleTotal, myOrgInfo } = props.FabricRole;
+  const { fabricRoleList, fabricRoleTotal, myOrgInfo, myAccessibleOrgs } = props.FabricRole;
 
   const [form] = Form.useForm();
   const [pageNum, setPageNum] = useState(1);
@@ -80,7 +79,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
     } as HeadersInit;
     setDownloading(true);
     request(
-      `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRole/${record.orgName}/${record.userId}/getUserCcp`,
+      `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRoles/${record.orgName}/${record.username}/sdkConfig`,
       {
         headers,
         mode: 'cors',
@@ -91,14 +90,12 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       .then((res: any) => {
         setDownloading(false);
         const blob = new Blob([res]);
-        saveAs(blob, `${record.userId}.json`);
+        saveAs(blob, `${record.username}.json`);
       })
       .catch((errMsg) => {
         // DOMException: The user aborted a request.
-        if (!errMsg) {
-          setDownloading(false);
-          notification.error({ message: 'SDK配置下载失败', top: 64, duration: 3 });
-        }
+        setDownloading(false);
+        notification.error({ message: 'SDK配置下载失败', top: 64, duration: 3 });
       });
   };
 
@@ -127,14 +124,14 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
   const columns: ColumnsType<any> = [
     {
       title: 'Fabric角色名',
-      dataIndex: 'userId',
-      key: 'userId',
+      dataIndex: 'username',
+      key: 'username',
       ellipsis: true
     },
     {
       title: '角色类型',
-      dataIndex: 'explorerRole',
-      key: 'explorerRole'
+      dataIndex: 'roleType',
+      key: 'roleType'
     },
     {
       title: '所属组织',
@@ -146,12 +143,13 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       title: '属性集',
       dataIndex: 'attrs',
       key: 'attrs',
-      ellipsis: true
+      ellipsis: true,
+      render: (text: string) => <PlaceHolder text={text} />
     },
     {
       title: '创建时间',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
+      dataIndex: 'createTime',
+      key: 'createTime',
       render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
@@ -160,7 +158,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       render: (_: any, record: FabricRoleSchema) => (
         <Space size="small">
           <a
-            href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRole/${record.orgName}/${record.userId}/getUserCcp`}
+            href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRoles/${record.orgName}/${record.username}/sdkConfig`}
             onClick={(e) => onDownLoadSDK(e, record)}>
             下载SDK配置
           </a>
@@ -171,9 +169,10 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
 
   useEffect(() => {
     dispatch({
-      type: 'Organization/getOrgList',
+      type: 'FabricRole/getMyAccessibleOrgs',
       payload: { networkName }
     });
+
   }, [dispatch, networkName]);
 
   // 页码改变、搜索值改变时，重新查询列表
@@ -211,9 +210,9 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
                         allowClear
                         getPopupContainer={(triggerNode) => triggerNode.parentNode}
                         placeholder="选择组织">
-                        {orgList.map((item) => (
-                          <Option key={item.orgName} value={item.orgName}>
-                            {item.orgName}
+                        {myAccessibleOrgs.map((item) => (
+                          <Option key={item} value={item}>
+                            {item}
                           </Option>
                         ))}
                       </Select>
@@ -231,7 +230,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
               </Form>
             </div>
             <Table
-              rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.userId}`}
+              rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.username}`}
               columns={columns}
               dataSource={fabricRoleList}
               onChange={onPageChange}
