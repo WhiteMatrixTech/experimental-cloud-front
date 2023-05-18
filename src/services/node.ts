@@ -32,3 +32,17 @@ export type CreateNodeApiParams = {
 export async function createNode(params: CreateNodeApiParams) {
   return request(`/network/${params.networkName}/nodes`, { method: 'POST', body: params });
 }
+
+/**
+ * 启动节点
+ */
+export async function startNode(params: { network: string, orgName: string, nodeName: string }) {
+  return request(`/network/${params.network}/nodes/${params.orgName}/${params.nodeName}/start`, { method: 'POST' })
+}
+
+/**
+ * 停止节点
+ */
+ export async function stopNode(params: { network: string, orgName: string, nodeName: string }) {
+  return request(`/network/${params.network}/nodes/${params.orgName}/${params.nodeName}/stop`, { method: 'POST' })
+}

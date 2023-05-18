@@ -27,6 +27,8 @@ export type PeerModelType = {
     getNodeList: Effect;
     getNodeSSH: Effect;
     createNode: Effect;
+    startNode: Effect;
+    stopNode: Effect;
   };
   reducers: {
     common: Reducer<PeerModelState>;
@@ -43,7 +45,7 @@ const PeerModel: PeerModelType = {
   },
 
   effects: {
-    *getNodeList({ payload }, { call, put }) {
+    *getNodeList({ payload }, { call, put }): any {
       const res = yield call(API.getNodeList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -57,7 +59,7 @@ const PeerModel: PeerModelType = {
       }
     },
 
-    *getNodeSSH({ payload }, { call, put }) {
+    *getNodeSSH({ payload }, { call, put }): any {
       const res = yield call(API.getNodeSSH, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -70,7 +72,27 @@ const PeerModel: PeerModelType = {
       }
     },
 
-    *createNode({ payload }, { call, put }) {
+    *startNode({ payload }, { call }): any {
+      const res = yield call(API.startNode, payload);
+      const { statusCode } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: "启动节点成功", top: 64, duration: 3 })
+      }else {
+        notification.error({ message: "启动节点失败", top: 64, duration: 3 })
+      }
+    },
+
+    *stopNode({ payload }, { call }): any {
+      const res = yield call(API.stopNode, payload);
+      const { statusCode } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: "停止节点成功", top: 64, duration: 3 })
+      }else {
+        notification.error({ message: "停止节点失败", top: 64, duration: 3 })
+      }
+    },
+
+    *createNode({ payload }, { call, put }): any {
       const res = yield call(API.createNode, payload);
       const { statusCode, result } = res;
       const succMessage = `节点创建请求发起成功`;

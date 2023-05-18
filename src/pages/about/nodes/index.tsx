@@ -7,7 +7,6 @@ import { PageTitle, PlaceHolder } from '~/components';
 import { Table, Button, Badge, Space, notification, Spin } from 'antd';
 import CreateNodeModal from './components/CreateNodeModal';
 import baseConfig from '~/utils/config';
-import { Roles } from '~/utils/roles';
 import { peerStatus } from './_config';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
@@ -18,12 +17,13 @@ import { cancelCurrentRequest } from '~/utils/request';
 export interface NodeManagementProps {
   dispatch: Dispatch;
   qryLoading: boolean;
+  stopOrStartNodeLoading: boolean;
   User: ConnectState['User'];
   Peer: ConnectState['Peer'];
 }
 
 const NodeManagement: React.FC<NodeManagementProps> = (props) => {
-  const { dispatch, qryLoading = false, User } = props;
+  const { dispatch, qryLoading = false, User, stopOrStartNodeLoading = false } = props;
   const { networkName, userRole } = User;
   const { nodeList, nodeTotal } = props.Peer;
   const [columns, setColumns] = useState<ColumnsType<any>>([]);
@@ -141,21 +141,47 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         title: '操作',
         key: 'action',
         render: (_, record: PeerSchema) => (
-          <Space size="small">
-            {record.nodeStatus === 'RUNNING' && (
-              <span
-                onClick={() => {
-                  alert('TODO');
-                }}>
-                停止
-              </span>
-            )}
-          </Space>
+          <Spin spinning={stopOrStartNodeLoading}>
+            <Space size="small">
+              {record.nodeStatus === 'RUNNING' && (
+                <span
+                  className="action-link"
+                  onClick={() => {
+                    dispatch({
+                      type: 'Peer/stopNode',
+                      payload: {
+                        network: networkName,
+                        orgName: record.orgName,
+                        nodeName: record.nodeName
+                      }
+                    });
+                  }}>
+                  停止
+                </span>
+              )}
+              {record.nodeStatus === 'STOPPED' && (
+                <span
+                  className="action-link"
+                  onClick={() => {
+                    dispatch({
+                      type: 'Peer/startNode',
+                      payload: {
+                        network: networkName,
+                        orgName: record.orgName,
+                        nodeName: record.nodeName
+                      }
+                    });
+                  }}>
+                  启动
+                </span>
+              )}
+            </Space>
+          </Spin>
         )
       }
     ];
     setColumns(data);
-  }, [networkName, onDownLoadCertificate, userRole]);
+  }, [dispatch, networkName, onDownLoadCertificate, stopOrStartNodeLoading, userRole]);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
@@ -202,5 +228,6 @@ export default connect(({ User, Layout, Peer, loading }: ConnectState) => ({
   User,
   Layout,
   Peer,
-  qryLoading: loading.effects['Peer/getNodeList']
+  qryLoading: loading.effects['Peer/getNodeList'],
+  stopOrStartNodeLoading: loading.effects['Peer/startNode'] || loading.effects['Peer/stopNode']
 }))(NodeManagement);
