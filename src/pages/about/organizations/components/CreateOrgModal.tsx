@@ -1,11 +1,9 @@
-import { useEffect } from 'react';
-import { Button, Form, Input, Modal, Select } from 'antd';
+import { Button, Form, Input, Modal } from 'antd';
 import { connect } from 'dva';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 
 const { Item } = Form;
-const { Option } = Select;
 
 const formItemLayout = {
   labelCol: {
@@ -25,18 +23,9 @@ export interface CreateOrgModalProps {
   ElasticServer: ConnectState['ElasticServer'];
 }
 function CreateOrgModal(props: CreateOrgModalProps) {
-  const { dispatch, visible, onCancel, addLoading = false, User, Contract } = props;
+  const { dispatch, visible, onCancel, addLoading = false, User } = props;
   const { networkName } = User;
-  const { channelList } = Contract;
-
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    dispatch({
-      type: 'Contract/getChannelList',
-      payload: { networkName }
-    });
-  }, [dispatch, networkName]);
 
   const handleSubmit = () => {
     form
@@ -78,23 +67,6 @@ function CreateOrgModal(props: CreateOrgModalProps) {
   return (
     <Modal {...drawerProps}>
       <Form {...formItemLayout} form={form}>
-        <Item
-          label="所属通道"
-          name="name"
-          rules={[
-            {
-              required: true,
-              message: '请选择通道'
-            }
-          ]}>
-          <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="选择通道">
-            {channelList.map((item) => (
-              <Option key={item.name} value={item.name}>
-                {item.name}
-              </Option>
-            ))}
-          </Select>
-        </Item>
         <Item
           label="组织名称"
           name="orgName"

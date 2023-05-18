@@ -37,8 +37,8 @@ const columns: ColumnsType<any> = [
   },
   {
     title: '所属用户',
-    dataIndex: 'companyName',
-    key: 'companyName',
+    dataIndex: 'enterpriseName',
+    key: 'enterpriseName',
     render: (text) => <PlaceHolder text={text} />
   }
 ];

@@ -6,7 +6,6 @@ import { request } from '../utils/request';
  */
 export type CreateOrgApiParams = {
   networkName: string;
-  channelId: string;
   orgName: string;
   orgNameAlias: string;
   initPeerName: string;

@@ -41,8 +41,8 @@ function OrganizationManagement(props: OrganizationManagementProps) {
     },
     {
       title: '所属用户',
-      dataIndex: 'companyName',
-      key: 'companyName'
+      dataIndex: 'enterpriseName',
+      key: 'enterpriseName'
     },
     {
       title: '当前状态',

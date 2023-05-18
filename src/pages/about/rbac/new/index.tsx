@@ -91,13 +91,10 @@ function NewRbacConfig(props: NewRbacConfigProps) {
         .then((values) => {
           const callback = async () => {
             const params = setParams(values, roleName, networkName);
-            const res = dispatch({
+            dispatch({
               type: 'RBAC/createRbac',
               payload: params
             });
-            if (res) {
-              history.push('/about/rbac');
-            }
           };
           Modal.confirm({
             title: 'Confirm',

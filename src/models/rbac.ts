@@ -101,6 +101,7 @@ const RBACModel: RBACModelType = {
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         notification.success({ message: '新增角色访问策略成功', top: 64, duration: 3 });
+        window.history.back()
         return true;
       } else {
         notification.error({ message: result.msg || '新增角色访问策略失败', top: 64, duration: 3 });
@@ -113,6 +114,7 @@ const RBACModel: RBACModelType = {
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         notification.success({ message: '配置角色访问策略成功', top: 64, duration: 3 });
+        window.history.back();
         return true;
       } else {
         notification.error({ message: result.msg || '配置角色访问策略失败', top: 64, duration: 3 });
