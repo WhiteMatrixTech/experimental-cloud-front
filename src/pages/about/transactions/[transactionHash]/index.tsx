@@ -38,16 +38,16 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({
       return [
         {
           label: '交易哈希',
-          value: transactionDetail.txId,
+          value: transactionDetail.txHash,
         },
         {
           label: '所属区块',
           value: transactionDetail.blockHash,
         },
-        {
-          label: '所属联盟',
-          value: transactionDetail.leagueName,
-        },
+        // {
+        //   label: '所属联盟',
+        //   value: transactionDetail.leagueName,
+        // },
         {
           label: '交易通道',
           value: transactionDetail.channelId,
@@ -80,7 +80,7 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({
   useEffect(() => {
     dispatch({
       type: 'Transactions/getTransactionDetail',
-      payload: { txId: transactionHash, networkName },
+      payload: { txHash: transactionHash, networkName },
     });
   }, [dispatch, networkName, transactionHash]);
 

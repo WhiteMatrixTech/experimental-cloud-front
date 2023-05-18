@@ -11,14 +11,14 @@ export async function getTransactionTotalDocs(params: BasicApiParams) {
  * 查询交易列表
  */
 export async function getTransactionList(params: AllPaginationParams & BasicApiParams) {
-  return request(`/network/${params.networkName}/transactions/query`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/transactions`, { method: 'GET', body: params });
 }
 
 /**
  * 查询交易详情
  */
-export type GetTransactionDetailParams = BasicApiParams & { txId: string };
+export type GetTransactionDetailParams = BasicApiParams & { txHash: string };
 
 export async function getTransactionDetail(params: GetTransactionDetailParams) {
-  return request(`/network/${params.networkName}/transactions/${params.txId}`);
+  return request(`/network/${params.networkName}/transactions/${params.txHash}`);
 }

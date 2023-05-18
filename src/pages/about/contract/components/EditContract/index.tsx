@@ -107,9 +107,7 @@ function EditContract(props: EditContractProps) {
   const uploadProps = {
     name: 'file',
     listType: 'text',
-    action: `${process.env.BAAS_BACKEND_LINK}${
-      process.env.NODE_ENV === 'development' ? '/api' : ''
-    }/network/${networkName}/chainCodes/uploadPackageArchive`,
+    action: `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/chainCodes/uploadPackageArchive`,
     accept: '.zip, .jar, .rar, .gz, .tgz',
     multiple: false,
     beforeUpload: handleBeforeUpload,
