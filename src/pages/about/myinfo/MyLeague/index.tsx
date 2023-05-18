@@ -30,7 +30,7 @@ function MyLeagueInfo(props: MyLeagueInfoProps) {
     },
     {
       label: '盟主名称',
-      value: myLeague && myLeague.leaderCompanyName,
+      value: myLeague && myLeague.leaderName,
     },
     {
       label: '网络名称',
@@ -42,7 +42,7 @@ function MyLeagueInfo(props: MyLeagueInfoProps) {
     },
     {
       label: '创建时间',
-      value: myLeague && myLeague.createdTime ? moment(myLeague.createdTime).format('YYYY-MM-DD HH:mm:ss') : '- -',
+      value: myLeague && myLeague.createTime ? moment(myLeague.createTime).format('YYYY-MM-DD HH:mm:ss') : '- -',
     },
     {
       label: '联盟描述',

@@ -89,7 +89,7 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
       <Form layout="vertical" form={form}>
         <Form.Item
           label="通道"
-          name="channelId"
+          name="channel"
           initialValue={null}
           rules={[
             {

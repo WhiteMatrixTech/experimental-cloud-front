@@ -12,7 +12,7 @@ export async function getMyLeagueInfo(params: BasicApiParams) {
  * 查询我的用户信息
  */
 export async function getMyCompanyInfo(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/info/company`);
+  return request(`/network/${params.networkName}/info/my`);
 }
 
 /**

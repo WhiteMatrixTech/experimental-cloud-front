@@ -7,24 +7,27 @@ import { OrgStatus } from '~/pages/about/organizations/_config';
 
 export type MyLeagueSchema = {
   leagueName: string;
-  leaderCompanyName: string;
+  leaderName: string;
   networkName: string;
-  createdTime: string;
+  createTime: string;
   description: string;
   networkStatus: NetworkStatus;
-  startTime: string;
 };
 
 export type MyCompanySchema = {
-  companyName: string;
   approvalStatus: MemberApprovalStatus;
-  companyCertBusinessNumber: string;
-  legalPersonName: string;
-  legalPersonIdCardNumber: string;
-  contactName: string;
-  contactPhone: string;
-  contactEmail: string;
-  companyAddress: string;
+  userInfo: {
+    email: string;
+    name: string;
+    phoneNo: string;
+    address: string;
+    enterpriseName: string;
+    enterpriseUsci: string;
+    createTime: string;
+    super: boolean;
+    admin: boolean;
+  }
+
 };
 
 export type MyOrganizationSchema = {

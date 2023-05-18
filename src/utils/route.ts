@@ -100,7 +100,7 @@ export function getRoutes(): RouteProps[] {
         //   path: "/about/message/:messageDetail",
         // },
         {
-          path: '/about/myinfo/CompanyInfo'
+          path: '/about/myinfo/MyInfo'
         },
         {
           path: '/about/myinfo/MyLeague'

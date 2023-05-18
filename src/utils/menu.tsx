@@ -172,9 +172,9 @@ const NetworkMenuList: NetworkMenuProps[] = [
         subMenus: []
       },
       {
-        id: 'CompanyInfo',
+        id: 'MyInfo',
         menuPid: 'myinfo',
-        menuHref: '/about/myinfo/CompanyInfo',
+        menuHref: '/about/myinfo/MyInfo',
         menuIcon: null,
         menuName: '我的信息',
         accessRole: [Roles.MEMBER, Roles.ADMIN],

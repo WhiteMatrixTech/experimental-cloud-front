@@ -6,6 +6,7 @@ import { statusList } from '../../member/_config';
 import { injectIntl, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { DetailViewAttr } from '~/utils/types';
+import moment from 'moment';
 
 export interface MyCompanyInfoProps {
   User: ConnectState['User'];
@@ -25,30 +26,34 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
   const basicInfo: DetailViewAttr[] = [
     {
       label: '用户名称',
-      value: myCompany && myCompany.companyName
+      value: myCompany && myCompany.userInfo.name
     },
     {
       label: '当前审批状态',
       value: myCompany && statusList[myCompany.approvalStatus]
+    },
+    {
+      label: '创建时间',
+      value: myCompany && moment(myCompany.userInfo.createTime).format('YYYY-MM-DD HH:mm:ss')
     }
   ];
 
-  const contactsInfo: DetailViewAttr[] = [
+  const detailInfo: DetailViewAttr[] = [
     {
-      label: '联系人姓名',
-      value: myCompany && myCompany.contactName
+      label: '邮箱',
+      value: myCompany && myCompany.userInfo.email
     },
     {
-      label: '联系人电话',
-      value: myCompany && myCompany.contactPhone
+      label: '电话',
+      value: myCompany && myCompany.userInfo.phoneNo
     },
     {
-      label: '联系人邮箱',
-      value: myCompany && myCompany.contactEmail
+      label: '企业名',
+      value: myCompany && myCompany.userInfo.enterpriseName
     },
     {
-      label: '联系地址',
-      value: myCompany && myCompany.companyAddress
+      label: '企业统一社会信用代码',
+      value: myCompany && myCompany.userInfo.enterpriseUsci
     }
   ];
 
@@ -71,8 +76,8 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
               </Descriptions.Item>
             ))}
           </Descriptions>
-          <Descriptions title="联系信息" className="descriptions-wrapper">
-            {contactsInfo.map((item) => (
+          <Descriptions title="详细信息" className="descriptions-wrapper">
+            {detailInfo.map((item) => (
               <Descriptions.Item key={item.label} label={item.label}>
                 {item.value}
               </Descriptions.Item>
