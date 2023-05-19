@@ -10,12 +10,12 @@ interface AddCustomImageModalProps {
   visible: boolean;
   onCancel: () => void;
   dispatch: Dispatch;
-  configLoading: boolean;
+  loading: boolean;
   CustomImage: ConnectState['CustomImage'];
 }
 const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
   const [form] = Form.useForm();
-  const { visible, onCancel, dispatch, configLoading = false } = props;
+  const { visible, onCancel, dispatch, loading = false } = props;
 
   const imageOptions = ImageTypeForForm.map((image) => {
     return { labe: image.imageType, value: image.value };
@@ -25,16 +25,9 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
     form
       .validateFields()
       .then(async (values) => {
-        const { imageUrl, imageType, username, password, registryServer } = values;
-        const credential = { username, password, registryServer };
-        const params = {
-          imageUrl,
-          imageType,
-          credential
-        };
         const res = await dispatch({
           type: 'CustomImage/addCustomImage',
-          payload: params
+          payload: values
         });
         if (res) {
           onCancel();
@@ -55,7 +48,7 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
       <Button key="cancel" onClick={onCancel}>
         取消
       </Button>,
-      <Button key="submit" type="primary" onClick={handleSubmit} loading={configLoading}>
+      <Button key="submit" type="primary" onClick={handleSubmit} loading={loading}>
         提交
       </Button>
     ]
@@ -65,19 +58,20 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
     <Modal {...drawerProps}>
       <Form layout="vertical" form={form}>
         <Item
-          label="镜像地址"
-          name="imageUrl"
+          label="镜像名称"
+          name="name"
           initialValue=""
           rules={[
             {
               required: true,
-              message: '请输入镜像地址'
+              message: '请输入镜像名称'
             }
           ]}>
-          <Input placeholder="输入镜像地址" />
+          <Input placeholder="输入镜像名称" />
         </Item>
         <Item
-          name="imageType"
+          label="镜像类型"
+          name="type"
           initialValue={null}
           rules={[
             {
@@ -92,45 +86,17 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
           />
         </Item>
-        <Item label="编译凭证">
-          <Input.Group compact>
-            <Item
-              name="username"
-              initialValue=""
-              style={{ width: '100%' }}
-              rules={[
-                {
-                  required: true,
-                  message: '请输入用户名'
-                }
-              ]}>
-              <Input placeholder="输入用户名" />
-            </Item>
-            <Item
-              name="password"
-              initialValue=""
-              style={{ width: '100%' }}
-              rules={[
-                {
-                  required: true,
-                  message: '请输入密码'
-                }
-              ]}>
-              <Input placeholder="输入密码" />
-            </Item>
-            <Item
-              name="registryServer"
-              initialValue=""
-              style={{ width: '100%' }}
-              rules={[
-                {
-                  required: true,
-                  message: '请输入注册服务器'
-                }
-              ]}>
-              <Input placeholder="输入注册服务器" />
-            </Item>
-          </Input.Group>
+        <Item
+          label="镜像版本"
+          name="version"
+          initialValue=""
+          rules={[
+            {
+              required: true,
+              message: '请输入镜像版本'
+            }
+          ]}>
+          <Input type="number" step={0.1} placeholder="请输入镜像版本" />
         </Item>
       </Form>
     </Modal>
@@ -138,5 +104,5 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
 };
 export default connect(({ CustomImage, loading }: ConnectState) => ({
   CustomImage,
-  configLoading: loading.effects['BlockChainCompile/oneKeyCompile']
+  loading: loading.effects['CustomImage/addCustomImage']
 }))(AddCustomImageModal);

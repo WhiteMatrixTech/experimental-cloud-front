@@ -58,27 +58,21 @@ function CustomImage(props: CustomImageProps) {
   };
 
   const columns: ColumnsType<any> = [
-    { title: '镜像地址', dataIndex: 'imageUrl', key: 'imageUrl', ellipsis: true },
-    { title: '镜像类型', dataIndex: 'imageType', key: 'imageType', ellipsis: true },
-    { title: '镜像ID', dataIndex: '_id', key: '_id', ellipsis: true },
-    {
-      title: '注册服务器',
-      dataIndex: 'registerServer',
-      key: 'registerServer',
-      ellipsis: true,
-      render: (_: string, record: ImageDetail) => record.credential?.registryServer || ''
-    },
+    { title: '镜像ID', dataIndex: 'id', key: 'id', ellipsis: true },
+    { title: '镜像名称', dataIndex: 'name', key: 'name', ellipsis: true },
+    { title: '镜像类型', dataIndex: 'type', key: 'type', ellipsis: true },
+    { title: '镜像版本', dataIndex: 'version', key: 'version', ellipsis: true },
     {
       title: '创建时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
+      dataIndex: 'createTime',
+      key: 'createTime',
       ellipsis: true,
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '更新时间',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
+      dataIndex: 'updateTime',
+      key: 'updateTime',
       render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
@@ -108,7 +102,7 @@ function CustomImage(props: CustomImageProps) {
         const res = await dispatch({
           type: 'CustomImage/deleteCustomImage',
           payload: {
-            imageId: record._id
+            imageId: record.id
           }
         });
         if (res) {
@@ -136,7 +130,7 @@ function CustomImage(props: CustomImageProps) {
       />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
-          rowKey="_id"
+          rowKey="id"
           loading={qryLoading}
           columns={columns}
           dataSource={imageList}
@@ -158,5 +152,5 @@ export default connect(({ User, Layout, loading, CustomImage }: ConnectState) =>
   User,
   Layout,
   CustomImage,
-  qryLoading: loading.effects['ElasticServer/getServerList']
+  qryLoading: loading.effects['CustomImage/getImageList'] || loading.effects['CustomImage/getImageListTotal']
 }))(CustomImage);

@@ -3,10 +3,10 @@ import type { Reducer, Effect } from 'umi';
 import { notification } from 'antd';
 
 export enum ImageType {
-  CA = 'ca',
-  Peer = 'peer',
-  Order = 'order',
-  CLI = 'cli'
+  CA = 'CA',
+  Peer = 'PEER',
+  Order = 'ORDER',
+  CLI = 'CLI'
 }
 
 export type ImageCredential = {
@@ -16,12 +16,12 @@ export type ImageCredential = {
 };
 
 export interface ImageDetail {
-  imageUrl: string;
-  imageType: ImageType;
-  credential?: ImageCredential;
-  updatedAt?: string;
-  createdAt?: string;
-  _id?: string;
+  id?: number;
+  name: string;
+  version: string;
+  type: string;
+  createTime?: string;
+  updateTime?: string;
 }
 
 export type CustomImageModelState = {
@@ -53,28 +53,20 @@ const CustomImageModel: CustomImageModelType = {
   },
 
   effects: {
-    *getImageListForForm({ payload }, { call, put }) {
+    *getImageListForForm({ payload }, { call, put }): any {
       const res = yield call(API.getImageList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        const imageList = result.items.map((image: ImageDetail) => {
-          return {
-            imageId: image._id,
-            imageUrl: image.imageUrl,
-            imageType: image.imageType,
-            credential: image.credential
-          };
-        });
         yield put({
           type: 'common',
           payload: {
-            imageList
+            imageList: result.items || []
           }
         });
       }
     },
 
-    *getImageList({ payload }, { call, put }) {
+    *getImageList({ payload }, { call, put }): any {
       const res = yield call(API.getImageList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -87,7 +79,7 @@ const CustomImageModel: CustomImageModelType = {
       }
     },
 
-    *getImageListTotal({ payload }, { call, put }) {
+    *getImageListTotal({ payload }, { call, put }): any {
       const res = yield call(API.getImageListTotal, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -95,10 +87,10 @@ const CustomImageModel: CustomImageModelType = {
       }
     },
 
-    *addCustomImage({ payload }, { call, put }) {
+    *addCustomImage({ payload }, { call, put }): any {
       const res = yield call(API.addCustomImage, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result.status) {
+      if (statusCode === 'ok') {
         notification.success({ message: '自定义镜像添加成功', top: 64, duration: 3 });
         return true;
       } else {
@@ -107,10 +99,10 @@ const CustomImageModel: CustomImageModelType = {
       }
     },
 
-    *deleteCustomImage({ payload }, { call, put }) {
+    *deleteCustomImage({ payload }, { call, put }): any {
       const res = yield call(API.deleteCustomImage, payload);
       const { statusCode, result } = res;
-      if (statusCode === 'ok' && result.status) {
+      if (statusCode === 'ok') {
         notification.success({ message: '删除自定义镜像成功', top: 64, duration: 3 });
         return true;
       } else {
