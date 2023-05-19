@@ -2,11 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { Dispatch, history, TransactionSchema } from 'umi';
 import { Table, Space, Form, Spin, Input, Row, Col, Button } from 'antd';
-import moment from 'moment';
 import { PageTitle } from '~/components';
 import baseConfig from '~/utils/config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { formatDate } from '~/utils/date';
 
 const pageSize = baseConfig.pageSize;
 export interface TransactionsProps {
@@ -127,7 +127,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+        text ? formatDate(text) : <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '操作',

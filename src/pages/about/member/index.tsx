@@ -13,6 +13,7 @@ import { MemberApprovalStatus, statusList } from './_config';
 import ConfigMemberRole from './components/ConfigMemberRole';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { renderDateWithDefault } from '~/utils/date';
 
 const { Item } = Form;
 const Option = Select.Option;
@@ -86,7 +87,7 @@ function EnterpriseMember(props: EnterpriseMemberProps) {
       title: '审批时间',
       dataIndex: 'approveTime',
       key: 'approveTime',
-      render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--'),
+      render: renderDateWithDefault,
       ellipsis: true,
       width: 150
     },

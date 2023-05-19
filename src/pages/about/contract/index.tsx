@@ -18,7 +18,7 @@ import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
 import { cancelCurrentRequest, chaincodeRequest } from '~/utils/request';
-import { isArrayBuffer } from 'lodash';
+import { formatDate } from '~/utils/date';
 
 const pageSize = baseConfig.pageSize;
 export interface MyContractProps {
@@ -232,7 +232,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
       dataIndex: 'createTime',
       key: 'createTime',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+        text ? formatDate(text) : <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '状态',

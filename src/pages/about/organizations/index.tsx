@@ -9,6 +9,7 @@ import CreateOrgModal from './components/CreateOrgModal';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
+import { renderDateWithDefault } from '~/utils/date';
 export interface OrganizationManagementProps {
   Organization: ConnectState['Organization'];
   qryLoading: boolean;
@@ -59,7 +60,7 @@ function OrganizationManagement(props: OrganizationManagementProps) {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      render: renderDateWithDefault
     }
   ];
 

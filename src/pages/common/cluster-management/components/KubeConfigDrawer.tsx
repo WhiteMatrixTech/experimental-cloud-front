@@ -1,7 +1,7 @@
 import { Descriptions, Drawer } from 'antd';
-import moment from 'moment';
 import { PlaceHolder } from '~/components';
 import { ClusterSchema } from '~/models/cluster';
+import { renderDateWithDefault } from '~/utils/date';
 
 interface KubeConfigDrawerProps {
   visible: boolean;
@@ -26,7 +26,7 @@ export function KubeConfigDrawer(props: KubeConfigDrawerProps) {
         <Descriptions.Item label="集群ID">{clusterRecord?.id}</Descriptions.Item>
         <Descriptions.Item label="集群存储类型">{clusterRecord?.storageClass}</Descriptions.Item>
         <Descriptions.Item span={1} label="创建时间">
-          {moment(clusterRecord?.createTime).format('YYYY-MM-DD HH:mm:ss')}
+          {renderDateWithDefault(clusterRecord?.createTime)}
         </Descriptions.Item>
         <Descriptions.Item span={2} label="网络域名">
           <PlaceHolder text={clusterRecord?.domain} />

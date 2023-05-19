@@ -8,6 +8,7 @@ import baseConfig from '~/utils/config';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ConnectState } from '~/models/connect';
 import { DetailViewAttr } from '~/utils/types';
+import { formatDate, renderDateWithDefault } from '~/utils/date';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/block');
 breadCrumbItem.push({
@@ -67,8 +68,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text: string) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+      render: (text: string) => (text ? formatDate(text) : <span className="a-forbidden-style">信息访问受限</span>)
     },
     {
       title: '操作',
@@ -164,7 +164,7 @@ const BlockDetail: React.FC<BlockDetailProps> = ({
         },
         {
           label: '生成时间',
-          value: moment(blockDetail.timestamp).format('YYYY-MM-DD HH:mm:ss')
+          value: renderDateWithDefault(blockDetail.timestamp)
         },
         {
           label: '交易笔数',

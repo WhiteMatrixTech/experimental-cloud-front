@@ -15,7 +15,7 @@ export type ClusterSchema = {
   peerNodeCapacity?: string;
   peerDbCapacity?: string;
   peerChaincodeCapacity?: string;
-  createTime: Date;
+  createTime: string;
 };
 
 export type ClusterModelState = {

@@ -9,6 +9,7 @@ import { serverPurpose } from '../../_config';
 import { ColumnsType } from 'antd/lib/table';
 import { Dispatch, ElasticServerSchema, Location } from 'umi';
 import { ConnectState } from '~/models/connect';
+import { renderDateWithDefault } from '~/utils/date';
 const breadCrumbItem = getCurBreadcrumb(CommonMenuList, '/common/elastic-cloud-server');
 breadCrumbItem.push({
   menuName: '实例数据',
@@ -36,7 +37,7 @@ const columns: ColumnsType<any> = [
     title: '创建时间',
     dataIndex: 'createdAt',
     key: 'createdAt',
-    render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+    render: renderDateWithDefault
   }
 ];
 export interface ResourceUsageProps {

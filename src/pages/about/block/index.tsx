@@ -2,11 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { BlockSchema, Dispatch, history } from 'umi';
 import { Table, Space, Form, Spin, Input, Row, Col, Button } from 'antd';
-import moment from 'moment';
 import { PageTitle } from '~/components';
 import baseConfig from '~/utils/config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { formatDate } from '~/utils/date';
 
 const pageSize = baseConfig.pageSize;
 export interface BlockProps {
@@ -122,7 +122,7 @@ const Block: React.FC<BlockProps> = (props) => {
       dataIndex: 'timestamp',
       key: 'timestamp',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+        text ? formatDate(text) : <span className="a-forbidden-style">信息访问受限</span>
     },
     {
       title: '操作',

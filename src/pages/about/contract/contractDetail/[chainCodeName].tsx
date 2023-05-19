@@ -8,6 +8,7 @@ import { DetailViewAttr } from '~/utils/types';
 import { ConnectState } from '~/models/connect';
 import { ChainCodeSchema } from '~/models/contract';
 import { Descriptions } from 'antd';
+import { renderDateWithDefault } from '~/utils/date';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/contract', true);
 breadCrumbItem.push({
@@ -48,7 +49,7 @@ const ContractDetail: React.FC<ContractDetailProps> = (props) => {
     },
     {
       label: '创建时间',
-      value: moment(chaincodeInfo.createTime).format('YYYY-MM-DD HH:mm:ss')
+      value: renderDateWithDefault(chaincodeInfo.createTime)
     },
     {
       label: '合约描述',

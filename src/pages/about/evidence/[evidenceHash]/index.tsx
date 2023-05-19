@@ -10,6 +10,7 @@ import styles from './index.less';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, EvidenceSchema, Location } from 'umi';
 import { DetailViewAttr } from '~/utils/types';
+import { renderDateWithDefault } from '~/utils/date';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 breadCrumbItem.push({
@@ -43,7 +44,7 @@ function EvidenceDataDetail({
     },
     {
       label: '上链时间',
-      value: evidenceDataDetail && moment(evidenceDataDetail.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+      value: renderDateWithDefault(evidenceDataDetail?.createdAt),
     },
     {
       label: '所属通道',

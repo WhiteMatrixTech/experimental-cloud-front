@@ -10,6 +10,7 @@ import { DetailViewAttr } from '~/utils/types';
 import { ConnectState } from '~/models/connect';
 import { ChannelSchema, Dispatch, Location } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
+import { renderDateWithDefault } from '~/utils/date';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
   menuName: '通道中节点数据',
@@ -73,7 +74,7 @@ function NodeList(props: NodeListProps) {
       title: '创建时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      render: renderDateWithDefault
     }
   ];
 

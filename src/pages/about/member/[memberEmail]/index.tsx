@@ -8,8 +8,8 @@ import { ConnectState } from '~/models/connect';
 import * as memberApi from '~/services/member';
 import { EnterpriseMemberSchema, useParams } from 'umi';
 import { DetailViewAttr } from '~/utils/types';
-import moment from 'moment';
 import { useRequest } from 'ahooks';
+import { renderDateWithDefault } from '~/utils/date';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/member');
 breadCrumbItem.push({
@@ -80,11 +80,11 @@ const MemberDetail: React.FC<MemberDetailProps> = (props) => {
     },
     {
       label: '申请时间',
-      value: memberDetail?.applicationTime ? moment(memberDetail?.applicationTime).format('YYYY-MM-DD HH:mm:ss') : '--'
+      value: renderDateWithDefault(memberDetail?.applicationTime)
     },
     {
       label: '审批时间',
-      value: memberDetail?.approveTime ? moment(memberDetail?.approveTime).format('YYYY-MM-DD HH:mm:ss') : '--'
+      value: renderDateWithDefault(memberDetail?.approveTime)
     }
   ];
 

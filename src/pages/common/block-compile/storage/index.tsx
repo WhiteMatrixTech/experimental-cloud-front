@@ -6,9 +6,9 @@ import { ConnectState } from '~/models/connect';
 import baseConfig from '../../../../utils/config';
 import { ColumnsType } from 'antd/lib/table';
 import AddCustomImageModal from './components/AddCustomImageModal';
-import moment from 'moment';
 import { Roles } from '~/utils/roles';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { renderDateWithDefault } from '~/utils/date';
 
 const OperationalRole = [Roles.ADMIN, Roles.SUPER];
 const pageSize = baseConfig.pageSize;
@@ -67,13 +67,13 @@ function CustomImage(props: CustomImageProps) {
       dataIndex: 'createTime',
       key: 'createTime',
       ellipsis: true,
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      render: renderDateWithDefault
     },
     {
       title: '更新时间',
       dataIndex: 'updateTime',
       key: 'updateTime',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      render: renderDateWithDefault
     },
     {
       title: '操作',

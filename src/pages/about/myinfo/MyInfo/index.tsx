@@ -6,7 +6,7 @@ import { statusList } from '../../member/_config';
 import { injectIntl, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { DetailViewAttr } from '~/utils/types';
-import moment from 'moment';
+import { renderDateWithDefault } from '~/utils/date';
 
 export interface MyCompanyInfoProps {
   User: ConnectState['User'];
@@ -34,7 +34,7 @@ function MyCompanyInfo(props: MyCompanyInfoProps) {
     },
     {
       label: '创建时间',
-      value: myCompany && moment(myCompany.userInfo.createTime).format('YYYY-MM-DD HH:mm:ss')
+      value: renderDateWithDefault(myCompany?.userInfo?.createTime)
     }
   ];
 

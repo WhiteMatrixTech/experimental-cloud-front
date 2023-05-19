@@ -15,6 +15,7 @@ import { ColumnsType } from 'antd/lib/table';
 import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
 import { StatisticValueStyle } from './_style';
 import { useRafInterval } from 'ahooks';
+import { formatDate, renderDateWithDefault } from '~/utils/date';
 
 export interface LeagueDashboardProps {
   Dashboard: ConnectState['Dashboard'];
@@ -294,7 +295,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       title: '生成时间',
       dataIndex: 'timestamp',
       key: 'timestamp',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      render: renderDateWithDefault
     },
     {
       title: '操作',
@@ -338,8 +339,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) => (text ? formatDate(text) : <span className="a-forbidden-style">信息访问受限</span>)
     },
     {
       title: '操作',
@@ -461,9 +461,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
             <Descriptions.Item label="联盟名称">{leagueName}</Descriptions.Item>
             <Descriptions.Item label="网络名称">{networkName}</Descriptions.Item>
             <Descriptions.Item label="创建时间">
-              {networkStatusInfo?.createTime
-                ? moment(networkStatusInfo.createTime).format('YYYY-MM-DD HH:mm:ss')
-                : '--'}
+              {renderDateWithDefault(networkStatusInfo?.createTime)}
             </Descriptions.Item>
             <Descriptions.Item label="网络状态">
               {networkStatusInfo?.status ? NetworkInfo[networkStatusInfo.status] : '--'}

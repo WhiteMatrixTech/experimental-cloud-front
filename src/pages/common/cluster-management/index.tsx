@@ -9,6 +9,7 @@ import { ConnectState } from '~/models/connect';
 import CreateClusterModal from './components/CreateClusterModal';
 import { ColumnsType } from 'antd/lib/table';
 import { KubeConfigDrawer } from './components/KubeConfigDrawer';
+import { renderDateWithDefault } from '~/utils/date';
 
 export interface ClusterManagementProps {
   dispatch: Dispatch;
@@ -116,7 +117,7 @@ const ClusterManagement: React.FC<ClusterManagementProps> = (props) => {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
-      render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+      render: renderDateWithDefault,
       ellipsis: true
     },
     {

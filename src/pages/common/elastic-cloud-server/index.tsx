@@ -7,6 +7,7 @@ import { Table, Button, Space, Modal, Dropdown, Menu } from 'antd';
 import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
 import CreateServerModal from './components/CreateServerModal';
 import { ConnectState } from '~/models/connect';
+import { renderDateWithDefault } from '~/utils/date';
 export interface ServersManagementProps {
   dispatch: Dispatch;
   qryLoading: boolean;
@@ -160,7 +161,7 @@ const ServersManagement: React.FC<ServersManagementProps> = (props) => {
         title: '创建时间',
         dataIndex: 'createAt',
         key: 'createAt',
-        render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
+        render: renderDateWithDefault,
         ellipsis: true
       },
       {

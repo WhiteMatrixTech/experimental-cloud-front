@@ -8,6 +8,7 @@ import baseConfig from '~/utils/config';
 import EvidenceOnChain from './components/EvidenceOnChain';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
+import { renderDateWithDefault } from '~/utils/date';
 
 const pageSize = baseConfig.pageSize;
 export interface EvidenceDataListProps {
@@ -48,7 +49,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
       title: '上链时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) => (text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '')
+      render: renderDateWithDefault
     },
     {
       title: '操作',

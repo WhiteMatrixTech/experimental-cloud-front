@@ -2,17 +2,16 @@ import React, { useEffect, useCallback, useState } from 'react';
 import { Table, Space, Col, Row, Descriptions, Statistic, Divider } from 'antd';
 import { connect } from 'dva';
 import { ChannelSchema, Dispatch, history, Location } from 'umi';
-import moment from 'moment';
 import { Breadcrumb, PageTitle, PlaceHolder } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { ChannelStatusTag } from '../../_config';
 import style from './index.less';
-import config from '~/utils/config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { StatisticValueStyle } from '~/pages/about/league-dashboard/_style';
 import baseConfig from '~/utils/config';
 import { cancelCurrentRequest } from '~/utils/request';
+import { formatDate, renderDateWithDefault } from '~/utils/date';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
@@ -72,7 +71,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      render: renderDateWithDefault
     },
     {
       title: '操作',
@@ -110,8 +109,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
       title: '生成时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) => (text ? formatDate(text) : <span className="a-forbidden-style">信息访问受限</span>)
     },
     {
       title: '操作',
@@ -259,8 +257,8 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
             <PlaceHolder text={location?.state?.alias} />
           </Descriptions.Item>
           <Descriptions.Item label="创建时间">
-            {location?.state?.createTime ? moment(location?.state?.createTime).format('YYYY-MM-DD HH:mm:ss') : ''}
-          </Descriptions.Item>
+            {location?.state?.createTime ? formatDate(location?.state?.createTime) : ''}
+          </Descriptions.Item>v
           <Descriptions.Item label="创建用户">
             <PlaceHolder text={location?.state?.creatorName || location?.state.creatorEmail} />
           </Descriptions.Item>

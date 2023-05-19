@@ -11,6 +11,7 @@ import { ConnectState } from '~/models/connect';
 import { ChannelSchema, Dispatch, Location } from 'umi';
 import { BasicApiParams, AllPaginationParams } from '~/utils/types';
 import { ColumnsType } from 'antd/lib/table';
+import { formatDate } from '~/utils/date';
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
   menuName: '通道中合约数据',
@@ -76,7 +77,7 @@ function ChaincodeList(props: ChaincodeListProps) {
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (text) =>
-        text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : <span className="a-forbidden-style">信息访问受限</span>
+        text ? formatDate(text) : <span className="a-forbidden-style">信息访问受限</span>
     }
   ];
   const channelInfoList: DetailViewAttr[] = [

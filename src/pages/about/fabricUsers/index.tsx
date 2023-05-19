@@ -13,6 +13,7 @@ import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { cancelCurrentRequest } from '~/utils/request';
 import { DownloadSdkModal } from './components/DownloadSdkModal';
+import { renderDateWithDefault } from '~/utils/date';
 
 const { Item } = Form;
 const Option = Select.Option;
@@ -128,7 +129,7 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
-      render: (text: string) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      render: renderDateWithDefault
     },
     {
       title: '操作',

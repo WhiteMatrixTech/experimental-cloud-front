@@ -13,6 +13,7 @@ import { Dispatch, PeerSchema } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
 import { cancelCurrentRequest } from '~/utils/request';
+import { renderDateWithDefault } from '~/utils/date';
 
 export interface NodeManagementProps {
   dispatch: Dispatch;
@@ -135,7 +136,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         title: '更新时间',
         dataIndex: 'updatedAt',
         key: 'updatedAt',
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+        render: renderDateWithDefault
       },
       {
         title: '操作',

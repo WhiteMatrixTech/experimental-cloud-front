@@ -11,6 +11,7 @@ import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { ChannelSchema } from '~/models/channel';
 import { PageTitle, PlaceHolder } from '~/components';
+import { renderDateWithDefault } from '~/utils/date';
 export interface ChannelManagementProps {
   dispatch: Dispatch;
   qryLoading: boolean;
@@ -144,7 +145,7 @@ function ChannelManagement(props: ChannelManagementProps) {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
-      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      render: renderDateWithDefault
     },
     {
       title: '操作',

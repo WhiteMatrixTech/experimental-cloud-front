@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Spin, Descriptions } from 'antd';
-import moment from 'moment';
 import { PageTitle } from '~/components';
 import { NetworkInfo } from '~/utils/networkStatus';
 import { ConnectState } from '~/models/connect';
 import { Dispatch } from 'umi';
 import { DetailViewAttr } from '~/utils/types';
+import { renderDateWithDefault } from '~/utils/date';
 
 export interface MyLeagueInfoProps {
   User: ConnectState['User'];
@@ -19,41 +19,41 @@ function MyLeagueInfo(props: MyLeagueInfoProps) {
     User,
     dispatch,
     qryLoading = false,
-    MyInfo: { myLeague },
+    MyInfo: { myLeague }
   } = props;
   const { networkName } = User;
 
   const myLeagueInfo: DetailViewAttr[] = [
     {
       label: '联盟名称',
-      value: myLeague && myLeague.leagueName,
+      value: myLeague && myLeague.leagueName
     },
     {
       label: '盟主名称',
-      value: myLeague && myLeague.leaderName,
+      value: myLeague && myLeague.leaderName
     },
     {
       label: '网络名称',
-      value: myLeague && myLeague.networkName,
+      value: myLeague && myLeague.networkName
     },
     {
       label: '网络状态',
-      value: myLeague && myLeague.networkStatus ? NetworkInfo[myLeague.networkStatus] : '',
+      value: myLeague && myLeague.networkStatus ? NetworkInfo[myLeague.networkStatus] : ''
     },
     {
       label: '创建时间',
-      value: myLeague && myLeague.createTime ? moment(myLeague.createTime).format('YYYY-MM-DD HH:mm:ss') : '- -',
+      value: renderDateWithDefault(myLeague?.createTime)
     },
     {
       label: '联盟描述',
-      value: myLeague && myLeague.description,
-    },
+      value: myLeague && myLeague.description
+    }
   ];
 
   useEffect(() => {
     dispatch({
       type: 'MyInfo/getMyLeagueInfo',
-      payload: { networkName },
+      payload: { networkName }
     });
   }, [dispatch, networkName]);
 
@@ -63,23 +63,20 @@ function MyLeagueInfo(props: MyLeagueInfoProps) {
       <Spin spinning={qryLoading}>
         <div className="page-content">
           <Descriptions title="联盟信息" className="descriptions-wrapper">
-            {myLeagueInfo.map(item =>
-              <Descriptions.Item
-                key={item.label}
-                label={item.label}>
+            {myLeagueInfo.map((item) => (
+              <Descriptions.Item key={item.label} label={item.label}>
                 {item.value}
               </Descriptions.Item>
-            )}
+            ))}
           </Descriptions>
         </div>
       </Spin>
-
-    </div >
+    </div>
   );
 }
 
 export default connect(({ User, MyInfo, loading }: ConnectState) => ({
   User,
   MyInfo,
-  qryLoading: loading.effects['MyInfo/getMyInfoDetail'],
+  qryLoading: loading.effects['MyInfo/getMyInfoDetail']
 }))(MyLeagueInfo);

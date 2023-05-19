@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Roles } from '~/utils/roles';
 import styles from '../index.less';
 import { LeagueSchema } from '~/models/user';
+import { formatDate } from '~/utils/date';
 
 export type LeagueCardProps = {
   onClickCard: (leagueInfo: LeagueSchema) => void;
@@ -23,9 +24,9 @@ export const LeagueCard: React.FC<LeagueCardProps> = (props) => {
 
   const getTime = useMemo(() => {
     if (leagueInfo.createdTime) {
-      return leagueInfo.createdTime ? moment(leagueInfo.createdTime).format('YYYY-MM-DD') : '';
+      return leagueInfo.createdTime ? formatDate(leagueInfo.createdTime) : '';
     }
-    return leagueInfo.timeAdded ? moment(leagueInfo.timeAdded).format('YYYY-MM-DD') : '';
+    return leagueInfo.timeAdded ? formatDate(leagueInfo.timeAdded) : '';
   }, [leagueInfo.createdTime, leagueInfo.timeAdded]);
 
   return (
