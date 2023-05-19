@@ -24,6 +24,14 @@ export async function getOrgList(params: BasicApiParams) {
 }
 
 /**
+ * 查询 Peer 组织列表
+ */
+export async function getOrgPeerList(params: BasicApiParams) {
+  return request(`/network/${params.networkName}/orgs/peerOrgNames`);
+}
+
+
+/**
  * 查询使用中的组织列表
  */
 export async function getOrgInUseList(params: BasicApiParams) {

@@ -22,6 +22,7 @@ export type OrganizationModelState = {
   orgList: Array<OrganizationSchema>;
   orgTotal: number;
   orgInUseList: Array<OrganizationSchema>;
+  orgPeerList: string[];
 };
 
 export type OrganizationModelType = {
@@ -31,6 +32,7 @@ export type OrganizationModelType = {
     createOrg: Effect;
     getOrgList: Effect;
     getOrgInUseList: Effect;
+    getOrgPeerList: Effect;
   };
   reducers: {
     common: Reducer<OrganizationModelState>;
@@ -44,7 +46,8 @@ const OrganizationModel: OrganizationModelType = {
     orgList: [], // 用户列表
     orgTotal: 0,
 
-    orgInUseList: []
+    orgInUseList: [],
+    orgPeerList: []
   },
 
   effects: {
@@ -84,7 +87,19 @@ const OrganizationModel: OrganizationModelType = {
           }
         });
       }
-    }
+    },
+    *getOrgPeerList({ payload }, { call, put }): any {
+      const res = yield call(API.getOrgPeerList, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        yield put({
+          type: 'common',
+          payload: {
+            orgPeerList: result
+          }
+        });
+      }
+    },
   },
 
   reducers: {
