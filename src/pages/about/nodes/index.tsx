@@ -94,6 +94,24 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
     [networkName]
   );
 
+  const handleStartOrStopNode = useCallback(
+    async (record: PeerSchema, type: 'start' | 'stop') => {
+      const res = await dispatch({
+        type: `Peer/${type}Node`,
+        payload: {
+          network: networkName,
+          orgName: record.orgName,
+          nodeName: record.nodeName
+        }
+      });
+      if (res) {
+        // 成功
+        getNodeList();
+      }
+    },
+    [dispatch, getNodeList, networkName]
+  );
+
   // 用户身份改变时，表格展示改变
   useEffect(() => {
     const data: ColumnsType<any> = [
@@ -142,47 +160,31 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
         title: '操作',
         key: 'action',
         render: (_, record: PeerSchema) => (
-          <Spin spinning={stopOrStartNodeLoading}>
-            <Space size="small">
-              {record.nodeStatus === 'RUNNING' && (
-                <span
-                  className="action-link"
-                  onClick={() => {
-                    dispatch({
-                      type: 'Peer/stopNode',
-                      payload: {
-                        network: networkName,
-                        orgName: record.orgName,
-                        nodeName: record.nodeName
-                      }
-                    });
-                  }}>
-                  停止
-                </span>
-              )}
-              {record.nodeStatus === 'STOPPED' && (
-                <span
-                  className="action-link"
-                  onClick={() => {
-                    dispatch({
-                      type: 'Peer/startNode',
-                      payload: {
-                        network: networkName,
-                        orgName: record.orgName,
-                        nodeName: record.nodeName
-                      }
-                    });
-                  }}>
-                  启动
-                </span>
-              )}
-            </Space>
-          </Spin>
+          <Space size="small">
+            {record.nodeStatus === 'RUNNING' && (
+              <span
+                className="action-link"
+                onClick={() => {
+                  handleStartOrStopNode(record, 'stop');
+                }}>
+                停止
+              </span>
+            )}
+            {record.nodeStatus === 'STOPPED' && (
+              <span
+                className="action-link"
+                onClick={() => {
+                  handleStartOrStopNode(record, 'start');
+                }}>
+                启动
+              </span>
+            )}
+          </Space>
         )
       }
     ];
     setColumns(data);
-  }, [dispatch, networkName, onDownLoadCertificate, stopOrStartNodeLoading, userRole]);
+  }, [dispatch, handleStartOrStopNode, networkName, onDownLoadCertificate, stopOrStartNodeLoading, userRole]);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {

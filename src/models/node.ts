@@ -77,8 +77,10 @@ const PeerModel: PeerModelType = {
       const { statusCode } = res;
       if (statusCode === 'ok') {
         notification.success({ message: "启动节点成功", top: 64, duration: 3 })
-      }else {
+        return true;
+      } else {
         notification.error({ message: "启动节点失败", top: 64, duration: 3 })
+        return false;
       }
     },
 
@@ -86,9 +88,11 @@ const PeerModel: PeerModelType = {
       const res = yield call(API.stopNode, payload);
       const { statusCode } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: "停止节点成功", top: 64, duration: 3 })
-      }else {
-        notification.error({ message: "停止节点失败", top: 64, duration: 3 })
+        notification.success({ message: "停止节点成功", top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: "停止节点失败", top: 64, duration: 3 });
+        return false;
       }
     },
 
