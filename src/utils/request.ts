@@ -65,8 +65,9 @@ _requestFunc.interceptors.request.use((url, options) => {
   // token校验
   const { accessToken, roleToken } = getTokenData();
 
+  const { pathname } = new URL(url);
   const needsToken = window.location.href.indexOf('/userForExternal/login') === -1;
-  if (accessToken && needsToken) {
+  if (accessToken && needsToken && pathname !== '/login') {
     headers.Authorization = `Bearer ${accessToken}`;
   }
   if (roleToken && needsToken) {
