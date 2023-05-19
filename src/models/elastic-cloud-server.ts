@@ -78,7 +78,7 @@ const ElasticServerModel: ElasticServerModelType = {
   },
 
   effects: {
-    *getServerList({ payload }, { call, put }) {
+    *getServerList({ payload }, { call, put }): any {
       const res = yield call(API.getServerList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -91,7 +91,7 @@ const ElasticServerModel: ElasticServerModelType = {
       }
     },
 
-    *getServerTotal({ payload }, { call, put }) {
+    *getServerTotal({ payload }, { call, put }): any {
       const res = yield call(API.getServerTotal, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -104,49 +104,49 @@ const ElasticServerModel: ElasticServerModelType = {
       }
     },
 
-    *createServer({ payload }, { call, put }) {
+    *createServer({ payload }, { call, put }): any {
       const res = yield call(API.createServer, payload);
       const { statusCode, result } = res;
       const succMessage = `创建服务器成功`;
       const failMessage = `创建服务器失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        notification.success({ message: result.message || result.msg || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || failMessage, top: 64, duration: 3 });
         return false;
       }
     },
 
-    *modifyServer({ payload }, { call, put }) {
+    *modifyServer({ payload }, { call, put }): any {
       const res = yield call(API.modifyServer, payload);
       const { statusCode, result } = res;
       const succMessage = `修改服务器成功`;
       const failMessage = `修改服务器失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        notification.success({ message: result.message || result.msg || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || failMessage, top: 64, duration: 3 });
         return false;
       }
     },
 
-    *deleteServer({ payload }, { call, put }) {
+    *deleteServer({ payload }, { call, put }): any {
       const res = yield call(API.deleteServer, payload);
       const { statusCode, result } = res;
       const succMessage = `删除服务器成功`;
       const failMessage = `删除服务器失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        notification.success({ message: result.message || result.msg || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || failMessage, top: 64, duration: 3 });
         return false;
       }
     },
 
-    *getNodeList({ payload }, { call, put }) {
+    *getNodeList({ payload }, { call, put }): any {
       const res = yield call(API.getNodeList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -159,7 +159,7 @@ const ElasticServerModel: ElasticServerModelType = {
       }
     },
 
-    *getNodeTotal({ payload }, { call, put }) {
+    *getNodeTotal({ payload }, { call, put }): any {
       const res = yield call(API.getNodeTotal, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {

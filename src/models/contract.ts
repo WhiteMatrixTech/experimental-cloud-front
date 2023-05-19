@@ -157,7 +157,7 @@ const ContractModel: ContractModelType = {
         notification.success({ message: '新增合约成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '新增合约失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '新增合约失败', top: 64, duration: 3 });
         return false;
       }
     },
@@ -169,7 +169,7 @@ const ContractModel: ContractModelType = {
         notification.success({ message: '修改合约审核状态成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '修改合约审核状态失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '修改合约审核状态失败', top: 64, duration: 3 });
         return false;
       }
     },
@@ -181,7 +181,7 @@ const ContractModel: ContractModelType = {
         notification.success({ message: '合约安装请求调用成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '合约安装请求调用失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '合约安装请求调用失败', top: 64, duration: 3 });
         return false;
       }
     },
@@ -193,7 +193,7 @@ const ContractModel: ContractModelType = {
         notification.success({ message: '合约升级成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '合约升级失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '合约升级失败', top: 64, duration: 3 });
         return false;
       }
     },
@@ -205,7 +205,7 @@ const ContractModel: ContractModelType = {
         notification.success({ message: '发布合约请求调用成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '发布合约请求调用失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '发布合约请求调用失败', top: 64, duration: 3 });
         return false;
       }
     },
@@ -249,7 +249,7 @@ const ContractModel: ContractModelType = {
             }
           }
         });
-        notification.error({ message: result.message || '调用合约失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '调用合约失败', top: 64, duration: 3 });
         return false;
       }
     },
@@ -275,11 +275,11 @@ const ContractModel: ContractModelType = {
           payload: {
             invokeResult: {
               status: 'Failed',
-              message: { error: result.message }
+              message: { error: result.msg }
             }
           }
         });
-        notification.error({ message: result.message || '调用合约失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '调用合约失败', top: 64, duration: 3 });
         return false;
       }
     }

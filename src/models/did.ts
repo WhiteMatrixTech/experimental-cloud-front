@@ -42,7 +42,7 @@ const DIDModel: DIDModelType = {
   },
 
   effects: {
-    *getDidList({ payload }, { call, put }) {
+    *getDidList({ payload }, { call, put }):any {
       const res = yield call(API.getDidList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -54,11 +54,11 @@ const DIDModel: DIDModelType = {
           },
         });
       } else {
-        notification.error({ message: result.message || 'DID查询失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || 'DID查询失败', top: 64, duration: 3 });
       }
     },
 
-    *getDetailByDid({ payload }, { call, put }) {
+    *getDetailByDid({ payload }, { call, put }):any {
       const res = yield call(API.getDetailByDid, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -71,15 +71,15 @@ const DIDModel: DIDModelType = {
           },
         });
       } else {
-        notification.error({ message: result.message || 'DID查询失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || 'DID查询失败', top: 64, duration: 3 });
       }
     },
 
-    *createDID({ payload }, { call, put }) {
+    *createDID({ payload }, { call, put }):any {
       const res = yield call(API.createDID, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || 'DID创建成功, 请重新登录以获取DID', top: 64, duration: 3 });
+        notification.success({ message: result.message || result.msg || 'DID创建成功, 请重新登录以获取DID', top: 64, duration: 3 });
         return true;
       } else {
         if (result.message && result.message.indexOf('didchannel') > -1) {
@@ -91,26 +91,26 @@ const DIDModel: DIDModelType = {
       }
     },
 
-    *modifyDID({ payload }, { call, put }) {
+    *modifyDID({ payload }, { call, put }):any {
       const res = yield call(API.modifyDID, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '修改DID成功', top: 64, duration: 3 });
+        notification.success({ message: result.message || result.msg || '修改DID成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '修改DID失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '修改DID失败', top: 64, duration: 3 });
         return false;
       }
     },
 
-    *deleteDID({ payload }, { call, put }) {
+    *deleteDID({ payload }, { call, put }):any {
       const res = yield call(API.deleteDID, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '删除DID成功', top: 64, duration: 3 });
+        notification.success({ message: result.message || result.msg || '删除DID成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '删除DID失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '删除DID失败', top: 64, duration: 3 });
         return false;
       }
     },

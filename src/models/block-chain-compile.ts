@@ -78,7 +78,7 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
   },
 
   effects: {
-    *getCompileImageList({ payload }, { call, put }) {
+    *getCompileImageList({ payload }, { call, put }):any {
       const res = yield call(API.getCompileImageList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -91,7 +91,7 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
       }
     },
 
-    *getCompileJobList({ payload }, { call, put, select }) {
+    *getCompileJobList({ payload }, { call, put, select }):any {
       const res = yield call(API.getCompileJobList, payload);
       const { continueData } = payload;
       const { statusCode, result } = res;
@@ -109,19 +109,19 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
       }
     },
 
-    *oneKeyCompile({ payload }, { call, put }) {
+    *oneKeyCompile({ payload }, { call, put }):any {
       const res = yield call(API.oneKeyCompileApi, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: result.message || '一键编译请求发起成功', top: 64, duration: 3 });
+        notification.success({ message: result.message || result.msg || '一键编译请求发起成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '一键编译请求发起失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '一键编译请求发起失败', top: 64, duration: 3 });
         return false;
       }
     },
 
-    *getJobList({ payload }, { call, put, select }) {
+    *getJobList({ payload }, { call, put, select }):any {
       const res = yield call(API.getJobList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -138,7 +138,7 @@ const BlockChainCompileModel: BlockChainCompileModelType = {
       }
     },
 
-    *getJobLog({ payload }, { call, put }) {
+    *getJobLog({ payload }, { call, put }):any {
       const res = yield call(API.getJobLog, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {

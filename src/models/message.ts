@@ -51,7 +51,7 @@ const MessageModel: MessageModelType = {
   },
 
   effects: {
-    *getMessageList({ payload }, { call, put }) {
+    *getMessageList({ payload }, { call, put }): any {
       const res = yield call(API.getMessageList, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -64,7 +64,7 @@ const MessageModel: MessageModelType = {
         });
       }
     },
-    *getMesDetail({ payload }, { call, put }) {
+    *getMesDetail({ payload }, { call, put }): any {
       const res = yield call(API.getMesDetail, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -76,7 +76,7 @@ const MessageModel: MessageModelType = {
         });
       }
     },
-    *getAllUnreadMessage({ payload }, { call, put }) {
+    *getAllUnreadMessage({ payload }, { call, put }): any {
       const res = yield call(API.getAllUnreadMessage, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -88,7 +88,7 @@ const MessageModel: MessageModelType = {
         });
       }
     },
-    *getUnreadMesGroup({ payload }, { call, put }) {
+    *getUnreadMesGroup({ payload }, { call, put }): any {
       const res = yield call(API.getUnreadMesGroup, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
@@ -100,36 +100,36 @@ const MessageModel: MessageModelType = {
         });
       }
     },
-    *batchReadMes({ payload }, { call, put }) {
+    *batchReadMes({ payload }, { call, put }): any {
       const res = yield call(API.batchReadMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
         notification.success({ message: '消息标记已读成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '消息标记已读失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '消息标记已读失败', top: 64, duration: 3 });
         return false;
       }
     },
-    *batchDeleteMes({ payload }, { call, put }) {
+    *batchDeleteMes({ payload }, { call, put }): any {
       const res = yield call(API.batchDeleteMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
         notification.success({ message: '批量删除消息成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '批量删除消息失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '批量删除消息失败', top: 64, duration: 3 });
         return false;
       }
     },
-    *deleteMes({ payload }, { call, put }) {
+    *deleteMes({ payload }, { call, put }): any {
       const res = yield call(API.deleteMes, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok' && result === 1) {
         notification.success({ message: '删除消息成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '删除消息失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '删除消息失败', top: 64, duration: 3 });
       }
     },
   },

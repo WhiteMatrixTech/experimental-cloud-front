@@ -132,10 +132,10 @@ const FabricRoleModel: FabricRoleModelType = {
       const succMessage = `新增Fabric角色成功`;
       const failMessage = `新增Fabric角色失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        notification.success({ message: result.message || result.msg || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || failMessage, top: 64, duration: 3 });
         return false;
       }
     }

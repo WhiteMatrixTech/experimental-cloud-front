@@ -94,7 +94,7 @@ const TransactionsModel: TransactionsModelType = {
             transactionDetail: ''
           }
         });
-        notification.error({ message: result.message, top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg, top: 64, duration: 3 });
       }
     },
 

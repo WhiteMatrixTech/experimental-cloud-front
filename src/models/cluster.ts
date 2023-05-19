@@ -79,10 +79,10 @@ const ClusterModel: ClusterModelType = {
       const succMessage = `创建集群成功`;
       const failMessage = `创建集群失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        notification.success({ message: result.message || result.msg || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.msg || failMessage, top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || failMessage, top: 64, duration: 3 });
         return false;
       }
     },
@@ -93,10 +93,10 @@ const ClusterModel: ClusterModelType = {
       const succMessage = `配置集群成功`;
       const failMessage = `配置集群失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        notification.success({ message: result.message || result.msg || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.msg || failMessage, top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || failMessage, top: 64, duration: 3 });
         return false;
       }
     },
@@ -107,10 +107,10 @@ const ClusterModel: ClusterModelType = {
       const succMessage = `集群解绑成功`;
       const failMessage = `集群解绑失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        notification.success({ message: result.message || result.msg || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.msg || failMessage, top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || failMessage, top: 64, duration: 3 });
         return false;
       }
     }

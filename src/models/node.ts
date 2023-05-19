@@ -102,10 +102,10 @@ const PeerModel: PeerModelType = {
       const succMessage = `节点创建请求发起成功`;
       const failMessage = `节点创建请求发起失败`;
       if (statusCode === 'ok' && result) {
-        notification.success({ message: result.message || succMessage, top: 64, duration: 3 });
+        notification.success({ message:result.message || result.msg || succMessage, top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || failMessage, top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || failMessage, top: 64, duration: 3 });
         return false;
       }
     },

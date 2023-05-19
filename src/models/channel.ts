@@ -95,7 +95,7 @@ const ChannelModel: ChannelModelType = {
         notification.success({ message: '通道创建请求发送成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '通道创建请求发送失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '通道创建请求发送失败', top: 64, duration: 3 });
         return false;
       }
     },
@@ -121,7 +121,7 @@ const ChannelModel: ChannelModelType = {
         notification.success({ message: '添加组织请求发送成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.message || '添加组织请求发送失败', top: 64, duration: 3 });
+        notification.error({ message: result.message || result.msg || '添加组织请求发送失败', top: 64, duration: 3 });
       }
     },
 
