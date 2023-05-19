@@ -5,7 +5,7 @@ import { request } from '../utils/request';
  * 获取交易的totalDocs
  */
 export async function getTransactionTotalDocs(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/transactions/totalCount`);
+  return request(`/network/${params.networkName}/transactions/count`);
 }
 /**
  * 查询交易列表
