@@ -11,8 +11,8 @@ import baseConfig from '~/utils/config';
 import { Dispatch, FabricRoleSchema } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
-import { getTokenData } from '~/utils/encryptAndDecrypt';
 import { cancelCurrentRequest } from '~/utils/request';
+import { DownloadSdkModal } from './components/DownloadSdkModal';
 
 const { Item } = Form;
 const Option = Select.Option;
@@ -21,19 +21,21 @@ export interface FabricRoleManagementProps {
   qryLoading: boolean;
   Organization: ConnectState['Organization'];
   User: ConnectState['User'];
+  Channel: ConnectState['Channel'];
   FabricRole: ConnectState['FabricRole'];
 }
 const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
-  const { dispatch, qryLoading = false } = props;
+  const { dispatch, Channel, qryLoading = false } = props;
   const { networkName } = props.User;
-  const { fabricRoleList, fabricRoleTotal, myOrgInfo, myAccessibleOrgs } = props.FabricRole;
+  const { fabricRoleList, fabricRoleTotal, myOrgInfo, myAccessibleOrgs,currentRoleChannelList } = props.FabricRole;
 
   const [form] = Form.useForm();
   const [pageNum, setPageNum] = useState(1);
   const [searchParams, setSearchParams] = useState({ orgName: '' });
 
   const [createModalVisible, setCreateModalVisible] = useState(false);
-  const [downloading, setDownloading] = useState(false);
+  const [downloadSdkModalVisible, setDownloadSdkModalVisible] = useState(false);
+  const [downloadSdkRecord, setDownloadSdkRecord] = useState<FabricRoleSchema | null>(null);
 
   const getFabricRoleList = useCallback(() => {
     const { orgName } = searchParams;
@@ -70,33 +72,9 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
     setCreateModalVisible(false);
   };
 
-  const onDownLoadSDK = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: FabricRoleSchema) => {
-    e.preventDefault();
-    const { accessToken } = getTokenData();
-    let headers = {
-      'Content-Type': 'text/plain',
-      Authorization: `Bearer ${accessToken}`
-    } as HeadersInit;
-    setDownloading(true);
-    request(
-      `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRoles/${record.orgName}/${record.username}/sdkConfig`,
-      {
-        headers,
-        mode: 'cors',
-        method: 'GET',
-        responseType: 'blob'
-      }
-    )
-      .then((res: any) => {
-        setDownloading(false);
-        const blob = new Blob([res]);
-        saveAs(blob, `${record.username}.json`);
-      })
-      .catch((errMsg) => {
-        // DOMException: The user aborted a request.
-        setDownloading(false);
-        notification.error({ message: 'SDK配置下载失败', top: 64, duration: 3 });
-      });
+  const onDownLoadSDK = (record: FabricRoleSchema) => {
+    setDownloadSdkModalVisible(true);
+    setDownloadSdkRecord(record);
   };
 
   // 搜索
@@ -157,11 +135,9 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       key: 'action',
       render: (_: any, record: FabricRoleSchema) => (
         <Space size="small">
-          <a
-            href={`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRoles/${record.orgName}/${record.username}/sdkConfig`}
-            onClick={(e) => onDownLoadSDK(e, record)}>
+          <span className="action-link" onClick={() => onDownLoadSDK(record)}>
             下载SDK配置
-          </a>
+          </span>
         </Space>
       )
     }
@@ -172,8 +148,14 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
       type: 'FabricRole/getMyAccessibleOrgs',
       payload: { networkName }
     });
-
   }, [dispatch, networkName]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'FabricRole/getCurrentRoleChannelList',
+      payload: { networkName, org: downloadSdkRecord?.orgName }
+    });
+  }, [dispatch, downloadSdkRecord?.orgName, networkName]);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
@@ -190,76 +172,86 @@ const FabricRoleManagement: React.FC<FabricRoleManagementProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Spin spinning={downloading} tip="下载中...">
-        <PageTitle
-          label="Fabric角色管理"
-          extra={
-            <Button type="primary" onClick={onClickCreate}>
-              新增Fabric角色
-            </Button>
-          }
-        />
-        <div className="table-wrapper page-content-shadow">
-          <Spin spinning={qryLoading}>
-            <div className="table-header-search-wrapper">
-              <Form colon={false} form={form}>
-                <Row gutter={24}>
-                  <Col span={8}>
-                    <Item label="组织名称" name="orgNameSearch" initialValue={null}>
-                      <Select
-                        allowClear
-                        getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                        placeholder="选择组织">
-                        {myAccessibleOrgs.map((item) => (
-                          <Option key={item} value={item}>
-                            {item}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Item>
-                  </Col>
-                  <Col span={8} offset={8} style={{ textAlign: 'right' }}>
-                    <Space size="middle">
-                      <Button onClick={resetForm}>重置</Button>
-                      <Button type="primary" onClick={onSearch}>
-                        查询
-                      </Button>
-                    </Space>
-                  </Col>
-                </Row>
-              </Form>
-            </div>
-            <Table
-              rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.username}`}
-              columns={columns}
-              dataSource={fabricRoleList}
-              onChange={onPageChange}
-              pagination={{
-                pageSize: baseConfig.pageSize,
-                total: fabricRoleTotal,
-                current: pageNum,
-                showSizeChanger: false,
-                position: ['bottomCenter']
-              }}
-            />
-          </Spin>
-        </div>
-        {createModalVisible && (
-          <CreateFabricUserModal
-            visible={createModalVisible}
-            onCancel={onCloseCreateModal}
-            getFabricRoleList={getFabricRoleList}
+      <PageTitle
+        label="Fabric角色管理"
+        extra={
+          <Button type="primary" onClick={onClickCreate}>
+            新增Fabric角色
+          </Button>
+        }
+      />
+      <div className="table-wrapper page-content-shadow">
+        <Spin spinning={qryLoading}>
+          <div className="table-header-search-wrapper">
+            <Form colon={false} form={form}>
+              <Row gutter={24}>
+                <Col span={8}>
+                  <Item label="组织名称" name="orgNameSearch" initialValue={null}>
+                    <Select
+                      allowClear
+                      getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                      placeholder="选择组织">
+                      {myAccessibleOrgs.map((item) => (
+                        <Option key={item} value={item}>
+                          {item}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Item>
+                </Col>
+                <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                  <Space size="middle">
+                    <Button onClick={resetForm}>重置</Button>
+                    <Button type="primary" onClick={onSearch}>
+                      查询
+                    </Button>
+                  </Space>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+          <Table
+            rowKey={(record: FabricRoleSchema) => `${record.orgName}-${record.username}`}
+            columns={columns}
+            dataSource={fabricRoleList}
+            onChange={onPageChange}
+            pagination={{
+              pageSize: baseConfig.pageSize,
+              total: fabricRoleTotal,
+              current: pageNum,
+              showSizeChanger: false,
+              position: ['bottomCenter']
+            }}
           />
-        )}
-      </Spin>
+        </Spin>
+      </div>
+      {createModalVisible && (
+        <CreateFabricUserModal
+          visible={createModalVisible}
+          onCancel={onCloseCreateModal}
+          getFabricRoleList={getFabricRoleList}
+        />
+      )}
+      {downloadSdkModalVisible && downloadSdkRecord && (
+        <DownloadSdkModal
+          networkName={networkName}
+          record={downloadSdkRecord}
+          onCancel={() => {
+            setDownloadSdkModalVisible(false);
+            setDownloadSdkRecord(null);
+          }}
+          channelList={currentRoleChannelList}
+        />
+      )}
     </div>
   );
 };
 
-export default connect(({ User, Organization, Layout, FabricRole, loading }: ConnectState) => ({
+export default connect(({ User, Organization, Layout, Channel, FabricRole, loading }: ConnectState) => ({
   User,
   Organization,
   Layout,
   FabricRole,
+  Channel,
   qryLoading: loading.effects['FabricRole/getFabricRoleList'] || loading.effects['FabricRole/getFabricRoleListWithOrg']
 }))(FabricRoleManagement);

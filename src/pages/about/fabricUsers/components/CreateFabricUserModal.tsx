@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { ConnectState } from '~/models/connect';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { connect } from 'dva';
@@ -9,14 +8,6 @@ const { Item } = Form;
 const { Option } = Select;
 const { TextArea } = Input;
 
-const formItemLayout = {
-  labelCol: {
-    sm: { span: 6 }
-  },
-  wrapperCol: {
-    sm: { span: 18 }
-  }
-};
 export interface CreateFabricUserModalProps {
   FabricRole: ConnectState['FabricRole'];
   Organization: ConnectState['Organization'];
@@ -32,17 +23,6 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
   const { networkName } = User;
 
   const [form] = Form.useForm();
-
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'FabricRole/getMyOrgInfo',
-  //     payload: { networkName }
-  //   });
-  //   dispatch({
-  //     type: 'Organization/getOrgInUseList',
-  //     payload: { networkName }
-  //   });
-  // }, [dispatch, networkName]);
 
   const handleSubmit = () => {
     form
@@ -87,7 +67,7 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
 
   return (
     <Modal {...drawerProps}>
-      <Form {...formItemLayout} form={form}>
+      <Form form={form}>
         <Item
           label="Fabric角色名"
           name="userName"

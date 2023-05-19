@@ -10,6 +10,14 @@ export async function getFabricRoleList(params: BasicApiParams) {
 }
 
 /**
+ * 获取Fabric Role对应组织的所有channel
+ */
+export async function getCurrentRoleChannelList(params: BasicApiParams & { org: string }) {
+  return request(`/network/${params.networkName}/channels`, { method: 'GET', body: { isUse: true, org: params.org } });
+}
+
+
+/**
  * 获取可以访问的组织
  */
 export async function getMyAccessibleOrgs(params: BasicApiParams) {

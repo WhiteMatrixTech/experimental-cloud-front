@@ -225,6 +225,7 @@ const ContractModel: ContractModelType = {
 
     *invokeChainCodeMethod({ payload }, { call, put }): any {
       const res = yield call(API.invokeChainCodeMethod, payload);
+      console.log(res)
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
         yield put({
@@ -244,7 +245,7 @@ const ContractModel: ContractModelType = {
           payload: {
             invokeResult: {
               status: 'Failed',
-              message: { error: result.message }
+              message: { error: result.message || result.msg }
             }
           }
         });
