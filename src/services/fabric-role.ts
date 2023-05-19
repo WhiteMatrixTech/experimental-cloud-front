@@ -20,7 +20,7 @@ export async function getMyAccessibleOrgs(params: BasicApiParams) {
  * 获取Fabric用户的角色列表(合约调用)
  */
 export async function getAllUserId(params: BasicApiParams) {
-  return request(`/network/${params.networkName}/fabricRole/listAllUserIds`);
+  return request(`/network/${params.networkName}/fabricRoles/usernames`);
 }
 
 /**
