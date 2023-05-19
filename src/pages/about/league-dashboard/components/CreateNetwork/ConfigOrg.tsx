@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Button, Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd';
+import { useState, useEffect, useCallback } from 'react';
+import { Button, Col, Form, Input, InputNumber, notification, Radio, Row, Select } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { EStepType } from './index';
+import { connect, Dispatch } from 'umi';
+import { ConnectState } from '~/models/connect';
+import { useMount } from 'ahooks';
+import { isArray, isEmpty, unionBy } from 'lodash';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -26,10 +30,19 @@ interface ConfigOrgProps {
   networkOrgInfo: any;
   failCheck: () => void;
   afterFormCheck: (values: any, step: EStepType) => void;
+  dispatch: Dispatch;
+  CustomImage: ConnectState['CustomImage'];
 }
 
-export function ConfigOrg(props: ConfigOrgProps) {
-  const { shouldCheck, networkOrgInfo, failCheck, afterFormCheck } = props;
+function ConfigOrg(props: ConfigOrgProps) {
+  const {
+    shouldCheck,
+    networkOrgInfo,
+    failCheck,
+    afterFormCheck,
+    dispatch,
+    CustomImage: { imageList }
+  } = props;
 
   const [form] = Form.useForm();
   const [nodeAddMode, setNodeAddMode] = useState('NORMAL');
@@ -38,12 +51,17 @@ export function ConfigOrg(props: ConfigOrgProps) {
     form
       .validateFields()
       .then((values) => {
-        afterFormCheck(values, EStepType.CONFIG_ORG);
+        if (nodeAddMode === 'NORMAL' && isEmpty(values.nodeList)) {
+          notification.error({ message: '请至少添加一个节点' });
+          failCheck();
+        } else {
+          afterFormCheck(values, EStepType.CONFIG_ORG);
+        }
       })
       .catch(() => {
         failCheck();
       });
-  }, [afterFormCheck, failCheck, form]);
+  }, [afterFormCheck, failCheck, form, nodeAddMode]);
 
   useEffect(() => {
     if (shouldCheck) {
@@ -62,6 +80,15 @@ export function ConfigOrg(props: ConfigOrgProps) {
   const onChangeMode = (e: any) => {
     setNodeAddMode(e.target.value);
   };
+
+  useMount(() => {
+    dispatch({
+      type: 'CustomImage/getImageList',
+      payload: { offset: 0, limit: 1000000 }
+    });
+  });
+
+  const [versionOptions, setVersionOptions] = useState<Array<{ value: string; label: string }>>([]);
 
   return (
     <Form {...formItemLayout} form={form}>
@@ -83,7 +110,6 @@ export function ConfigOrg(props: ConfigOrgProps) {
         ]}>
         <Input placeholder="请输入组织名称" />
       </Item>
-      {/* todo 后续接口查询 */}
       <Item
         label="配置镜像"
         name="peerNodeImage"
@@ -94,8 +120,26 @@ export function ConfigOrg(props: ConfigOrgProps) {
             message: '请选择镜像'
           }
         ]}>
-        <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择镜像">
-          <Option value="hyperledger/fabric-peer">hyperledger/fabric-peer</Option>
+        <Select
+          onChange={(value: string) => {
+            form.setFieldsValue({ peerNodeImageVersion: '' });
+            setVersionOptions(
+              imageList
+                .filter((item) => item.name === value)
+                .map((item) => ({
+                  value: item.version,
+                  label: item.version
+                }))
+            );
+          }}
+          allowClear
+          getPopupContainer={(triggerNode) => triggerNode.parentNode}
+          placeholder="请选择镜像">
+          {unionBy(imageList, 'name').map((item) => (
+            <Option key={item.name} value={item.name}>
+              {item.name}
+            </Option>
+          ))}
         </Select>
       </Item>
       <Item
@@ -108,7 +152,11 @@ export function ConfigOrg(props: ConfigOrgProps) {
           }
         ]}>
         <Select allowClear getPopupContainer={(triggerNode) => triggerNode.parentNode} placeholder="请选择镜像版本">
-          <Option value="2.4.6">2.4.6</Option>
+          {versionOptions.map((item) => (
+            <Option key={item.value} value={item.value}>
+              {item.label}
+            </Option>
+          ))}
         </Select>
       </Item>
       <Item
@@ -224,3 +272,7 @@ export function ConfigOrg(props: ConfigOrgProps) {
     </Form>
   );
 }
+
+export default connect(({ CustomImage }: ConnectState) => ({
+  CustomImage
+}))(ConfigOrg);

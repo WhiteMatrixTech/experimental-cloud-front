@@ -1,5 +1,6 @@
 export enum NetworkStatus {
   Running = 'RUNNING',
+  Starting = "STARTING",
   Creating = 'CREATING',
   NotExist = 'NOT_EXIST',
   CreationFailed = 'CREATE_FAILED',
@@ -10,6 +11,7 @@ export enum NetworkStatus {
 
 export const NetworkInfo = {
   [NetworkStatus.Running]: '运行中',
+  [NetworkStatus.Starting]: '启动中',
   [NetworkStatus.Creating]: '创建中',
   [NetworkStatus.CreationFailed]: '创建失败, 请联系技术人员排查',
   [NetworkStatus.NotExist]: '未创建',
@@ -31,6 +33,7 @@ export enum OrderType {
 export const CanDeleteNetworkStatus = [
   NetworkStatus.Running,
   NetworkStatus.CreationFailed,
+  NetworkStatus.Starting,
   NetworkStatus.Creating,
   NetworkStatus.Stopped,
   NetworkStatus.Stopping

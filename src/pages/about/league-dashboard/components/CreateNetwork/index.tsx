@@ -5,7 +5,7 @@ import { Dispatch } from 'umi';
 import { useBoolean, useGetState } from 'ahooks';
 import { ConnectState } from '~/models/connect';
 import ConfigNetwork from './ConfigNetwork';
-import { ConfigOrg } from './ConfigOrg';
+import ConfigOrg from './ConfigOrg';
 import { ConfigChannel } from './ConfigChannel';
 import styles from './index.less';
 

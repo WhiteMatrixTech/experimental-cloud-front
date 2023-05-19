@@ -59,16 +59,16 @@ export async function createNetworkCustom(params: CreateCustomNetworkRequest) {
 }
 
 export async function stopNetwork(params: { networkName: string }) {
-  return request(`/network/${params.networkName}/stopOrRestart`, { method: 'GET', body: params });
+  return request(`/network/${params.networkName}/stop`, { method: 'POST' });
 }
 
 export async function restartNetwork(params: { networkName: string }) {
-  return request(`/network/${params.networkName}/stopOrRestart`, { method: 'GET', body: params });
+  return request(`/network/${params.networkName}/start`, { method: 'POST' });
 }
 
 /**
  * 删除网络
  */
 export async function deleteNetwork(params: { networkName: string }) {
-  return request(`/network/${params.networkName}/delete`, { method: 'DELETE', body: params });
+  return request(`/network/${params.networkName}/delete`, { method: 'DELETE' });
 }
