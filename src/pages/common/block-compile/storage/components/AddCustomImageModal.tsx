@@ -96,7 +96,7 @@ const AddCustomImageModal: React.FC<AddCustomImageModalProps> = (props) => {
               message: '请输入镜像版本'
             }
           ]}>
-          <Input type="number" step={0.1} placeholder="请输入镜像版本" />
+          <Input type="text" placeholder="请输入镜像版本" />
         </Item>
       </Form>
     </Modal>
