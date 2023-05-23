@@ -43,7 +43,7 @@ export type ContractModelState = {
     message: { result: any; error: any };
   } | null;
 
-  allUserId: Array<string>; // fabric角色用户列表
+  allUserId: Array<{ username: string }>; // fabric角色用户列表
 };
 
 export type ContractModelType = {
@@ -257,6 +257,7 @@ const ContractModel: ContractModelType = {
     *queryChainCodeMethod({ payload }, { call, put }): any {
       const res = yield call(API.queryChainCodeMethod, payload);
       const { statusCode, result } = res;
+      console.log(res)
       if (statusCode === 'ok') {
         yield put({
           type: 'common',

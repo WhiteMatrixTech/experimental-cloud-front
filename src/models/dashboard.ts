@@ -17,6 +17,7 @@ interface INetworkInfo {
   createTime?: string;
   updateTime?: string;
   status: NetworkStatus;
+  caCertExpiryTime: string;
 }
 
 export type DashboardModelState = {
@@ -47,6 +48,7 @@ export type DashboardModelType = {
     getTransactionList: Effect;
     getStaticInfoForAdmin: Effect;
     getStaticInfoForMember: Effect;
+    configCA: Effect;
   };
   reducers: {
     common: Reducer<DashboardModelState>;
@@ -80,6 +82,18 @@ const DashboardModel: DashboardModelType = {
             networkStatusInfo: result
           }
         });
+      }
+    },
+
+    *configCA({ payload }, { call, put }): any {
+      const res = yield call(API.configCA, payload);
+      const { statusCode } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: '配置CA证书过期时间成功', top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: '配置CA证书过期时间失败', top: 64, duration: 3 });
+        return false;
       }
     },
 

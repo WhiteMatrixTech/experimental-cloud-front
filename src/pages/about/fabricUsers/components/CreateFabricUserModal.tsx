@@ -7,7 +7,14 @@ import { CreateFabricRole } from '../_config';
 const { Item } = Form;
 const { Option } = Select;
 const { TextArea } = Input;
-
+const fabricFormLayout = {
+  labelCol: {
+    sm: { span: 6 }
+  },
+  wrapperCol: {
+    sm: { span: 18 }
+  }
+};
 export interface CreateFabricUserModalProps {
   FabricRole: ConnectState['FabricRole'];
   Organization: ConnectState['Organization'];
@@ -67,7 +74,7 @@ function CreateFabricUserModal(props: CreateFabricUserModalProps) {
 
   return (
     <Modal {...drawerProps}>
-      <Form form={form}>
+      <Form form={form} {...fabricFormLayout}>
         <Item
           label="Fabric角色名"
           name="userName"

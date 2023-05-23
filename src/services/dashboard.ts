@@ -72,3 +72,7 @@ export async function restartNetwork(params: { networkName: string }) {
 export async function deleteNetwork(params: { networkName: string }) {
   return request(`/network/${params.networkName}/delete`, { method: 'DELETE' });
 }
+
+export async function configCA(params: { networkName: string; caCertExpiryTime: string }) {
+  return request(`/network/${params.networkName}/setCaCertExpiryTime`, { method: 'POST', body: params });
+}

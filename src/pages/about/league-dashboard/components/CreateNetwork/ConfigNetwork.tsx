@@ -161,12 +161,7 @@ export function ConfigNetwork(props: ConfigNetworkProps) {
                 message: '请输入CA证书过期时间'
               }
             ]}>
-            <InputNumber
-              min={1}
-              formatter={(text) => `${text}h`}
-              style={{ width: '100%' }}
-              placeholder="请输入CA证书过期时间"
-            />
+            <Input type="number" suffix="h" style={{ width: '100%' }} placeholder="请输入CA证书过期时间" />
           </Item>
         </>
       )}

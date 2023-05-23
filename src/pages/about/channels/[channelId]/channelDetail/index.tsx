@@ -258,7 +258,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = (props) => {
           </Descriptions.Item>
           <Descriptions.Item label="创建时间">
             {location?.state?.createTime ? formatDate(location?.state?.createTime) : ''}
-          </Descriptions.Item>v
+          </Descriptions.Item>
           <Descriptions.Item label="创建用户">
             <PlaceHolder text={location?.state?.creatorName || location?.state.creatorEmail} />
           </Descriptions.Item>

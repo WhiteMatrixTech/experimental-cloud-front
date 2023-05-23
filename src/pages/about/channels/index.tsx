@@ -133,7 +133,8 @@ function ChannelManagement(props: ChannelManagementProps) {
       title: '通道描述',
       dataIndex: 'description',
       key: 'description',
-      ellipsis: true
+      ellipsis: true,
+      render: (text: string) => <PlaceHolder text={text} />
     },
     {
       title: '创建者',

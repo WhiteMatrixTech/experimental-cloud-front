@@ -153,9 +153,9 @@ function InvokeContract(props: InvokeContractProps) {
             allowClear
             getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
             placeholder="请选择fabric角色">
-            {allUserId.map((item) => (
-              <Option key={item} value={item}>
-                {item}
+            {allUserId.map((item, index) => (
+              <Option key={index} value={item.username}>
+                {item.username}
               </Option>
             ))}
           </Select>
