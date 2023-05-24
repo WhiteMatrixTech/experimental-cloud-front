@@ -11,16 +11,31 @@ import type {
 } from 'umi';
 
 export type ChannelSchema = {
+  id: number;
   network: string;
   name: string;
   alias: string;
   description: string;
-  id: string;
+  /**
+   * 共识机制
+   */
+  consensus: string;
+  /**
+   * 背书策略
+   */
+  endorsementPolicy: string;
+  /**
+   * 打包超时时长
+   */
+  batchTimeout: string;
+  /**
+   * 最大消息数
+   */
+  maxMessageCount: number;
   status: string;
-  creatorName: string;
+  creatorEmail: string;
   createTime: string;
   updateTime: string;
-  creatorEmail: string;
 };
 
 export type ChannelModelState = {
@@ -57,6 +72,7 @@ export type ChannelModelType = {
     getBlockListOfChannel: Effect;
     getTransactionsListOfChannel: Effect;
     getStaticInfo: Effect;
+    updateChannel: Effect;
   };
   reducers: {
     common: Reducer<ChannelModelState>;
@@ -122,6 +138,18 @@ const ChannelModel: ChannelModelType = {
         return true;
       } else {
         notification.error({ message: result.message || result.msg || '添加组织请求发送失败', top: 64, duration: 3 });
+      }
+    },
+
+    *updateChannel({ payload }, { call, put }): any {
+      const res = yield call(API.updateChannel, payload);
+      const { statusCode, result } = res;
+      if (statusCode === 'ok') {
+        notification.success({ message: '更新通道成功', top: 64, duration: 3 });
+        return true;
+      } else {
+        notification.error({ message: result.message || result.msg || '更新通道失败', top: 64, duration: 3 });
+        return false;
       }
     },
 

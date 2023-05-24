@@ -23,3 +23,7 @@ export const ChannelStatusTag = {
   [ChannelStatus.DELETE_FAILED]: { color: 'red', text: '删除失败' },
   [ChannelStatus.DELETED]: { color: 'volcano', text: '已删除' }
 };
+
+export const canUpdateChannelStatusList = [
+  ChannelStatus.IN_USE,
+]

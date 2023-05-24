@@ -31,7 +31,6 @@ function CreateNetwork(props: CreateNetworkProps) {
   const [configMode, setConfigMode] = useGetState<'default' | 'custom'>('default');
   const [currentStep, setCurrentStep] = useState<EStepType>(0);
   const [shouldCheck, { setTrue: setCheckTrue, setFalse: setCheckFalse }] = useBoolean(false);
-
   const [networkBaseInfo, setNetworkBaseInfo, getNetworkBaseInfo] = useGetState<Record<string, any>>({
     network: User.networkName,
     ordererNodeNum: 1,

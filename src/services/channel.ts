@@ -51,6 +51,16 @@ export async function addOrgForChannel(params: BasicApiParams & { orgName: strin
 }
 
 /**
+ * 更新通道
+ */
+export async function updateChannel(params: BasicApiParams) {
+  return request(`/network/${params.networkName}/channels/${params.channelId}`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+
+/**
  * 获取 通道下的节点列表
  */
 export async function getNodeListOfChannel(params: BasicApiParams) {

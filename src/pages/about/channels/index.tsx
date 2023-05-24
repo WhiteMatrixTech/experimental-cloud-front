@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Dispatch, history, Location } from 'umi';
@@ -6,12 +6,13 @@ import { Table, Button, Badge, Space } from 'antd';
 import CreateChannelModal from './components/CreateChannelModal';
 import baseConfig from '~/utils/config';
 import { Roles } from '~/utils/roles';
-import { ChannelStatusTag } from './_config';
+import { canUpdateChannelStatusList, ChannelStatusTag } from './_config';
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { ChannelSchema } from '~/models/channel';
 import { PageTitle, PlaceHolder } from '~/components';
 import { renderDateWithDefault } from '~/utils/date';
+import UpdateChannel from './components/UpdateChannel';
 export interface ChannelManagementProps {
   dispatch: Dispatch;
   qryLoading: boolean;
@@ -26,6 +27,8 @@ function ChannelManagement(props: ChannelManagementProps) {
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
   const [createChannelVisible, setCreateChannelVisible] = useState(false);
+  const [updateChannelRecord, setUpdateChannelRecord] = useState<ChannelSchema | null>(null);
+  const updateChannelVisible = useMemo(() => !!updateChannelRecord, [updateChannelRecord]);
 
   // 获取通道列表
   const getChannelList = useCallback(() => {
@@ -138,9 +141,9 @@ function ChannelManagement(props: ChannelManagementProps) {
     },
     {
       title: '创建者',
-      dataIndex: 'creatorName',
-      key: 'creatorName',
-      render: (text, record: ChannelSchema) => <PlaceHolder text={text || record.creatorEmail} />
+      dataIndex: 'creatorEmail',
+      key: 'creatorEmail',
+      render: (text) => <PlaceHolder text={text} />
     },
     {
       title: '创建时间',
@@ -154,6 +157,15 @@ function ChannelManagement(props: ChannelManagementProps) {
       width: '22%',
       render: (text, record: ChannelSchema) => (
         <Space size="small">
+          {canUpdateChannelStatusList.includes(record.status as any) && (
+            <span
+              className="action-link"
+              onClick={() => {
+                setUpdateChannelRecord(record);
+              }}>
+              配置详情
+            </span>
+          )}
           <a href={`/about/channels/${record.name}/organizationList`} onClick={(e) => onViewOrg(e, record)}>
             查看组织
           </a>
@@ -206,6 +218,18 @@ function ChannelManagement(props: ChannelManagementProps) {
         />
       </div>
       {createChannelVisible && <CreateChannelModal visible={createChannelVisible} onCancel={onCloseCreateChannel} />}
+      {updateChannelVisible && (
+        <UpdateChannel
+          visible={updateChannelVisible}
+          onCancel={(isUpdateSuccess: boolean) => {
+            setUpdateChannelRecord(null);
+            if (isUpdateSuccess) {
+              getChannelList();
+            }
+          }}
+          record={updateChannelRecord}
+        />
+      )}
     </div>
   );
 }
