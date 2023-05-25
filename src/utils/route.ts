@@ -54,19 +54,6 @@ export function getRoutes(): RouteProps[] {
           path: '/about/contract'
         },
         {
-          path: '/about/data-dashboard'
-        },
-        // {
-        //   path: "/about/did/did-management/did-detail/:did",
-        //   exact: true
-        // },
-        // {
-        //   path: "/about/did/did-management",
-        // },
-        // {
-        //   path: "/about/did/did-query",
-        // },
-        {
           path: '/about/member'
         },
         {
@@ -87,9 +74,9 @@ export function getRoutes(): RouteProps[] {
         {
           path: '/about/ipfs'
         },
-        {
-          path: '/about/league-dashboard'
-        },
+        // {
+        //   path: '/about/league-dashboard'
+        // },
         // {
         //   path: "/about/logsList",
         // },

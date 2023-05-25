@@ -65,15 +65,6 @@ const NetworkMenuList: NetworkMenuProps[] = [
     subMenus: []
   },
   {
-    id: 'data-dashboard',
-    menuPid: RootMenuId,
-    menuHref: '/about/data-dashboard',
-    menuIcon: <DashboardOutlined />,
-    menuName: '仪表盘',
-    accessRole: [Roles.ADMIN],
-    subMenus: []
-  },
-  {
     id: 'block',
     menuPid: RootMenuId,
     menuHref: '/about/block',
@@ -281,6 +272,15 @@ const CommonMenuList: CommonMenuProps[] = [
         menuHref: '/common/block-compile/storage',
         menuIcon: null,
         menuName: '自定义镜像管理',
+        accessRole: [Roles.ADMIN, Roles.SUPER],
+        subMenus: []
+      },
+      {
+        id: 'dashboard',
+        menuPid: 'dashboard',
+        menuHref: '/common/dashboard',
+        menuIcon: null,
+        menuName: '仪表盘',
         accessRole: [Roles.ADMIN, Roles.SUPER],
         subMenus: []
       }

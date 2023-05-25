@@ -1,4 +1,3 @@
-import React from 'react';
 import { Tabs } from 'antd';
 import cs from 'classnames';
 import { connect } from 'dva';
@@ -47,3 +46,19 @@ function DataDashboard() {
 }
 
 export default connect(({ User }: ConnectState) => ({ User }))(DataDashboard);
+
+
+// function Dashboard() {
+//   return (
+//     <iframe
+//       style={{
+//         width: '100%',
+//         height: '100%'
+//       }}
+//       src={`${process.env.FABRIC_BAAS_DASHBOARD}?orgId=1&refresh=5s`}
+//       title="Dashboard"
+//       id="Dashboard"
+//       frameBorder="0"></iframe>
+//   );
+// }
+// export default Dashboard;
