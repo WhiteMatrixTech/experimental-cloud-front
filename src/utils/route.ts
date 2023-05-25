@@ -168,13 +168,6 @@ export function getRoutes(): RouteProps[] {
           path: '/common'
         },
         {
-          path: '/common/job-management'
-        },
-        {
-          path: '/common/job-management/job-logs/:jobId',
-          exact: true
-        },
-        {
           path: '/common/user-management'
         }
       ]

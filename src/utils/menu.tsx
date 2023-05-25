@@ -259,15 +259,6 @@ const CommonMenuList: CommonMenuProps[] = [
     subMenus: []
   },
   {
-    id: 'job-management',
-    menuPid: RootMenuId,
-    menuHref: '/common/job-management',
-    menuIcon: <FileSearchOutlined />,
-    menuName: '任务管理',
-    accessRole: [Roles.ADMIN, Roles.SUPER],
-    subMenus: []
-  },
-  {
     id: 'block-compile',
     menuPid: RootMenuId,
     menuHref: '/common/block-compile',

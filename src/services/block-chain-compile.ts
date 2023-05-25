@@ -1,47 +1,16 @@
-import { GitBuildRepoSchema } from 'umi';
+import { AllPaginationParams } from '~/utils/types';
 import { request } from '../utils/request';
 
 /**
  * 获取编译镜像列表
  */
-export async function getCompileImageList() {
-  return request('/build/buildImages', { method: 'POST', body: {} });
+export async function getBuildRecords(params: AllPaginationParams) {
+  return request('/images/buildRecords', { method: 'GET', body: params });
 }
 
 /**
- * 一键编译
+ * 编译镜像
  */
-export async function oneKeyCompileApi(params: GitBuildRepoSchema) {
-  return request(`/build/createBuildRepoTask`, { method: 'POST', body: params });
-}
-
-/**
- * 获取编译任务列表
- */
-export async function getCompileJobList(params: getCompileJobListParams) {
-  return request('/build', { method: 'POST', body: params });
-}
-export interface getCompileJobListParams {
-  limit: number;
-  continueData?: string;
-}
-/**
- * 创建job
- */
-export async function createJob(params: any) {
-  return request(`/job/createJob`, { method: 'POST', body: params });
-}
-
-/**
- * 查询Job列表
- */
-export async function getJobList(params: getCompileJobListParams) {
-  return request(`/job`, { method: 'POST', body: params });
-}
-
-/**
- * 查询Job日志
- */
-export async function getJobLog(params: { jobId: string }) {
-  return request(`/job/${params.jobId}/logs`);
+export async function addBuildRecord(params: any) {
+  return request(`/images/build`, { method: 'POST', body: params });
 }

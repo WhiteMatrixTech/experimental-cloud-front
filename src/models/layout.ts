@@ -32,7 +32,7 @@ const LayoutModel: LayoutModelType = {
   state: {
     getUnreadMessage: 0, // 未读消息条数
     commonPortalSelectedMenu:
-      localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.COMMON_PORTAL_SELECTED_MENU) || '/common/job-management',
+      localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.COMMON_PORTAL_SELECTED_MENU) || '/common/block-compile/package',
     selectedMenu:
       localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.NETWORK_PORTAL_SELECTED_MENU) || '/about/league-dashboard', // 当前选中菜单
     currentService: localStorage.getItem(LOCAL_STORAGE_ITEM_KEY.DRAWER_CURRENT_SERVICE) || '',

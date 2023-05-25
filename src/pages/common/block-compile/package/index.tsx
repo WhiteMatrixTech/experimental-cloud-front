@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Table, Button, Space } from 'antd';
+import { Table, Button } from 'antd';
 import { connect } from 'dva';
-import { Dispatch, history } from 'umi';
+import { Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { PageTitle } from '~/components';
-import OneKeyCompile from './components/OneKeyCompile';
-import { GitBuildRepoTask } from '~/models/block-chain-compile';
+import AddBuildRecord from './components/AddBuildRecord';
 import { ColumnsType } from 'antd/lib/table';
 import baseConfig from '~/utils/config';
-import styles from './index.less';
 
 export type SourceCodeCompilationProps = {
   qryLoading: boolean;
@@ -18,152 +16,105 @@ export type SourceCodeCompilationProps = {
 const pageSize = baseConfig.pageSize;
 const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
   const { dispatch, qryLoading = false, BlockChainCompile } = props;
-  const { gitBuildJobList, compileContinueData } = BlockChainCompile;
-  const [compileModalVisible, setCompileModalVisible] = useState(false);
-  const [moreBtnVisible, setMoreBtnVisible] = useState(false);
+  const { buildRecords, buildRecordsTotal } = BlockChainCompile;
+  const [pageNum, setPageNum] = useState(1);
+  const [showAddBuildRecord, setShowAddBuildRecord] = useState(false);
 
-  const getCompileJobList = useCallback(() => {
+  const getBuildRecords = useCallback(() => {
+    const offset = (pageNum - 1) * pageSize;
+    const params = {
+      offset,
+      limit: pageSize
+    };
     dispatch({
-      type: 'BlockChainCompile/getCompileJobList',
-      payload: {
-        limit: pageSize
-      }
+      type: 'BlockChainCompile/getBuildRecords',
+      payload: params
     });
-  }, [dispatch]);
-
-  const getMoreCompileJobList = () => {
-    dispatch({
-      type: 'BlockChainCompile/getJobList',
-      payload: {
-        limit: pageSize,
-        continueData: compileContinueData
-      }
-    });
-  };
-
-  const cleanHob = useCallback(() => {
-    dispatch({
-      type: 'BlockChainCompile/cleanJob',
-      payload: {}
-    });
-  }, [dispatch]);
-
-  const onPageChange = (pageInfo: any) => {
-    // 页码改变
-  };
+  }, [dispatch, pageNum]);
 
   const onClickOneKeyCompile = () => {
-    setCompileModalVisible(true);
+    setShowAddBuildRecord(true);
   };
 
   const onCancel = () => {
-    setCompileModalVisible(false);
-    getCompileJobList();
+    setShowAddBuildRecord(false);
+    getBuildRecords();
   };
 
-  const onViewJobLog = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: GitBuildRepoTask) => {
-    e.preventDefault();
-    history.push({
-      pathname: `/common/block-compile/package/job-logs/${record.buildJobId}`,
-      state: {
-        ...record,
-        jobId: record.buildJobId,
-        status: record.buildJobStatus
-      }
-    });
-  };
+  useEffect(() => {
+    getBuildRecords();
+  }, [getBuildRecords, pageNum]);
 
   const columns: ColumnsType<any> = [
     {
       title: '仓库地址',
-      dataIndex: 'gitRepoUrl',
-      key: 'gitRepoUrl',
+      dataIndex: 'gitRepo',
+      key: 'gitRepo',
       ellipsis: true
     },
     {
       title: '分支名',
-      dataIndex: 'branch',
-      key: 'branch',
+      dataIndex: 'gitRef',
+      key: 'gitRef',
       ellipsis: true
     },
     {
-      title: '编译镜像',
-      dataIndex: 'buildEnvImage',
-      key: 'buildEnvImage',
+      title: '镜像仓库地址',
+      dataIndex: 'registryUrl',
+      key: 'registryUrl',
       ellipsis: true
     },
     {
-      title: '编译命令',
-      dataIndex: 'buildCommands',
-      key: 'buildCommands',
+      title: '编译参数',
+      dataIndex: 'buildArgs',
+      key: 'buildArgs',
       ellipsis: true
     },
     {
-      title: '任务ID',
-      dataIndex: 'buildJobId',
-      key: 'buildJobId',
+      title: '编译任务ID',
+      dataIndex: 'jobId',
+      key: 'jobId',
       ellipsis: true
     },
     {
-      title: '任务状态',
-      dataIndex: 'buildJobStatus',
-      key: 'buildJobStatus',
+      title: '编译任务状态',
+      dataIndex: 'status',
+      key: 'status',
       ellipsis: true
-    },
-    {
-      title: '操作',
-      key: 'action',
-      render: (text, record: GitBuildRepoTask) => (
-        <Space size="small">
-          <a
-            href={`/common/block-compile/package/job-logs/${record.buildJobId}`}
-            onClick={(e) => onViewJobLog(e, record)}>
-            查看日志
-          </a>
-        </Space>
-      )
     }
   ];
 
-  useEffect(() => {
-    getCompileJobList();
-    return () => cleanHob();
-  }, [cleanHob, getCompileJobList]);
-
-  useEffect(() => {
-    if (compileContinueData) {
-      setMoreBtnVisible(true);
-    } else {
-      setMoreBtnVisible(false);
-    }
-  }, [compileContinueData]);
+  const onPageChange = (pageInfo: any) => {
+    setPageNum(pageInfo.current);
+  };
 
   return (
     <div className="page-wrapper">
-      <PageTitle label="一键编译" extra={
-        <Button type="primary" onClick={onClickOneKeyCompile}>
-          一键编译
-        </Button>
-      } />
+      <PageTitle
+        label="一键编译"
+        extra={
+          <Button type="primary" onClick={onClickOneKeyCompile}>
+            一键编译
+          </Button>
+        }
+      />
       <div className="page-content page-content-shadow table-wrapper">
         <Table
-          rowKey="buildJobId"
+          rowKey="jobId"
           loading={qryLoading}
           columns={columns}
-          dataSource={gitBuildJobList}
+          dataSource={buildRecords}
           onChange={onPageChange}
-          scroll={{ y: 450 }}
-          pagination={false}
+          pagination={{
+            total: buildRecordsTotal,
+            current: pageNum,
+            showSizeChanger: false,
+            position: ['bottomCenter'],
+            pageSize: pageSize
+          }}
         />
-        {moreBtnVisible && (
-          <div className={styles.jobListMore}>
-            <button className={styles.btn} onClick={getMoreCompileJobList}>
-              加载更多
-            </button>
-          </div>
-        )}
       </div>
-      {compileModalVisible && <OneKeyCompile visible={compileModalVisible} onCancel={onCancel} />}
+      {showAddBuildRecord && <AddBuildRecord visible={showAddBuildRecord} onCancel={onCancel} />}
     </div>
   );
 };
@@ -171,5 +122,5 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 export default connect(({ User, BlockChainCompile, loading }: ConnectState) => ({
   User,
   BlockChainCompile,
-  qryLoading: loading.effects['BlockChainCompile/getCompileJobList']
+  qryLoading: loading.effects['BlockChainCompile/getBuildRecords']
 }))(SourceCodeCompilation);
