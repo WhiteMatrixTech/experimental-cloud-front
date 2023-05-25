@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Table, Button } from 'antd';
+import { Table, Button, Tag } from 'antd';
 import { connect } from 'dva';
-import { Dispatch } from 'umi';
+import { BuildImageStatus, Dispatch } from 'umi';
 import { ConnectState } from '~/models/connect';
-import { PageTitle } from '~/components';
+import { PageTitle, PlaceHolder } from '~/components';
 import AddBuildRecord from './components/AddBuildRecord';
 import { ColumnsType } from 'antd/lib/table';
 import baseConfig from '~/utils/config';
+import isEmpty from 'lodash/isEmpty';
 
 export type SourceCodeCompilationProps = {
   qryLoading: boolean;
@@ -47,6 +48,12 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
 
   const columns: ColumnsType<any> = [
     {
+      title: '编译任务ID',
+      dataIndex: 'jobId',
+      key: 'jobId',
+      ellipsis: true
+    },
+    {
       title: '仓库地址',
       dataIndex: 'gitRepo',
       key: 'gitRepo',
@@ -68,19 +75,40 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       title: '编译参数',
       dataIndex: 'buildArgs',
       key: 'buildArgs',
-      ellipsis: true
-    },
-    {
-      title: '编译任务ID',
-      dataIndex: 'jobId',
-      key: 'jobId',
-      ellipsis: true
+      ellipsis: true,
+      render: (args: string[]) => {
+        if (isEmpty(args)) {
+          return <PlaceHolder />;
+        } else {
+          return (
+            <>
+              {args?.map((item) => (
+                <Tag key={item}>{item}</Tag>
+              ))}
+            </>
+          );
+        }
+      }
     },
     {
       title: '编译任务状态',
       dataIndex: 'status',
       key: 'status',
-      ellipsis: true
+      ellipsis: true,
+      render: (value: BuildImageStatus) => {
+        switch (value) {
+          case 'SUCCEEDED':
+            return <Tag color="success">succeed</Tag>;
+          case 'BUILDING':
+            return <Tag color="processing">building</Tag>;
+          case 'FAILED':
+            return <Tag color="error">failed</Tag>;
+          case 'WAITING':
+            return <Tag color="default">waiting</Tag>;
+          default:
+            return <></>;
+        }
+      }
     }
   ];
 

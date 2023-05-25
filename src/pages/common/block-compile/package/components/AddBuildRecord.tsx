@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ConnectState } from '~/models/connect';
 import { Button, Form, Input, Modal, Radio, Select } from 'antd';
 import { connect } from 'dva';
@@ -14,11 +14,10 @@ export type AddBuildRecordProps = {
   onCancel: () => void;
   dispatch: Dispatch;
   User: ConnectState['User'];
-  BlockChainCompile: ConnectState['BlockChainCompile'];
 };
 
 const AddBuildRecord: React.FC<AddBuildRecordProps> = (props) => {
-  const { visible, onCancel, configLoading = false, dispatch, BlockChainCompile } = props;
+  const { visible, onCancel, configLoading = false, dispatch } = props;
 
   const [gitRepoType, setGitRepoType] = useState<'private' | 'public'>('public');
   const [form] = Form.useForm();
@@ -34,14 +33,9 @@ const AddBuildRecord: React.FC<AddBuildRecordProps> = (props) => {
     form
       .validateFields()
       .then(async (values) => {
-        const { buildArgs = '', ...rest } = values;
-
         const res = await dispatch({
           type: 'BlockChainCompile/addBuildRecord',
-          payload: {
-            ...rest,
-            buildArgs: buildArgs.split(',').map((item: string) => item.trim())
-          }
+          payload: values
         });
         if (res) {
           onCancel();
@@ -93,7 +87,7 @@ const AddBuildRecord: React.FC<AddBuildRecordProps> = (props) => {
           ]}>
           <Input placeholder="请输入分支名/Tag" />
         </Item>
-        <Item label="git仓库类型" name="gitRepoType" initialValue="public">
+        <Item name="gitRepoType" initialValue="public">
           <Radio.Group className={styles['radio-group']} onChange={onChangeGitRepoType}>
             <Radio className={styles.radio} value="public">
               公有仓库
@@ -117,21 +111,36 @@ const AddBuildRecord: React.FC<AddBuildRecordProps> = (props) => {
               <Input placeholder="请输入git用户名" />
             </Item>
             <Item
-              label="git密码"
-              tooltip="可以是auth token或是git账户密码"
+              label="git auth token"
               name="gitToken"
               rules={[
                 {
                   required: true,
-                  message: '请输入git密码'
+                  message: '请输入git auth token'
                 }
               ]}>
-              <Input placeholder="请输入git密码" />
+              <Input.Password placeholder="请输入git auth token" />
             </Item>
           </>
         )}
-        <Item label="构建参数" name="buildArgs">
-          <Input placeholder="输入构建参数，英文逗号分割" />
+        <Item label="构建参数" name="buildArgs" initialValue={[]}>
+          <Select
+            getPopupContainer={(triggerNode: { parentNode: any }) => triggerNode.parentNode}
+            placeholder="请输入构建参数"
+            mode="tags"
+            allowClear
+          />
+        </Item>
+        <Item
+          label="镜像Tag"
+          name="tag"
+          rules={[
+            {
+              required: true,
+              message: '请输入镜像Tag'
+            }
+          ]}>
+          <Input placeholder="请输入镜像Tag" />
         </Item>
         <Item
           label="镜像仓库地址"
@@ -161,17 +170,6 @@ const AddBuildRecord: React.FC<AddBuildRecordProps> = (props) => {
           />
         </Item>
         <Item
-          label="镜像Tag"
-          name="tag"
-          rules={[
-            {
-              required: true,
-              message: '请输入镜像Tag'
-            }
-          ]}>
-          <Input placeholder="请输入镜像Tag" />
-        </Item>
-        <Item
           label="镜像仓库用户名"
           name="registryUser"
           rules={[
@@ -191,15 +189,14 @@ const AddBuildRecord: React.FC<AddBuildRecordProps> = (props) => {
               message: '请输入镜像仓库密码'
             }
           ]}>
-          <Input placeholder="请输入镜像仓库密码" />
+          <Input.Password placeholder="请输入镜像仓库密码" />
         </Item>
       </Form>
     </Modal>
   );
 };
 
-export default connect(({ User, BlockChainCompile, loading }: ConnectState) => ({
+export default connect(({ User, loading }: ConnectState) => ({
   User,
-  BlockChainCompile,
   configLoading: loading.effects['BlockChainCompile/addBuildRecord']
 }))(AddBuildRecord);

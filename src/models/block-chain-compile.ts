@@ -3,7 +3,7 @@ import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
 type IBuildImageType = "PEER";
-type BuildImageStatus = "WAITING" | "BUILDING" | "SUCCEEDED" | "FAILED";
+export type BuildImageStatus = "WAITING" | "BUILDING" | "SUCCEEDED" | "FAILED";
 interface IImageBuildRecord {
   id: number;
   tag: string;
