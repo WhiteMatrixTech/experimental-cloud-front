@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
 import { Dispatch, history, TransactionSchema } from 'umi';
 import { Table, Space, Divider, Spin, Descriptions } from 'antd';
 import { Breadcrumb, PageTitle } from '~/components';

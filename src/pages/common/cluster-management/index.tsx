@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
 import { Dispatch, ClusterSchema } from 'umi';
 import { PageTitle } from '~/components';
 import { Table, Button, Space, Modal } from 'antd';

@@ -3,7 +3,6 @@ import { Spin, Table, Space, Button, message, Modal, Descriptions, Statistic, Ro
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import { BlockSchema, Dispatch, history, TransactionSchema } from 'umi';
-import moment from 'moment';
 import { Roles } from '~/utils/roles';
 import { WelcomeBanner } from '~/components';
 import { NetworkStatus, NetworkInfo, StopOrRestart, CanDeleteNetworkStatus } from '~/utils/networkStatus';

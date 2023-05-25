@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Dispatch, Location } from 'umi';
-import moment from 'moment';
 import { Breadcrumb, DetailCard, PageTitle, PlaceHolder } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { DetailViewAttr } from '~/utils/types';

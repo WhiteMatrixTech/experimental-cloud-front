@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'dva';
 import { Table, Badge, Descriptions, Divider } from 'antd';
-import moment from 'moment';
 import { Breadcrumb, PageTitle, PlaceHolder } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import { peerStatus } from '../../../nodes/_config';

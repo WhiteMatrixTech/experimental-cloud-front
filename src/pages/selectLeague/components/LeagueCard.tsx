@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { RocketTwoTone } from '@ant-design/icons';
-import moment from 'moment';
 import { Roles } from '~/utils/roles';
 import styles from '../index.less';
 import { LeagueSchema } from '~/models/user';

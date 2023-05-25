@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
-import request from 'umi-request';
-import { saveAs } from 'file-saver';
 import { Table, Button, Space, Form, Row, Col, Select, message, notification, Spin } from 'antd';
 import { PageTitle, PlaceHolder } from '~/components';
 import CreateFabricUserModal from './components/CreateFabricUserModal';

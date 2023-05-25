@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
 import { Descriptions, Divider, Spin } from 'antd';
 import { isObject } from 'lodash';
 import { Breadcrumb, PageTitle } from '~/components';

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
 import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { PageTitle, PlaceHolder } from '~/components';

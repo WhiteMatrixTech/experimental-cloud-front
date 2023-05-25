@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
 import { Descriptions, Divider, Table } from 'antd';
-import moment from 'moment';
 import { Breadcrumb, DetailCard, PageTitle } from '~/components';
 import { CommonMenuList, getCurBreadcrumb } from '~/utils/menu';
 import baseConfig from '~/utils/config';
