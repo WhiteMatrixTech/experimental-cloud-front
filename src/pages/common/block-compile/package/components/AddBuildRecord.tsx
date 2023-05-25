@@ -142,7 +142,7 @@ const AddBuildRecord: React.FC<AddBuildRecordProps> = (props) => {
           ]}>
           <Input placeholder="请输入镜像Tag" />
         </Item>
-        <Item
+        {/* <Item
           label="镜像仓库地址"
           name="registryUrl"
           rules={[
@@ -152,7 +152,7 @@ const AddBuildRecord: React.FC<AddBuildRecordProps> = (props) => {
             }
           ]}>
           <Input placeholder="请输入镜像仓库地址" />
-        </Item>
+        </Item> */}
         <Item
           label="镜像类型"
           name="imageType"

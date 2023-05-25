@@ -65,30 +65,36 @@ const SourceCodeCompilation: React.FC<SourceCodeCompilationProps> = (props) => {
       key: 'gitRef',
       ellipsis: true
     },
+    // {
+    //   title: '镜像仓库地址',
+    //   dataIndex: 'registryUrl',
+    //   key: 'registryUrl',
+    //   ellipsis: true
+    // },
+    // {
+    //   title: '编译参数',
+    //   dataIndex: 'buildArgs',
+    //   key: 'buildArgs',
+    //   ellipsis: true,
+    //   render: (args: string[]) => {
+    //     if (isEmpty(args)) {
+    //       return <PlaceHolder />;
+    //     } else {
+    //       return (
+    //         <>
+    //           {args?.map((item) => (
+    //             <Tag key={item}>{item}</Tag>
+    //           ))}
+    //         </>
+    //       );
+    //     }
+    //   }
+    // },
     {
-      title: '镜像仓库地址',
-      dataIndex: 'registryUrl',
-      key: 'registryUrl',
+      title: '镜像Tag',
+      dataIndex: 'tag',
+      key: 'tag',
       ellipsis: true
-    },
-    {
-      title: '编译参数',
-      dataIndex: 'buildArgs',
-      key: 'buildArgs',
-      ellipsis: true,
-      render: (args: string[]) => {
-        if (isEmpty(args)) {
-          return <PlaceHolder />;
-        } else {
-          return (
-            <>
-              {args?.map((item) => (
-                <Tag key={item}>{item}</Tag>
-              ))}
-            </>
-          );
-        }
-      }
     },
     {
       title: '编译任务状态',
