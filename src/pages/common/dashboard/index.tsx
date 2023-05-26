@@ -12,6 +12,7 @@ import {
   ChaincodeMetrics
 } from './components';
 import { ConnectState } from '~/models/connect';
+import NodeExplorer from './components/NodeExplorer';
 
 const { TabPane } = Tabs;
 
@@ -38,6 +39,9 @@ function DataDashboard() {
           </TabPane>
           <TabPane tab="Go" key="GoMetrics">
             <GoMetrics />
+          </TabPane>
+          <TabPane tab="机器监控" key="NodeExplorer">
+            <NodeExplorer />
           </TabPane>
         </Tabs>
       </div>
