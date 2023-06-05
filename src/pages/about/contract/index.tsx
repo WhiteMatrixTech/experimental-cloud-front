@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
 import { ChainCodeSchema, Dispatch, history } from 'umi';
-import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Table, Space, Badge, Modal, Button, message, notification, Spin } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -17,7 +16,7 @@ import { chainCodeStatusInfo, ChainCodeStatus, VerifyStatusList, UpdateStatusLis
 import { ConnectState } from '~/models/connect';
 import { ColumnsType } from 'antd/lib/table';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
-import { cancelCurrentRequest, chaincodeRequest } from '~/utils/request';
+import { cancelCurrentRequest, fileRequest } from '~/utils/request';
 import { formatDate } from '~/utils/date';
 
 const pageSize = baseConfig.pageSize;
@@ -128,7 +127,7 @@ const MyContract: React.FC<MyContractProps> = (props) => {
 
     setDownloading(true);
 
-    chaincodeRequest(
+    fileRequest(
       `/network/${networkName}/chainCodes/downLoadChainCode/${record.channelId}?chainCodeName=${record.chainCodeName}`,
       {
         headers,

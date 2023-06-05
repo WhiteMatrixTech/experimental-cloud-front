@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'dva';
-import request from 'umi-request';
-import { saveAs } from 'file-saver';
 import { PageTitle, PlaceHolder } from '~/components';
-import { Table, Button, Badge, Space, notification, Spin } from 'antd';
+import { Table, Button, Badge, Space } from 'antd';
 import CreateNodeModal from './components/CreateNodeModal';
 import baseConfig from '~/utils/config';
 import { peerStatus } from './_config';
 import { ConnectState } from '~/models/connect';
 import { Dispatch, PeerSchema } from 'umi';
 import { ColumnsType } from 'antd/lib/table';
-import { getTokenData } from '~/utils/encryptAndDecrypt';
 import { cancelCurrentRequest } from '~/utils/request';
 import { renderDateWithDefault } from '~/utils/date';
 
@@ -30,7 +27,6 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   const [pageNum, setPageNum] = useState(1);
   const [pageSize] = useState(baseConfig.pageSize);
   const [createNodeVisible, setCreateNodeVisible] = useState(false);
-  const [downloading, setDownloading] = useState(false);
 
   // 获取节点列表
   const getNodeList = useCallback(() => {
@@ -57,41 +53,6 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
   const onCloseModal = () => {
     setCreateNodeVisible(false);
   };
-
-  const onDownLoadCertificate = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: PeerSchema) => {
-      e.preventDefault();
-      // token校验
-      const { accessToken } = getTokenData();
-
-      let headers = {
-        'Content-Type': 'text/plain',
-        Authorization: `Bearer ${accessToken}`
-      };
-
-      setDownloading(true);
-
-      request(`${process.env.BAAS_BACKEND_LINK}/network/${networkName}/keypair`, {
-        headers,
-        mode: 'cors',
-        method: 'GET',
-        responseType: 'blob'
-      })
-        .then((res: any) => {
-          setDownloading(false);
-          const blob = new Blob([res]);
-          saveAs(blob, `${networkName}.pem`);
-        })
-        .catch((errMsg) => {
-          // DOMException: The user aborted a request.
-          if (!errMsg) {
-            setDownloading(false);
-            notification.error({ message: '节点证书下载失败', top: 64, duration: 3 });
-          }
-        });
-    },
-    [networkName]
-  );
 
   const handleStartOrStopNode = useCallback(
     async (record: PeerSchema, type: 'start' | 'stop') => {
@@ -183,7 +144,7 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
       }
     ];
     setColumns(data);
-  }, [dispatch, handleStartOrStopNode, networkName, onDownLoadCertificate, stopOrStartNodeLoading, userRole]);
+  }, [dispatch, handleStartOrStopNode, networkName, stopOrStartNodeLoading, userRole]);
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
@@ -193,35 +154,33 @@ const NodeManagement: React.FC<NodeManagementProps> = (props) => {
 
   return (
     <div className="page-wrapper">
-      <Spin spinning={downloading} tip="下载中...">
-        <PageTitle
-          label="节点管理"
-          extra={
-            <Button type="primary" onClick={onClickCreateNode}>
-              创建节点
-            </Button>
-          }
+      <PageTitle
+        label="节点管理"
+        extra={
+          <Button type="primary" onClick={onClickCreateNode}>
+            创建节点
+          </Button>
+        }
+      />
+      <div className="page-content page-content-shadow table-wrapper">
+        <Table
+          rowKey="nodeName"
+          loading={qryLoading}
+          columns={columns}
+          dataSource={nodeList}
+          onChange={onPageChange}
+          pagination={{
+            pageSize,
+            total: nodeTotal,
+            current: pageNum,
+            showSizeChanger: false,
+            position: ['bottomCenter']
+          }}
         />
-        <div className="page-content page-content-shadow table-wrapper">
-          <Table
-            rowKey="nodeName"
-            loading={qryLoading}
-            columns={columns}
-            dataSource={nodeList}
-            onChange={onPageChange}
-            pagination={{
-              pageSize,
-              total: nodeTotal,
-              current: pageNum,
-              showSizeChanger: false,
-              position: ['bottomCenter']
-            }}
-          />
-        </div>
-        {createNodeVisible && (
-          <CreateNodeModal getNodeList={getNodeList} visible={createNodeVisible} onCancel={onCloseModal} />
-        )}
-      </Spin>
+      </div>
+      {createNodeVisible && (
+        <CreateNodeModal getNodeList={getNodeList} visible={createNodeVisible} onCancel={onCloseModal} />
+      )}
     </div>
   );
 };

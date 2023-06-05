@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react';
 import { FabricRoleSchema } from '~/models/fabric-role';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
-import request from 'umi-request';
 import { saveAs } from 'file-saver';
 import { Button, Form, Modal, notification, Select } from 'antd';
 import { ChannelSchema } from '~/models/channel';
+import { fileRequest } from '~/utils/request';
 const { Item } = Form;
 const { Option } = Select;
 
@@ -36,8 +36,8 @@ export function DownloadSdkModal({ record, networkName, onCancel, channelList }:
         Authorization: `Bearer ${accessToken}`
       } as HeadersInit;
       setDownloading(true);
-      request(
-        `${process.env.BAAS_BACKEND_LINK}/network/${networkName}/fabricRoles/${record.orgName}/${record.username}/sdkConfig`,
+      fileRequest(
+        `/network/${networkName}/fabricRoles/${record.orgName}/${record.username}/sdkConfig`,
         {
           headers,
           mode: 'cors',
