@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'dva';
-import { Table, Button, Descriptions, Divider } from 'antd';
+import { Table, Button, Descriptions, Divider, Tag } from 'antd';
 import { Breadcrumb, PageTitle, PlaceHolder } from '~/components';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
 import AddOrg from '../../components/AddOrg';
@@ -8,9 +8,17 @@ import { ChannelStatus } from '../../_config';
 import baseConfig from '~/utils/config';
 import { Roles } from '~/utils/roles';
 import { ColumnsType } from 'antd/lib/table';
-import { ChannelSchema, Dispatch, Location } from 'umi';
+import { ChannelSchema, Dispatch, Location, NodeOrgJoinStatus } from 'umi';
 import { ConnectState } from '~/models/connect';
 import { DetailViewAttr } from '~/utils/types';
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  CloseCircleOutlined,
+  ExclamationCircleOutlined,
+  MinusCircleOutlined,
+  SyncOutlined
+} from '@ant-design/icons';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/channels');
 breadCrumbItem.push({
@@ -26,8 +34,8 @@ const columns: ColumnsType<any> = [
   },
   {
     title: '组织别名',
-    dataIndex: 'orgAliasName',
-    key: 'orgAliasName',
+    dataIndex: 'orgAlias',
+    key: 'orgAlias',
     render: (text) => <PlaceHolder text={text} />
   },
   {
@@ -37,9 +45,35 @@ const columns: ColumnsType<any> = [
   },
   {
     title: '所属用户',
-    dataIndex: 'enterpriseName',
-    key: 'enterpriseName',
+    dataIndex: 'belongToUser',
+    key: 'belongToUser',
     render: (text) => <PlaceHolder text={text} />
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+    key: 'status',
+    render: (value: NodeOrgJoinStatus) => {
+      if (value === 'JOINED') {
+        return (
+          <Tag icon={<CheckCircleOutlined />} color="success">
+            已加入
+          </Tag>
+        );
+      } else if (value === 'JOINING') {
+        return (
+          <Tag icon={<SyncOutlined spin />} color="processing">
+            正在加入
+          </Tag>
+        );
+      } else {
+        return (
+          <Tag icon={<CloseCircleOutlined />} color="error">
+            加入失败
+          </Tag>
+        );
+      }
+    }
   }
 ];
 

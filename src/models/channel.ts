@@ -38,11 +38,21 @@ export type ChannelSchema = {
   updateTime: string;
 };
 
+export type NodeOrgJoinStatus = "JOINING" | "JOINED" | "JOIN_FAILED";
+interface NodeOrgSchema {
+  belongToUser: string;
+  joinTime: string;
+  orgAlias: string | null;
+  orgMspId: string;
+  orgName: string;
+  status: NodeOrgJoinStatus;
+}
+
 export type ChannelModelState = {
   channelList: Array<ChannelSchema>; // 通道列表
   channelTotal: number;
 
-  orgListOfChannel: Array<OrganizationSchema>; // 当前通道下的组织列表
+  orgListOfChannel: Array<NodeOrgSchema>; // 当前通道下的组织列表
   orgTotalOfChannel: number;
 
   nodeListOfChannel: Array<PeerSchema>; // 当前通道下的节点列表
