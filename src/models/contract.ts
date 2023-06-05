@@ -40,7 +40,7 @@ export type ContractModelState = {
 
   invokeResult: {
     status: any;
-    message: { result: any; error: any };
+    message: { result: any; error: any, hash?: string, payload?: string };
   } | null;
 
   allUserId: Array<{ username: string }>; // fabric角色用户列表

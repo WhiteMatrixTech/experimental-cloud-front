@@ -58,6 +58,9 @@ function InvokeContract(props: InvokeContractProps) {
     if (invokeResult?.message?.result) {
       return <span className={style['invoke-success']}>{invokeResult?.message?.result}</span>;
     }
+    if (invokeResult?.message?.payload) {
+      return <span className={style['invoke-success']}>{invokeResult.message.payload}</span>;
+    }
     return <span className={style['invoke-error']}>{invokeResult?.message?.error}</span>;
   }, [invokeResult]);
 
