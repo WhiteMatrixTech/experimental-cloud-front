@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+configMapGenerator:
+  - name: baas-nginx-config
+    files:
+      - conf/nginx.conf
+namespace: alpha

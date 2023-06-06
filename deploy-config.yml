@@ -1,0 +1,21 @@
+project: baas
+service: baas-frontend
+ports:
+  - port: 80
+    targetPort: 80
+    name: http
+hpa: false
+deploy:
+  image: summerain/baas-front
+  stage:
+    alpha:
+      cluster: matrixlabs-alpha
+      namespace: alpha
+      autoSync: true
+    alpha-gcp:
+      cluster: baas-fabric
+      namespace: alpha
+      autoSync: true
+config:
+  - name: baas-nginx-config
+    path: /etc/nginx/conf.d/
