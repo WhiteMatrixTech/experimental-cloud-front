@@ -5,6 +5,7 @@ export enum NetworkStatus {
   NotExist = 'NOT_EXIST',
   CreationFailed = 'CREATE_FAILED',
   Deleting = 'DELETING',
+  DeleteFailed = 'DELETE_FAILED',
   Stopping = 'STOPPING',
   Stopped = 'STOPPED'
 }
@@ -16,6 +17,7 @@ export const NetworkInfo = {
   [NetworkStatus.CreationFailed]: '创建失败, 请联系技术人员排查',
   [NetworkStatus.NotExist]: '未创建',
   [NetworkStatus.Deleting]: '删除中',
+  [NetworkStatus.DeleteFailed]: '删除失败',
   [NetworkStatus.Stopping]: '停止中',
   [NetworkStatus.Stopped]: '已停止'
 };
@@ -36,5 +38,6 @@ export const CanDeleteNetworkStatus = [
   NetworkStatus.Starting,
   NetworkStatus.Creating,
   NetworkStatus.Stopped,
-  NetworkStatus.Stopping
+  NetworkStatus.Stopping,
+  NetworkStatus.DeleteFailed
 ];
