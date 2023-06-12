@@ -18,6 +18,9 @@ interface INetworkInfo {
   updateTime?: string;
   status: NetworkStatus;
   caCertExpiryTime: string;
+  consensus: "etcdraft"|"solo",
+  maxMessageCount: number;
+  batchTimeout: string;
 }
 
 export type DashboardModelState = {
@@ -48,7 +51,7 @@ export type DashboardModelType = {
     getTransactionList: Effect;
     getStaticInfoForAdmin: Effect;
     getStaticInfoForMember: Effect;
-    configCA: Effect;
+    configNetwork: Effect;
   };
   reducers: {
     common: Reducer<DashboardModelState>;
@@ -85,14 +88,14 @@ const DashboardModel: DashboardModelType = {
       }
     },
 
-    *configCA({ payload }, { call, put }): any {
-      const res = yield call(API.configCA, payload);
+    *configNetwork({ payload }, { call, put }): any {
+      const res = yield call(API.configNetwork, payload);
       const { statusCode } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '配置CA证书过期时间成功', top: 64, duration: 3 });
+        notification.success({ message: '更新网络配置成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: '配置CA证书过期时间失败', top: 64, duration: 3 });
+        notification.error({ message: '更新网络配置失败', top: 64, duration: 3 });
         return false;
       }
     },
