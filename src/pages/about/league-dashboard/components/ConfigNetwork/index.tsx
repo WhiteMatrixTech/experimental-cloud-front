@@ -12,15 +12,15 @@ const formItemLayout = {
   }
 };
 
-interface IConfigCA {
+interface IConfigNetwork {
   visible: boolean;
   onCancel: () => void;
   Dashboard: ConnectState['Dashboard'];
   User: ConnectState['User'];
-  configCALoading: boolean;
+  configNetworkLoading: boolean;
   dispatch: Dispatch;
 }
-function ConfigCA({ visible, onCancel, Dashboard, User, configCALoading, dispatch }: IConfigCA) {
+function ConfigNetwork({ visible, onCancel, Dashboard, User, configNetworkLoading, dispatch }: IConfigNetwork) {
   const [form] = Form.useForm();
   const { networkName } = User;
   const oldCA = Dashboard.networkStatusInfo?.caCertExpiryTime;
@@ -32,7 +32,7 @@ function ConfigCA({ visible, onCancel, Dashboard, User, configCALoading, dispatc
     title: '创建网络',
     okText: '确定',
     cancelText: '取消',
-    okButtonProps: { loading: configCALoading },
+    okButtonProps: { loading: configNetworkLoading },
     onCancel: () => onCancel(),
     onOk: () => {
       form.validateFields().then(async () => {
@@ -80,5 +80,5 @@ function ConfigCA({ visible, onCancel, Dashboard, User, configCALoading, dispatc
 export default connect(({ Dashboard, loading, User }: ConnectState) => ({
   Dashboard,
   User,
-  configCALoading: loading.effects['Dashboard/configCA']
-}))(ConfigCA);
+  configNetworkLoading: loading.effects['Dashboard/configCA']
+}))(ConfigNetwork);

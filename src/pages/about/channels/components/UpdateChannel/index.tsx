@@ -30,16 +30,16 @@ function UpdateChannel({ visible, User, onCancel, dispatch, loading, record }: C
   const [form] = Form.useForm();
 
   useEffect(() => {
-    const initValues = cloneDeep(record);
-    if (initValues) {
-      const result = parseTime(initValues.batchTimeout);
-      if (result) {
-        initValues.batchTimeout = {
-          timeout: result[0].toString(),
-          unit: result[1]
-        } as any;
-      }
-    }
+    // const initValues = cloneDeep(record);
+    // if (initValues) {
+    //   const result = parseTime(initValues.batchTimeout);
+    //   if (result) {
+    //     initValues.batchTimeout = {
+    //       timeout: result[0].toString(),
+    //       unit: result[1]
+    //     } as any;
+    //   }
+    // }
     form.setFieldsValue(record);
   }, [form, record]);
 
@@ -47,11 +47,9 @@ function UpdateChannel({ visible, User, onCancel, dispatch, loading, record }: C
     form
       .validateFields()
       .then(async (values) => {
-        const { batchTimeout, consensus, ...rest } = values;
+        const { endorsementPolicy } = values;
         let params = {
-          ...rest,
-          consensusMechanism: consensus,
-          batchTimeout: `${batchTimeout.timeout}${batchTimeout.unit}`,
+          endorsementPolicy,
           networkName,
           channelId: record?.name || ''
         };
@@ -72,7 +70,7 @@ function UpdateChannel({ visible, User, onCancel, dispatch, loading, record }: C
     visible: visible,
     closable: true,
     destroyOnClose: true,
-    title: '配置详情',
+    title: '背书策略配置',
     onCancel: () => onCancel(),
     footer: [
       <Button key="cancel" onClick={onCancel}>
@@ -90,7 +88,7 @@ function UpdateChannel({ visible, User, onCancel, dispatch, loading, record }: C
         <Item label="通道名称" name="name">
           <Input disabled={true} />
         </Item>
-        <Item
+        {/* <Item
           label="共识机制"
           name="consensus"
           tooltip="一般默认选择Etcdraft, Solo模式只适合测试网络, 不建议正式环境使用"
@@ -104,7 +102,7 @@ function UpdateChannel({ visible, User, onCancel, dispatch, loading, record }: C
             <Option value="etcdraft">Etcdraft</Option>
             <Option value="solo">Solo</Option>
           </Select>
-        </Item>
+        </Item> */}
         <Item
           label="背书策略"
           name="endorsementPolicy"
@@ -118,7 +116,7 @@ function UpdateChannel({ visible, User, onCancel, dispatch, loading, record }: C
           ]}>
           <Input placeholder="请输入背书策略" />
         </Item>
-        <Item
+        {/* <Item
           label="区块最大交易数"
           name="maxMessageCount"
           tooltip="设置每个区块的最大交易数量, 最大值为500"
@@ -146,7 +144,7 @@ function UpdateChannel({ visible, User, onCancel, dispatch, loading, record }: C
               </Select>
             </Item>
           </Input.Group>
-        </Item>
+        </Item> */}
       </Form>
     </Modal>
   );

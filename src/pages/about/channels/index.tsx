@@ -163,7 +163,7 @@ function ChannelManagement(props: ChannelManagementProps) {
               onClick={() => {
                 setUpdateChannelRecord(record);
               }}>
-              配置详情
+              背书策略配置
             </span>
           )}
           <a href={`/about/channels/${record.name}/organizationList`} onClick={(e) => onViewOrg(e, record)}>

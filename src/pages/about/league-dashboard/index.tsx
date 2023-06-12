@@ -15,7 +15,7 @@ import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
 import { StatisticValueStyle } from './_style';
 import { useRafInterval } from 'ahooks';
 import { formatDate, renderDateWithDefault } from '~/utils/date';
-import ConfigCA from './components/ConfigCA/index';
+import ConfigNetwork from './components/ConfigNetwork/index';
 
 export interface LeagueDashboardProps {
   Dashboard: ConnectState['Dashboard'];
@@ -45,7 +45,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
   const { leagueName, networkName, userRole } = User;
   const { networkStatusInfo, transactionList, blockList, channelTotal } = Dashboard;
   const [createVisible, setCreateVisible] = useState(false);
-  const [configCAVisible, setConfigCAVisible] = useState(false);
+  const [configNetworkVisible, setConfigNetworkVisible] = useState(false);
 
   const statisticsList = useMemo(() => {
     return [
@@ -116,11 +116,11 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     setCreateVisible(true);
   }, [clusterTotal]);
 
-  const onConfigCAExpireTime = useCallback(() => {
-    setConfigCAVisible(true);
+  const onConfigNetwork = useCallback(() => {
+    setConfigNetworkVisible(true);
   }, []);
-  const onCancelCA = () => {
-    setConfigCAVisible(false);
+  const onCancelConfigNetwork = () => {
+    setConfigNetworkVisible(false);
   };
 
   const onRestartNetwork = useCallback(() => {
@@ -397,8 +397,8 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
               <Button type="primary" onClick={onRestartNetwork}>
                 重启网络
               </Button>
-              <Button type="ghost" onClick={onConfigCAExpireTime}>
-                配置CA过期时间
+              <Button type="ghost" onClick={onConfigNetwork}>
+                配置网络
               </Button>
             </>
           );
@@ -419,8 +419,8 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
                 <Button type="primary" onClick={onStopNetwork}>
                   停用网络
                 </Button>
-                <Button type="ghost" onClick={onConfigCAExpireTime}>
-                  配置CA过期时间
+                <Button type="ghost" onClick={onConfigNetwork}>
+                  配置网络
                 </Button>
               </>
             );
@@ -440,17 +440,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
       }
     }
     return btnShowInitValue;
-  }, [
-    channelTotal,
-    linkToCreateChannel,
-    networkStatusInfo?.status,
-    onConfigCAExpireTime,
-    onCreateNetwork,
-    onDeleteNetwork,
-    onRestartNetwork,
-    onStopNetwork,
-    userRole
-  ]);
+  }, [channelTotal, linkToCreateChannel, networkStatusInfo?.status, onConfigNetwork, onCreateNetwork, onDeleteNetwork, onRestartNetwork, onStopNetwork, userRole]);
 
   useEffect(() => {
     dispatch({
@@ -526,7 +516,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
         </div>
       </div>
       {createVisible && <CreateNetwork visible={createVisible} onCancel={onClickCancel} />}
-      {configCAVisible && <ConfigCA visible={configCAVisible} onCancel={onCancelCA} />}
+      {configNetworkVisible && <ConfigNetwork visible={configNetworkVisible} onCancel={onCancelConfigNetwork} />}
     </div>
   );
 };
