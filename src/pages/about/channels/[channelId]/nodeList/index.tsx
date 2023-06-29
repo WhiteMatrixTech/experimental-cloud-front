@@ -73,7 +73,9 @@ function NodeList(props: NodeListProps) {
       title: '创建时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: renderDateWithDefault
+      render: (_, record: any) => {
+        return renderDateWithDefault(record.createdAt || record.updatedAt);
+      }
     }
   ];
 
