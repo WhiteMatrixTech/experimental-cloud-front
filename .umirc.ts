@@ -9,7 +9,7 @@ export default defineConfig({
   publicPath: '/',
   chainWebpack,
   title: '区块链实训教学平台-Fabric BaaS',
-  favicon: '/favicon.png',
+  favicon: '/favicon.ico',
 
   theme: {
     'table-header-bg': '#ebedf0'
