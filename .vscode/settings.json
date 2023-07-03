@@ -12,6 +12,7 @@
     "antd",
     "Chaincode",
     "etcdraft",
-    "Usci"
+    "Usci",
+    "WENXIANG"
   ],
 }

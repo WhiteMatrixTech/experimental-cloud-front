@@ -46,7 +46,6 @@ let cancelRequestArray: Array<{
   url: string;
 }> = [];
 
-
 const bassBackendLink = process.env.BAAS_BACKEND_LINK;
 // 配置umi request请求时的默认参数
 const _requestFunc = extend({
@@ -55,7 +54,7 @@ const _requestFunc = extend({
   timeout: 30000,
   // parseResponse: false,
   credentials: 'include', // 默认请求是否带上cookie,
-  prefix: bassBackendLink === "/api" ? `${window.location.origin}/api` : bassBackendLink
+  prefix: bassBackendLink === '/api' ? `${window.location.origin}/api` : bassBackendLink
 });
 
 _requestFunc.interceptors.request.use((url, options) => {
@@ -121,11 +120,12 @@ export const request = <R>(url: string, options?: { method: string; body?: objec
   });
 };
 
-
+const IS_WENXIANG_LOCAL = true;
+export const FILE_UPLOAD_BASE_URL = IS_WENXIANG_LOCAL ? window.location.origin : process.env.PROXY_ENDPOINT;
 export const fileRequest = extend({
   errorHandler, // 默认错误处理
   mode: 'cors',
   timeout: 30000,
   credentials: 'include', // 默认请求是否带上cookie,
-  prefix: process.env.PROXY_ENDPOINT
+  prefix: FILE_UPLOAD_BASE_URL
 });

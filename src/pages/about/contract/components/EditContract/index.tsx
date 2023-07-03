@@ -6,6 +6,7 @@ import { ConnectState } from '~/models/connect';
 import { ChainCodePackageMetaData, ChainCodeSchema } from '~/models/contract';
 import { Dispatch } from 'umi';
 import { getTokenData } from '~/utils/encryptAndDecrypt';
+import { FILE_UPLOAD_BASE_URL } from '~/utils/request';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -103,7 +104,7 @@ function EditContract(props: EditContractProps) {
   const uploadProps = {
     name: 'file',
     listType: 'text',
-    action: `${process.env.PROXY_ENDPOINT}/network/${networkName}/chainCodes/uploadPackageArchive`,
+    action: `${FILE_UPLOAD_BASE_URL}/network/${networkName}/chainCodes/uploadPackageArchive`,
     accept: '.zip, .jar, .rar, .gz, .tgz',
     multiple: false,
     beforeUpload: handleBeforeUpload,
