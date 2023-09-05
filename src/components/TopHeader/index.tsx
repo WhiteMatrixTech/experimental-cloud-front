@@ -45,8 +45,6 @@ const TopHeader: React.FC<TopHeaderProps> = (props) => {
       window.localStorage.clear();
       // 跳转至登录界面
       history.replace('/user/login');
-      // window.location.href =
-      //   `${process.env.PLATFORM_SSO_AUTH_ENDPOINT}?returnUrl=${encodeURIComponent(window.location.origin)}`;
     }
   };
 

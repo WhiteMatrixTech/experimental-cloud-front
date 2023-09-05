@@ -19,8 +19,6 @@ const authorization = (response: Response) => {
     // window.location.reload();
     setTimeout(() => {
       history.push('/user/login');
-      // window.location.href =
-      //   `${process.env.PLATFORM_SSO_AUTH_ENDPOINT}?returnUrl=${encodeURIComponent(window.location.origin)}`;
     }, 1000);
     return;
   }

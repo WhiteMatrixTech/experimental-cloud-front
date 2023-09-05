@@ -57,7 +57,6 @@ export default defineConfig({
     'process.env.RESOURCE_USAGE_DASHBOARD': process.env.RESOURCE_USAGE_DASHBOARD,
     'process.env.CHAIN_IDE_LINK': process.env.CHAIN_IDE_LINK, // ChainIDE地址
     'process.env.BAAS_BACKEND_LINK': process.env.BAAS_BACKEND_LINK, // BaaS Backend地址
-    'process.env.PLATFORM_SSO_AUTH_ENDPOINT': process.env.PLATFORM_SSO_AUTH_ENDPOINT, // SSO认证地址
     'process.env.FABRIC_NODE_EXPLORER': process.env.FABRIC_NODE_EXPLORER,
     'process.env.PROXY_ENDPOINT': process.env.PROXY_ENDPOINT
   }
