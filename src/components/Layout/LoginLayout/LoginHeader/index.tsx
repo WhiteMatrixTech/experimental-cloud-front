@@ -10,7 +10,7 @@ export default class LoginHeader extends React.PureComponent {
     return (
       <Header className={styles.header}>
         <div className={styles['logo-sub']}>
-          <img src={buaaLogo} alt="北京航空大学杭州创新研究院" />
+          <img src={buaaLogo} alt="郑州大学Logo" />
         </div>
       </Header>
     );
