@@ -118,8 +118,7 @@ export const request = <R>(url: string, options?: { method: string; body?: objec
   });
 };
 
-const IS_WENXIANG_LOCAL = true;
-export const FILE_UPLOAD_BASE_URL = IS_WENXIANG_LOCAL ? window.location.origin : process.env.PROXY_ENDPOINT;
+export const FILE_UPLOAD_BASE_URL = process.env.PROXY_ENDPOINT;
 export const fileRequest = extend({
   errorHandler, // 默认错误处理
   mode: 'cors',
