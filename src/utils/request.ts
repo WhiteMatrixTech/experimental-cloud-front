@@ -118,7 +118,7 @@ export const request = <R>(url: string, options?: { method: string; body?: objec
   });
 };
 
-export const FILE_UPLOAD_BASE_URL = process.env.PROXY_ENDPOINT;
+export const FILE_UPLOAD_BASE_URL = bassBackendLink === '/api' ? `${window.location.origin}/api` : bassBackendLink
 export const fileRequest = extend({
   errorHandler, // 默认错误处理
   mode: 'cors',
