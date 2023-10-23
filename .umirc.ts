@@ -9,7 +9,7 @@ export default defineConfig({
   publicPath: '/',
   chainWebpack,
   title: '区块链实验实训环境',
-  favicon: '/favicon.jpg',
+  favicon: '/favicon.png',
 
   theme: {
     'table-header-bg': '#ebedf0'

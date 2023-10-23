@@ -9,7 +9,7 @@ export default class LoginFooter extends React.PureComponent {
   render() {
     return (
       <Footer className={styles.footer}>
-        <div className={styles.copyright}>版权所有©️郑州大学  All Rights Reserved.</div>
+        <div className={styles.copyright}>版权所有©️金陵科技学院  All Rights Reserved.</div>
       </Footer>
     );
   }
