@@ -24,16 +24,26 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 
   const [form] = Form.useForm();
   const [pageNum, setPageNum] = useState(1);
-  const [searchParams, setSearchParams] = useState({ evidenceHash: '' });
+  const [searchParams, setSearchParams] = useState({ txHash: '' });
   const [uploadVisible, setUploadVisible] = useState(false);
 
   const columns: ColumnsType<any> = [
     {
-      title: '存证哈希',
-      dataIndex: 'evidenceHash',
-      key: 'evidenceHash',
+      title: '数据哈希',
+      dataIndex: 'transactionHash',
+      key: 'transactionHash',
       ellipsis: true,
       width: '20%'
+    },
+    {
+      title: '合约名',
+      dataIndex: 'chaincode',
+      key: 'chaincode'
+    },
+    {
+      title: '方法名',
+      dataIndex: 'method',
+      key: 'method'
     },
     {
       title: '所属通道',
@@ -56,7 +66,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
       key: 'action',
       render: (text, record: EvidenceSchema) => (
         <Space size="small">
-          <a href={`/about/Evidence/${record.evidenceHash}`} onClick={(e) => onClickDetail(e, record)}>
+          <a href={`/about/Evidence/${record.transactionHash}`} onClick={(e) => onClickDetail(e, record)}>
             详情
           </a>
         </Space>
@@ -67,20 +77,20 @@ function EvidenceDataList(props: EvidenceDataListProps) {
   const onClickDetail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, record: EvidenceSchema) => {
     e.preventDefault();
     history.push({
-      pathname: `/about/Evidence/${record.evidenceHash}`,
+      pathname: `/about/Evidence/${record.transactionHash}`,
       query: {
-        evidenceHash: record.evidenceHash,
+        transactionHash: record.transactionHash,
         channelId: record.channelId
       }
     });
   };
 
-  // 点击存证上链
+  // 点击数据上链
   const onClickUpload = () => {
     setUploadVisible(true);
   };
 
-  // 取消存证上链
+  // 取消数据上链
   const onCloseUpload = (res: any) => {
     setUploadVisible(false);
     if (res === 'refresh') {
@@ -91,7 +101,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 
   // 查询列表
   const getEvidenceDataList = useCallback(() => {
-    const { evidenceHash } = searchParams;
+    const { txHash } = searchParams;
     const offset = (pageNum - 1) * pageSize;
     const params = {
       networkName,
@@ -100,8 +110,8 @@ function EvidenceDataList(props: EvidenceDataListProps) {
       ascend: false,
       from: Number(moment(new Date()).format('x'))
     };
-    if (evidenceHash) {
-      params['evidenceHash'] = evidenceHash;
+    if (txHash) {
+      params['txHash'] = txHash;
     }
     dispatch({
       type: 'Evidence/getEvidenceDataList',
@@ -125,7 +135,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
       .validateFields()
       .then((values) => {
         setPageNum(1);
-        setSearchParams({ evidenceHash: values.evidenceHash });
+        setSearchParams({ txHash: values.transactionHash });
       })
       .catch((info) => {
         console.log('校验失败:', info);
@@ -136,7 +146,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
   const resetForm = () => {
     form.resetFields();
     setPageNum(1);
-    setSearchParams({ evidenceHash: '' });
+    setSearchParams({ txHash: '' });
   };
 
   // 翻页
@@ -146,9 +156,9 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 
   // 页码改变、搜索值改变时，重新查询列表
   useEffect(() => {
-    const { evidenceHash } = searchParams;
+    const { txHash } = searchParams;
     getEvidenceDataList();
-    if (!evidenceHash) {
+    if (!txHash) {
       getEvidenceTotalDocs();
     }
   }, [searchParams, getEvidenceDataList, getEvidenceTotalDocs, pageNum]);
@@ -156,10 +166,10 @@ function EvidenceDataList(props: EvidenceDataListProps) {
   return (
     <div className="page-wrapper">
       <PageTitle
-        label="存证上链"
+        label="数据上链"
         extra={
           <Button type="primary" onClick={onClickUpload}>
-            存证上链
+            数据上链
           </Button>
         }
       />
@@ -169,8 +179,8 @@ function EvidenceDataList(props: EvidenceDataListProps) {
             <Form form={form}>
               <Row>
                 <Col span={8}>
-                  <Form.Item label="存证哈希" name="evidenceHash" initialValue="">
-                    <Input placeholder="输入存证哈希" />
+                  <Form.Item label="数据哈希" name="transactionHash" initialValue="">
+                    <Input placeholder="输入数据哈希" />
                   </Form.Item>
                 </Col>
                 <Col span={8} offset={8} style={{ textAlign: 'right' }}>
@@ -185,7 +195,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
             </Form>
           </div>
           <Table
-            rowKey="evidenceHash"
+            rowKey="transactionHash"
             columns={columns}
             dataSource={evidenceDataList}
             onChange={onPageChange}
@@ -209,6 +219,5 @@ export default connect(({ User, Evidence, loading }: ConnectState) => ({
   Evidence,
   qryLoading:
     loading.effects['Evidence/getEvidenceDataList'] ||
-    loading.effects['Evidence/getEvidenceDataByHash'] ||
     loading.effects['Evidence/getEvidenceTotalDocs']
 }))(EvidenceDataList);

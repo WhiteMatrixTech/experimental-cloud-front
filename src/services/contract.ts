@@ -71,6 +71,7 @@ export async function queryChainCodeMethod(params: InvokeChainCodeRequest) {
  * 使用中的通道列表
  */
 export async function getChannelList(params: BasicApiParams) {
+  // return request(`/network/${params.networkName}/channels`, { method: 'GET', body: { ...params } });
   return request(`/network/${params.networkName}/channels`, { method: 'GET', body: { ...params, inUse: true } });
 }
 

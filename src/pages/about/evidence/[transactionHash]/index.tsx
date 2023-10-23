@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Descriptions, Divider, Spin } from 'antd';
-import { isObject } from 'lodash';
 import { Breadcrumb, PageTitle } from '~/components';
 import ReactJson from 'react-json-view';
 import { MenuList, getCurBreadcrumb } from '~/utils/menu';
@@ -13,8 +12,8 @@ import { renderDateWithDefault } from '~/utils/date';
 
 const breadCrumbItem = getCurBreadcrumb(MenuList, '/about/evidence');
 breadCrumbItem.push({
-  menuName: '存证详情',
-  menuHref: `/`,
+  menuName: '链上详情',
+  menuHref: `/`
 });
 export interface EvidenceDataDetailProps {
   User: ConnectState['User'];
@@ -22,88 +21,96 @@ export interface EvidenceDataDetailProps {
   qryLoading: boolean;
   location: Location<EvidenceSchema>;
   dispatch: Dispatch;
-  match: { params: { evidenceHash: string } };
+  match: { params: { transactionHash: string } };
 }
 function EvidenceDataDetail({
   match: {
-    params: { evidenceHash },
+    params: { transactionHash }
   },
   User,
   Evidence,
   qryLoading = false,
   location,
-  dispatch,
+  dispatch
 }: EvidenceDataDetailProps) {
   const { networkName } = User;
   const { evidenceDataDetail } = Evidence;
   const detailList: DetailViewAttr[] = [
     {
-      label: '存证哈希',
-      value: evidenceDataDetail && evidenceDataDetail.evidenceHash,
+      label: '数据哈希',
+      value: evidenceDataDetail && evidenceDataDetail.transactionHash
     },
     {
       label: '上链时间',
-      value: renderDateWithDefault(evidenceDataDetail?.createdAt),
+      value: renderDateWithDefault(evidenceDataDetail?.createdAt)
+    },
+    {
+      label: '合约名',
+      value: evidenceDataDetail && evidenceDataDetail.chaincode
+    },
+    {
+      label: '方法名',
+      value: evidenceDataDetail && evidenceDataDetail.method
     },
     {
       label: '所属通道',
-      value: evidenceDataDetail && evidenceDataDetail.channelId,
+      value: evidenceDataDetail && evidenceDataDetail.channelId
     },
     {
       label: '所属网络',
-      value: evidenceDataDetail && evidenceDataDetail.networkName,
+      value: evidenceDataDetail && evidenceDataDetail.networkName
     },
     {
       label: '创建用户',
-      value: evidenceDataDetail && evidenceDataDetail.createUser,
+      value: evidenceDataDetail && evidenceDataDetail.createUser
     }
   ];
-
-  const getEvidenceData = () => {
-    let evidenceData: { evidenceData: string } = { evidenceData: '' };
-    if (evidenceDataDetail && evidenceDataDetail.evidenceData) {
-      try {
-        let parsedData = null;
-        parsedData = JSON.parse(evidenceDataDetail.evidenceData);
-        evidenceData = parsedData;
-        if (!isObject(parsedData)) {
-          evidenceData = { evidenceData: parsedData };
-        }
-      } catch (err) {
-        evidenceData = { evidenceData: evidenceDataDetail.evidenceData };
-      }
-      return evidenceData;
-    }
-    return evidenceData;
-  };
 
   useEffect(() => {
     dispatch({
       type: 'Evidence/getEvidenceDataDetail',
-      payload: { channelId: location?.query?.channelId, evidenceHash, networkName },
+      payload: { channelId: location?.query?.channelId, transactionHash, networkName }
     });
-  }, [dispatch, evidenceHash, location?.query?.channelId, networkName]);
+  }, [dispatch, transactionHash, location?.query?.channelId, networkName]);
+
+  const getResPayload = () => {
+    let result = {}
+    try {
+      result = JSON.parse(evidenceDataDetail?.responsePayload || '')
+    }catch(e){
+      console.error(e);
+      result = {
+        result: evidenceDataDetail?.responsePayload || null
+      }
+    }
+    return result;
+  }
 
   return (
     <div className="page-wrapper">
       <Breadcrumb breadCrumbItem={breadCrumbItem} />
-      <PageTitle label="存证详情" />
+      <PageTitle label="链上详情" />
       <div className="page-content">
         <Spin spinning={qryLoading}>
           <Descriptions column={2} title="基本信息" className="descriptions-wrapper">
-            {detailList.map(item =>
-              <Descriptions.Item
-                key={item.label}
-                label={item.label}>
+            {detailList.map((item) => (
+              <Descriptions.Item key={item.label} label={item.label}>
                 {item.value}
               </Descriptions.Item>
-            )}
+            ))}
           </Descriptions>
           <div className="table-wrapper page-content-shadow">
-            <div className="table-header-title">存证数据</div>
+            <div className="table-header-title">调用参数</div>
             <Divider />
             <div className={styles['detail-info-wrapper']}>
-              <ReactJson name={null} src={getEvidenceData()} />
+              <ReactJson name={null} src={evidenceDataDetail?.args || []} />
+            </div>
+          </div>
+          <div className="table-wrapper page-content-shadow">
+            <div className="table-header-title">响应</div>
+            <Divider />
+            <div className={styles['detail-info-wrapper']}>
+              <ReactJson name={null} src={getResPayload()} />
             </div>
           </div>
         </Spin>
@@ -116,5 +123,5 @@ export default connect(({ User, Layout, Evidence, loading }: ConnectState) => ({
   User,
   Evidence,
   Layout,
-  qryLoading: loading.effects['certificateChain/getEvidenceDataDetail'],
+  qryLoading: loading.effects['certificateChain/getEvidenceDataDetail']
 }))(EvidenceDataDetail);

@@ -46,7 +46,7 @@ export async function getOrgListOfChannel(params: BasicApiParams & { channelName
 export async function addOrgForChannel(params: BasicApiParams & { orgName: string }) {
   return request(`/network/${params.networkName}/channels/addOrg`, {
     method: 'POST',
-    body: params,
+    body: params
   });
 }
 
@@ -56,7 +56,7 @@ export async function addOrgForChannel(params: BasicApiParams & { orgName: strin
 export async function updateChannel(params: BasicApiParams) {
   return request(`/network/${params.networkName}/channels/${params.channelId}`, {
     method: 'PUT',
-    body: params,
+    body: params
   });
 }
 
@@ -71,7 +71,11 @@ export async function getNodeListOfChannel(params: BasicApiParams) {
  * 获取 通道下的合约列表
  */
 export async function getContractListOfChannel(params: BasicApiParams & AllPaginationParams) {
-  return request(`/network/${params.networkName}/chainCodes/query`, { method: 'POST', body: params });
+  const { channelId, ...rest } = params;
+  return request(`/network/${params.networkName}/chainCodes/query`, {
+    method: 'GET',
+    body: { ...rest, channel: channelId }
+  });
 }
 
 /**
@@ -109,6 +113,6 @@ export async function getTransactionsTotalOfChannel(params: BasicApiParams) {
   return request(`/network/${params.networkName}/transactions/totalCount/channel/${params.channelId}`);
 }
 
-export async function getChannelStatics(params: { networkName: string, channel: string }) {
-  return request(`/network/${params.networkName}/channels/${params.channel}`)
+export async function getChannelStatics(params: { networkName: string; channel: string }) {
+  return request(`/network/${params.networkName}/channels/${params.channel}`);
 }

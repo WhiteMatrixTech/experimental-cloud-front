@@ -63,7 +63,7 @@ export function getRoutes(): RouteProps[] {
           path: '/about/evidence'
         },
         {
-          path: '/about/evidence/:evidenceHash'
+          path: '/about/evidence/:transactionHash'
         },
         {
           path: '/about/fabricUsers'

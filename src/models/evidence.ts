@@ -3,10 +3,13 @@ import { notification } from 'antd';
 import type { Reducer, Effect } from 'umi';
 
 export type EvidenceSchema = {
-  evidenceHash: string;
+  transactionHash: string;
   networkName: string;
   channelId: string;
-  evidenceData: string;
+  chaincode: string;
+  method: string;
+  args: string[];
+  responsePayload: string;
   companyName: string;
   createUser: string;
   createdAt: string;
@@ -25,7 +28,6 @@ export type EvidenceModelType = {
   state: EvidenceModelState;
   effects: {
     getEvidenceDataList: Effect;
-    getEvidenceDataByHash: Effect;
     getEvidenceDataDetail: Effect;
     getEvidenceTotalDocs: Effect;
     evidenceOnChain: Effect;
@@ -39,7 +41,7 @@ const EvidenceModel: EvidenceModelType = {
   namespace: 'Evidence',
 
   state: {
-    evidenceDataList: [], // 已存证上链列表
+    evidenceDataList: [], // 已上链列表
     evidenceDataDetail: null, //存证的详情
     evidenceDataTotal: 0
   },
@@ -53,19 +55,6 @@ const EvidenceModel: EvidenceModelType = {
           type: 'common',
           payload: {
             evidenceDataList: result.items || []
-          }
-        });
-      }
-    },
-    *getEvidenceDataByHash({ payload }, { call, put }): any {
-      const res = yield call(API.getEvidenceDataByHash, payload);
-      const { statusCode, result } = res;
-      if (statusCode === 'ok') {
-        yield put({
-          type: 'common',
-          payload: {
-            evidenceDataList: result,
-            evidenceDataTotal: result.length
           }
         });
       }
@@ -98,10 +87,10 @@ const EvidenceModel: EvidenceModelType = {
       const res = yield call(API.evidenceOnChain, payload);
       const { statusCode, result } = res;
       if (statusCode === 'ok') {
-        notification.success({ message: '存证上链成功', top: 64, duration: 3 });
+        notification.success({ message: '上链成功', top: 64, duration: 3 });
         return true;
       } else {
-        notification.error({ message: result.msg || '存证上链失败', top: 64, duration: 3 });
+        notification.error({ message: result.msg || '上链失败', top: 64, duration: 3 });
         return false;
       }
     }

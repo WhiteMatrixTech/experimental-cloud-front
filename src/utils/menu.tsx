@@ -123,7 +123,7 @@ const NetworkMenuList: NetworkMenuProps[] = [
     menuPid: RootMenuId,
     menuHref: '/about/evidence',
     menuIcon: <FileProtectOutlined />,
-    menuName: '存证上链',
+    menuName: '数据上链',
     accessRole: [Roles.MEMBER, Roles.ADMIN],
     subMenus: []
   },

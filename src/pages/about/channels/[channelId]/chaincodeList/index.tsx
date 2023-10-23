@@ -76,8 +76,7 @@ function ChaincodeList(props: ChaincodeListProps) {
       title: '创建时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) =>
-        text ? formatDate(text) : <span className="a-forbidden-style">信息访问受限</span>
+      render: (text) => (text ? formatDate(text) : <span className="a-forbidden-style">信息访问受限</span>)
     }
   ];
   const channelInfoList: DetailViewAttr[] = [
@@ -125,9 +124,9 @@ function ChaincodeList(props: ChaincodeListProps) {
       networkName,
       offset,
       limit: pageSize,
-      from: Number(moment(new Date()).format('x')),
       ascend: false,
-      channelId
+      channelId,
+      from: undefined
     };
     dispatch({
       type: 'Channel/getContractListOfChannel',
