@@ -50,13 +50,13 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
         paramValueArray.push((document.getElementById(`param-${i + 1}`) as HTMLInputElement)?.value);
       }
     }
-    form.validateFields().then((values: any) => {
-      values.networkName = networkName;
+    form.validateFields().then(() => {
       dispatch({
         type: `Contract/invokeChainCodeMethod`,
         payload: {
           ...rest,
-          params: paramValueArray
+          params: paramValueArray,
+          networkName
         }
       });
     });
