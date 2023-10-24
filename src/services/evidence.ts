@@ -1,8 +1,18 @@
 import { request } from '~/utils/request';
 import { AllPaginationParams, BasicApiParams } from '~/utils/types';
 
+interface EvidencesOnChainRequest {
+  networkName: string;
+  channelId: string;
+  chainCodeName: string;
+  methodName: string;
+  params: string[];
+  userId: string;
+  isInit: boolean;
+}
+
 // 数据上链
-export async function evidenceOnChain(params: BasicApiParams & { evidenceData: string }) {
+export async function evidenceOnChain(params: EvidencesOnChainRequest) {
   return request(`/network/${params.networkName}/evidences`, { method: 'POST', body: params });
 }
 

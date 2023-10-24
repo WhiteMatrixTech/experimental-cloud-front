@@ -52,7 +52,7 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
     }
     form.validateFields().then(() => {
       dispatch({
-        type: `Contract/invokeChainCodeMethod`,
+        type: `Evidence/evidenceOnChain`,
         payload: {
           ...rest,
           params: paramValueArray,
@@ -273,6 +273,6 @@ export default connect(({ Contract, Channel, User, loading }: ConnectState) => (
   Contract,
   User,
   Channel,
-  invokeLoading: loading.effects['Contract/invokeChainCodeMethod'],
+  invokeLoading: loading.effects['Evidence/evidenceOnChain'],
   qryLoading: loading.effects['Channel/getContractListOfChannel']
 }))(EvidenceOnChain);
