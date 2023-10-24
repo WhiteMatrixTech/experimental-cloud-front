@@ -93,7 +93,7 @@ export async function checkOrgInUse(params: BasicApiParams) {
  * 我的合约 - 合约列表
  */
 export async function getChainCodeList(params: BasicApiParams & AllPaginationParams) {
-  return request(`/network/${params.networkName}/chainCodes/query`, { method: 'POST', body: params });
+  return request(`/network/${params.networkName}/chainCodes/query`, { method: 'GET', body: params });
 }
 
 /**
