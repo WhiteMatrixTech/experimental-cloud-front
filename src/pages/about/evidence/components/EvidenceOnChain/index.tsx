@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import { connect } from 'dva';
 import { Input, Descriptions, Select, Form, Switch, Button, Modal, Divider } from 'antd';
 import { Dispatch } from 'umi';
@@ -40,6 +40,7 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
   const { channelList, allUserId, invokeResult } = Contract;
   const { contractListOfChannel } = Channel;
   const { networkName } = User;
+  const [invokeSuccess, setInvokeSuccess] = useState(false);
 
   const handleSubmit = () => {
     const { params, ...rest } = form.getFieldsValue();
@@ -58,7 +59,9 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
           params: paramValueArray,
           networkName
         }
-      });
+      }).then((res:boolean) => {
+        setInvokeSuccess(res);
+      })
     });
   };
 
@@ -93,7 +96,12 @@ function EvidenceOnChain(props: EvidenceOnChainProps) {
       <Button key="cancel" onClick={onCancel}>
         取消
       </Button>,
-      <Button key="submit" loading={invokeLoading} onClick={handleSubmit} type="primary">
+      <Button
+        disabled={invokeSuccess || invokeLoading}
+        key="submit"
+        loading={invokeLoading}
+        onClick={handleSubmit}
+        type="primary">
         提交
       </Button>
     ]
