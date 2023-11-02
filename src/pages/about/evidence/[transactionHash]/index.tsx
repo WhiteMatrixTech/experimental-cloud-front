@@ -37,7 +37,7 @@ function EvidenceDataDetail({
   const { evidenceDataDetail } = Evidence;
   const detailList: DetailViewAttr[] = [
     {
-      label: '数据哈希',
+      label: '交易哈希',
       value: evidenceDataDetail && evidenceDataDetail.transactionHash
     },
     {

@@ -29,7 +29,7 @@ function EvidenceDataList(props: EvidenceDataListProps) {
 
   const columns: ColumnsType<any> = [
     {
-      title: '数据哈希',
+      title: '交易哈希',
       dataIndex: 'transactionHash',
       key: 'transactionHash',
       ellipsis: true,
@@ -179,8 +179,8 @@ function EvidenceDataList(props: EvidenceDataListProps) {
             <Form form={form}>
               <Row>
                 <Col span={8}>
-                  <Form.Item label="数据哈希" name="transactionHash" initialValue="">
-                    <Input placeholder="输入数据哈希" />
+                  <Form.Item label="交易哈希" name="transactionHash" initialValue="">
+                    <Input placeholder="输入交易哈希" />
                   </Form.Item>
                 </Col>
                 <Col span={8} offset={8} style={{ textAlign: 'right' }}>
