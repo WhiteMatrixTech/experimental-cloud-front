@@ -27,9 +27,9 @@ class LoginLayout extends React.PureComponent<LoginLayoutProps> {
         <Content className={styles['section-container']}>
           <div className={styles['website-name']}>
             <div className={styles['login-dec-01']}>
-              <span>区块链</span>
+              <span>基于区块链的</span>
             </div>
-            <div className={styles['login-dec-02']}> 应用服务平台 </div>
+            <div className={styles['login-dec-02']}> 大数据安全管控平台 </div>
           </div>
           <div className={styles['section-common-wrapper']}>
             <div className={styles['user-mode']}>{children}</div>
