@@ -464,7 +464,7 @@ const LeagueDashboard: React.FC<LeagueDashboardProps> = (props) => {
     <div className="page-wrapper">
       <div className="page-content">
         <WelcomeBanner
-          title="Hi，欢迎使用区块链应用服务平台"
+          title="Hi，欢迎使用基于区块链的大数据安全管控平台"
           subtitle="快速构建联盟链基础设施，提供区块链应用开发、部署、测试和监控的整套解决方案"
         />
         <Spin spinning={qryNetworkLoading || stopNetworkLoading || restartNetworkLoading}>

@@ -8,7 +8,7 @@ export default defineConfig({
   ignoreMomentLocale: true,
   publicPath: '/',
   chainWebpack,
-  title: '区块链实验实训环境',
+  title: '基于区块链的大数据安全管控平台',
   favicon: '/favicon.png',
 
   theme: {
