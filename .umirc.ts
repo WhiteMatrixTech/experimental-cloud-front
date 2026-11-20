@@ -57,6 +57,8 @@ export default defineConfig({
     'process.env.RESOURCE_USAGE_DASHBOARD': process.env.RESOURCE_USAGE_DASHBOARD,
     'process.env.SERVER_PERFORMANCE_MONITOR': process.env.SERVER_PERFORMANCE_MONITOR,
     'process.env.CHAIN_IDE_LINK': process.env.CHAIN_IDE_LINK, // ChainIDE地址
+    // 外部登录允许跳转的其他站点，多个用逗号分隔
+    'process.env.EXTERNAL_LOGIN_REDIRECT_ORIGINS': process.env.EXTERNAL_LOGIN_REDIRECT_ORIGINS || '',
     'process.env.BAAS_BACKEND_LINK': process.env.BAAS_BACKEND_LINK // BaaS Backend地址
   }
 });

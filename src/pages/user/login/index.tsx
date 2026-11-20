@@ -7,6 +7,7 @@ import LoginStatus from '~/utils/loginStatus';
 import { ConnectState } from '~/models/connect';
 import { LOCAL_STORAGE_ITEM_KEY } from '~/utils/const';
 import { deviceId, encryptData } from '~/utils/encryptAndDecrypt';
+import { getTrustedRedirect } from '~/utils/redirect';
 import styles from './index.less';
 
 const FormItem = Form.Item;
@@ -34,7 +35,7 @@ const Login: React.FC<LoginProps> = (props) => {
         }).then((res: { access_token: string }) => {
           if (res) {
             localStorage.setItem(LOCAL_STORAGE_ITEM_KEY.ACCESS_TOKEN, encryptData(res.access_token, deviceId));
-            const redirect = localStorage.getItem('redirect');
+            const redirect = getTrustedRedirect(localStorage.getItem('redirect'));
             if (redirect) {
               window.location.replace(`${redirect}#${res.access_token}`);
             } else {

@@ -5,6 +5,7 @@ import { Form, Button, Input } from 'antd';
 import { LockTwoTone, UserOutlined } from '@ant-design/icons';
 import { LoginMessage } from '~/components';
 import LoginStatus from '~/utils/loginStatus';
+import { getTrustedRedirect } from '~/utils/redirect';
 import { ConnectState } from '~/models/connect';
 import { LoginProps } from '~/pages/user/login';
 import styles from './index.less';
@@ -26,9 +27,10 @@ const LoginForExternal: React.FC<LoginProps> = (props) => {
         }).then((res: { access_token: string }) => {
           if (res) {
             const search = window.location.search ? window.location.search.replace('?', '') : '';
-            const { redirect } = parse(search);
+            // token 只能发给受信任的站点
+            const redirect = getTrustedRedirect(parse(search).redirect);
             if (redirect) {
-              window.top.postMessage(res.access_token, redirect as string);
+              window.top.postMessage(res.access_token, new URL(redirect).origin);
               window.location.replace(`${redirect}#${res.access_token}`);
             } else {
               history.replace('/selectLeague');

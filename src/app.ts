@@ -3,6 +3,7 @@ import { parse } from 'qs';
 import { InitLocales } from './utils/locales';
 import { pageAuthControl } from './utils/menu';
 import { cancelCurrentRequest } from './utils/request';
+import { getTrustedRedirect } from './utils/redirect';
 // import { tree2Arr } from './utils';
 
 //初始化国际化语言
@@ -47,13 +48,13 @@ export function render(oldRender: () => void) {
 
   // 外部登录
   const search = window.location.search ? window.location.search.replace('?', '') : '';
-  const { redirect } = parse(search);
+  const redirect = getTrustedRedirect(parse(search).redirect);
 
   if (noAccessSituation) {
     history.push('/403');
     oldRender();
   } else if (redirect) {
-    history.push(`/userForExternal/login?redirect=${redirect}`);
+    history.push(`/userForExternal/login?redirect=${encodeURIComponent(redirect)}`);
     oldRender();
   } else {
     oldRender();
